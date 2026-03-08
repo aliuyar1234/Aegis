@@ -1,0 +1,44 @@
+phase: PHASE-21
+status: completed
+name: Fresh-clone onboarding and official evaluation deployment
+phase_doc: docs/exec-plans/active/PHASE-21-onboarding-and-evaluation-deployment.md
+tasks:
+- id: P21-T01
+  phase: PHASE-21
+  title: Fix canonical entrypoints and formalize fresh-clone onboarding
+  critical_path: true
+  status: done
+  deps:
+  - P20-T05
+  adr_refs:
+  - ADR-0001
+  - ADR-0015
+  acceptance_refs:
+  - AC-097
+  test_refs:
+  - TS-057
+  phase_doc: docs/exec-plans/active/PHASE-21-onboarding-and-evaluation-deployment.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P21-T02
+  phase: PHASE-21
+  title: Promote the local compose stack to the official evaluation deployment path
+  critical_path: true
+  status: done
+  deps:
+  - P20-T05
+  - P21-T01
+  adr_refs:
+  - ADR-0001
+  - ADR-0015
+  acceptance_refs:
+  - AC-098
+  test_refs:
+  - TS-058
+  phase_doc: docs/exec-plans/active/PHASE-21-onboarding-and-evaluation-deployment.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false

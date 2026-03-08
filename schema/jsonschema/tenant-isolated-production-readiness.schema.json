@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/tenant-isolated-production-readiness.schema.json",
+  "title": "TenantIsolatedProductionReadiness",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "boundaries"],
+  "$defs": {
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "deployment_track",
+        "isolation_class",
+        "required_evidence",
+        "migration_boundary_refs",
+        "rollback_runbook_refs"
+      ],
+      "properties": {
+        "id": {"type": "string"},
+        "deployment_track": {"type": "string"},
+        "isolation_class": {"type": "string"},
+        "required_evidence": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "migration_boundary_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "rollback_runbook_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "boundaries": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/boundary"},
+      "minItems": 2
+    }
+  }
+}

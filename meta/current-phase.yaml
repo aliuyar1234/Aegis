@@ -1,5 +1,5 @@
-current_phase: PHASE-20
-current_phase_doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+current_phase: PHASE-26
+current_phase_doc: docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
 completed_phases:
 - PHASE-00
 - PHASE-01
@@ -21,7 +21,13 @@ completed_phases:
 - PHASE-17
 - PHASE-18
 - PHASE-19
+- PHASE-20
+- PHASE-21
+- PHASE-22
+- PHASE-23
+- PHASE-24
+- PHASE-25
 starting_sequence: []
-notes: PHASE-20 is fully implemented. Operator accreditation tracks, rollout waves,
-  incident-review packets, deprecation governance, and the lifecycle evidence bundle
-  are in place. No successor phase is active yet in the SSOT task graph.
+notes: PHASE-26 has started. PHASE-25 is complete, and the SSOT now moves into
+  live customer operations, release automation, field evidence capture, and post-GA
+  lifecycle governance planning. PHASE-26 is intentionally open.

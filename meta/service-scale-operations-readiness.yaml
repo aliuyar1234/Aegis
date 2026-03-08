@@ -1,0 +1,35 @@
+program_id: service-scale-operations-readiness
+version: 1
+cadences:
+- id: multi-customer-primary
+  owning_rotation: runtime-primary
+  coverage_window: 24x5
+  escalation_rotations:
+  - platform-ops
+  - security-escalation
+  required_refs:
+  - docs/operations/service-scale-operations.md
+  - docs/operations/support.md
+  - docs/runbooks/service-scale-support-review.md
+  - docs/runbooks/support-escalation.md
+- id: cross-customer-ops-review
+  owning_rotation: platform-ops
+  coverage_window: business-hours-plus-change-window
+  escalation_rotations:
+  - runtime-primary
+  required_refs:
+  - docs/operations/service-scale-operations.md
+  - docs/operations/launch-observability.md
+  - docs/runbooks/service-scale-support-review.md
+  - docs/runbooks/customer-incident-communications.md
+- id: security-and-escalation-backstop
+  owning_rotation: security-escalation
+  coverage_window: escalation-only
+  escalation_rotations:
+  - runtime-primary
+  - platform-ops
+  required_refs:
+  - docs/operations/service-scale-operations.md
+  - docs/operations/security.md
+  - docs/runbooks/service-scale-support-review.md
+  - docs/runbooks/support-escalation.md

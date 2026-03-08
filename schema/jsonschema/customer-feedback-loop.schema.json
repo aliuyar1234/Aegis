@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/customer-feedback-loop.schema.json",
+  "title": "CustomerFeedbackLoop",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "channels"],
+  "$defs": {
+    "channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "decision_class", "owner", "evidence_refs", "runbook_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "decision_class": {"type": "string"},
+        "owner": {"type": "string"},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "runbook_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "channels": {"type": "array", "items": {"$ref": "#/$defs/channel"}, "minItems": 1}
+  }
+}

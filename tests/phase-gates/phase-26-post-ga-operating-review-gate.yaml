@@ -1,0 +1,24 @@
+id: phase-26-post-ga-operating-review-gate
+phase: PHASE-26
+name: Post-GA operating review gate planning gate
+objective: Validate that PHASE-26 commits the final post-GA operating review gate into the SSOT.
+fixtures:
+- docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+- tests/launch_readiness/test_phase26_post_ga_operating_review_gate_plan_assets.py
+- tests/phase-gates/phase-26-post-ga-operating-review-gate.yaml
+- work-items/task-index.yaml
+- meta/phase-gates.yaml
+tests:
+- TS-083
+acceptance:
+- AC-123
+steps:
+- id: post-ga-review-gate-planned
+  description: verify the phase binds live operations, release automation, field evidence, and lifecycle governance into a final gate slice
+  expected:
+  - the post-GA operating review gate is committed as a bounded workstream
+  evidence:
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - work-items/task-index.yaml
+proves:
+- phase-26 starts with an explicit post-GA operating review gate slice instead of an implied future step

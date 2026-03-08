@@ -87,10 +87,10 @@ This roadmap is **not** license to parallelize everything. The implementation or
 
 ## Post-PHASE-13 extension
 
-PHASE-20 is now the active continuation of the original roadmap.
-It turns the adoption and ecosystem-proof surfaces from PHASE-15 through PHASE-19
-into ongoing lifecycle governance: accreditation, rollout promotion, incident review,
-and deprecation discipline.
+PHASE-26 is now the latest committed continuation of the original roadmap.
+It moves beyond repo-level GA transition proof into the post-GA operating problem:
+live customer operations, release automation, field evidence capture, and lifecycle
+governance that can hold once Aegis is running for real customers.
 
 For the broader successor arc beyond the original PHASE-00 through PHASE-13 plan,
 see [State-of-the-art roadmap extension](state-of-the-art-roadmap.md).

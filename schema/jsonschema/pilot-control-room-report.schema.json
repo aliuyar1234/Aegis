@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/pilot-control-room-report.schema.json",
+  "title": "PilotControlRoomReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "roles", "verdict"],
+  "$defs": {
+    "roleResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_id", "observability_count", "verdict"],
+      "properties": {
+        "role_id": {"type": "string"},
+        "observability_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "roles": {"type": "array", "items": {"$ref": "#/$defs/roleResult"}, "minItems": 1},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

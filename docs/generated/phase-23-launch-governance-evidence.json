@@ -1,0 +1,49 @@
+{
+  "evidence_groups": [
+    {
+      "id": "real-infrastructure-proving",
+      "ref_count": 3
+    },
+    {
+      "id": "launch-observability",
+      "ref_count": 4
+    },
+    {
+      "id": "customer-environment-readiness",
+      "ref_count": 4
+    },
+    {
+      "id": "customer-operations-package",
+      "ref_count": 4
+    },
+    {
+      "id": "pilot-governance",
+      "ref_count": 3
+    }
+  ],
+  "id": "phase23-launch-governance-evidence-bundle",
+  "phase": "PHASE-23",
+  "reports": [
+    {
+      "id": "phase23-real-infrastructure-proving-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase23-launch-observability-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase23-customer-environment-readiness-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase23-customer-operations-package-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase23-pilot-governance-report",
+      "verdict": "pass"
+    }
+  ],
+  "verdict": "pass"
+}

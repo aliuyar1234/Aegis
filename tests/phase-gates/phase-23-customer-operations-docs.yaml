@@ -1,0 +1,33 @@
+id: phase-23-customer-operations-docs
+phase: PHASE-23
+name: Customer operations docs workstream gate
+objective: Validate that PHASE-23 explicitly scopes the customer-facing operations documentation package.
+fixtures:
+- docs/design-docs/customer-operations-package.md
+- docs/operations/customer-operations.md
+- docs/runbooks/customer-operations-handshake.md
+- meta/customer-operations-package.yaml
+- schema/jsonschema/customer-operations-package.schema.json
+- schema/jsonschema/customer-operations-package-report.schema.json
+- scripts/run_phase23_customer_operations_package.py
+- tests/launch_readiness/test_phase23_customer_operations_package_assets.py
+- tests/phase-gates/phase-23-customer-operations-docs.yaml
+tests:
+- TS-067
+acceptance:
+- AC-107
+steps:
+- id: customer-docs-scope-defined
+  description: verify the customer operations package covers the required launch categories
+  expected:
+  - install, deployment, upgrade, limits, failure modes, and responsibilities are explicit
+  evidence:
+  - meta/customer-operations-package.yaml
+- id: checklist-gap-bound
+  description: verify the customer operations report is reproducible
+  expected:
+  - the report fails when category coverage or refs drift
+  evidence:
+  - scripts/run_phase23_customer_operations_package.py
+proves:
+- phase-23 explicitly scopes the customer-facing operations package for launch

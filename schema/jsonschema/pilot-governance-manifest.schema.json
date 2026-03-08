@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/pilot-governance-manifest.schema.json",
+  "title": "PilotGovernanceManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "pilot", "success_criteria", "kill_switch_conditions", "non_goals", "launch_decision_inputs", "docs_refs", "runbook_refs"],
+  "properties": {
+    "id": {"type": "string"},
+    "version": {"type": "integer"},
+    "pilot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pilot_id", "rollout_scope", "max_design_partners"],
+      "properties": {
+        "pilot_id": {"type": "string"},
+        "rollout_scope": {"type": "string"},
+        "max_design_partners": {"type": "integer", "minimum": 1}
+      }
+    },
+    "success_criteria": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "kill_switch_conditions": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "non_goals": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "launch_decision_inputs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "docs_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "runbook_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+  }
+}

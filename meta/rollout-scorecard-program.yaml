@@ -1,0 +1,35 @@
+program_id: rollout-scorecard-program
+version: 1
+scorecards:
+- id: post-pilot-expansion-scorecard
+  stage: post_pilot_expansion
+  metrics:
+  - pilot-outcome-consistent
+  - support-load-bounded
+  - rollback-readiness-current
+  evidence_refs:
+  - docs/generated/phase-24-pilot-operations-evidence.json
+  - docs/generated/phase-23-launch-governance-evidence.json
+  doc_refs:
+  - docs/design-docs/rollout-scorecards-and-reference-evidence.md
+  - docs/operations/service-scale-operations.md
+  runbook_refs:
+  - docs/runbooks/rollout-scorecard-review.md
+  - docs/runbooks/ga-transition-review.md
+- id: ga-candidate-scorecard
+  stage: ga_transition
+  metrics:
+  - rollout-program-ready
+  - tenant-isolation-ready
+  - service-scale-support-ready
+  - reference-customer-evidence-current
+  evidence_refs:
+  - docs/generated/phase-22-launch-readiness-evidence.json
+  - docs/generated/phase-23-launch-governance-evidence.json
+  - docs/generated/phase-24-pilot-operations-evidence.json
+  doc_refs:
+  - docs/design-docs/rollout-scorecards-and-reference-evidence.md
+  - docs/design-docs/ga-transition-governance.md
+  runbook_refs:
+  - docs/runbooks/rollout-scorecard-review.md
+  - docs/runbooks/ga-transition-review.md

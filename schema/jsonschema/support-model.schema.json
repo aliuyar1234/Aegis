@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/support-model.schema.json",
+  "title": "SupportModel",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "support_docs", "rotations", "communication_templates", "severities"],
+  "$defs": {
+    "rotation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner", "coverage"],
+      "properties": {
+        "id": {"type": "string"},
+        "owner": {"type": "string"},
+        "coverage": {"type": "string"}
+      }
+    },
+    "template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "doc_ref"],
+      "properties": {
+        "id": {"type": "string"},
+        "doc_ref": {"type": "string"}
+      }
+    },
+    "severity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "response_minutes", "owning_rotation", "escalation_path", "communication_template"],
+      "properties": {
+        "id": {"type": "string"},
+        "response_minutes": {"type": "integer"},
+        "owning_rotation": {"type": "string"},
+        "escalation_path": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "communication_template": {"type": "string"}
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "support_docs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "rotations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/rotation"},
+      "minItems": 1
+    },
+    "communication_templates": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/template"},
+      "minItems": 1
+    },
+    "severities": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/severity"},
+      "minItems": 1
+    }
+  }
+}

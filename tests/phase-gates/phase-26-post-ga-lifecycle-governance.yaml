@@ -1,0 +1,23 @@
+id: phase-26-post-ga-lifecycle-governance
+phase: PHASE-26
+name: Post-GA lifecycle governance planning gate
+objective: Validate that PHASE-26 commits the post-GA lifecycle-governance workstream into the SSOT.
+fixtures:
+- docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+- tests/launch_readiness/test_phase26_post_ga_lifecycle_governance_plan_assets.py
+- tests/phase-gates/phase-26-post-ga-lifecycle-governance.yaml
+- work-items/task-index.yaml
+tests:
+- TS-082
+acceptance:
+- AC-122
+steps:
+- id: lifecycle-governance-planned
+  description: verify post-GA lifecycle and compatibility governance are explicitly scoped
+  expected:
+  - post-GA lifecycle governance is committed as a bounded workstream
+  evidence:
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - work-items/task-index.yaml
+proves:
+- phase-26 starts with an explicit post-GA lifecycle-governance workstream

@@ -70,6 +70,18 @@ See `docs/overview/must-not-violate.md` and `meta/invariants.yaml`.
 ## Useful commands
 
 - `make bootstrap`
+- `make eval-up`
+- `make eval-init`
+- `make eval-check`
+- `make eval-ready`
+- `make launch-check`
+- `make launch-ready`
+- `make prelaunch-check`
+- `make prelaunch-ready`
+- `make pilot-check`
+- `make pilot-ready`
+- `make ga-check`
+- `make ga-ready`
 - `make validate`
 - `make next-tasks`
 - `make generate-docs`

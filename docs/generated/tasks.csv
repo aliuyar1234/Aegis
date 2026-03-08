@@ -106,3 +106,30 @@ P20-T02,PHASE-20,Implement rollout-wave and change-window manifests for shared a
 P20-T03,PHASE-20,Build incident-review packet manifests and customer handoff evidence links,True,P19-T03;P20-T01,ADR-0012;ADR-0015,AC-094,TS-054,done
 P20-T04,PHASE-20,"Create deprecation and sunset governance for starter kits, tracks, and certified extensions",True,P19-T04;P19-T05,ADR-0008;ADR-0011;ADR-0015,AC-095,TS-055,done
 P20-T05,PHASE-20,"Gate lifecycle readiness on accreditation, rollout, incident review, and deprecation evidence",False,P20-T01;P20-T02;P20-T03;P20-T04,ADR-0015,AC-096,TS-056,done
+P21-T01,PHASE-21,Fix canonical entrypoints and formalize fresh-clone onboarding,True,P20-T05,ADR-0001;ADR-0015,AC-097,TS-057,done
+P21-T02,PHASE-21,Promote the local compose stack to the official evaluation deployment path,True,P20-T05;P21-T01,ADR-0001;ADR-0015,AC-098,TS-058,done
+P22-T01,PHASE-22,Define canonical customer golden paths for read-heavy and approval-gated browser operations,True,P19-T04;P21-T02,ADR-0001;ADR-0015,AC-099,TS-059,done
+P22-T02,PHASE-22,"Build launch signoff surfaces binding release evidence, restore drills, and rollback runbooks",True,P15-T06;P21-T02,ADR-0013;ADR-0015,AC-100,TS-060,done
+P22-T03,PHASE-22,"Establish the launch security baseline across supply chain, secrets, signing, and defaults",True,P13-T05;P21-T02,ADR-0013;ADR-0015,AC-101,TS-061,done
+P22-T04,PHASE-22,"Define the support operating model with severities, escalation, and customer communications",True,P20-T03;P21-T02,ADR-0011;ADR-0015,AC-102,TS-062,done
+P22-T05,PHASE-22,"Gate launch readiness on golden paths, signoff, security baseline, and support evidence",False,P22-T01;P22-T02;P22-T03;P22-T04,ADR-0015,AC-103,TS-063,done
+P23-T01,PHASE-23,"Define the real-infrastructure proving program for restore, rollback, upgrade, and tenant isolation",True,P15-T06;P22-T02,ADR-0012;ADR-0013;ADR-0015,AC-104,TS-064,done
+P23-T02,PHASE-23,Define the launch observability and alerting baseline for operators and support,True,P16-T06;P22-T04,ADR-0002;ADR-0015,AC-105,TS-065,done
+P23-T03,PHASE-23,Define customer environment readiness and the launch acceptance checklist,True,P21-T02;P22-T03,ADR-0003;ADR-0013;ADR-0015,AC-106,TS-066,done
+P23-T04,PHASE-23,"Define the customer-facing operations package for install, upgrade, limits, failure modes, and responsibilities",True,P21-T01;P22-T04,ADR-0001;ADR-0015,AC-107,TS-067,done
+P23-T05,PHASE-23,Build design-partner pilot governance and gate pre-customer launch on a go-no-go evidence bundle,False,P23-T01;P23-T02;P23-T03;P23-T04,ADR-0011;ADR-0015,AC-108,TS-068,done
+P24-T01,PHASE-24,Define bounded pilot launch waves for the first design-partner cohort,True,P22-T01;P23-T05,ADR-0013;ADR-0015,AC-109,TS-069,done
+P24-T02,PHASE-24,Define launch-day and steady-state pilot control-room operations,True,P23-T02;P23-T04,ADR-0011;ADR-0015,AC-110,TS-070,done
+P24-T03,PHASE-24,Define the pilot customer feedback and issue triage loop,True,P23-T04;P23-T05,ADR-0011;ADR-0015,AC-111,TS-071,done
+P24-T04,PHASE-24,Define launch exception governance for bounded pilot operations,True,P22-T02;P23-T05,ADR-0011;ADR-0015,AC-112,TS-072,done
+P24-T05,PHASE-24,Gate pilot execution on exit review and a reproducible pilot operations evidence bundle,False,P24-T01;P24-T02;P24-T03;P24-T04,ADR-0012;ADR-0015,AC-113,TS-073,done
+P25-T01,PHASE-25,Define the repeatable customer rollout program for post-pilot cohorts,True,P24-T01;P24-T05,ADR-0012;ADR-0015,AC-114,TS-074,done
+P25-T02,PHASE-25,Define tenant-isolated production readiness and migration boundaries,True,P23-T01;P23-T03;P24-T05,ADR-0013;ADR-0015,AC-115,TS-075,done
+P25-T03,PHASE-25,Define service-scale support and operating cadence for multi-customer launch,True,P22-T04;P24-T02;P24-T03,ADR-0011;ADR-0015,AC-116,TS-076,done
+P25-T04,PHASE-25,Define rollout scorecards and reference-customer evidence surfaces,True,P24-T03;P24-T05,ADR-0012;ADR-0015,AC-117,TS-077,done
+P25-T05,PHASE-25,"Gate the GA transition on rollout program, production isolation, service-scale readiness, and scorecard evidence",False,P25-T01;P25-T02;P25-T03;P25-T04,ADR-0012;ADR-0015,AC-118,TS-078,done
+P26-T01,PHASE-26,Define the live customer operations program for post-GA customer fleets,True,P25-T01;P25-T03,ADR-0011;ADR-0015,AC-119,TS-079,planned
+P26-T02,PHASE-26,Define the automated release and governed change surface,True,P25-T05,ADR-0012;ADR-0015,AC-120,TS-080,planned
+P26-T03,PHASE-26,Define the field evidence and customer reliability corpus,True,P24-T03;P25-T04,ADR-0012;ADR-0015,AC-121,TS-081,planned
+P26-T04,PHASE-26,Define post-GA lifecycle and compatibility governance,True,P20-T03;P25-T05,ADR-0012;ADR-0015,AC-122,TS-082,planned
+P26-T05,PHASE-26,"Gate post-GA operations on live-ops, release automation, field evidence, and lifecycle governance",False,P26-T01;P26-T02;P26-T03;P26-T04,ADR-0012;ADR-0015,AC-123,TS-083,planned

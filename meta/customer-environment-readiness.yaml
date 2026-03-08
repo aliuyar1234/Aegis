@@ -1,0 +1,45 @@
+program_id: customer-environment-readiness
+version: 1
+check_sections:
+- id: entrypoints-and-certificates
+  owner: platform-ops
+  required_items:
+  - dns
+  - certificates
+  doc_refs:
+  - docs/design-docs/customer-environment-readiness.md
+  - docs/operations/customer-environment-readiness.md
+  runbook_refs:
+  - docs/runbooks/customer-environment-acceptance.md
+- id: secrets-and-storage
+  owner: platform-security
+  required_items:
+  - secrets
+  - storage
+  doc_refs:
+  - docs/design-docs/customer-environment-readiness.md
+  - docs/operations/customer-environment-readiness.md
+  runbook_refs:
+  - docs/runbooks/customer-environment-acceptance.md
+- id: backups-and-alerting
+  owner: runtime-team
+  required_items:
+  - backups
+  - alerts
+  doc_refs:
+  - docs/design-docs/customer-environment-readiness.md
+  - docs/operations/customer-environment-readiness.md
+  runbook_refs:
+  - docs/runbooks/customer-environment-acceptance.md
+  - docs/runbooks/support-escalation.md
+- id: ownership-and-responsibilities
+  owner: runtime-team
+  required_items:
+  - operational_responsibilities
+  doc_refs:
+  - docs/design-docs/customer-environment-readiness.md
+  - docs/operations/customer-environment-readiness.md
+  - docs/operations/customer-operations.md
+  runbook_refs:
+  - docs/runbooks/customer-environment-acceptance.md
+  - docs/runbooks/customer-operations-handshake.md

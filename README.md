@@ -194,13 +194,33 @@ If you want to work on the codebase itself:
 
 1. Read [AGENTS.md](AGENTS.md)
 2. Run `make bootstrap`
-3. Run `make validate`
-4. Use [test strategy](docs/overview/test-strategy.md) as the correctness contract
+3. Run `make eval-up`
+4. Run `make eval-init`
+5. Run `make eval-check`
+6. Run `make smoke`
+7. Use [test strategy](docs/overview/test-strategy.md) as the correctness contract
+
+For the official first-clone evaluation path, see:
+
+- [Evaluation deployment guide](docs/operations/evaluation-deployment.md)
+- [Fresh-clone first-run runbook](docs/runbooks/fresh-clone-first-run.md)
+- [Local evaluation stack](infra/local/README.md)
+- [Customer launch readiness surfaces](docs/operations/support.md)
+- [Pre-customer launch operations package](docs/operations/customer-operations.md)
+- [Pilot execution and exit-review surfaces](docs/operations/pilot-operations.md)
+- [GA transition and rollout surfaces](docs/operations/customer-rollout.md)
 
 ## Validation
 
 ```bash
 make bootstrap
+make eval-up
+make eval-init
+make eval-check
+make launch-check
+make prelaunch-check
+make pilot-check
+make ga-check
 make validate
 make ci
 ```

@@ -1,0 +1,44 @@
+id: phase23-launch-governance-evidence-manifest
+bundle_id: phase23-launch-governance-evidence-bundle
+phase: PHASE-23
+required_scripts:
+- scripts/run_phase23_real_infrastructure_proving.py
+- scripts/run_phase23_launch_observability.py
+- scripts/run_phase23_customer_environment_readiness.py
+- scripts/run_phase23_customer_operations_package.py
+- scripts/run_phase23_pilot_governance.py
+required_gates:
+- tests/phase-gates/phase-23-real-infrastructure-proving.yaml
+- tests/phase-gates/phase-23-launch-observability.yaml
+- tests/phase-gates/phase-23-customer-environment-readiness.yaml
+- tests/phase-gates/phase-23-customer-operations-docs.yaml
+- tests/phase-gates/phase-23-pilot-governance-and-go-no-go.yaml
+evidence_groups:
+- id: real-infrastructure-proving
+  refs:
+  - meta/real-infrastructure-proving.yaml
+  - docs/design-docs/real-infrastructure-proving.md
+  - docs/runbooks/production-like-proving.md
+- id: launch-observability
+  refs:
+  - meta/launch-observability-baseline.yaml
+  - docs/design-docs/launch-observability-baseline.md
+  - docs/operations/launch-observability.md
+  - docs/runbooks/launch-observability-review.md
+- id: customer-environment-readiness
+  refs:
+  - meta/customer-environment-readiness.yaml
+  - docs/design-docs/customer-environment-readiness.md
+  - docs/operations/customer-environment-readiness.md
+  - docs/runbooks/customer-environment-acceptance.md
+- id: customer-operations-package
+  refs:
+  - meta/customer-operations-package.yaml
+  - docs/design-docs/customer-operations-package.md
+  - docs/operations/customer-operations.md
+  - docs/runbooks/customer-operations-handshake.md
+- id: pilot-governance
+  refs:
+  - meta/pilot-governance-manifest.yaml
+  - docs/design-docs/design-partner-pilot-governance.md
+  - docs/runbooks/pilot-go-no-go.md

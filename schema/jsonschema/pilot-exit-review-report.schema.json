@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/pilot-exit-review-report.schema.json",
+  "title": "PilotExitReviewReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "input_count", "review_section_count", "recommendation_count", "verdict"],
+  "properties": {
+    "id": {"type": "string"},
+    "input_count": {"type": "integer"},
+    "review_section_count": {"type": "integer"},
+    "recommendation_count": {"type": "integer"},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

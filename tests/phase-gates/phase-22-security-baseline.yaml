@@ -1,0 +1,32 @@
+id: phase-22-security-baseline
+phase: PHASE-22
+name: Launch security baseline gate
+objective: Validate that launch security controls are explicit and complete.
+fixtures:
+- docs/design-docs/launch-security-baseline.md
+- docs/runbooks/security-baseline-review.md
+- meta/security-baseline-manifest.yaml
+- schema/jsonschema/security-baseline-manifest.schema.json
+- schema/jsonschema/security-baseline-report.schema.json
+- scripts/run_phase22_security_baseline.py
+- tests/launch_readiness/test_phase22_security_baseline_assets.py
+- tests/phase-gates/phase-22-security-baseline.yaml
+tests:
+- TS-061
+acceptance:
+- AC-101
+steps:
+- id: required-launch-controls
+  description: verify the security baseline covers the required launch control classes
+  expected:
+  - dependency audit, SBOM, secret scanning, signing, defaults, credentials, and key rotation are present
+  evidence:
+  - meta/security-baseline-manifest.yaml
+- id: reproducible-security-report
+  description: verify the security baseline report is reproducible
+  expected:
+  - the report fails when required controls or refs drift
+  evidence:
+  - scripts/run_phase22_security_baseline.py
+proves:
+- phase-22 security readiness is an explicit launch baseline rather than a generic policy statement

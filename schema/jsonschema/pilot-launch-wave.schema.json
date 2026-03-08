@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/pilot-launch-wave.schema.json",
+  "title": "PilotLaunchWave",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "waves"],
+  "$defs": {
+    "wave": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "design_partner", "deployment_track", "golden_path_id", "go_no_go_bundle", "communication_refs", "runbook_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "design_partner": {"type": "string"},
+        "deployment_track": {"type": "string"},
+        "golden_path_id": {"type": "string"},
+        "go_no_go_bundle": {"type": "string"},
+        "communication_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "runbook_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "waves": {"type": "array", "items": {"$ref": "#/$defs/wave"}, "minItems": 1}
+  }
+}

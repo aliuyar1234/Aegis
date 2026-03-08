@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/support-model-report.schema.json",
+  "title": "SupportModelReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "severities", "verdict"],
+  "$defs": {
+    "severityResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity_id", "response_minutes", "verdict"],
+      "properties": {
+        "severity_id": {"type": "string"},
+        "response_minutes": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "severities": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/severityResult"},
+      "minItems": 1
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

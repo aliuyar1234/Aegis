@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/pilot-governance-report.schema.json",
+  "title": "PilotGovernanceReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "success_criteria_count", "kill_switch_count", "decision_input_count", "verdict"],
+  "properties": {
+    "id": {"type": "string"},
+    "success_criteria_count": {"type": "integer"},
+    "kill_switch_count": {"type": "integer"},
+    "decision_input_count": {"type": "integer"},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

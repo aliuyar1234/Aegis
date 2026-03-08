@@ -1,0 +1,38 @@
+id: phase-25-ga-transition-gate
+phase: PHASE-25
+name: GA transition gate
+objective: Validate that phase-25 captures rollout, production-isolation, service-scale, and scorecard readiness as a reproducible GA bundle.
+fixtures:
+- docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+- docs/design-docs/ga-transition-governance.md
+- docs/runbooks/ga-transition-review.md
+- meta/ga-transition-gate-manifest.yaml
+- meta/phase25-ga-transition-evidence-manifest.yaml
+- docs/generated/phase-25-ga-transition-evidence.json
+- schema/jsonschema/ga-transition-gate-manifest.schema.json
+- schema/jsonschema/ga-transition-gate-report.schema.json
+- schema/jsonschema/phase25-ga-transition-evidence-manifest.schema.json
+- schema/jsonschema/phase25-ga-transition-evidence-bundle.schema.json
+- scripts/run_phase25_ga_transition_gate.py
+- scripts/build_phase25_ga_transition_evidence.py
+- tests/launch_readiness/test_phase25_ga_transition_gate_plan_assets.py
+- tests/phase-gates/phase-25-ga-transition-gate.yaml
+tests:
+- TS-078
+acceptance:
+- AC-118
+steps:
+- id: ga-transition-inputs
+  description: verify the GA transition surface binds rollout, production readiness, service scale, and scorecards
+  expected:
+  - the gate references committed inputs, evidence, runbooks, and Make targets
+  evidence:
+  - meta/ga-transition-gate-manifest.yaml
+- id: reproducible-ga-transition-bundle
+  description: verify the GA transition evidence bundle is reproducible
+  expected:
+  - the bundle fails if any underlying phase-25 report fails
+  evidence:
+  - scripts/build_phase25_ga_transition_evidence.py
+proves:
+- phase-25 GA transition is an explicit and reproducible decision surface

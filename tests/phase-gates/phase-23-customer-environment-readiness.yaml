@@ -1,0 +1,33 @@
+id: phase-23-customer-environment-readiness
+phase: PHASE-23
+name: Customer environment readiness workstream gate
+objective: Validate that PHASE-23 explicitly defines customer-environment acceptance as a launch workstream.
+fixtures:
+- docs/design-docs/customer-environment-readiness.md
+- docs/operations/customer-environment-readiness.md
+- docs/runbooks/customer-environment-acceptance.md
+- meta/customer-environment-readiness.yaml
+- schema/jsonschema/customer-environment-readiness.schema.json
+- schema/jsonschema/customer-environment-readiness-report.schema.json
+- scripts/run_phase23_customer_environment_readiness.py
+- tests/launch_readiness/test_phase23_customer_environment_readiness_assets.py
+- tests/phase-gates/phase-23-customer-environment-readiness.yaml
+tests:
+- TS-066
+acceptance:
+- AC-106
+steps:
+- id: environment-acceptance-defined
+  description: verify the environment readiness surface covers the required acceptance categories
+  expected:
+  - DNS, certificates, secrets, storage, backups, alerts, and responsibilities are explicit
+  evidence:
+  - meta/customer-environment-readiness.yaml
+- id: checklist-gap-bound
+  description: verify the customer-environment report is reproducible
+  expected:
+  - the report fails when readiness sections or refs drift
+  evidence:
+  - scripts/run_phase23_customer_environment_readiness.py
+proves:
+- phase-23 explicitly scopes the customer-environment acceptance wave

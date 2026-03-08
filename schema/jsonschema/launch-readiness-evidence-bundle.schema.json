@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/launch-readiness-evidence-bundle.schema.json",
+  "title": "LaunchReadinessEvidenceBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "phase", "reports", "verdict"],
+  "properties": {
+    "id": {"type": "string"},
+    "phase": {"type": "string"},
+    "reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["report_id", "verdict"],
+        "properties": {
+          "report_id": {"type": "string"},
+          "verdict": {"type": "string", "enum": ["pass", "fail"]}
+        }
+      },
+      "minItems": 1
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

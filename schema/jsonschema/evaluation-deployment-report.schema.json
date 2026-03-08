@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/evaluation-deployment-report.schema.json",
+  "title": "EvaluationDeploymentReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "services",
+    "targets",
+    "verdict"
+  ],
+  "$defs": {
+    "serviceCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "port_count",
+        "verdict"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "port_count": {
+          "type": "integer"
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        }
+      }
+    },
+    "targetCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "verdict"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/serviceCheck"
+      },
+      "minItems": 1
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/targetCheck"
+      },
+      "minItems": 1
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

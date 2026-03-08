@@ -1,0 +1,30 @@
+program_id: real-infrastructure-proving
+version: 1
+environments:
+- id: shared-production-like
+  deployment_track: shared-evaluation
+  restore_drill_id: default-managed-restore
+  upgrade_drill_id: control-plane-drain-adopt
+  proof_refs:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-20-lifecycle-evidence.json
+  - meta/rollout-wave-manifest.yaml
+  runbook_refs:
+  - docs/runbooks/production-like-proving.md
+  - docs/runbooks/pitr-restore.md
+  - docs/runbooks/rolling-upgrade.md
+  - docs/runbooks/standby-promotion.md
+- id: dedicated-production-like
+  deployment_track: dedicated-regional-rollout
+  restore_drill_id: dedicated-enterprise-restore
+  upgrade_drill_id: mixed-worker-observation-window
+  proof_refs:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-17-regional-evidence.json
+  - docs/generated/phase-20-lifecycle-evidence.json
+  - meta/dedicated-tenant-evidence.yaml
+  runbook_refs:
+  - docs/runbooks/production-like-proving.md
+  - docs/runbooks/pitr-restore.md
+  - docs/runbooks/rolling-upgrade.md
+  - docs/runbooks/regional-promotion.md

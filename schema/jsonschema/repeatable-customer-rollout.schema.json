@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/repeatable-customer-rollout.schema.json",
+  "title": "RepeatableCustomerRollout",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "cohorts"],
+  "$defs": {
+    "cohort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "deployment_track",
+        "predecessor_wave_id",
+        "expansion_stage",
+        "required_inputs",
+        "handoff_doc_refs",
+        "runbook_refs"
+      ],
+      "properties": {
+        "id": {"type": "string"},
+        "deployment_track": {"type": "string"},
+        "predecessor_wave_id": {"type": "string"},
+        "expansion_stage": {"type": "string"},
+        "required_inputs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "handoff_doc_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "runbook_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "cohorts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/cohort"},
+      "minItems": 2
+    }
+  }
+}

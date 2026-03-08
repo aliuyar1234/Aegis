@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/real-infrastructure-proving.schema.json",
+  "title": "RealInfrastructureProving",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "environments"],
+  "$defs": {
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "deployment_track", "restore_drill_id", "upgrade_drill_id", "proof_refs", "runbook_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "deployment_track": {"type": "string"},
+        "restore_drill_id": {"type": "string"},
+        "upgrade_drill_id": {"type": "string"},
+        "proof_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "runbook_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "environments": {"type": "array", "items": {"$ref": "#/$defs/environment"}, "minItems": 2}
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/launch-observability-report.schema.json",
+  "title": "LaunchObservabilityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "surfaces", "verdict"],
+  "$defs": {
+    "surfaceResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface_id", "signal_count", "verdict"],
+      "properties": {
+        "surface_id": {"type": "string"},
+        "signal_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "surfaces": {"type": "array", "items": {"$ref": "#/$defs/surfaceResult"}, "minItems": 1},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

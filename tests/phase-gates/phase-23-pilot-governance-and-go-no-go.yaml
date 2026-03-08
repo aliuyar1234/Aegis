@@ -1,0 +1,37 @@
+id: phase-23-pilot-governance-and-go-no-go
+phase: PHASE-23
+name: Pilot governance and go-no-go workstream gate
+objective: Validate that PHASE-23 explicitly defines design-partner pilot governance and launch decision evidence.
+fixtures:
+- docs/design-docs/design-partner-pilot-governance.md
+- docs/runbooks/pilot-go-no-go.md
+- meta/pilot-governance-manifest.yaml
+- meta/phase23-launch-governance-evidence-manifest.yaml
+- docs/generated/phase-23-launch-governance-evidence.json
+- schema/jsonschema/pilot-governance-manifest.schema.json
+- schema/jsonschema/pilot-governance-report.schema.json
+- schema/jsonschema/phase23-launch-governance-evidence-manifest.schema.json
+- schema/jsonschema/phase23-launch-governance-evidence-bundle.schema.json
+- scripts/run_phase23_pilot_governance.py
+- scripts/build_phase23_launch_governance_evidence.py
+- tests/launch_readiness/test_phase23_pilot_governance_assets.py
+- tests/phase-gates/phase-23-pilot-governance-and-go-no-go.yaml
+tests:
+- TS-068
+acceptance:
+- AC-108
+steps:
+- id: pilot-governance-defined
+  description: verify the pilot governance surface covers success criteria, kill-switches, and launch inputs
+  expected:
+  - pilot scope, success criteria, kill-switch conditions, and non-goals are explicit
+  evidence:
+  - meta/pilot-governance-manifest.yaml
+- id: checklist-gap-bound
+  description: verify the go-no-go evidence bundle is reproducible
+  expected:
+  - the bundle fails if any underlying phase-23 report fails
+  evidence:
+  - scripts/build_phase23_launch_governance_evidence.py
+proves:
+- phase-23 explicitly scopes pilot governance and the go-no-go launch motion

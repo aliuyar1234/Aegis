@@ -1,0 +1,25 @@
+program_id: pilot-launch-wave
+version: 1
+waves:
+- id: design-partner-alpha
+  design_partner: alpha-support
+  deployment_track: shared-evaluation
+  golden_path_id: shared-read-triage
+  go_no_go_bundle: docs/generated/phase-23-launch-governance-evidence.json
+  communication_refs:
+  - docs/operations/support.md
+  - docs/operations/customer-operations.md
+  runbook_refs:
+  - docs/runbooks/pilot-launch-day.md
+  - docs/runbooks/customer-golden-path-execution.md
+- id: design-partner-beta
+  design_partner: beta-recovery
+  deployment_track: dedicated-regional-rollout
+  golden_path_id: dedicated-approval-write-recovery
+  go_no_go_bundle: docs/generated/phase-23-launch-governance-evidence.json
+  communication_refs:
+  - docs/operations/support.md
+  - docs/operations/customer-operations.md
+  runbook_refs:
+  - docs/runbooks/pilot-launch-day.md
+  - docs/runbooks/customer-golden-path-execution.md

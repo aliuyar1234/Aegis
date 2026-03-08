@@ -1,0 +1,108 @@
+phase: PHASE-24
+status: completed
+name: Design-partner pilot execution, operating cadence, and exit review
+phase_doc: docs/exec-plans/active/PHASE-24-pilot-execution-and-exit-review.md
+tasks:
+- id: P24-T01
+  phase: PHASE-24
+  title: Define bounded pilot launch waves for the first design-partner cohort
+  critical_path: true
+  status: done
+  deps:
+  - P22-T01
+  - P23-T05
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-109
+  test_refs:
+  - TS-069
+  phase_doc: docs/exec-plans/active/PHASE-24-pilot-execution-and-exit-review.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P24-T02
+  phase: PHASE-24
+  title: Define launch-day and steady-state pilot control-room operations
+  critical_path: true
+  status: done
+  deps:
+  - P23-T02
+  - P23-T04
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-110
+  test_refs:
+  - TS-070
+  phase_doc: docs/exec-plans/active/PHASE-24-pilot-execution-and-exit-review.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P24-T03
+  phase: PHASE-24
+  title: Define the pilot customer feedback and issue triage loop
+  critical_path: true
+  status: done
+  deps:
+  - P23-T04
+  - P23-T05
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-111
+  test_refs:
+  - TS-071
+  phase_doc: docs/exec-plans/active/PHASE-24-pilot-execution-and-exit-review.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P24-T04
+  phase: PHASE-24
+  title: Define launch exception governance for bounded pilot operations
+  critical_path: true
+  status: done
+  deps:
+  - P22-T02
+  - P23-T05
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-112
+  test_refs:
+  - TS-072
+  phase_doc: docs/exec-plans/active/PHASE-24-pilot-execution-and-exit-review.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P24-T05
+  phase: PHASE-24
+  title: Gate pilot execution on exit review and a reproducible pilot operations evidence
+    bundle
+  critical_path: false
+  status: done
+  deps:
+  - P24-T01
+  - P24-T02
+  - P24-T03
+  - P24-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-113
+  test_refs:
+  - TS-073
+  phase_doc: docs/exec-plans/active/PHASE-24-pilot-execution-and-exit-review.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

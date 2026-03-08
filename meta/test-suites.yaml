@@ -759,3 +759,369 @@ test_suites:
   - tests/phase-gates/phase-20-lifecycle-evidence.yaml
   proves: Validates that phase-20 operational lifecycle readiness is captured as
     a reproducible bundle rather than process folklore.
+- id: TS-057
+  title: Fresh-clone onboarding validation
+  command: pytest tests/launch_readiness/test_phase21_onboarding_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase21_onboarding_assets.py
+  - docs/exec-plans/active/PHASE-21-onboarding-and-evaluation-deployment.md
+  - docs/design-docs/fresh-clone-onboarding.md
+  - docs/runbooks/fresh-clone-first-run.md
+  - meta/fresh-clone-onboarding.yaml
+  - schema/jsonschema/fresh-clone-onboarding.schema.json
+  - schema/jsonschema/fresh-clone-onboarding-report.schema.json
+  - scripts/run_phase21_onboarding.py
+  - tests/phase-gates/phase-21-fresh-clone-onboarding.yaml
+  proves: Validates that first-clone onboarding is explicit, aligned, and repo-native
+    instead of depending on missing root docs or implicit shell knowledge.
+- id: TS-058
+  title: Evaluation deployment validation
+  command: pytest tests/launch_readiness/test_phase21_evaluation_deployment_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase21_evaluation_deployment_assets.py
+  - docs/operations/evaluation-deployment.md
+  - infra/local/README.md
+  - meta/evaluation-deployment-profile.yaml
+  - schema/jsonschema/evaluation-deployment-profile.schema.json
+  - schema/jsonschema/evaluation-deployment-report.schema.json
+  - scripts/run_phase21_evaluation_deployment.py
+  - tests/phase-gates/phase-21-evaluation-deployment.yaml
+  proves: Validates that the official evaluation deployment path is grounded in
+    committed stack topology, init flows, and first-run operator docs.
+- id: TS-059
+  title: Customer golden-path validation
+  command: pytest tests/launch_readiness/test_phase22_customer_golden_paths_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase22_customer_golden_paths_assets.py
+  - docs/exec-plans/active/PHASE-22-customer-launch-readiness.md
+  - docs/design-docs/customer-golden-paths.md
+  - docs/runbooks/customer-golden-path-execution.md
+  - meta/customer-golden-paths.yaml
+  - schema/jsonschema/customer-golden-paths.schema.json
+  - schema/jsonschema/customer-golden-path-report.schema.json
+  - scripts/run_phase22_customer_golden_paths.py
+  - tests/phase-gates/phase-22-customer-golden-paths.yaml
+  proves: Validates that customer launch workflows remain anchored to committed starter kits, deployment tracks, replay, and operator intervention surfaces.
+- id: TS-060
+  title: Launch signoff validation
+  command: pytest tests/launch_readiness/test_phase22_release_signoff_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase22_release_signoff_assets.py
+  - docs/design-docs/release-candidate-signoff.md
+  - docs/runbooks/release-candidate-signoff.md
+  - meta/release-signoff-manifest.yaml
+  - schema/jsonschema/release-signoff-manifest.schema.json
+  - schema/jsonschema/release-signoff-report.schema.json
+  - scripts/run_phase22_release_signoff.py
+  - tests/phase-gates/phase-22-release-signoff.yaml
+  proves: Validates that launch signoff binds release evidence, restore drills, rollback runbooks, and supported evaluation targets.
+- id: TS-061
+  title: Launch security baseline validation
+  command: pytest tests/launch_readiness/test_phase22_security_baseline_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase22_security_baseline_assets.py
+  - docs/design-docs/launch-security-baseline.md
+  - docs/runbooks/security-baseline-review.md
+  - meta/security-baseline-manifest.yaml
+  - schema/jsonschema/security-baseline-manifest.schema.json
+  - schema/jsonschema/security-baseline-report.schema.json
+  - scripts/run_phase22_security_baseline.py
+  - tests/phase-gates/phase-22-security-baseline.yaml
+  proves: Validates that launch security controls are explicit, complete, and grounded in committed docs and review runbooks.
+- id: TS-062
+  title: Support model validation
+  command: pytest tests/launch_readiness/test_phase22_support_model_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase22_support_model_assets.py
+  - docs/design-docs/support-operating-model.md
+  - docs/operations/support.md
+  - docs/runbooks/support-escalation.md
+  - docs/runbooks/customer-incident-communications.md
+  - meta/support-model.yaml
+  - schema/jsonschema/support-model.schema.json
+  - schema/jsonschema/support-model-report.schema.json
+  - scripts/run_phase22_support_model.py
+  - tests/phase-gates/phase-22-support-model.yaml
+  proves: Validates that launch support no longer depends on implicit founder ownership and instead has explicit severity, escalation, and communication surfaces.
+- id: TS-063
+  title: Launch readiness evidence-bundle validation
+  command: pytest tests/launch_readiness/test_phase22_launch_readiness_evidence_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase22_launch_readiness_evidence_assets.py
+  - docs/generated/phase-22-launch-readiness-evidence.json
+  - meta/launch-readiness-evidence-manifest.yaml
+  - schema/jsonschema/launch-readiness-evidence-manifest.schema.json
+  - schema/jsonschema/launch-readiness-evidence-bundle.schema.json
+  - scripts/build_phase22_launch_readiness_evidence.py
+  - tests/phase-gates/phase-22-launch-readiness-evidence.yaml
+  proves: Validates that launch readiness is captured as a reproducible evidence bundle rather than a founder-owned launch checklist.
+- id: TS-064
+  title: Real-infrastructure proving validation
+  command: pytest tests/launch_readiness/test_phase23_real_infrastructure_proving_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase23_real_infrastructure_proving_assets.py
+  - docs/design-docs/real-infrastructure-proving.md
+  - docs/runbooks/production-like-proving.md
+  - meta/real-infrastructure-proving.yaml
+  - schema/jsonschema/real-infrastructure-proving.schema.json
+  - schema/jsonschema/real-infrastructure-proving-report.schema.json
+  - scripts/run_phase23_real_infrastructure_proving.py
+  - tests/phase-gates/phase-23-real-infrastructure-proving.yaml
+  proves: Validates that phase-23 real-infrastructure proving is explicit, bounded, and anchored to committed restore, upgrade, and isolation surfaces.
+- id: TS-065
+  title: Launch observability validation
+  command: pytest tests/launch_readiness/test_phase23_launch_observability_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase23_launch_observability_assets.py
+  - docs/design-docs/launch-observability-baseline.md
+  - docs/operations/launch-observability.md
+  - docs/runbooks/launch-observability-review.md
+  - meta/launch-observability-baseline.yaml
+  - schema/jsonschema/launch-observability-baseline.schema.json
+  - schema/jsonschema/launch-observability-report.schema.json
+  - scripts/run_phase23_launch_observability.py
+  - tests/phase-gates/phase-23-launch-observability.yaml
+  proves: Validates that phase-23 launch observability is explicit, complete, and grounded in committed SLO and runbook surfaces.
+- id: TS-066
+  title: Customer environment readiness validation
+  command: pytest tests/launch_readiness/test_phase23_customer_environment_readiness_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase23_customer_environment_readiness_assets.py
+  - docs/design-docs/customer-environment-readiness.md
+  - docs/operations/customer-environment-readiness.md
+  - docs/runbooks/customer-environment-acceptance.md
+  - meta/customer-environment-readiness.yaml
+  - schema/jsonschema/customer-environment-readiness.schema.json
+  - schema/jsonschema/customer-environment-readiness-report.schema.json
+  - scripts/run_phase23_customer_environment_readiness.py
+  - tests/phase-gates/phase-23-customer-environment-readiness.yaml
+  proves: Validates that phase-23 customer environment acceptance is explicit, bounded, and anchored to committed responsibilities and readiness checks.
+- id: TS-067
+  title: Customer operations package validation
+  command: pytest tests/launch_readiness/test_phase23_customer_operations_package_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase23_customer_operations_package_assets.py
+  - docs/design-docs/customer-operations-package.md
+  - docs/operations/customer-operations.md
+  - docs/runbooks/customer-operations-handshake.md
+  - meta/customer-operations-package.yaml
+  - schema/jsonschema/customer-operations-package.schema.json
+  - schema/jsonschema/customer-operations-package-report.schema.json
+  - scripts/run_phase23_customer_operations_package.py
+  - tests/phase-gates/phase-23-customer-operations-docs.yaml
+  proves: Validates that phase-23 customer operations coverage is explicit and committed instead of diffuse launch follow-up docs.
+- id: TS-068
+  title: Pilot governance and launch evidence validation
+  command: pytest tests/launch_readiness/test_phase23_pilot_governance_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase23_pilot_governance_assets.py
+  - docs/design-docs/design-partner-pilot-governance.md
+  - docs/runbooks/pilot-go-no-go.md
+  - meta/pilot-governance-manifest.yaml
+  - meta/phase23-launch-governance-evidence-manifest.yaml
+  - docs/generated/phase-23-launch-governance-evidence.json
+  - schema/jsonschema/pilot-governance-manifest.schema.json
+  - schema/jsonschema/pilot-governance-report.schema.json
+  - schema/jsonschema/phase23-launch-governance-evidence-manifest.schema.json
+  - schema/jsonschema/phase23-launch-governance-evidence-bundle.schema.json
+  - scripts/run_phase23_pilot_governance.py
+  - scripts/build_phase23_launch_governance_evidence.py
+  - tests/phase-gates/phase-23-pilot-governance-and-go-no-go.yaml
+  proves: Validates that phase-23 pilot governance and launch decision evidence are explicit, reproducible, and no longer founder-memory process.
+- id: TS-069
+  title: Pilot launch-wave validation
+  command: pytest tests/launch_readiness/test_phase24_pilot_launch_wave_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase24_pilot_launch_wave_assets.py
+  - docs/exec-plans/active/PHASE-24-pilot-execution-and-exit-review.md
+  - docs/design-docs/pilot-launch-wave.md
+  - docs/runbooks/pilot-launch-day.md
+  - meta/pilot-launch-wave.yaml
+  - schema/jsonschema/pilot-launch-wave.schema.json
+  - schema/jsonschema/pilot-launch-wave-report.schema.json
+  - scripts/run_phase24_pilot_launch_wave.py
+  - tests/phase-gates/phase-24-pilot-launch-wave.yaml
+  proves: Validates that phase-24 pilot launch waves stay anchored to committed deployment tracks, golden paths, and the phase-23 go-no-go evidence bundle.
+- id: TS-070
+  title: Pilot control-room validation
+  command: pytest tests/launch_readiness/test_phase24_pilot_control_room_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase24_pilot_control_room_assets.py
+  - docs/design-docs/pilot-control-room.md
+  - docs/operations/pilot-operations.md
+  - docs/runbooks/pilot-control-room.md
+  - meta/pilot-control-room.yaml
+  - schema/jsonschema/pilot-control-room.schema.json
+  - schema/jsonschema/pilot-control-room-report.schema.json
+  - scripts/run_phase24_pilot_control_room.py
+  - tests/phase-gates/phase-24-pilot-control-room.yaml
+  proves: Validates that phase-24 pilot operations define explicit roles, observability surfaces, handoffs, and escalation coverage.
+- id: TS-071
+  title: Customer feedback loop validation
+  command: pytest tests/launch_readiness/test_phase24_customer_feedback_loop_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase24_customer_feedback_loop_assets.py
+  - docs/design-docs/customer-feedback-governance.md
+  - docs/runbooks/customer-feedback-triage.md
+  - meta/customer-feedback-loop.yaml
+  - schema/jsonschema/customer-feedback-loop.schema.json
+  - schema/jsonschema/customer-feedback-loop-report.schema.json
+  - scripts/run_phase24_customer_feedback_loop.py
+  - tests/phase-gates/phase-24-customer-feedback-loop.yaml
+  proves: Validates that phase-24 customer feedback stays classified, owned, and tied to explicit decision paths rather than ad hoc notes.
+- id: TS-072
+  title: Launch exception governance validation
+  command: pytest tests/launch_readiness/test_phase24_launch_exception_governance_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase24_launch_exception_governance_assets.py
+  - docs/design-docs/launch-exception-governance.md
+  - docs/runbooks/launch-exception-response.md
+  - meta/launch-exception-governance.yaml
+  - schema/jsonschema/launch-exception-governance.schema.json
+  - schema/jsonschema/launch-exception-governance-report.schema.json
+  - scripts/run_phase24_launch_exception_governance.py
+  - tests/phase-gates/phase-24-launch-exception-governance.yaml
+  proves: Validates that phase-24 launch exceptions remain bounded by trigger classes, approvals, containment paths, and rollback boundaries.
+- id: TS-073
+  title: Pilot exit review and evidence validation
+  command: pytest tests/launch_readiness/test_phase24_pilot_exit_review_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase24_pilot_exit_review_assets.py
+  - docs/design-docs/pilot-exit-review.md
+  - docs/runbooks/pilot-exit-review.md
+  - meta/pilot-exit-review-manifest.yaml
+  - meta/phase24-pilot-operations-evidence-manifest.yaml
+  - docs/generated/phase-24-pilot-operations-evidence.json
+  - schema/jsonschema/pilot-exit-review-manifest.schema.json
+  - schema/jsonschema/pilot-exit-review-report.schema.json
+  - schema/jsonschema/phase24-pilot-operations-evidence-manifest.schema.json
+  - schema/jsonschema/phase24-pilot-operations-evidence-bundle.schema.json
+  - scripts/run_phase24_pilot_exit_review.py
+  - scripts/build_phase24_pilot_operations_evidence.py
+  - tests/phase-gates/phase-24-pilot-exit-review.yaml
+  proves: Validates that phase-24 pilot execution status, feedback, exceptions, and rollout recommendation are captured as a reproducible evidence bundle.
+- id: TS-074
+  title: Repeatable rollout program validation
+  command: pytest tests/launch_readiness/test_phase25_repeatable_rollout_program_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase25_repeatable_rollout_program_plan_assets.py
+  - docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  - docs/design-docs/repeatable-customer-rollout.md
+  - docs/operations/customer-rollout.md
+  - docs/runbooks/rollout-cohort-admission.md
+  - meta/repeatable-customer-rollout.yaml
+  - schema/jsonschema/repeatable-customer-rollout.schema.json
+  - schema/jsonschema/repeatable-customer-rollout-report.schema.json
+  - scripts/run_phase25_repeatable_rollout_program.py
+  - tests/phase-gates/phase-25-repeatable-rollout-program.yaml
+  proves: Validates that phase-25 repeatable rollout cohorts remain explicit, bounded, and grounded in committed pilot and rollout handoff surfaces.
+- id: TS-075
+  title: Tenant-isolated production readiness validation
+  command: pytest tests/launch_readiness/test_phase25_tenant_isolated_production_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase25_tenant_isolated_production_plan_assets.py
+  - docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  - docs/design-docs/tenant-isolated-production-readiness.md
+  - docs/operations/customer-rollout.md
+  - docs/runbooks/tenant-production-cutover.md
+  - meta/tenant-isolated-production-readiness.yaml
+  - schema/jsonschema/tenant-isolated-production-readiness.schema.json
+  - schema/jsonschema/tenant-isolated-production-readiness-report.schema.json
+  - scripts/run_phase25_tenant_isolated_production_readiness.py
+  - tests/phase-gates/phase-25-tenant-isolated-production-readiness.yaml
+  proves: Validates that phase-25 tenant-isolated production boundaries are explicit, rollback-aware, and tied to committed evidence.
+- id: TS-076
+  title: Service-scale operations readiness validation
+  command: pytest tests/launch_readiness/test_phase25_service_scale_readiness_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase25_service_scale_readiness_plan_assets.py
+  - docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  - docs/design-docs/service-scale-operations-readiness.md
+  - docs/operations/service-scale-operations.md
+  - docs/runbooks/service-scale-support-review.md
+  - meta/service-scale-operations-readiness.yaml
+  - schema/jsonschema/service-scale-operations-readiness.schema.json
+  - schema/jsonschema/service-scale-operations-readiness-report.schema.json
+  - scripts/run_phase25_service_scale_operations_readiness.py
+  - tests/phase-gates/phase-25-service-scale-readiness.yaml
+  proves: Validates that phase-25 service-scale support no longer depends on pilot-shaped coverage and instead has explicit rotations and refs.
+- id: TS-077
+  title: Rollout scorecard validation
+  command: pytest tests/launch_readiness/test_phase25_rollout_scorecard_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase25_rollout_scorecard_plan_assets.py
+  - docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  - docs/design-docs/rollout-scorecards-and-reference-evidence.md
+  - docs/operations/service-scale-operations.md
+  - docs/runbooks/rollout-scorecard-review.md
+  - meta/rollout-scorecard-program.yaml
+  - schema/jsonschema/rollout-scorecard-program.schema.json
+  - schema/jsonschema/rollout-scorecard-report.schema.json
+  - scripts/run_phase25_rollout_scorecards.py
+  - tests/phase-gates/phase-25-rollout-scorecard.yaml
+  proves: Validates that phase-25 rollout expansion stays grounded in explicit scorecards and reference evidence rather than anecdotal success claims.
+- id: TS-078
+  title: GA transition gate and evidence validation
+  command: pytest tests/launch_readiness/test_phase25_ga_transition_gate_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase25_ga_transition_gate_plan_assets.py
+  - docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  - docs/design-docs/ga-transition-governance.md
+  - docs/runbooks/ga-transition-review.md
+  - meta/ga-transition-gate-manifest.yaml
+  - meta/phase25-ga-transition-evidence-manifest.yaml
+  - docs/generated/phase-25-ga-transition-evidence.json
+  - schema/jsonschema/ga-transition-gate-manifest.schema.json
+  - schema/jsonschema/ga-transition-gate-report.schema.json
+  - schema/jsonschema/phase25-ga-transition-evidence-manifest.schema.json
+  - schema/jsonschema/phase25-ga-transition-evidence-bundle.schema.json
+  - scripts/run_phase25_ga_transition_gate.py
+  - scripts/build_phase25_ga_transition_evidence.py
+  - tests/phase-gates/phase-25-ga-transition-gate.yaml
+  proves: Validates that phase-25 captures rollout, production-isolation, service-scale, and scorecard readiness in a reproducible GA transition bundle.
+- id: TS-079
+  title: Live customer operations planning validation
+  command: pytest tests/launch_readiness/test_phase26_live_customer_operations_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase26_live_customer_operations_plan_assets.py
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - tests/phase-gates/phase-26-live-customer-operations.yaml
+  - work-items/task-index.yaml
+  proves: Validates that PHASE-26 has a committed live-customer-operations workstream in the SSOT before implementation starts.
+- id: TS-080
+  title: Release automation planning validation
+  command: pytest tests/launch_readiness/test_phase26_release_automation_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase26_release_automation_plan_assets.py
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - tests/phase-gates/phase-26-release-automation.yaml
+  - work-items/task-index.yaml
+  proves: Validates that PHASE-26 has an explicit release-automation workstream in the SSOT before implementation starts.
+- id: TS-081
+  title: Field evidence corpus planning validation
+  command: pytest tests/launch_readiness/test_phase26_field_evidence_corpus_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase26_field_evidence_corpus_plan_assets.py
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - tests/phase-gates/phase-26-field-evidence-corpus.yaml
+  - work-items/task-index.yaml
+  proves: Validates that PHASE-26 has an explicit field-evidence and customer-reliability workstream in the SSOT before implementation starts.
+- id: TS-082
+  title: Post-GA lifecycle governance planning validation
+  command: pytest tests/launch_readiness/test_phase26_post_ga_lifecycle_governance_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase26_post_ga_lifecycle_governance_plan_assets.py
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - tests/phase-gates/phase-26-post-ga-lifecycle-governance.yaml
+  - work-items/task-index.yaml
+  proves: Validates that PHASE-26 has an explicit post-GA lifecycle-governance workstream in the SSOT before implementation starts.
+- id: TS-083
+  title: Post-GA operating review gate planning validation
+  command: pytest tests/launch_readiness/test_phase26_post_ga_operating_review_gate_plan_assets.py -q
+  paths:
+  - tests/launch_readiness/test_phase26_post_ga_operating_review_gate_plan_assets.py
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - tests/phase-gates/phase-26-post-ga-operating-review-gate.yaml
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+  proves: Validates that PHASE-26 has a committed post-GA operating review gate slice in the SSOT before implementation starts.

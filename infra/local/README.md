@@ -1,6 +1,8 @@
-# Local development stack
+# Local evaluation stack
 
-This stack exists to support early runtime development and validation.
+This stack is the official local evaluation deployment path for Aegis. It is the
+supported first environment for a fresh clone, smoke validation, and golden-path
+exercise work before moving to larger deployment tracks.
 
 ## Services
 
@@ -15,14 +17,23 @@ This stack exists to support early runtime development and validation.
 ## Usage
 
 ```bash
-make local-up
-make local-init
+make eval-up
+make eval-init
+make eval-check
 make local-logs
-make local-down
+make eval-down
 ```
 
-`make local-up` starts the stack. `make local-init` runs the init flow again if you reset local volumes.
-The init flow also ensures the `aegis_test` database exists and reapplies the Phase 02 schema to both `aegis_dev` and `aegis_test`.
+`make eval-up` starts the stack. `make eval-init` initializes NATS, MinIO, and the
+development/test Postgres databases. `make eval-check` validates that the official
+fresh-clone onboarding and deployment surfaces are still coherent.
+
+Compatibility aliases:
+
+- `make local-up` -> `make eval-up`
+- `make local-init` -> `make eval-init`
+- `make local-down` -> `make eval-down`
+- `make local-logs` -> streaming logs for the same stack
 
 ## Buckets and streams
 
@@ -40,7 +51,8 @@ The init flow also ensures the `aegis_test` database exists and reapplies the Ph
 - OTLP HTTP: `4318`
 - Jaeger UI: `16686`
 
-This stack is for development and smoke validation only.
+This stack is for evaluation, smoke validation, and first-clone onboarding only.
+It is not the production deployment path.
 
 
 ## Heartbeats

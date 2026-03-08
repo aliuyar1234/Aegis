@@ -24,6 +24,12 @@ This document defines the build order, what to defer, and the first concrete suc
 18. PHASE-18 - Certified ecosystem, governed extensions, and public compatibility leadership
 19. PHASE-19 - Reference adoption, operator drills, and golden-path starter kits
 20. PHASE-20 - Operational lifecycle governance, rollout waves, and deprecation discipline
+21. PHASE-21 - Fresh-clone onboarding and official evaluation deployment
+22. PHASE-22 - Customer golden paths, launch signoff, and support/security baseline
+23. PHASE-23 - Operational proving, customer environment readiness, and pilot launch governance
+24. PHASE-24 - Design-partner pilot execution, operating cadence, and exit review
+25. PHASE-25 - GA transition, repeatable customer rollout, and service-scale readiness
+26. PHASE-26 - Live customer operations, release automation, and field evidence governance
 
 ## What not to build first
 

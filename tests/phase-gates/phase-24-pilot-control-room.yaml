@@ -1,0 +1,34 @@
+id: phase-24-pilot-control-room
+phase: PHASE-24
+name: Pilot control-room gate
+objective: Validate that PHASE-24 defines explicit pilot control-room roles, handoffs, and observability coverage.
+fixtures:
+- docs/design-docs/pilot-control-room.md
+- docs/operations/pilot-operations.md
+- docs/runbooks/pilot-control-room.md
+- meta/pilot-control-room.yaml
+- schema/jsonschema/pilot-control-room.schema.json
+- schema/jsonschema/pilot-control-room-report.schema.json
+- scripts/run_phase24_pilot_control_room.py
+- tests/launch_readiness/test_phase24_pilot_control_room_assets.py
+- tests/phase-gates/phase-24-pilot-control-room.yaml
+tests:
+- TS-070
+acceptance:
+- AC-110
+steps:
+- id: control-room-surface
+  description: verify launch-day and steady-state pilot roles, observability views, and escalation handoffs remain explicit
+  expected:
+  - pilot operations cover live launch and steady-state cadence
+  - control-room roles and observability surfaces stay committed
+  evidence:
+  - meta/pilot-control-room.yaml
+- id: reproducible-control-room-report
+  description: verify the control-room report is reproducible
+  expected:
+  - the report fails if roles, handoffs, or observability refs drift
+  evidence:
+  - scripts/run_phase24_pilot_control_room.py
+proves:
+- phase-24 pilot operations no longer depend on live author explanation

@@ -1,0 +1,23 @@
+id: phase-26-release-automation
+phase: PHASE-26
+name: Release automation planning gate
+objective: Validate that PHASE-26 commits the release-automation workstream into the SSOT.
+fixtures:
+- docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+- tests/launch_readiness/test_phase26_release_automation_plan_assets.py
+- tests/phase-gates/phase-26-release-automation.yaml
+- work-items/task-index.yaml
+tests:
+- TS-080
+acceptance:
+- AC-120
+steps:
+- id: release-automation-planned
+  description: verify automated release motion and governed change are explicitly scoped
+  expected:
+  - release automation is committed as a bounded workstream
+  evidence:
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - work-items/task-index.yaml
+proves:
+- phase-26 starts with an explicit release-automation workstream

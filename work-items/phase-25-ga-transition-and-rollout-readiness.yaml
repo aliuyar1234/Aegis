@@ -1,0 +1,110 @@
+phase: PHASE-25
+status: completed
+name: GA transition, repeatable customer rollout, and service-scale readiness
+phase_doc: docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+tasks:
+- id: P25-T01
+  phase: PHASE-25
+  title: Define the repeatable customer rollout program for post-pilot cohorts
+  critical_path: true
+  status: done
+  deps:
+  - P24-T01
+  - P24-T05
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-114
+  test_refs:
+  - TS-074
+  phase_doc: docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P25-T02
+  phase: PHASE-25
+  title: Define tenant-isolated production readiness and migration boundaries
+  critical_path: true
+  status: done
+  deps:
+  - P23-T01
+  - P23-T03
+  - P24-T05
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-115
+  test_refs:
+  - TS-075
+  phase_doc: docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P25-T03
+  phase: PHASE-25
+  title: Define service-scale support and operating cadence for multi-customer launch
+  critical_path: true
+  status: done
+  deps:
+  - P22-T04
+  - P24-T02
+  - P24-T03
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-116
+  test_refs:
+  - TS-076
+  phase_doc: docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P25-T04
+  phase: PHASE-25
+  title: Define rollout scorecards and reference-customer evidence surfaces
+  critical_path: true
+  status: done
+  deps:
+  - P24-T03
+  - P24-T05
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-117
+  test_refs:
+  - TS-077
+  phase_doc: docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P25-T05
+  phase: PHASE-25
+  title: Gate the GA transition on rollout program, production isolation, service-scale
+    readiness, and scorecard evidence
+  critical_path: false
+  status: done
+  deps:
+  - P25-T01
+  - P25-T02
+  - P25-T03
+  - P25-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-118
+  test_refs:
+  - TS-078
+  phase_doc: docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

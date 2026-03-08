@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/ga-transition-gate-manifest.schema.json",
+  "title": "GaTransitionGateManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "required_inputs",
+    "required_evidence",
+    "required_runbooks",
+    "required_targets",
+    "required_docs"
+  ],
+  "properties": {
+    "id": {"type": "string"},
+    "version": {"type": "integer"},
+    "required_inputs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "required_evidence": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "required_runbooks": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "required_targets": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "required_docs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    }
+  }
+}

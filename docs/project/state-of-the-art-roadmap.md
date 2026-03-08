@@ -3,14 +3,14 @@
 ## Purpose
 
 This document captures the broader **post-PHASE-13 strategic extension** for Aegis Runtime.
-PHASE-14, PHASE-15, PHASE-16, PHASE-17, PHASE-18, PHASE-19, and PHASE-20 have now been activated in the main SSOT planning surface.
+PHASE-14, PHASE-15, PHASE-16, PHASE-17, PHASE-18, PHASE-19, PHASE-20, PHASE-21, PHASE-22, PHASE-23, PHASE-24, PHASE-25, and PHASE-26 have now been activated in the main SSOT planning surface.
 This document remains useful for preserving the reasoning behind that extension.
 
 Use this document for:
 
 - wider roadmap design after the original PHASE-00 through PHASE-13 plan
 - discussion about what would make Aegis genuinely state-of-the-art
-- drafting successor phase plans and work-item slices after PHASE-20
+- drafting successor phase plans and work-item slices after PHASE-26
 Treat this as supporting architecture and planning context.
 The active implementation SSOT still lives in the phase docs, task graph, and machine-readable
 metadata.

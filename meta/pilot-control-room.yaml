@@ -1,0 +1,25 @@
+program_id: pilot-control-room
+version: 1
+roles:
+- id: launch-commander
+  owner: runtime-team
+  observability_refs:
+  - docs/operations/launch-observability.md
+  runbook_refs:
+  - docs/runbooks/pilot-control-room.md
+  - docs/runbooks/support-escalation.md
+- id: support-lead
+  owner: runtime-primary
+  observability_refs:
+  - docs/operations/support.md
+  - docs/operations/launch-observability.md
+  runbook_refs:
+  - docs/runbooks/pilot-control-room.md
+  - docs/runbooks/customer-incident-communications.md
+- id: customer-comms
+  owner: platform-ops
+  observability_refs:
+  - docs/operations/support.md
+  runbook_refs:
+  - docs/runbooks/pilot-control-room.md
+  - docs/runbooks/customer-incident-communications.md

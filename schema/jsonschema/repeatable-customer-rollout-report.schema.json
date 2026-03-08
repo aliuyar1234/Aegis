@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/repeatable-customer-rollout-report.schema.json",
+  "title": "RepeatableCustomerRolloutReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "cohorts", "verdict"],
+  "$defs": {
+    "cohortResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cohort_id", "input_count", "handoff_count", "verdict"],
+      "properties": {
+        "cohort_id": {"type": "string"},
+        "input_count": {"type": "integer"},
+        "handoff_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "cohorts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/cohortResult"},
+      "minItems": 2
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

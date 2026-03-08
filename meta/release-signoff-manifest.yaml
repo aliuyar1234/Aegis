@@ -1,0 +1,26 @@
+id: release-signoff-manifest
+version: 1
+candidate:
+  release_id: customer-launch-candidate
+  runtime_release: 0.12.0
+required_evidence:
+- docs/generated/phase-15-release-evidence.json
+- docs/generated/phase-19-adoption-evidence.json
+- docs/generated/phase-20-lifecycle-evidence.json
+required_restore_drills:
+- default-managed-restore
+- dedicated-enterprise-restore
+required_rollback_runbooks:
+- docs/runbooks/release-candidate-signoff.md
+- docs/runbooks/rolling-upgrade.md
+- docs/runbooks/pitr-restore.md
+- docs/runbooks/standby-promotion.md
+- docs/runbooks/rollout-wave-promotion.md
+required_eval_targets:
+- eval-ready
+- launch-check
+required_docs:
+- docs/governance/release-evidence-gates.md
+- docs/design-docs/release-candidate-signoff.md
+- docs/operations/evaluation-deployment.md
+- docs/operations/support.md

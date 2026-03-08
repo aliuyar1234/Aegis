@@ -1,5 +1,5 @@
 phase: PHASE-20
-status: current
+status: completed
 name: Operational lifecycle governance, rollout waves, and deprecation discipline
 phase_doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
 tasks:

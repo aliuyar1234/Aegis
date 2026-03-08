@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/launch-exception-governance.schema.json",
+  "title": "LaunchExceptionGovernance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "exceptions"],
+  "$defs": {
+    "exception": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "trigger_class", "required_approvals", "containment_runbook", "rollback_boundary", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "trigger_class": {"type": "string"},
+        "required_approvals": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "containment_runbook": {"type": "string"},
+        "rollback_boundary": {"type": "string"},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "exceptions": {"type": "array", "items": {"$ref": "#/$defs/exception"}, "minItems": 1}
+  }
+}

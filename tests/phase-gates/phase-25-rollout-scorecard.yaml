@@ -1,0 +1,35 @@
+id: phase-25-rollout-scorecard
+phase: PHASE-25
+name: Rollout scorecard gate
+objective: Validate that phase-25 rollout expansion stays grounded in explicit scorecards and reference evidence.
+fixtures:
+- docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+- docs/design-docs/rollout-scorecards-and-reference-evidence.md
+- docs/operations/service-scale-operations.md
+- docs/runbooks/rollout-scorecard-review.md
+- meta/rollout-scorecard-program.yaml
+- schema/jsonschema/rollout-scorecard-program.schema.json
+- schema/jsonschema/rollout-scorecard-report.schema.json
+- scripts/run_phase25_rollout_scorecards.py
+- tests/launch_readiness/test_phase25_rollout_scorecard_plan_assets.py
+- tests/phase-gates/phase-25-rollout-scorecard.yaml
+tests:
+- TS-077
+acceptance:
+- AC-117
+steps:
+- id: scorecards-defined
+  description: verify rollout scorecards bind metrics, evidence refs, and review surfaces
+  expected:
+  - scorecards cover post-pilot expansion and GA transition
+  - expansion evidence remains explicit and reviewable
+  evidence:
+  - meta/rollout-scorecard-program.yaml
+- id: reproducible-scorecard-report
+  description: verify the rollout scorecard report is reproducible
+  expected:
+  - the report fails if metrics, evidence refs, or review refs drift
+  evidence:
+  - scripts/run_phase25_rollout_scorecards.py
+proves:
+- phase-25 rollout expansion is grounded in explicit scorecards

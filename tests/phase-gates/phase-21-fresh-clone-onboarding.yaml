@@ -1,0 +1,36 @@
+id: phase-21-fresh-clone-onboarding
+phase: PHASE-21
+name: Fresh clone onboarding gate
+objective: Validate that phase-21 onboarding is explicit, aligned, and repo-native.
+fixtures:
+- docs/exec-plans/active/PHASE-21-onboarding-and-evaluation-deployment.md
+- docs/design-docs/fresh-clone-onboarding.md
+- docs/runbooks/fresh-clone-first-run.md
+- meta/fresh-clone-onboarding.yaml
+- schema/jsonschema/fresh-clone-onboarding.schema.json
+- schema/jsonschema/fresh-clone-onboarding-report.schema.json
+- scripts/run_phase21_onboarding.py
+- tests/launch_readiness/test_phase21_onboarding_assets.py
+- tests/phase-gates/phase-21-fresh-clone-onboarding.yaml
+tests:
+- TS-057
+acceptance:
+- AC-097
+steps:
+- id: onboarding-contract
+  description: verify canonical docs, read order, and first-run commands are committed
+  expected:
+  - the onboarding manifest points only at existing docs and scripts
+  - README and AGENTS remain aligned with the committed first-run path
+  evidence:
+  - meta/fresh-clone-onboarding.yaml
+  - README.md
+  - AGENTS.md
+- id: reproducible-onboarding-report
+  description: verify the onboarding report is reproducible
+  expected:
+  - the report fails when onboarding docs, commands, or target scripts drift
+  evidence:
+  - scripts/run_phase21_onboarding.py
+proves:
+- phase-21 onboarding is machine-checkable rather than setup folklore

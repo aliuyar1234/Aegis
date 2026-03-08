@@ -1,0 +1,28 @@
+program_id: customer-feedback-loop
+version: 1
+channels:
+- id: pilot-daily-triage
+  decision_class: operational_fix
+  owner: runtime-team
+  evidence_refs:
+  - docs/generated/phase-23-launch-governance-evidence.json
+  - docs/operations/pilot-operations.md
+  runbook_refs:
+  - docs/runbooks/customer-feedback-triage.md
+- id: pilot-weekly-review
+  decision_class: rollout_learning
+  owner: platform-ops
+  evidence_refs:
+  - docs/generated/phase-23-launch-governance-evidence.json
+  - meta/pilot-launch-wave.yaml
+  runbook_refs:
+  - docs/runbooks/customer-feedback-triage.md
+- id: pilot-blocker-escalation
+  decision_class: launch_exception
+  owner: runtime-primary
+  evidence_refs:
+  - docs/generated/phase-23-launch-governance-evidence.json
+  - meta/launch-exception-governance.yaml
+  runbook_refs:
+  - docs/runbooks/customer-feedback-triage.md
+  - docs/runbooks/launch-exception-response.md

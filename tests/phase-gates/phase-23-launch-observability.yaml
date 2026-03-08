@@ -1,0 +1,33 @@
+id: phase-23-launch-observability
+phase: PHASE-23
+name: Launch observability workstream gate
+objective: Validate that PHASE-23 makes observability and alerting readiness an explicit launch workstream.
+fixtures:
+- docs/design-docs/launch-observability-baseline.md
+- docs/operations/launch-observability.md
+- docs/runbooks/launch-observability-review.md
+- meta/launch-observability-baseline.yaml
+- schema/jsonschema/launch-observability-baseline.schema.json
+- schema/jsonschema/launch-observability-report.schema.json
+- scripts/run_phase23_launch_observability.py
+- tests/launch_readiness/test_phase23_launch_observability_assets.py
+- tests/phase-gates/phase-23-launch-observability.yaml
+tests:
+- TS-065
+acceptance:
+- AC-105
+steps:
+- id: observability-scope-defined
+  description: verify the launch observability surface covers the required signals
+  expected:
+  - dashboards and alerts cover the committed launch signals
+  evidence:
+  - meta/launch-observability-baseline.yaml
+- id: checklist-gap-bound
+  description: verify the observability report is reproducible
+  expected:
+  - the report fails when signal, SLO, or runbook coverage drifts
+  evidence:
+  - scripts/run_phase23_launch_observability.py
+proves:
+- phase-23 explicitly binds observability and alerting to launch readiness

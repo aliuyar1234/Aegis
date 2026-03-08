@@ -1,0 +1,32 @@
+program_id: launch-exception-governance
+version: 1
+exceptions:
+- id: reliability-regression
+  trigger_class: reliability
+  required_approvals:
+  - runtime-primary
+  - platform-ops
+  containment_runbook: docs/runbooks/launch-exception-response.md
+  rollback_boundary: docs/runbooks/rolling-upgrade.md
+  evidence_refs:
+  - docs/generated/phase-23-launch-governance-evidence.json
+  - docs/generated/phase-15-release-evidence.json
+- id: customer-environment-drift
+  trigger_class: environment
+  required_approvals:
+  - platform-ops
+  - runtime-primary
+  containment_runbook: docs/runbooks/launch-exception-response.md
+  rollback_boundary: docs/runbooks/pilot-go-no-go.md
+  evidence_refs:
+  - meta/customer-environment-readiness.yaml
+  - docs/generated/phase-23-launch-governance-evidence.json
+- id: support-coverage-gap
+  trigger_class: support
+  required_approvals:
+  - runtime-primary
+  containment_runbook: docs/runbooks/launch-exception-response.md
+  rollback_boundary: docs/runbooks/support-escalation.md
+  evidence_refs:
+  - meta/support-model.yaml
+  - docs/generated/phase-23-launch-governance-evidence.json

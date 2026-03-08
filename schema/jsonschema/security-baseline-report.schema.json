@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/security-baseline-report.schema.json",
+  "title": "SecurityBaselineReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "controls", "verdict"],
+  "$defs": {
+    "controlResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["control_id", "ref_count", "verdict"],
+      "properties": {
+        "control_id": {"type": "string"},
+        "ref_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "controls": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/controlResult"},
+      "minItems": 1
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

@@ -1,0 +1,35 @@
+id: phase-25-repeatable-rollout-program
+phase: PHASE-25
+name: Repeatable rollout program gate
+objective: Validate that phase-25 rollout cohorts stay explicitly bound to pilot predecessors, deployment tracks, and handoff surfaces.
+fixtures:
+- docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+- docs/design-docs/repeatable-customer-rollout.md
+- docs/operations/customer-rollout.md
+- docs/runbooks/rollout-cohort-admission.md
+- meta/repeatable-customer-rollout.yaml
+- schema/jsonschema/repeatable-customer-rollout.schema.json
+- schema/jsonschema/repeatable-customer-rollout-report.schema.json
+- scripts/run_phase25_repeatable_rollout_program.py
+- tests/launch_readiness/test_phase25_repeatable_rollout_program_plan_assets.py
+- tests/phase-gates/phase-25-repeatable-rollout-program.yaml
+tests:
+- TS-074
+acceptance:
+- AC-114
+steps:
+- id: rollout-program-defined
+  description: verify the repeatable rollout program binds cohorts to committed tracks, pilot predecessors, and handoff surfaces
+  expected:
+  - post-pilot cohorts are explicit and bounded
+  - rollout handoffs and required inputs stay committed
+  evidence:
+  - meta/repeatable-customer-rollout.yaml
+- id: reproducible-rollout-report
+  description: verify the rollout report is reproducible
+  expected:
+  - the report fails if cohorts drift from tracks, predecessors, or handoff refs
+  evidence:
+  - scripts/run_phase25_repeatable_rollout_program.py
+proves:
+- phase-25 rollout expansion is explicit and machine-checkable

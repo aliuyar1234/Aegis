@@ -1,0 +1,33 @@
+id: phase-24-launch-exception-governance
+phase: PHASE-24
+name: Launch exception governance gate
+objective: Validate that PHASE-24 launch exceptions are bounded by explicit triggers, approvals, containment, and rollback paths.
+fixtures:
+- docs/design-docs/launch-exception-governance.md
+- docs/runbooks/launch-exception-response.md
+- meta/launch-exception-governance.yaml
+- schema/jsonschema/launch-exception-governance.schema.json
+- schema/jsonschema/launch-exception-governance-report.schema.json
+- scripts/run_phase24_launch_exception_governance.py
+- tests/launch_readiness/test_phase24_launch_exception_governance_assets.py
+- tests/phase-gates/phase-24-launch-exception-governance.yaml
+tests:
+- TS-072
+acceptance:
+- AC-112
+steps:
+- id: exception-boundaries
+  description: verify trigger classes, approvals, containment paths, and rollback boundaries stay explicit
+  expected:
+  - launch exceptions remain bounded and reviewable
+  - exception handling references committed response runbooks
+  evidence:
+  - meta/launch-exception-governance.yaml
+- id: reproducible-exception-report
+  description: verify the launch-exception report is reproducible
+  expected:
+  - the report fails if trigger, approval, or containment refs drift
+  evidence:
+  - scripts/run_phase24_launch_exception_governance.py
+proves:
+- phase-24 launch exceptions are controlled operating decisions rather than improvisation

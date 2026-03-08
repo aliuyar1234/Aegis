@@ -1,0 +1,34 @@
+id: phase-24-pilot-launch-wave
+phase: PHASE-24
+name: Pilot launch-wave gate
+objective: Validate that PHASE-24 pilot cohorts stay explicitly bound to deployment tracks, golden paths, and go-no-go evidence.
+fixtures:
+- docs/exec-plans/active/PHASE-24-pilot-execution-and-exit-review.md
+- docs/design-docs/pilot-launch-wave.md
+- docs/runbooks/pilot-launch-day.md
+- meta/pilot-launch-wave.yaml
+- schema/jsonschema/pilot-launch-wave.schema.json
+- schema/jsonschema/pilot-launch-wave-report.schema.json
+- scripts/run_phase24_pilot_launch_wave.py
+- tests/launch_readiness/test_phase24_pilot_launch_wave_assets.py
+- tests/phase-gates/phase-24-pilot-launch-wave.yaml
+tests:
+- TS-069
+acceptance:
+- AC-109
+steps:
+- id: pilot-wave-bindings
+  description: verify pilot launch waves bind design partners to tracks, golden paths, and go-no-go evidence
+  expected:
+  - pilot cohorts are explicit and bounded
+  - each wave references committed communications and launch-day runbooks
+  evidence:
+  - meta/pilot-launch-wave.yaml
+- id: reproducible-pilot-wave-report
+  description: verify the launch-wave report is reproducible
+  expected:
+  - the report fails if tracks, golden paths, or evidence refs drift
+  evidence:
+  - scripts/run_phase24_pilot_launch_wave.py
+proves:
+- phase-24 pilot launch execution stays bounded and machine-checkable

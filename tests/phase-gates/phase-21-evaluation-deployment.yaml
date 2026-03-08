@@ -1,0 +1,37 @@
+id: phase-21-evaluation-deployment
+phase: PHASE-21
+name: Evaluation deployment gate
+objective: Validate that phase-21 evaluation deployment is anchored to the committed local stack and official first-run surfaces.
+fixtures:
+- docs/exec-plans/active/PHASE-21-onboarding-and-evaluation-deployment.md
+- docs/operations/evaluation-deployment.md
+- infra/local/README.md
+- infra/local/docker-compose.yml
+- meta/evaluation-deployment-profile.yaml
+- schema/jsonschema/evaluation-deployment-profile.schema.json
+- schema/jsonschema/evaluation-deployment-report.schema.json
+- scripts/run_phase21_evaluation_deployment.py
+- tests/launch_readiness/test_phase21_evaluation_deployment_assets.py
+- tests/phase-gates/phase-21-evaluation-deployment.yaml
+tests:
+- TS-058
+acceptance:
+- AC-098
+steps:
+- id: deployment-profile
+  description: verify the official evaluation deployment profile binds stack services, ports, docs, and targets
+  expected:
+  - each required service exists in the committed compose file
+  - the required docs and Make targets remain committed
+  evidence:
+  - meta/evaluation-deployment-profile.yaml
+  - infra/local/docker-compose.yml
+  - Makefile
+- id: reproducible-deployment-report
+  description: verify the deployment report is reproducible
+  expected:
+  - the report fails when services, required ports, or target bindings drift from the committed stack
+  evidence:
+  - scripts/run_phase21_evaluation_deployment.py
+proves:
+- phase-21 evaluation deployment is an explicit supported path rather than an implied local dev stack

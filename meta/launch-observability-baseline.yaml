@@ -1,0 +1,42 @@
+program_id: launch-observability-baseline
+version: 1
+surfaces:
+- id: control-plane-launch-dashboard
+  surface_class: dashboard
+  signal_refs:
+  - session_ownership
+  - replay_health
+  - checkpoint_lag
+  - outbox_health
+  slo_profile_id: shared-standard-control
+  doc_refs:
+  - docs/design-docs/launch-observability-baseline.md
+  - docs/operations/launch-observability.md
+  runbook_refs:
+  - docs/runbooks/launch-observability-review.md
+  - docs/runbooks/transport-lag.md
+- id: execution-and-artifact-alert-pack
+  surface_class: alert_pack
+  signal_refs:
+  - worker_health
+  - artifact_upload_failures
+  - degraded_mode_entry
+  slo_profile_id: premium-isolated-browser
+  doc_refs:
+  - docs/design-docs/launch-observability-baseline.md
+  - docs/operations/launch-observability.md
+  runbook_refs:
+  - docs/runbooks/launch-observability-review.md
+  - docs/runbooks/top-failure-clusters.md
+- id: approvals-and-support-watch
+  surface_class: dashboard
+  signal_refs:
+  - approval_backlog
+  - degraded_mode_entry
+  slo_profile_id: dedicated-enterprise-fleet
+  doc_refs:
+  - docs/design-docs/launch-observability-baseline.md
+  - docs/operations/launch-observability.md
+  runbook_refs:
+  - docs/runbooks/launch-observability-review.md
+  - docs/runbooks/support-escalation.md

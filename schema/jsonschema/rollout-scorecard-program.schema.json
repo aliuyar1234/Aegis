@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/rollout-scorecard-program.schema.json",
+  "title": "RolloutScorecardProgram",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "scorecards"],
+  "$defs": {
+    "scorecard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "stage", "metrics", "evidence_refs", "doc_refs", "runbook_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "stage": {"type": "string"},
+        "metrics": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "doc_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "runbook_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "scorecards": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/scorecard"},
+      "minItems": 2
+    }
+  }
+}

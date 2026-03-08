@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/customer-environment-readiness.schema.json",
+  "title": "CustomerEnvironmentReadiness",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "check_sections"],
+  "$defs": {
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner", "required_items", "doc_refs", "runbook_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "owner": {"type": "string"},
+        "required_items": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "doc_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "runbook_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "check_sections": {"type": "array", "items": {"$ref": "#/$defs/section"}, "minItems": 1}
+  }
+}

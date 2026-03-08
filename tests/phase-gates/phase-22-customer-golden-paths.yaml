@@ -1,0 +1,34 @@
+id: phase-22-customer-golden-paths
+phase: PHASE-22
+name: Customer golden paths gate
+objective: Validate that launch-ready customer workflows remain explicit, bounded, and evidence-backed.
+fixtures:
+- docs/exec-plans/active/PHASE-22-customer-launch-readiness.md
+- docs/design-docs/customer-golden-paths.md
+- docs/runbooks/customer-golden-path-execution.md
+- meta/customer-golden-paths.yaml
+- schema/jsonschema/customer-golden-paths.schema.json
+- schema/jsonschema/customer-golden-path-report.schema.json
+- scripts/run_phase22_customer_golden_paths.py
+- tests/launch_readiness/test_phase22_customer_golden_paths_assets.py
+- tests/phase-gates/phase-22-customer-golden-paths.yaml
+tests:
+- TS-059
+acceptance:
+- AC-099
+steps:
+- id: bounded-customer-workflows
+  description: verify the launch workflows bind starter kits, deployment tracks, replay, and intervention
+  expected:
+  - one path is read-heavy and one path is approval-gated write
+  - both paths are grounded in committed evidence and runbooks
+  evidence:
+  - meta/customer-golden-paths.yaml
+- id: reproducible-golden-path-report
+  description: verify the golden-path report is reproducible
+  expected:
+  - the report fails when a path drifts from starter kits, tracks, or evidence
+  evidence:
+  - scripts/run_phase22_customer_golden_paths.py
+proves:
+- phase-22 customer workflows are explicit launch proof rather than demo improvisation

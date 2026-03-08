@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/launch-exception-governance-report.schema.json",
+  "title": "LaunchExceptionGovernanceReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "exceptions", "verdict"],
+  "$defs": {
+    "exceptionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["exception_id", "approval_count", "verdict"],
+      "properties": {
+        "exception_id": {"type": "string"},
+        "approval_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "exceptions": {"type": "array", "items": {"$ref": "#/$defs/exceptionResult"}, "minItems": 1},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

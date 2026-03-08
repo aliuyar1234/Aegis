@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/service-scale-operations-readiness-report.schema.json",
+  "title": "ServiceScaleOperationsReadinessReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "cadences", "verdict"],
+  "$defs": {
+    "cadenceResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cadence_id", "ref_count", "verdict"],
+      "properties": {
+        "cadence_id": {"type": "string"},
+        "ref_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "cadences": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/cadenceResult"},
+      "minItems": 2
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

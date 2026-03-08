@@ -1,0 +1,31 @@
+id: phase-22-launch-readiness-evidence
+phase: PHASE-22
+name: Launch readiness evidence gate
+objective: Validate that launch readiness is captured as a reproducible bundle across the phase-22 surfaces.
+fixtures:
+- docs/generated/phase-22-launch-readiness-evidence.json
+- meta/launch-readiness-evidence-manifest.yaml
+- schema/jsonschema/launch-readiness-evidence-manifest.schema.json
+- schema/jsonschema/launch-readiness-evidence-bundle.schema.json
+- scripts/build_phase22_launch_readiness_evidence.py
+- tests/launch_readiness/test_phase22_launch_readiness_evidence_assets.py
+- tests/phase-gates/phase-22-launch-readiness-evidence.yaml
+tests:
+- TS-063
+acceptance:
+- AC-103
+steps:
+- id: launch-evidence-inputs
+  description: verify all required scripts, gates, and docs are committed
+  expected:
+  - the manifest references only committed launch-readiness assets
+  evidence:
+  - meta/launch-readiness-evidence-manifest.yaml
+- id: reproducible-launch-bundle
+  description: verify the launch readiness bundle is reproducible
+  expected:
+  - the bundle fails if any underlying report fails
+  evidence:
+  - scripts/build_phase22_launch_readiness_evidence.py
+proves:
+- phase-22 launch readiness is a reproducible evidence bundle rather than a launch spreadsheet

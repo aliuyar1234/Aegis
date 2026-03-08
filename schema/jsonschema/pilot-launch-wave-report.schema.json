@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/pilot-launch-wave-report.schema.json",
+  "title": "PilotLaunchWaveReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "waves", "verdict"],
+  "$defs": {
+    "waveResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wave_id", "communication_count", "verdict"],
+      "properties": {
+        "wave_id": {"type": "string"},
+        "communication_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "waves": {"type": "array", "items": {"$ref": "#/$defs/waveResult"}, "minItems": 1},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

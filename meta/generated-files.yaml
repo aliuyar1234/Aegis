@@ -194,3 +194,53 @@ generated_files:
   sources:
   - work-items/task-index.yaml
   - meta/phase-gates.yaml
+- path: work-items/phase-21-onboarding-and-evaluation-deployment.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-22-customer-launch-readiness.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-23-operational-proving-and-pilot-governance.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-24-pilot-execution-and-exit-review.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: docs/generated/phase-22-launch-readiness-evidence.json
+  generator: python3 scripts/build_phase22_launch_readiness_evidence.py --write docs/generated/phase-22-launch-readiness-evidence.json
+  sources:
+  - meta/launch-readiness-evidence-manifest.yaml
+  - scripts/build_phase22_launch_readiness_evidence.py
+- path: docs/generated/phase-23-launch-governance-evidence.json
+  generator: python3 scripts/build_phase23_launch_governance_evidence.py --write docs/generated/phase-23-launch-governance-evidence.json
+  sources:
+  - meta/phase23-launch-governance-evidence-manifest.yaml
+  - scripts/build_phase23_launch_governance_evidence.py
+- path: work-items/phase-25-ga-transition-and-rollout-readiness.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: docs/generated/phase-25-ga-transition-evidence.json
+  generator: python3 scripts/build_phase25_ga_transition_evidence.py --write docs/generated/phase-25-ga-transition-evidence.json
+  sources:
+  - meta/phase25-ga-transition-evidence-manifest.yaml
+  - scripts/build_phase25_ga_transition_evidence.py
+- path: work-items/phase-26-live-customer-operations-and-release-automation.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: docs/generated/phase-24-pilot-operations-evidence.json
+  generator: python3 scripts/build_phase24_pilot_operations_evidence.py --write docs/generated/phase-24-pilot-operations-evidence.json
+  sources:
+  - meta/phase24-pilot-operations-evidence-manifest.yaml
+  - scripts/build_phase24_pilot_operations_evidence.py

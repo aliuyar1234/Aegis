@@ -1,0 +1,34 @@
+id: phase-22-release-signoff
+phase: PHASE-22
+name: Launch signoff gate
+objective: Validate that launch signoff binds evidence, restore, rollback, and evaluation targets.
+fixtures:
+- docs/design-docs/release-candidate-signoff.md
+- docs/runbooks/release-candidate-signoff.md
+- meta/release-signoff-manifest.yaml
+- schema/jsonschema/release-signoff-manifest.schema.json
+- schema/jsonschema/release-signoff-report.schema.json
+- scripts/run_phase22_release_signoff.py
+- tests/launch_readiness/test_phase22_release_signoff_assets.py
+- tests/phase-gates/phase-22-release-signoff.yaml
+tests:
+- TS-060
+acceptance:
+- AC-100
+steps:
+- id: signoff-inputs
+  description: verify signoff binds release evidence, restore drills, rollback runbooks, and evaluation targets
+  expected:
+  - required evidence files exist
+  - restore drills and Make targets are current
+  evidence:
+  - meta/release-signoff-manifest.yaml
+  - Makefile
+- id: reproducible-signoff-report
+  description: verify the signoff report is reproducible
+  expected:
+  - the report fails when signoff inputs drift
+  evidence:
+  - scripts/run_phase22_release_signoff.py
+proves:
+- phase-22 signoff is machine-checkable rather than release-memory process

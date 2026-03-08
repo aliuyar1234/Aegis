@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/customer-operations-package.schema.json",
+  "title": "CustomerOperationsPackage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "categories"],
+  "$defs": {
+    "category": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "doc_refs", "runbook_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "doc_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "runbook_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "version": {"type": "integer"},
+    "categories": {"type": "array", "items": {"$ref": "#/$defs/category"}, "minItems": 1}
+  }
+}

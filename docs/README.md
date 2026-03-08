@@ -23,14 +23,23 @@ This folder contains the human-readable documentation surface for Aegis Runtime.
 ## Operations
 
 - [Security](operations/security.md)
+- [Support](operations/support.md)
 - [Operations](operations/operations.md)
 - [Reliability](operations/reliability.md)
+- [Evaluation deployment](operations/evaluation-deployment.md)
+- [Launch observability](operations/launch-observability.md)
+- [Customer environment readiness](operations/customer-environment-readiness.md)
+- [Customer operations package](operations/customer-operations.md)
+- [Pilot operations](operations/pilot-operations.md)
+- [Customer rollout](operations/customer-rollout.md)
+- [Service-scale operations](operations/service-scale-operations.md)
 - [Runbooks](runbooks/)
 - [Threat models](threat-models/)
 
 ## Project
 
 - [Open decisions](project/open-decisions.md)
+- [Pre-customer launch checklist](project/pre-customer-launch-checklist.md)
 - [Roadmap](project/roadmap.md)
 - [State-of-the-art roadmap extension](project/state-of-the-art-roadmap.md)
 - [Risk register](project/risk-register.md)

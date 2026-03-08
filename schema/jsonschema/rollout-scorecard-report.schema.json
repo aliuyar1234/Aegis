@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/rollout-scorecard-report.schema.json",
+  "title": "RolloutScorecardReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "scorecards", "verdict"],
+  "$defs": {
+    "scorecardResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scorecard_id", "metric_count", "evidence_count", "verdict"],
+      "properties": {
+        "scorecard_id": {"type": "string"},
+        "metric_count": {"type": "integer"},
+        "evidence_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "scorecards": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/scorecardResult"},
+      "minItems": 2
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

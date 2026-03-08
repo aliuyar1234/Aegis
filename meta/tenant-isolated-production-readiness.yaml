@@ -1,0 +1,30 @@
+program_id: tenant-isolated-production-readiness
+version: 1
+boundaries:
+- id: dedicated-tenant-cutover
+  deployment_track: dedicated-regional-rollout
+  isolation_class: dedicated_tenant
+  required_evidence:
+  - meta/dedicated-tenant-evidence.yaml
+  - meta/customer-environment-readiness.yaml
+  - docs/generated/phase-23-launch-governance-evidence.json
+  migration_boundary_refs:
+  - docs/design-docs/tenant-isolated-production-readiness.md
+  - docs/operations/customer-rollout.md
+  rollback_runbook_refs:
+  - docs/runbooks/tenant-production-cutover.md
+  - docs/runbooks/pitr-restore.md
+  - docs/runbooks/standby-promotion.md
+- id: shared-to-isolated-migration
+  deployment_track: shared-evaluation
+  isolation_class: promoted_isolated_tenant
+  required_evidence:
+  - meta/customer-environment-readiness.yaml
+  - docs/generated/phase-24-pilot-operations-evidence.json
+  - docs/generated/phase-23-launch-governance-evidence.json
+  migration_boundary_refs:
+  - docs/design-docs/tenant-isolated-production-readiness.md
+  - docs/operations/customer-rollout.md
+  rollback_runbook_refs:
+  - docs/runbooks/tenant-production-cutover.md
+  - docs/runbooks/rolling-upgrade.md

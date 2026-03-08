@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/launch-observability-baseline.schema.json",
+  "title": "LaunchObservabilityBaseline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "surfaces"],
+  "$defs": {
+    "surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "surface_class", "signal_refs", "slo_profile_id", "doc_refs", "runbook_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "surface_class": {"type": "string"},
+        "signal_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "slo_profile_id": {"type": "string"},
+        "doc_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "runbook_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "surfaces": {"type": "array", "items": {"$ref": "#/$defs/surface"}, "minItems": 1}
+  }
+}

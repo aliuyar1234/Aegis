@@ -14,6 +14,7 @@ Aegis has to earn trust at runtime. Security, governance, and policy are part of
 - dedicated deployment profile: `meta/dedicated-deployment-profile.yaml`
 - enterprise control matrix: `meta/enterprise-control-matrix.yaml`
 - retention and SLO policy: `meta/retention-slo-policy.yaml`
+- launch security baseline: `meta/security-baseline-manifest.yaml`
 
 ## Security model summary
 

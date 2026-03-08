@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/evaluation-deployment-profile.schema.json",
+  "title": "EvaluationDeploymentProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "compose_file",
+    "services",
+    "required_docs",
+    "required_targets",
+    "init_scripts",
+    "smoke_scripts"
+  ],
+  "$defs": {
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "required_ports",
+        "purpose"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "required_ports": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "purpose": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "compose_file": {
+      "type": "string"
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/service"
+      },
+      "minItems": 1
+    },
+    "required_docs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "required_targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "init_scripts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "smoke_scripts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    }
+  }
+}

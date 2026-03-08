@@ -1,0 +1,49 @@
+{
+  "evidence_groups": [
+    {
+      "id": "repeatable-customer-rollout",
+      "ref_count": 3
+    },
+    {
+      "id": "tenant-isolated-production-readiness",
+      "ref_count": 3
+    },
+    {
+      "id": "service-scale-operations-readiness",
+      "ref_count": 3
+    },
+    {
+      "id": "rollout-scorecards",
+      "ref_count": 3
+    },
+    {
+      "id": "ga-transition-gate",
+      "ref_count": 3
+    }
+  ],
+  "id": "phase25-ga-transition-evidence-bundle",
+  "phase": "PHASE-25",
+  "reports": [
+    {
+      "id": "phase25-repeatable-customer-rollout-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase25-tenant-isolated-production-readiness-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase25-service-scale-operations-readiness-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase25-rollout-scorecard-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase25-ga-transition-gate-report",
+      "verdict": "pass"
+    }
+  ],
+  "verdict": "pass"
+}

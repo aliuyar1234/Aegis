@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/release-signoff-manifest.schema.json",
+  "title": "ReleaseSignoffManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "candidate",
+    "required_evidence",
+    "required_restore_drills",
+    "required_rollback_runbooks",
+    "required_eval_targets",
+    "required_docs"
+  ],
+  "properties": {
+    "id": {"type": "string"},
+    "version": {"type": "integer"},
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release_id", "runtime_release"],
+      "properties": {
+        "release_id": {"type": "string"},
+        "runtime_release": {"type": "string"}
+      }
+    },
+    "required_evidence": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "required_restore_drills": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "required_rollback_runbooks": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "required_eval_targets": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "required_docs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    }
+  }
+}

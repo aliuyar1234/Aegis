@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/fresh-clone-onboarding-report.schema.json",
+  "title": "FreshCloneOnboardingReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "checks",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "verdict"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

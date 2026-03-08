@@ -1,6 +1,6 @@
 # PHASE-20 - Operational lifecycle governance, rollout waves, and deprecation discipline
 
-**Status:** current
+**Status:** completed
 
 ## Phase goal
 

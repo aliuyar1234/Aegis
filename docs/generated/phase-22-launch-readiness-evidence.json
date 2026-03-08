@@ -1,0 +1,23 @@
+{
+  "id": "phase22-launch-readiness-evidence-bundle",
+  "phase": "PHASE-22",
+  "reports": [
+    {
+      "report_id": "phase22-customer-golden-paths-report",
+      "verdict": "pass"
+    },
+    {
+      "report_id": "phase22-release-signoff-report",
+      "verdict": "pass"
+    },
+    {
+      "report_id": "phase22-security-baseline-report",
+      "verdict": "pass"
+    },
+    {
+      "report_id": "phase22-support-model-report",
+      "verdict": "pass"
+    }
+  ],
+  "verdict": "pass"
+}

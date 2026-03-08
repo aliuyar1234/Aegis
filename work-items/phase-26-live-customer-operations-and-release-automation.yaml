@@ -1,0 +1,107 @@
+phase: PHASE-26
+status: current
+name: Live customer operations, release automation, and field evidence governance
+phase_doc: docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+tasks:
+- id: P26-T01
+  phase: PHASE-26
+  title: Define the live customer operations program for post-GA customer fleets
+  critical_path: true
+  status: planned
+  deps:
+  - P25-T01
+  - P25-T03
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-119
+  test_refs:
+  - TS-079
+  phase_doc: docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P26-T02
+  phase: PHASE-26
+  title: Define the automated release and governed change surface
+  critical_path: true
+  status: planned
+  deps:
+  - P25-T05
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-120
+  test_refs:
+  - TS-080
+  phase_doc: docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P26-T03
+  phase: PHASE-26
+  title: Define the field evidence and customer reliability corpus
+  critical_path: true
+  status: planned
+  deps:
+  - P24-T03
+  - P25-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-121
+  test_refs:
+  - TS-081
+  phase_doc: docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P26-T04
+  phase: PHASE-26
+  title: Define post-GA lifecycle and compatibility governance
+  critical_path: true
+  status: planned
+  deps:
+  - P20-T03
+  - P25-T05
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-122
+  test_refs:
+  - TS-082
+  phase_doc: docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P26-T05
+  phase: PHASE-26
+  title: Gate post-GA operations on live-ops, release automation, field evidence,
+    and lifecycle governance
+  critical_path: false
+  status: planned
+  deps:
+  - P26-T01
+  - P26-T02
+  - P26-T03
+  - P26-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-123
+  test_refs:
+  - TS-083
+  phase_doc: docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

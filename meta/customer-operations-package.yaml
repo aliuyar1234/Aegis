@@ -1,0 +1,43 @@
+id: customer-operations-package
+version: 1
+categories:
+- id: installation
+  doc_refs:
+  - docs/operations/customer-operations.md
+  - docs/operations/evaluation-deployment.md
+  runbook_refs:
+  - docs/runbooks/customer-operations-handshake.md
+- id: deployment
+  doc_refs:
+  - docs/operations/customer-operations.md
+  - docs/operations/customer-environment-readiness.md
+  runbook_refs:
+  - docs/runbooks/customer-environment-acceptance.md
+- id: upgrade
+  doc_refs:
+  - docs/operations/customer-operations.md
+  - docs/design-docs/release-candidate-signoff.md
+  runbook_refs:
+  - docs/runbooks/release-candidate-signoff.md
+  - docs/runbooks/rolling-upgrade.md
+- id: limits
+  doc_refs:
+  - docs/operations/customer-operations.md
+  - docs/design-docs/customer-operations-package.md
+  runbook_refs:
+  - docs/runbooks/customer-operations-handshake.md
+- id: failure_modes
+  doc_refs:
+  - docs/operations/customer-operations.md
+  - docs/operations/support.md
+  runbook_refs:
+  - docs/runbooks/customer-incident-communications.md
+  - docs/runbooks/support-escalation.md
+- id: operational_responsibilities
+  doc_refs:
+  - docs/operations/customer-operations.md
+  - docs/operations/support.md
+  - docs/operations/customer-environment-readiness.md
+  runbook_refs:
+  - docs/runbooks/customer-operations-handshake.md
+  - docs/runbooks/support-escalation.md

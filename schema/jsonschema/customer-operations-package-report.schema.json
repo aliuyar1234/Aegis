@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/customer-operations-package-report.schema.json",
+  "title": "CustomerOperationsPackageReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "categories", "verdict"],
+  "$defs": {
+    "categoryResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category_id", "doc_count", "verdict"],
+      "properties": {
+        "category_id": {"type": "string"},
+        "doc_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "categories": {"type": "array", "items": {"$ref": "#/$defs/categoryResult"}, "minItems": 1},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

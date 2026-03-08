@@ -1,0 +1,35 @@
+id: phase-22-support-model
+phase: PHASE-22
+name: Support model gate
+objective: Validate that launch support ownership, severity handling, and communication surfaces are explicit.
+fixtures:
+- docs/design-docs/support-operating-model.md
+- docs/operations/support.md
+- docs/runbooks/support-escalation.md
+- docs/runbooks/customer-incident-communications.md
+- meta/support-model.yaml
+- schema/jsonschema/support-model.schema.json
+- schema/jsonschema/support-model-report.schema.json
+- scripts/run_phase22_support_model.py
+- tests/launch_readiness/test_phase22_support_model_assets.py
+- tests/phase-gates/phase-22-support-model.yaml
+tests:
+- TS-062
+acceptance:
+- AC-102
+steps:
+- id: severity-and-oncall-model
+  description: verify severities, owning rotations, and communication templates stay aligned
+  expected:
+  - every severity has an owner, escalation path, and template
+  - response windows are ordered from most to least urgent
+  evidence:
+  - meta/support-model.yaml
+- id: reproducible-support-report
+  description: verify the support model report is reproducible
+  expected:
+  - the report fails when severity or on-call surfaces drift
+  evidence:
+  - scripts/run_phase22_support_model.py
+proves:
+- phase-22 support readiness no longer depends on implicit founder support

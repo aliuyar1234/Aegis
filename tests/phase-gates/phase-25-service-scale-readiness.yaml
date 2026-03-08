@@ -1,0 +1,35 @@
+id: phase-25-service-scale-readiness
+phase: PHASE-25
+name: Service-scale operations readiness gate
+objective: Validate that phase-25 multi-customer support and escalation coverage remain explicit.
+fixtures:
+- docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+- docs/design-docs/service-scale-operations-readiness.md
+- docs/operations/service-scale-operations.md
+- docs/runbooks/service-scale-support-review.md
+- meta/service-scale-operations-readiness.yaml
+- schema/jsonschema/service-scale-operations-readiness.schema.json
+- schema/jsonschema/service-scale-operations-readiness-report.schema.json
+- scripts/run_phase25_service_scale_operations_readiness.py
+- tests/launch_readiness/test_phase25_service_scale_readiness_plan_assets.py
+- tests/phase-gates/phase-25-service-scale-readiness.yaml
+tests:
+- TS-076
+acceptance:
+- AC-116
+steps:
+- id: service-scale-cadence-defined
+  description: verify multi-customer support cadences bind owning rotations, escalation coverage, and required refs
+  expected:
+  - service-scale coverage is explicit across committed rotations
+  - required support and observability refs stay committed
+  evidence:
+  - meta/service-scale-operations-readiness.yaml
+- id: reproducible-service-scale-report
+  description: verify the service-scale report is reproducible
+  expected:
+  - the report fails if rotations, escalations, or refs drift
+  evidence:
+  - scripts/run_phase25_service_scale_operations_readiness.py
+proves:
+- phase-25 service-scale operations are explicit and machine-checkable

@@ -616,3 +616,186 @@ acceptance_criteria:
     accreditation, rollout, incident review, and deprecation surfaces.
   tests:
   - TS-056
+- id: AC-097
+  phase: PHASE-21
+  statement: Fresh-clone onboarding is modeled as a machine-checkable repo surface
+    with aligned read order, first-run commands, and canonical entrypoint documents
+    instead of relying on tribal setup knowledge.
+  tests:
+  - TS-057
+- id: AC-098
+  phase: PHASE-21
+  statement: The local compose stack is promoted to an official evaluation deployment
+    path with explicit services, ports, init flow, smoke flow, and operator-facing
+    documentation.
+  tests:
+  - TS-058
+- id: AC-099
+  phase: PHASE-22
+  statement: Customer launch readiness includes two explicit golden paths, one read-heavy
+    and one approval-gated write path, each bound to starter kits, deployment tracks,
+    replay, and operator intervention surfaces.
+  tests:
+  - TS-059
+- id: AC-100
+  phase: PHASE-22
+  statement: Release signoff is modeled as a reproducible surface that binds release
+    evidence, restore drills, rollback runbooks, and evaluation workflow targets.
+  tests:
+  - TS-060
+- id: AC-101
+  phase: PHASE-22
+  statement: Security baseline coverage is machine-checkable across dependency audit,
+    SBOM, secret scanning, signed artifacts, hardened defaults, scoped credentials,
+    and documented key rotation.
+  tests:
+  - TS-061
+- id: AC-102
+  phase: PHASE-22
+  statement: Support operations define severity classes, response windows, on-call
+    ownership, escalation paths, and customer communication templates instead of
+    relying on implicit founder support.
+  tests:
+  - TS-062
+- id: AC-103
+  phase: PHASE-22
+  statement: Launch readiness is captured as a reproducible evidence bundle across
+    customer golden paths, signoff, security baseline, and support model surfaces.
+  tests:
+  - TS-063
+- id: AC-104
+  phase: PHASE-23
+  statement: PHASE-23 defines a machine-checkable real-infrastructure proving workstream
+    for backup, PITR, restore, rollback, rolling-upgrade, and tenant-isolation evidence
+    in production-like environments.
+  tests:
+  - TS-064
+- id: AC-105
+  phase: PHASE-23
+  statement: PHASE-23 defines an explicit observability and alerting baseline covering
+    session ownership, replay health, checkpoint lag, outbox health, worker health,
+    artifact failures, approval backlog, and degraded-mode entry.
+  tests:
+  - TS-065
+- id: AC-106
+  phase: PHASE-23
+  statement: PHASE-23 defines customer environment readiness as an explicit acceptance
+    surface covering DNS, certificates, secrets, storage, backups, alerts, and
+    operational responsibilities.
+  tests:
+  - TS-066
+- id: AC-107
+  phase: PHASE-23
+  statement: PHASE-23 defines the customer-facing operations package for installation,
+    deployment, upgrade, limits, failure modes, and operator responsibilities as
+    a bounded launch workstream instead of diffuse follow-up docs.
+  tests:
+  - TS-067
+- id: AC-108
+  phase: PHASE-23
+  statement: PHASE-23 defines design-partner pilot governance and captures pre-customer
+    launch decision evidence as a reproducible go/no-go bundle.
+  tests:
+  - TS-068
+- id: AC-109
+  phase: PHASE-24
+  statement: PHASE-24 defines explicit design-partner launch waves that bind pilot
+    cohorts to committed deployment tracks, golden paths, and the PHASE-23 go/no-go
+    evidence bundle.
+  tests:
+  - TS-069
+- id: AC-110
+  phase: PHASE-24
+  statement: PHASE-24 defines launch-day and steady-state pilot control-room operations
+    with explicit roles, handoffs, observability surfaces, and escalation runbooks.
+  tests:
+  - TS-070
+- id: AC-111
+  phase: PHASE-24
+  statement: PHASE-24 defines a customer feedback and issue triage loop that binds
+    pilot learnings to evidence, ownership, and decision classes instead of ad hoc
+    founder memory.
+  tests:
+  - TS-071
+- id: AC-112
+  phase: PHASE-24
+  statement: PHASE-24 defines launch exception governance with explicit trigger classes,
+    containment paths, approvals, and rollback boundaries for bounded pilot operations.
+  tests:
+  - TS-072
+- id: AC-113
+  phase: PHASE-24
+  statement: PHASE-24 captures pilot execution status, launch exceptions, customer
+    feedback, and rollout recommendation in a reproducible pilot operations evidence
+    bundle and exit review surface.
+  tests:
+  - TS-073
+- id: AC-114
+  phase: PHASE-25
+  statement: PHASE-25 defines an explicit repeatable customer rollout program that
+    turns PHASE-24 pilot execution into bounded post-pilot cohort rules, launch
+    handoffs, and rollout decision classes.
+  tests:
+  - TS-074
+- id: AC-115
+  phase: PHASE-25
+  statement: PHASE-25 defines tenant-isolated production readiness and migration
+    boundaries so that post-pilot customer launches are not treated as pilot-shaped
+    exceptions.
+  tests:
+  - TS-075
+- id: AC-116
+  phase: PHASE-25
+  statement: PHASE-25 defines service-scale support and operating cadence for multi-customer
+    launch instead of extending founder-led pilot support indefinitely.
+  tests:
+  - TS-076
+- id: AC-117
+  phase: PHASE-25
+  statement: PHASE-25 defines rollout scorecards and reference-customer evidence
+    surfaces so launch expansion is grounded in reproducible proof instead of
+    anecdotal success claims.
+  tests:
+  - TS-077
+- id: AC-118
+  phase: PHASE-25
+  statement: PHASE-25 defines a GA transition gate that binds rollout-program readiness,
+    production-isolation readiness, service-scale support, and rollout scorecards
+    into an explicit launch-decision surface.
+  tests:
+  - TS-078
+- id: AC-119
+  phase: PHASE-26
+  statement: PHASE-26 defines an explicit live customer operations program for post-GA
+    fleets, including bounded operating cadences, customer classes, and operational
+    handoff rules.
+  tests:
+  - TS-079
+- id: AC-120
+  phase: PHASE-26
+  statement: PHASE-26 defines an automated release and governed change surface that
+    binds release motion, rollback expectations, and review checkpoints instead of
+    manual founder sequencing.
+  tests:
+  - TS-080
+- id: AC-121
+  phase: PHASE-26
+  statement: PHASE-26 defines a field evidence and customer reliability corpus so
+    incidents, support signals, and rollout learnings are captured as explicit evidence
+    rather than anecdotal memory.
+  tests:
+  - TS-081
+- id: AC-122
+  phase: PHASE-26
+  statement: PHASE-26 defines post-GA lifecycle and compatibility governance for
+    live customers so upgrades, deprecations, and compatibility promises remain
+    bounded and reviewable.
+  tests:
+  - TS-082
+- id: AC-123
+  phase: PHASE-26
+  statement: PHASE-26 defines a post-GA operating review gate that binds live operations,
+    release automation, field evidence, and lifecycle governance into an explicit
+    next-stage decision surface.
+  tests:
+  - TS-083

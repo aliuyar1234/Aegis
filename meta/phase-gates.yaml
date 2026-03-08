@@ -387,7 +387,7 @@ phases:
   unlocks:
   - PHASE-20
 - id: PHASE-20
-  status: current
+  status: completed
   name: Operational lifecycle governance, rollout waves, and deprecation discipline
   doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
   task_file: work-items/phase-20-operational-lifecycle-governance.yaml
@@ -409,4 +409,137 @@ phases:
   - TS-054
   - TS-055
   - TS-056
+  unlocks:
+  - PHASE-21
+- id: PHASE-21
+  status: completed
+  name: Fresh-clone onboarding and official evaluation deployment
+  doc: docs/exec-plans/active/PHASE-21-onboarding-and-evaluation-deployment.md
+  task_file: work-items/phase-21-onboarding-and-evaluation-deployment.yaml
+  prereqs:
+  - PHASE-20
+  acceptance:
+  - AC-097
+  - AC-098
+  tests:
+  - TS-057
+  - TS-058
+  unlocks:
+  - PHASE-22
+- id: PHASE-22
+  status: completed
+  name: Customer golden paths, launch signoff, and support/security baseline
+  doc: docs/exec-plans/active/PHASE-22-customer-launch-readiness.md
+  task_file: work-items/phase-22-customer-launch-readiness.yaml
+  prereqs:
+  - PHASE-15
+  - PHASE-19
+  - PHASE-20
+  - PHASE-21
+  acceptance:
+  - AC-099
+  - AC-100
+  - AC-101
+  - AC-102
+  - AC-103
+  tests:
+  - TS-059
+  - TS-060
+  - TS-061
+  - TS-062
+  - TS-063
+  unlocks:
+  - PHASE-23
+- id: PHASE-23
+  status: completed
+  name: Operational proving, customer environment readiness, and pilot launch governance
+  doc: docs/exec-plans/active/PHASE-23-operational-proving-and-pilot-governance.md
+  task_file: work-items/phase-23-operational-proving-and-pilot-governance.yaml
+  prereqs:
+  - PHASE-15
+  - PHASE-16
+  - PHASE-20
+  - PHASE-21
+  - PHASE-22
+  acceptance:
+  - AC-104
+  - AC-105
+  - AC-106
+  - AC-107
+  - AC-108
+  tests:
+  - TS-064
+  - TS-065
+  - TS-066
+  - TS-067
+  - TS-068
+  unlocks:
+  - PHASE-24
+- id: PHASE-24
+  status: completed
+  name: Design-partner pilot execution, operating cadence, and exit review
+  doc: docs/exec-plans/active/PHASE-24-pilot-execution-and-exit-review.md
+  task_file: work-items/phase-24-pilot-execution-and-exit-review.yaml
+  prereqs:
+  - PHASE-20
+  - PHASE-22
+  - PHASE-23
+  acceptance:
+  - AC-109
+  - AC-110
+  - AC-111
+  - AC-112
+  - AC-113
+  tests:
+  - TS-069
+  - TS-070
+  - TS-071
+  - TS-072
+  - TS-073
+  unlocks:
+  - PHASE-25
+- id: PHASE-25
+  status: completed
+  name: GA transition, repeatable customer rollout, and service-scale readiness
+  doc: docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+  task_file: work-items/phase-25-ga-transition-and-rollout-readiness.yaml
+  prereqs:
+  - PHASE-22
+  - PHASE-23
+  - PHASE-24
+  acceptance:
+  - AC-114
+  - AC-115
+  - AC-116
+  - AC-117
+  - AC-118
+  tests:
+  - TS-074
+  - TS-075
+  - TS-076
+  - TS-077
+  - TS-078
+  unlocks:
+  - PHASE-26
+- id: PHASE-26
+  status: current
+  name: Live customer operations, release automation, and field evidence governance
+  doc: docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  task_file: work-items/phase-26-live-customer-operations-and-release-automation.yaml
+  prereqs:
+  - PHASE-23
+  - PHASE-24
+  - PHASE-25
+  acceptance:
+  - AC-119
+  - AC-120
+  - AC-121
+  - AC-122
+  - AC-123
+  tests:
+  - TS-079
+  - TS-080
+  - TS-081
+  - TS-082
+  - TS-083
   unlocks: []

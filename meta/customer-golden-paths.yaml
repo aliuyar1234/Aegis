@@ -1,0 +1,42 @@
+program_id: customer-golden-paths
+version: 1
+paths:
+- id: shared-read-triage
+  workflow_class: read_heavy_browser_operation
+  starter_kit_id: certified-support-ops
+  deployment_track: shared-evaluation
+  approval_required: false
+  replay_required: true
+  operator_intervention_supported: true
+  required_evidence:
+  - docs/generated/phase-19-adoption-evidence.json
+  - docs/generated/phase-20-lifecycle-evidence.json
+  runbook_refs:
+  - docs/runbooks/first-adopter-onboarding.md
+  - docs/runbooks/fresh-clone-first-run.md
+  - docs/runbooks/customer-golden-path-execution.md
+  - docs/runbooks/operator-intervention.md
+  success_markers:
+  - timeline visible
+  - artifacts captured
+  - replay available
+- id: dedicated-approval-write-recovery
+  workflow_class: approval_gated_browser_write
+  starter_kit_id: dedicated-certified-support-ops
+  deployment_track: dedicated-regional-rollout
+  approval_required: true
+  replay_required: true
+  operator_intervention_supported: true
+  required_evidence:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-19-adoption-evidence.json
+  - docs/generated/phase-20-lifecycle-evidence.json
+  runbook_refs:
+  - docs/runbooks/first-adopter-onboarding.md
+  - docs/runbooks/customer-golden-path-execution.md
+  - docs/runbooks/operator-intervention.md
+  - docs/runbooks/approval-timeout.md
+  success_markers:
+  - approval event recorded
+  - operator takeover available
+  - replay and recovery evidence linked

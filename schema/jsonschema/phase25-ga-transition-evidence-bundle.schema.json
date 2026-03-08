@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/phase25-ga-transition-evidence-bundle.schema.json",
+  "title": "Phase25GaTransitionEvidenceBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "phase", "reports", "evidence_groups", "verdict"],
+  "$defs": {
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "verdict"],
+      "properties": {
+        "id": {"type": "string"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    },
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ref_count"],
+      "properties": {
+        "id": {"type": "string"},
+        "ref_count": {"type": "integer"}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "phase": {"type": "string"},
+    "reports": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/report"},
+      "minItems": 1
+    },
+    "evidence_groups": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/group"},
+      "minItems": 1
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

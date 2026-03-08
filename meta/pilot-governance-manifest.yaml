@@ -1,0 +1,35 @@
+id: design-partner-pilot-governance
+version: 1
+pilot:
+  pilot_id: bounded-design-partner-wave
+  rollout_scope: two bounded design partners on committed launch paths
+  max_design_partners: 2
+success_criteria:
+- shared read-heavy golden path completes with replay and artifact visibility
+- approval-gated write path completes with approval event and operator intervention readiness
+- support escalation and customer communication surfaces are exercised in a bounded drill
+kill_switch_conditions:
+- restore or rollback evidence goes stale
+- launch observability coverage loses any required signal
+- customer environment readiness remains incomplete
+- operator support ownership is ambiguous during launch week
+non_goals:
+- broad managed-cloud rollout
+- productized billing or CRM workflows
+- unbounded workflow customization during the pilot
+launch_decision_inputs:
+- docs/generated/phase-15-release-evidence.json
+- docs/generated/phase-20-lifecycle-evidence.json
+- docs/generated/phase-22-launch-readiness-evidence.json
+- meta/real-infrastructure-proving.yaml
+- meta/launch-observability-baseline.yaml
+- meta/customer-environment-readiness.yaml
+- meta/customer-operations-package.yaml
+docs_refs:
+- docs/design-docs/design-partner-pilot-governance.md
+- docs/project/pre-customer-launch-checklist.md
+- docs/operations/customer-operations.md
+runbook_refs:
+- docs/runbooks/pilot-go-no-go.md
+- docs/runbooks/support-escalation.md
+- docs/runbooks/customer-incident-communications.md

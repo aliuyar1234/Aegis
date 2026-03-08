@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/ga-transition-gate-report.schema.json",
+  "title": "GaTransitionGateReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "checks", "verdict"],
+  "$defs": {
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "verdict"],
+      "properties": {
+        "name": {"type": "string"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "checks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/check"},
+      "minItems": 1
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

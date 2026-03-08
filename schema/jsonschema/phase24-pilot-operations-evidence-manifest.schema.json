@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/phase24-pilot-operations-evidence-manifest.schema.json",
+  "title": "Phase24PilotOperationsEvidenceManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "bundle_id", "phase", "required_scripts", "required_gates", "evidence_groups"],
+  "$defs": {
+    "evidenceGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "bundle_id": {"type": "string"},
+    "phase": {"type": "string"},
+    "required_scripts": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "required_gates": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "evidence_groups": {"type": "array", "items": {"$ref": "#/$defs/evidenceGroup"}, "minItems": 1}
+  }
+}

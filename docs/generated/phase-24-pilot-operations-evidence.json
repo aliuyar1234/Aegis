@@ -1,0 +1,49 @@
+{
+  "evidence_groups": [
+    {
+      "id": "pilot-launch-wave",
+      "ref_count": 3
+    },
+    {
+      "id": "pilot-control-room",
+      "ref_count": 3
+    },
+    {
+      "id": "customer-feedback-loop",
+      "ref_count": 3
+    },
+    {
+      "id": "launch-exception-governance",
+      "ref_count": 3
+    },
+    {
+      "id": "pilot-exit-review",
+      "ref_count": 3
+    }
+  ],
+  "id": "phase24-pilot-operations-evidence-bundle",
+  "phase": "PHASE-24",
+  "reports": [
+    {
+      "id": "phase24-pilot-launch-wave-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase24-pilot-control-room-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase24-customer-feedback-loop-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase24-launch-exception-governance-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase24-pilot-exit-review-report",
+      "verdict": "pass"
+    }
+  ],
+  "verdict": "pass"
+}

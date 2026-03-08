@@ -1,0 +1,50 @@
+id: phase21-evaluation-deployment
+name: Official evaluation deployment profile
+compose_file: infra/local/docker-compose.yml
+services:
+- name: postgres
+  required_ports:
+  - 5432
+  purpose: canonical runtime truth
+- name: nats
+  required_ports:
+  - 4222
+  - 8222
+  purpose: transport and worker event backbone
+- name: minio
+  required_ports:
+  - 9000
+  - 9001
+  purpose: artifact storage
+- name: jaeger
+  required_ports:
+  - 16686
+  purpose: local trace inspection
+- name: otel-collector
+  required_ports:
+  - 4317
+  - 4318
+  purpose: local OTLP ingestion
+- name: nats-init
+  required_ports: []
+  purpose: stream and consumer bootstrap
+- name: minio-init
+  required_ports: []
+  purpose: bucket bootstrap
+required_docs:
+- docs/operations/evaluation-deployment.md
+- docs/runbooks/fresh-clone-first-run.md
+- infra/local/README.md
+required_targets:
+- eval-up
+- eval-init
+- eval-down
+- eval-logs
+- eval-check
+- eval-ready
+init_scripts:
+- scripts/init_local.py
+- infra/local/init-nats.sh
+- infra/local/init-minio.sh
+smoke_scripts:
+- scripts/smoke.py

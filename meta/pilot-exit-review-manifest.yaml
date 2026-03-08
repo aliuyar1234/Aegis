@@ -1,0 +1,19 @@
+id: pilot-exit-review
+version: 1
+required_inputs:
+- docs/generated/phase-23-launch-governance-evidence.json
+- meta/pilot-launch-wave.yaml
+- meta/customer-feedback-loop.yaml
+- meta/launch-exception-governance.yaml
+recommendation_outcomes:
+- expand
+- hold
+- stop
+review_sections:
+- launch-wave-status
+- customer-feedback-summary
+- launch-exception-summary
+- rollout-recommendation
+runbook_refs:
+- docs/runbooks/pilot-exit-review.md
+- docs/runbooks/pilot-go-no-go.md

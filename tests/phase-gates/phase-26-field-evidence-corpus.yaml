@@ -1,0 +1,23 @@
+id: phase-26-field-evidence-corpus
+phase: PHASE-26
+name: Field evidence corpus planning gate
+objective: Validate that PHASE-26 commits the field-evidence and customer-reliability workstream into the SSOT.
+fixtures:
+- docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+- tests/launch_readiness/test_phase26_field_evidence_corpus_plan_assets.py
+- tests/phase-gates/phase-26-field-evidence-corpus.yaml
+- work-items/task-index.yaml
+tests:
+- TS-081
+acceptance:
+- AC-121
+steps:
+- id: field-evidence-planned
+  description: verify the field evidence and customer reliability corpus are explicitly scoped
+  expected:
+  - field evidence is committed as a bounded workstream
+  evidence:
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - work-items/task-index.yaml
+proves:
+- phase-26 starts with an explicit field-evidence workstream

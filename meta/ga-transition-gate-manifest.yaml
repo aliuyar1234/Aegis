@@ -1,0 +1,24 @@
+id: ga-transition-gate
+version: 1
+required_inputs:
+- meta/repeatable-customer-rollout.yaml
+- meta/tenant-isolated-production-readiness.yaml
+- meta/service-scale-operations-readiness.yaml
+- meta/rollout-scorecard-program.yaml
+required_evidence:
+- docs/generated/phase-22-launch-readiness-evidence.json
+- docs/generated/phase-23-launch-governance-evidence.json
+- docs/generated/phase-24-pilot-operations-evidence.json
+required_runbooks:
+- docs/runbooks/rollout-cohort-admission.md
+- docs/runbooks/tenant-production-cutover.md
+- docs/runbooks/service-scale-support-review.md
+- docs/runbooks/rollout-scorecard-review.md
+- docs/runbooks/ga-transition-review.md
+required_targets:
+- pilot-check
+- ga-check
+required_docs:
+- docs/design-docs/ga-transition-governance.md
+- docs/operations/customer-rollout.md
+- docs/operations/service-scale-operations.md

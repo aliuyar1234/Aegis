@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/customer-golden-paths.schema.json",
+  "title": "CustomerGoldenPaths",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "program_id",
+    "version",
+    "paths"
+  ],
+  "$defs": {
+    "path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "workflow_class",
+        "starter_kit_id",
+        "deployment_track",
+        "approval_required",
+        "replay_required",
+        "operator_intervention_supported",
+        "required_evidence",
+        "runbook_refs",
+        "success_markers"
+      ],
+      "properties": {
+        "id": {"type": "string"},
+        "workflow_class": {"type": "string"},
+        "starter_kit_id": {"type": "string"},
+        "deployment_track": {"type": "string"},
+        "approval_required": {"type": "boolean"},
+        "replay_required": {"type": "boolean"},
+        "operator_intervention_supported": {"type": "boolean"},
+        "required_evidence": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "runbook_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "success_markers": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "paths": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/path"},
+      "minItems": 2
+    }
+  }
+}

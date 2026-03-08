@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/customer-environment-readiness-report.schema.json",
+  "title": "CustomerEnvironmentReadinessReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "sections", "verdict"],
+  "$defs": {
+    "sectionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["section_id", "item_count", "verdict"],
+      "properties": {
+        "section_id": {"type": "string"},
+        "item_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "sections": {"type": "array", "items": {"$ref": "#/$defs/sectionResult"}, "minItems": 1},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

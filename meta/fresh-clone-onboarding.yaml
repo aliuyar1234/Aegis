@@ -1,0 +1,39 @@
+id: phase21-fresh-clone-onboarding
+name: Fresh clone onboarding contract
+canonical_docs:
+- README.md
+- AGENTS.md
+- docs/design-docs/fresh-clone-onboarding.md
+- docs/operations/evaluation-deployment.md
+- docs/runbooks/fresh-clone-first-run.md
+read_order:
+- README.md
+- docs/overview/product.md
+- docs/overview/architecture.md
+- meta/current-phase.yaml
+- docs/overview/implementation-order.md
+- work-items/task-index.yaml
+- docs/overview/test-strategy.md
+- docs/overview/must-not-violate.md
+official_commands:
+- make bootstrap
+- make eval-up
+- make eval-init
+- make eval-check
+- make smoke
+agents_required_refs:
+- docs/overview/product.md
+- docs/overview/architecture.md
+- docs/overview/implementation-order.md
+- docs/overview/test-strategy.md
+- docs/overview/must-not-violate.md
+readme_required_snippets:
+- make bootstrap
+- make eval-up
+- make eval-init
+- make eval-check
+- make smoke
+required_scripts:
+- scripts/bootstrap.py
+- scripts/init_local.py
+- scripts/smoke.py

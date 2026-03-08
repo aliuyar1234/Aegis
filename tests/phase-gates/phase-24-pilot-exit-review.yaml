@@ -1,0 +1,37 @@
+id: phase-24-pilot-exit-review
+phase: PHASE-24
+name: Pilot exit review gate
+objective: Validate that PHASE-24 captures pilot execution status and rollout recommendation as a reproducible evidence bundle.
+fixtures:
+- docs/design-docs/pilot-exit-review.md
+- docs/runbooks/pilot-exit-review.md
+- meta/pilot-exit-review-manifest.yaml
+- meta/phase24-pilot-operations-evidence-manifest.yaml
+- docs/generated/phase-24-pilot-operations-evidence.json
+- schema/jsonschema/pilot-exit-review-manifest.schema.json
+- schema/jsonschema/pilot-exit-review-report.schema.json
+- schema/jsonschema/phase24-pilot-operations-evidence-manifest.schema.json
+- schema/jsonschema/phase24-pilot-operations-evidence-bundle.schema.json
+- scripts/run_phase24_pilot_exit_review.py
+- scripts/build_phase24_pilot_operations_evidence.py
+- tests/launch_readiness/test_phase24_pilot_exit_review_assets.py
+- tests/phase-gates/phase-24-pilot-exit-review.yaml
+tests:
+- TS-073
+acceptance:
+- AC-113
+steps:
+- id: exit-review-inputs
+  description: verify pilot launch status, feedback, and exception inputs are committed
+  expected:
+  - the exit review references explicit pilot inputs and recommendation outcomes
+  evidence:
+  - meta/pilot-exit-review-manifest.yaml
+- id: reproducible-pilot-operations-bundle
+  description: verify the pilot-operations evidence bundle is reproducible
+  expected:
+  - the bundle fails if any underlying phase-24 report fails
+  evidence:
+  - scripts/build_phase24_pilot_operations_evidence.py
+proves:
+- phase-24 pilot exit review is a reproducible operating decision surface

@@ -1,0 +1,31 @@
+program_id: repeatable-customer-rollout
+version: 1
+cohorts:
+- id: shared-expansion-cohort
+  deployment_track: shared-evaluation
+  predecessor_wave_id: design-partner-alpha
+  expansion_stage: post_pilot_expansion
+  required_inputs:
+  - docs/generated/phase-24-pilot-operations-evidence.json
+  - docs/generated/phase-23-launch-governance-evidence.json
+  - meta/customer-operations-package.yaml
+  handoff_doc_refs:
+  - docs/operations/customer-rollout.md
+  - docs/operations/customer-operations.md
+  runbook_refs:
+  - docs/runbooks/rollout-cohort-admission.md
+  - docs/runbooks/customer-operations-handshake.md
+- id: isolated-ga-candidate-cohort
+  deployment_track: dedicated-regional-rollout
+  predecessor_wave_id: design-partner-beta
+  expansion_stage: ga_candidate
+  required_inputs:
+  - docs/generated/phase-24-pilot-operations-evidence.json
+  - meta/tenant-isolated-production-readiness.yaml
+  - meta/customer-environment-readiness.yaml
+  handoff_doc_refs:
+  - docs/operations/customer-rollout.md
+  - docs/operations/customer-environment-readiness.md
+  runbook_refs:
+  - docs/runbooks/rollout-cohort-admission.md
+  - docs/runbooks/tenant-production-cutover.md

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/customer-golden-path-report.schema.json",
+  "title": "CustomerGoldenPathReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "paths", "verdict"],
+  "$defs": {
+    "pathResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path_id", "workflow_class", "evidence_count", "runbook_count", "verdict"],
+      "properties": {
+        "path_id": {"type": "string"},
+        "workflow_class": {"type": "string"},
+        "evidence_count": {"type": "integer"},
+        "runbook_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "paths": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/pathResult"},
+      "minItems": 2
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

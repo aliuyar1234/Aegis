@@ -344,6 +344,116 @@ PHASE20_FIXTURE_SCHEMA_PAIRS = [
         ROOT / "meta/lifecycle-evidence-manifest.yaml",
     ),
 ]
+PHASE21_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/fresh-clone-onboarding.schema.json",
+        ROOT / "meta/fresh-clone-onboarding.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/evaluation-deployment-profile.schema.json",
+        ROOT / "meta/evaluation-deployment-profile.yaml",
+    ),
+]
+PHASE22_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/customer-golden-paths.schema.json",
+        ROOT / "meta/customer-golden-paths.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/release-signoff-manifest.schema.json",
+        ROOT / "meta/release-signoff-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/security-baseline-manifest.schema.json",
+        ROOT / "meta/security-baseline-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/support-model.schema.json",
+        ROOT / "meta/support-model.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/launch-readiness-evidence-manifest.schema.json",
+        ROOT / "meta/launch-readiness-evidence-manifest.yaml",
+    ),
+]
+PHASE23_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/real-infrastructure-proving.schema.json",
+        ROOT / "meta/real-infrastructure-proving.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/launch-observability-baseline.schema.json",
+        ROOT / "meta/launch-observability-baseline.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/customer-environment-readiness.schema.json",
+        ROOT / "meta/customer-environment-readiness.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/customer-operations-package.schema.json",
+        ROOT / "meta/customer-operations-package.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/pilot-governance-manifest.schema.json",
+        ROOT / "meta/pilot-governance-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/phase23-launch-governance-evidence-manifest.schema.json",
+        ROOT / "meta/phase23-launch-governance-evidence-manifest.yaml",
+    ),
+]
+PHASE24_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/pilot-launch-wave.schema.json",
+        ROOT / "meta/pilot-launch-wave.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/pilot-control-room.schema.json",
+        ROOT / "meta/pilot-control-room.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/customer-feedback-loop.schema.json",
+        ROOT / "meta/customer-feedback-loop.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/launch-exception-governance.schema.json",
+        ROOT / "meta/launch-exception-governance.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/pilot-exit-review-manifest.schema.json",
+        ROOT / "meta/pilot-exit-review-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/phase24-pilot-operations-evidence-manifest.schema.json",
+        ROOT / "meta/phase24-pilot-operations-evidence-manifest.yaml",
+    ),
+]
+PHASE25_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/repeatable-customer-rollout.schema.json",
+        ROOT / "meta/repeatable-customer-rollout.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/tenant-isolated-production-readiness.schema.json",
+        ROOT / "meta/tenant-isolated-production-readiness.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/service-scale-operations-readiness.schema.json",
+        ROOT / "meta/service-scale-operations-readiness.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/rollout-scorecard-program.schema.json",
+        ROOT / "meta/rollout-scorecard-program.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/ga-transition-gate-manifest.schema.json",
+        ROOT / "meta/ga-transition-gate-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/phase25-ga-transition-evidence-manifest.schema.json",
+        ROOT / "meta/phase25-ga-transition-evidence-manifest.yaml",
+    ),
+]
 BENCHMARK_FIXTURE_SCHEMA_PAIRS = [
     (
         ROOT / "schema/jsonschema/benchmark-corpus.schema.json",
@@ -368,6 +478,14 @@ PHASE19_ADOPTION_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/adoption-evidence-b
 PHASE19_ADOPTION_EVIDENCE = ROOT / "docs/generated/phase-19-adoption-evidence.json"
 PHASE20_LIFECYCLE_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/lifecycle-evidence-bundle.schema.json"
 PHASE20_LIFECYCLE_EVIDENCE = ROOT / "docs/generated/phase-20-lifecycle-evidence.json"
+PHASE22_LAUNCH_READINESS_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/launch-readiness-evidence-bundle.schema.json"
+PHASE22_LAUNCH_READINESS_EVIDENCE = ROOT / "docs/generated/phase-22-launch-readiness-evidence.json"
+PHASE23_LAUNCH_GOVERNANCE_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/phase23-launch-governance-evidence-bundle.schema.json"
+PHASE23_LAUNCH_GOVERNANCE_EVIDENCE = ROOT / "docs/generated/phase-23-launch-governance-evidence.json"
+PHASE24_PILOT_OPERATIONS_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/phase24-pilot-operations-evidence-bundle.schema.json"
+PHASE24_PILOT_OPERATIONS_EVIDENCE = ROOT / "docs/generated/phase-24-pilot-operations-evidence.json"
+PHASE25_GA_TRANSITION_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/phase25-ga-transition-evidence-bundle.schema.json"
+PHASE25_GA_TRANSITION_EVIDENCE = ROOT / "docs/generated/phase-25-ga-transition-evidence.json"
 PYTHON_VENDOR_ROOT = ROOT / "py" / "vendor"
 PYTHON_BINDINGS_ROOT = ROOT / "py" / "packages" / "aegis_contracts_py" / "generated" / "proto"
 RUST_BINDINGS_ROOT = ROOT / "rs" / "crates" / "aegis_contracts_rs" / "src" / "generated" / "proto"
@@ -1029,6 +1147,115 @@ def validate_phase20_artifacts() -> None:
         )
 
 
+def validate_phase21_artifacts() -> None:
+    for schema_path, fixture_path in PHASE21_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-21 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+
+def validate_phase22_artifacts() -> None:
+    for schema_path, fixture_path in PHASE22_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-22 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    launch_readiness_schema = load_json(PHASE22_LAUNCH_READINESS_EVIDENCE_SCHEMA)
+    launch_readiness_bundle = load_json(PHASE22_LAUNCH_READINESS_EVIDENCE)
+    try:
+        validate(instance=launch_readiness_bundle, schema=launch_readiness_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-22 launch-readiness evidence "
+            f"{PHASE22_LAUNCH_READINESS_EVIDENCE.relative_to(ROOT)} for schema "
+            f"{PHASE22_LAUNCH_READINESS_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_phase23_artifacts() -> None:
+    for schema_path, fixture_path in PHASE23_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-23 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    launch_governance_schema = load_json(PHASE23_LAUNCH_GOVERNANCE_EVIDENCE_SCHEMA)
+    launch_governance_bundle = load_json(PHASE23_LAUNCH_GOVERNANCE_EVIDENCE)
+    try:
+        validate(instance=launch_governance_bundle, schema=launch_governance_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-23 launch-governance evidence "
+            f"{PHASE23_LAUNCH_GOVERNANCE_EVIDENCE.relative_to(ROOT)} for schema "
+            f"{PHASE23_LAUNCH_GOVERNANCE_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_phase24_artifacts() -> None:
+    for schema_path, fixture_path in PHASE24_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-24 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    pilot_operations_schema = load_json(PHASE24_PILOT_OPERATIONS_EVIDENCE_SCHEMA)
+    pilot_operations_bundle = load_json(PHASE24_PILOT_OPERATIONS_EVIDENCE)
+    try:
+        validate(instance=pilot_operations_bundle, schema=pilot_operations_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-24 pilot-operations evidence "
+            f"{PHASE24_PILOT_OPERATIONS_EVIDENCE.relative_to(ROOT)} for schema "
+            f"{PHASE24_PILOT_OPERATIONS_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_phase25_artifacts() -> None:
+    for schema_path, fixture_path in PHASE25_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-25 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    ga_transition_schema = load_json(PHASE25_GA_TRANSITION_EVIDENCE_SCHEMA)
+    ga_transition_bundle = load_json(PHASE25_GA_TRANSITION_EVIDENCE)
+    try:
+        validate(instance=ga_transition_bundle, schema=ga_transition_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-25 ga-transition evidence "
+            f"{PHASE25_GA_TRANSITION_EVIDENCE.relative_to(ROOT)} for schema "
+            f"{PHASE25_GA_TRANSITION_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
 def validate_benchmark_artifacts() -> None:
     for schema_path, fixture_path in BENCHMARK_FIXTURE_SCHEMA_PAIRS:
         schema = load_json(schema_path)
@@ -1197,6 +1424,11 @@ validate_phase17_artifacts()
 validate_phase18_artifacts()
 validate_phase19_artifacts()
 validate_phase20_artifacts()
+validate_phase21_artifacts()
+validate_phase22_artifacts()
+validate_phase23_artifacts()
+validate_phase24_artifacts()
+validate_phase25_artifacts()
 validate_benchmark_artifacts()
 
 if subject_map["dispatch"]["message"] != "ActionDispatch":

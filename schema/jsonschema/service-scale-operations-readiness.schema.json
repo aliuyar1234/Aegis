@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/service-scale-operations-readiness.schema.json",
+  "title": "ServiceScaleOperationsReadiness",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "cadences"],
+  "$defs": {
+    "cadence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owning_rotation", "coverage_window", "escalation_rotations", "required_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "owning_rotation": {"type": "string"},
+        "coverage_window": {"type": "string"},
+        "escalation_rotations": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "required_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "cadences": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/cadence"},
+      "minItems": 2
+    }
+  }
+}

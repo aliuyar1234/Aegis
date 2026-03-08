@@ -1,0 +1,35 @@
+id: phase-25-tenant-isolated-production-readiness
+phase: PHASE-25
+name: Tenant-isolated production readiness gate
+objective: Validate that phase-25 production boundaries remain explicit, evidence-backed, and rollback-aware.
+fixtures:
+- docs/exec-plans/active/PHASE-25-ga-transition-and-rollout-readiness.md
+- docs/design-docs/tenant-isolated-production-readiness.md
+- docs/operations/customer-rollout.md
+- docs/runbooks/tenant-production-cutover.md
+- meta/tenant-isolated-production-readiness.yaml
+- schema/jsonschema/tenant-isolated-production-readiness.schema.json
+- schema/jsonschema/tenant-isolated-production-readiness-report.schema.json
+- scripts/run_phase25_tenant_isolated_production_readiness.py
+- tests/launch_readiness/test_phase25_tenant_isolated_production_plan_assets.py
+- tests/phase-gates/phase-25-tenant-isolated-production-readiness.yaml
+tests:
+- TS-075
+acceptance:
+- AC-115
+steps:
+- id: production-boundaries-defined
+  description: verify tenant-isolated production readiness binds evidence, migration boundaries, and rollback surfaces
+  expected:
+  - production-isolation boundaries are explicit
+  - migration and rollback refs stay committed
+  evidence:
+  - meta/tenant-isolated-production-readiness.yaml
+- id: reproducible-production-report
+  description: verify the production-readiness report is reproducible
+  expected:
+  - the report fails if evidence, migration, or rollback refs drift
+  evidence:
+  - scripts/run_phase25_tenant_isolated_production_readiness.py
+proves:
+- phase-25 tenant-isolated production readiness is explicit and machine-checkable

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/security-baseline-manifest.schema.json",
+  "title": "SecurityBaselineManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "controls"],
+  "$defs": {
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "category", "owner", "required_refs"],
+      "properties": {
+        "id": {"type": "string"},
+        "category": {"type": "string"},
+        "owner": {"type": "string"},
+        "required_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "properties": {
+    "program_id": {"type": "string"},
+    "version": {"type": "integer"},
+    "controls": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/control"},
+      "minItems": 1
+    }
+  }
+}

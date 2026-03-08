@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/tenant-isolated-production-readiness-report.schema.json",
+  "title": "TenantIsolatedProductionReadinessReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "boundaries", "verdict"],
+  "$defs": {
+    "boundaryResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["boundary_id", "evidence_count", "rollback_count", "verdict"],
+      "properties": {
+        "boundary_id": {"type": "string"},
+        "evidence_count": {"type": "integer"},
+        "rollback_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "boundaries": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/boundaryResult"},
+      "minItems": 2
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

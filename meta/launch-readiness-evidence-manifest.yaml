@@ -1,0 +1,18 @@
+id: launch-readiness-evidence-manifest
+version: 1
+required_scripts:
+- scripts/run_phase22_customer_golden_paths.py
+- scripts/run_phase22_release_signoff.py
+- scripts/run_phase22_security_baseline.py
+- scripts/run_phase22_support_model.py
+required_gates:
+- tests/phase-gates/phase-22-customer-golden-paths.yaml
+- tests/phase-gates/phase-22-release-signoff.yaml
+- tests/phase-gates/phase-22-security-baseline.yaml
+- tests/phase-gates/phase-22-support-model.yaml
+- tests/phase-gates/phase-22-launch-readiness-evidence.yaml
+required_docs:
+- docs/design-docs/customer-golden-paths.md
+- docs/design-docs/release-candidate-signoff.md
+- docs/design-docs/launch-security-baseline.md
+- docs/design-docs/support-operating-model.md

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/pilot-exit-review-manifest.schema.json",
+  "title": "PilotExitReviewManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "required_inputs", "recommendation_outcomes", "review_sections", "runbook_refs"],
+  "properties": {
+    "id": {"type": "string"},
+    "version": {"type": "integer"},
+    "required_inputs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "recommendation_outcomes": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "review_sections": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "runbook_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+  }
+}

@@ -1,0 +1,52 @@
+program_id: launch-security-baseline
+version: 1
+controls:
+- id: dependency-audit
+  category: supply_chain
+  owner: platform-security
+  required_refs:
+  - docs/operations/security.md
+  - docs/design-docs/launch-security-baseline.md
+  - docs/runbooks/security-baseline-review.md
+- id: sbom-generation
+  category: supply_chain
+  owner: platform-security
+  required_refs:
+  - docs/operations/security.md
+  - docs/design-docs/launch-security-baseline.md
+  - docs/runbooks/security-baseline-review.md
+- id: secret-scanning
+  category: credentials
+  owner: platform-security
+  required_refs:
+  - docs/operations/security.md
+  - docs/design-docs/launch-security-baseline.md
+  - docs/runbooks/security-baseline-review.md
+- id: signed-build-artifacts
+  category: supply_chain
+  owner: platform-security
+  required_refs:
+  - docs/operations/security.md
+  - docs/design-docs/launch-security-baseline.md
+  - docs/runbooks/security-baseline-review.md
+- id: hardened-defaults
+  category: deployment
+  owner: platform-ops
+  required_refs:
+  - docs/operations/security.md
+  - docs/design-docs/launch-security-baseline.md
+  - docs/runbooks/security-baseline-review.md
+- id: scoped-credentials
+  category: credentials
+  owner: platform-security
+  required_refs:
+  - docs/operations/security.md
+  - docs/design-docs/launch-security-baseline.md
+  - docs/runbooks/security-baseline-review.md
+- id: key-rotation
+  category: keys
+  owner: platform-security
+  required_refs:
+  - docs/operations/security.md
+  - docs/design-docs/launch-security-baseline.md
+  - docs/runbooks/security-baseline-review.md

@@ -62,18 +62,28 @@ current_doc = current['current_phase_doc']
 if current_id not in phase_ids:
     print(f'Current phase {current_id} missing from meta/phase-gates.yaml')
     sys.exit(1)
-if phase_ids[current_id]['status'] != 'current':
-    print(f'Current phase {current_id} must have status=current')
-    sys.exit(1)
 if phase_ids[current_id]['doc'] != current_doc:
     print(f'current_phase_doc mismatch: {current_doc} != {phase_ids[current_id]["doc"]}')
     sys.exit(1)
 if not (ROOT / current_doc).exists():
     print(f'current_phase_doc missing: {current_doc}')
     sys.exit(1)
-if sum(1 for p in phase_data if p['status'] == 'current') != 1:
-    print('Exactly one phase must have status=current')
+current_phase_entries = [p for p in phase_data if p['status'] == 'current']
+if len(current_phase_entries) > 1:
+    print('At most one phase may have status=current')
     sys.exit(1)
+if current_phase_entries:
+    if phase_ids[current_id]['status'] != 'current':
+        print(f'Current phase {current_id} must have status=current while another phase is current')
+        sys.exit(1)
+else:
+    if phase_ids[current_id]['status'] != 'completed':
+        print(f'Terminal current phase {current_id} must have status=completed when no active successor exists')
+        sys.exit(1)
+    latest_phase = max(phase_data, key=lambda p: phase_num(p['id']))
+    if latest_phase['id'] != current_id:
+        print(f'Terminal current phase must point at the latest defined phase: {latest_phase["id"]}')
+        sys.exit(1)
 for completed in current.get('completed_phases', []):
     if phase_ids[completed]['status'] != 'completed':
         print(f'Completed phase {completed} must have status=completed')

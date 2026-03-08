@@ -1,0 +1,51 @@
+program_id: support-model
+version: 1
+support_docs:
+- docs/operations/support.md
+- docs/runbooks/support-escalation.md
+- docs/runbooks/customer-incident-communications.md
+rotations:
+- id: runtime-primary
+  owner: runtime-team
+  coverage: 24x5
+- id: platform-ops
+  owner: platform-ops
+  coverage: business-hours-plus-change-window
+- id: security-escalation
+  owner: platform-security
+  coverage: escalation-only
+communication_templates:
+- id: sev1-initial
+  doc_ref: docs/runbooks/customer-incident-communications.md
+- id: sev2-initial
+  doc_ref: docs/runbooks/customer-incident-communications.md
+- id: sev3-initial
+  doc_ref: docs/runbooks/customer-incident-communications.md
+- id: sev4-initial
+  doc_ref: docs/runbooks/customer-incident-communications.md
+severities:
+- id: SEV-1
+  response_minutes: 15
+  owning_rotation: runtime-primary
+  escalation_path:
+  - platform-ops
+  - security-escalation
+  communication_template: sev1-initial
+- id: SEV-2
+  response_minutes: 30
+  owning_rotation: runtime-primary
+  escalation_path:
+  - platform-ops
+  communication_template: sev2-initial
+- id: SEV-3
+  response_minutes: 120
+  owning_rotation: platform-ops
+  escalation_path:
+  - runtime-primary
+  communication_template: sev3-initial
+- id: SEV-4
+  response_minutes: 480
+  owning_rotation: platform-ops
+  escalation_path:
+  - runtime-primary
+  communication_template: sev4-initial

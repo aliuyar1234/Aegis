@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/customer-feedback-loop-report.schema.json",
+  "title": "CustomerFeedbackLoopReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "channels", "verdict"],
+  "$defs": {
+    "channelResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["channel_id", "evidence_count", "verdict"],
+      "properties": {
+        "channel_id": {"type": "string"},
+        "evidence_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "channels": {"type": "array", "items": {"$ref": "#/$defs/channelResult"}, "minItems": 1},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

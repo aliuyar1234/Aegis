@@ -1,0 +1,33 @@
+id: phase-24-customer-feedback-loop
+phase: PHASE-24
+name: Customer feedback loop gate
+objective: Validate that PHASE-24 captures pilot feedback, ownership, and decision paths explicitly.
+fixtures:
+- docs/design-docs/customer-feedback-governance.md
+- docs/runbooks/customer-feedback-triage.md
+- meta/customer-feedback-loop.yaml
+- schema/jsonschema/customer-feedback-loop.schema.json
+- schema/jsonschema/customer-feedback-loop-report.schema.json
+- scripts/run_phase24_customer_feedback_loop.py
+- tests/launch_readiness/test_phase24_customer_feedback_loop_assets.py
+- tests/phase-gates/phase-24-customer-feedback-loop.yaml
+tests:
+- TS-071
+acceptance:
+- AC-111
+steps:
+- id: feedback-classification-and-ownership
+  description: verify feedback classes, evidence, owners, and decision paths stay aligned
+  expected:
+  - pilot learnings map to explicit classes and ownership
+  - issue triage stays tied to committed evidence and runbooks
+  evidence:
+  - meta/customer-feedback-loop.yaml
+- id: reproducible-feedback-report
+  description: verify the feedback report is reproducible
+  expected:
+  - the report fails if classes, owners, or evidence refs drift
+  evidence:
+  - scripts/run_phase24_customer_feedback_loop.py
+proves:
+- phase-24 customer feedback becomes a durable operating surface instead of memory

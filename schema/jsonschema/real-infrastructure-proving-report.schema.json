@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/real-infrastructure-proving-report.schema.json",
+  "title": "RealInfrastructureProvingReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "environments", "verdict"],
+  "$defs": {
+    "environmentResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment_id", "proof_count", "runbook_count", "verdict"],
+      "properties": {
+        "environment_id": {"type": "string"},
+        "proof_count": {"type": "integer"},
+        "runbook_count": {"type": "integer"},
+        "verdict": {"type": "string", "enum": ["pass", "fail"]}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string"},
+    "environments": {"type": "array", "items": {"$ref": "#/$defs/environmentResult"}, "minItems": 2},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}

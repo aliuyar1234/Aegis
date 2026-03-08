@@ -1,0 +1,23 @@
+id: phase-26-live-customer-operations
+phase: PHASE-26
+name: Live customer operations planning gate
+objective: Validate that PHASE-26 commits the live customer operations workstream into the SSOT.
+fixtures:
+- docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+- tests/launch_readiness/test_phase26_live_customer_operations_plan_assets.py
+- tests/phase-gates/phase-26-live-customer-operations.yaml
+- work-items/task-index.yaml
+tests:
+- TS-079
+acceptance:
+- AC-119
+steps:
+- id: live-ops-planned
+  description: verify the live customer operations program is explicitly scoped in the phase doc and task graph
+  expected:
+  - post-GA live operations are committed as a bounded workstream
+  evidence:
+  - docs/exec-plans/active/PHASE-26-live-customer-operations-and-release-automation.md
+  - work-items/task-index.yaml
+proves:
+- phase-26 starts with an explicit live-customer-operations workstream instead of implicit next steps

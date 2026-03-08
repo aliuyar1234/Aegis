@@ -1,0 +1,33 @@
+id: phase-23-real-infrastructure-proving
+phase: PHASE-23
+name: Real-infrastructure proving workstream gate
+objective: Validate that PHASE-23 explicitly scopes the production-like proving wave for recovery, upgrade, and isolation evidence.
+fixtures:
+- docs/design-docs/real-infrastructure-proving.md
+- docs/runbooks/production-like-proving.md
+- meta/real-infrastructure-proving.yaml
+- schema/jsonschema/real-infrastructure-proving.schema.json
+- schema/jsonschema/real-infrastructure-proving-report.schema.json
+- scripts/run_phase23_real_infrastructure_proving.py
+- tests/launch_readiness/test_phase23_real_infrastructure_proving_assets.py
+- tests/phase-gates/phase-23-real-infrastructure-proving.yaml
+tests:
+- TS-064
+acceptance:
+- AC-104
+steps:
+- id: proving-scope-defined
+  description: verify the real-infrastructure proving surface binds tracks, drills, evidence, and runbooks
+  expected:
+  - shared and dedicated production-like environments are explicit
+  - restore, rolling-upgrade, and tenant-isolation proof stay committed
+  evidence:
+  - meta/real-infrastructure-proving.yaml
+- id: checklist-gap-bound
+  description: verify the proving report is reproducible
+  expected:
+  - the report fails if drills, tracks, or evidence refs drift
+  evidence:
+  - scripts/run_phase23_real_infrastructure_proving.py
+proves:
+- phase-23 explicitly bounds the real-infrastructure launch-proof wave

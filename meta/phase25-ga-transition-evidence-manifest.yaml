@@ -1,0 +1,41 @@
+id: phase25-ga-transition-evidence-manifest
+bundle_id: phase25-ga-transition-evidence-bundle
+phase: PHASE-25
+required_scripts:
+- scripts/run_phase25_repeatable_rollout_program.py
+- scripts/run_phase25_tenant_isolated_production_readiness.py
+- scripts/run_phase25_service_scale_operations_readiness.py
+- scripts/run_phase25_rollout_scorecards.py
+- scripts/run_phase25_ga_transition_gate.py
+required_gates:
+- tests/phase-gates/phase-25-repeatable-rollout-program.yaml
+- tests/phase-gates/phase-25-tenant-isolated-production-readiness.yaml
+- tests/phase-gates/phase-25-service-scale-readiness.yaml
+- tests/phase-gates/phase-25-rollout-scorecard.yaml
+- tests/phase-gates/phase-25-ga-transition-gate.yaml
+evidence_groups:
+- id: repeatable-customer-rollout
+  refs:
+  - meta/repeatable-customer-rollout.yaml
+  - docs/design-docs/repeatable-customer-rollout.md
+  - docs/runbooks/rollout-cohort-admission.md
+- id: tenant-isolated-production-readiness
+  refs:
+  - meta/tenant-isolated-production-readiness.yaml
+  - docs/design-docs/tenant-isolated-production-readiness.md
+  - docs/runbooks/tenant-production-cutover.md
+- id: service-scale-operations-readiness
+  refs:
+  - meta/service-scale-operations-readiness.yaml
+  - docs/design-docs/service-scale-operations-readiness.md
+  - docs/runbooks/service-scale-support-review.md
+- id: rollout-scorecards
+  refs:
+  - meta/rollout-scorecard-program.yaml
+  - docs/design-docs/rollout-scorecards-and-reference-evidence.md
+  - docs/runbooks/rollout-scorecard-review.md
+- id: ga-transition-gate
+  refs:
+  - meta/ga-transition-gate-manifest.yaml
+  - docs/design-docs/ga-transition-governance.md
+  - docs/runbooks/ga-transition-review.md

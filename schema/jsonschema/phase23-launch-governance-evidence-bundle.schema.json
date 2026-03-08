@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/phase23-launch-governance-evidence-bundle.schema.json",
+  "title": "Phase23LaunchGovernanceEvidenceBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "phase", "reports", "evidence_groups", "verdict"],
+  "properties": {
+    "id": {"type": "string"},
+    "phase": {"type": "string"},
+    "reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "verdict"],
+        "properties": {
+          "id": {"type": "string"},
+          "verdict": {"type": "string", "enum": ["pass", "fail"]}
+        }
+      },
+      "minItems": 1
+    },
+    "evidence_groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "ref_count"],
+        "properties": {
+          "id": {"type": "string"},
+          "ref_count": {"type": "integer"}
+        }
+      },
+      "minItems": 1
+    },
+    "verdict": {"type": "string", "enum": ["pass", "fail"]}
+  }
+}
