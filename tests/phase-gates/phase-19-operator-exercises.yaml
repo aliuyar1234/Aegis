@@ -1,0 +1,36 @@
+id: phase-19-operator-exercises
+phase: PHASE-19
+name: Operator exercises gate
+objective: Validate that phase-19 operator training is modeled as bounded drills
+  tied to committed runbooks and evidence.
+fixtures:
+- docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+- docs/design-docs/operator-exercises.md
+- docs/runbooks/operator-training-exercise.md
+- meta/operator-exercise-manifest.yaml
+- schema/jsonschema/operator-exercise-manifest.schema.json
+- schema/jsonschema/operator-exercise-report.schema.json
+- scripts/run_phase19_operator_exercises.py
+- tests/operator_training/test_phase19_operator_exercises_assets.py
+- tests/phase-gates/phase-19-operator-exercises.yaml
+tests:
+- TS-049
+acceptance:
+- AC-089
+steps:
+- id: drill-manifest
+  description: verify operator drills are explicit, evidence-backed, and linked to
+    committed runbooks
+  expected:
+  - each drill includes runbook refs, required evidence, and expected outcomes
+  evidence:
+  - meta/operator-exercise-manifest.yaml
+- id: reproducible-drill-report
+  description: verify the exercise report is reproducible
+  expected:
+  - the report fails when drill runbooks, evidence, or outcome surfaces drift
+  evidence:
+  - scripts/run_phase19_operator_exercises.py
+proves:
+- phase-19 operator enablement is modeled as replay-compatible drills rather than
+  informal playbooks

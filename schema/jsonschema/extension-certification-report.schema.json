@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/extension-certification-report.schema.json",
+  "title": "ExtensionCertificationReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "evaluations",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase18-extension-certification-report"
+    },
+    "evaluations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "target_level",
+          "member_count",
+          "kinds",
+          "actual_profiles",
+          "policy_bundle",
+          "public_track",
+          "signature",
+          "verdict"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string"
+          },
+          "target_level": {
+            "type": "string"
+          },
+          "member_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "kinds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "tool_connector",
+                "artifact_processor",
+                "mcp_adapter"
+              ]
+            }
+          },
+          "actual_profiles": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "policy_bundle": {
+            "type": "string"
+          },
+          "public_track": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "profile",
+              "signer_role",
+              "digest_sha256"
+            ],
+            "properties": {
+              "profile": {
+                "type": "string"
+              },
+              "signer_role": {
+                "type": "string"
+              },
+              "digest_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

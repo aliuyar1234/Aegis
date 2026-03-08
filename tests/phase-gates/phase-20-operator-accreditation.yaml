@@ -1,0 +1,35 @@
+id: phase-20-operator-accreditation
+phase: PHASE-20
+name: Operator accreditation gate
+objective: Validate that phase-20 operator accreditation is modeled as explicit
+  tracks tied to drills, evidence, renewal, and bounded deployment authority.
+fixtures:
+- docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+- docs/design-docs/operator-accreditation.md
+- docs/runbooks/operator-accreditation-renewal.md
+- meta/operator-accreditation.yaml
+- schema/jsonschema/operator-accreditation.schema.json
+- schema/jsonschema/operator-accreditation-report.schema.json
+- scripts/run_phase20_operator_accreditation.py
+- tests/accreditation/test_phase20_operator_accreditation_assets.py
+- tests/phase-gates/phase-20-operator-accreditation.yaml
+tests:
+- TS-052
+acceptance:
+- AC-092
+steps:
+- id: accreditation-tracks
+  description: verify accreditation tracks bind deployment tracks, exercises, and evidence
+  expected:
+  - each track references committed deployment tracks and operator drills
+  - each track references current evidence bundles and a renewal runbook
+  evidence:
+  - meta/operator-accreditation.yaml
+- id: reproducible-accreditation-report
+  description: verify the operator accreditation report is reproducible
+  expected:
+  - the report fails if accreditation surfaces drift from the committed adoption and drill assets
+  evidence:
+  - scripts/run_phase20_operator_accreditation.py
+proves:
+- phase-20 operator accreditation is a machine-checkable lifecycle surface rather than an informal role label

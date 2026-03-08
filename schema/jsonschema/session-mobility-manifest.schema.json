@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/session-mobility-manifest.schema.json",
+  "title": "SessionMobilityManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "scenarios"],
+  "properties": {
+    "id": { "type": "string", "const": "session-mobility-manifest" },
+    "version": { "type": "integer", "minimum": 1 },
+    "scenarios": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "mobility_mode",
+          "source_region",
+          "target_region",
+          "checkpoint_continuity",
+          "approval_continuity",
+          "artifact_continuity",
+          "expected_authoritative_region"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "mobility_mode": { "type": "string", "minLength": 1 },
+          "source_region": { "type": "string", "minLength": 1 },
+          "target_region": { "type": "string", "minLength": 1 },
+          "checkpoint_continuity": { "type": "string", "minLength": 1 },
+          "approval_continuity": { "type": "string", "minLength": 1 },
+          "artifact_continuity": { "type": "string", "minLength": 1 },
+          "expected_authoritative_region": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

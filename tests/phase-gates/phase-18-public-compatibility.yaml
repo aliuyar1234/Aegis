@@ -1,0 +1,35 @@
+id: phase-18-public-compatibility
+phase: PHASE-18
+name: Public compatibility gate
+objective: Validate that phase-18 public extension publication is benchmark-backed
+  and bounded by certification and governance.
+fixtures:
+- docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+- docs/design-docs/public-compatibility-leadership.md
+- meta/public-benchmark-manifest.yaml
+- docs/generated/phase-14-benchmark-scorecard.json
+- schema/jsonschema/public-benchmark-manifest.schema.json
+- schema/jsonschema/public-compatibility-report.schema.json
+- scripts/run_phase18_public_compatibility.py
+- tests/phase-gates/phase-18-public-compatibility.yaml
+- tests/extensions_conformance/test_phase18_public_compatibility_assets.py
+tests:
+- TS-045
+acceptance:
+- AC-085
+steps:
+- id: publication-track
+  description: verify public tracks bind certified packs to benchmark and compatibility dimensions
+  expected:
+  - public tracks reference candidate packs, certification levels, and benchmark classes
+  evidence:
+  - meta/public-benchmark-manifest.yaml
+- id: benchmark-backed-report
+  description: verify public compatibility output consumes committed benchmark evidence
+  expected:
+  - the compatibility report is tied to the committed benchmark scorecard and certification verdicts
+  evidence:
+  - scripts/run_phase18_public_compatibility.py
+  - docs/generated/phase-14-benchmark-scorecard.json
+proves:
+- phase-18 public compatibility claims remain tied to bounded runtime evidence

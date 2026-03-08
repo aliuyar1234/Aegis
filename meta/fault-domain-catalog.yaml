@@ -1,0 +1,48 @@
+id: fault-domain-catalog
+version: 1
+domains:
+- id: eu-central-1a
+  region: eu-central-1
+  role: primary_fault_domain
+  blast_radius: zone
+  standby_eligible: false
+  supported_tiers:
+  - tier-b
+  - tier-c
+- id: eu-central-1b
+  region: eu-central-1
+  role: secondary_fault_domain
+  blast_radius: zone
+  standby_eligible: false
+  supported_tiers:
+  - tier-b
+  - tier-c
+- id: eu-west-1a
+  region: eu-west-1
+  role: regional_standby
+  blast_radius: region
+  standby_eligible: true
+  supported_tiers:
+  - tier-b
+  - tier-c
+- id: us-east-1a
+  region: us-east-1
+  role: dedicated_primary
+  blast_radius: zone
+  standby_eligible: false
+  supported_tiers:
+  - dedicated
+- id: us-east-1b
+  region: us-east-1
+  role: dedicated_secondary
+  blast_radius: zone
+  standby_eligible: false
+  supported_tiers:
+  - dedicated
+- id: us-west-2a
+  region: us-west-2
+  role: dedicated_standby
+  blast_radius: region
+  standby_eligible: true
+  supported_tiers:
+  - dedicated

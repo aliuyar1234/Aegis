@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/load-shed-report.schema.json",
+  "title": "LoadShedReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "policy_results", "verdict"],
+  "properties": {
+    "id": { "type": "string", "const": "phase16-load-shed-report" },
+    "policy_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["policy_id", "protected_classes", "shed_classes", "action_count", "verdict"],
+        "properties": {
+          "policy_id": { "type": "string" },
+          "protected_classes": { "type": "integer", "minimum": 1 },
+          "shed_classes": { "type": "integer", "minimum": 1 },
+          "action_count": { "type": "integer", "minimum": 1 },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "verdict": { "type": "string", "enum": ["pass", "fail"] }
+  }
+}

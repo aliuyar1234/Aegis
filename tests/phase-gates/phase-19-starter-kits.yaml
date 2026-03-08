@@ -1,0 +1,38 @@
+id: phase-19-starter-kits
+phase: PHASE-19
+name: Golden-path starter kits gate
+objective: Validate that phase-19 starter kits package certified extension adoption
+  without bypassing sandbox, policy, or simulation boundaries.
+fixtures:
+- docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+- docs/design-docs/golden-path-starter-kits.md
+- docs/runbooks/first-adopter-onboarding.md
+- meta/golden-path-starter-kits.yaml
+- schema/jsonschema/golden-path-starter-kits.schema.json
+- schema/jsonschema/golden-path-starter-kit-report.schema.json
+- scripts/run_phase19_starter_kits.py
+- tests/starter_kits/test_phase19_starter_kit_assets.py
+- tests/phase-gates/phase-19-starter-kits.yaml
+tests:
+- TS-050
+acceptance:
+- AC-090
+steps:
+- id: starter-kit-bindings
+  description: verify starter kits bind certified packs, sandbox profiles, policy
+    bundles, deployment tracks, and simulation scenarios
+  expected:
+  - each kit references existing certification, sandbox, policy, and simulation
+    assets
+  evidence:
+  - meta/golden-path-starter-kits.yaml
+- id: reproducible-kit-report
+  description: verify the starter-kit report is reproducible
+  expected:
+  - the report fails when starter kits drift from committed certification or deployment
+    surfaces
+  evidence:
+  - scripts/run_phase19_starter_kits.py
+proves:
+- phase-19 starter kits remain bounded by the certified ecosystem and runtime proof
+  surfaces

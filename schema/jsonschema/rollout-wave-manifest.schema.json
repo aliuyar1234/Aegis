@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/rollout-wave-manifest.schema.json",
+  "title": "RolloutWaveManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "waves"],
+  "properties": {
+    "program_id": { "type": "string", "const": "rollout-waves" },
+    "version": { "type": "integer", "const": 1 },
+    "waves": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "display_name",
+          "deployment_track",
+          "deployment_flavor_id",
+          "accreditation_track",
+          "change_window",
+          "promotion_criteria",
+          "required_evidence",
+          "rollback_runbook_ref",
+          "customer_notice_refs"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "display_name": { "type": "string", "minLength": 1 },
+          "deployment_track": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "deployment_flavor_id": { "type": "string", "pattern": "^[a-z0-9_][a-z0-9_.-]*$" },
+          "accreditation_track": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "change_window": { "type": "string", "pattern": "^[a-z_][a-z0-9_]*$" },
+          "promotion_criteria": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "required_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "rollback_runbook_ref": { "type": "string", "minLength": 1 },
+          "customer_notice_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

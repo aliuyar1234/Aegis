@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/adoption-profile-report.schema.json",
+  "title": "AdoptionProfileReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "profiles",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase19-adoption-profiles-report"
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "profile_id",
+          "deployment_track",
+          "starter_kit",
+          "evidence_count",
+          "exercise_count",
+          "verdict"
+        ],
+        "properties": {
+          "profile_id": {
+            "type": "string"
+          },
+          "deployment_track": {
+            "type": "string"
+          },
+          "starter_kit": {
+            "type": "string"
+          },
+          "evidence_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "exercise_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

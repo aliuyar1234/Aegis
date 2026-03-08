@@ -1,0 +1,48 @@
+id: phase-14-contract-conformance
+phase: PHASE-14
+name: Contract conformance gate
+objective: Validate that the phase-14 contract conformance assets tie transport
+  subjects, proto message names, and lifecycle semantics together.
+fixtures:
+- docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+- docs/design-docs/contract-conformance.md
+- schema/transport-topology.yaml
+- schema/proto/aegis/runtime/v1/worker.proto
+- schema/jsonschema/conformance-fixture-manifest.schema.json
+- schema/jsonschema/conformance-report.schema.json
+- tests/conformance/fixtures/runtime-contract-conformance.yaml
+- tests/conformance/fixtures/sample-conformance-report.yaml
+- scripts/run_contract_conformance.py
+- tests/phase-gates/phase-14-contract-conformance.yaml
+- tests/conformance/test_contract_conformance_assets.py
+tests:
+- TS-002
+- TS-021
+acceptance:
+- AC-059
+- AC-061
+steps:
+- id: transport-binding
+  description: verify subject bindings resolve to the expected proto messages
+  expected:
+  - transport subject names in the conformance manifest map to the same message names in transport topology
+  evidence:
+  - schema/transport-topology.yaml
+  - tests/conformance/fixtures/runtime-contract-conformance.yaml
+- id: lifecycle-surface
+  description: verify dispatch, progress, heartbeat, cancel, and terminal stages remain explicit
+  expected:
+  - lifecycle fixtures cover worker registration, dispatch, cancel, progress, heartbeat, and terminal callbacks
+  evidence:
+  - tests/conformance/fixtures/runtime-contract-conformance.yaml
+  - docs/design-docs/contract-conformance.md
+- id: report-validation
+  description: verify the sample conformance report stays aligned with the fixture manifest
+  expected:
+  - the sample report covers exactly the manifest message set
+  - invalid topology drift would fail deterministically
+  evidence:
+  - tests/conformance/fixtures/sample-conformance-report.yaml
+  - scripts/run_contract_conformance.py
+proves:
+- runtime-worker contract conformance is machine-checkable

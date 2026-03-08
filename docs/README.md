@@ -32,6 +32,7 @@ This folder contains the human-readable documentation surface for Aegis Runtime.
 
 - [Open decisions](project/open-decisions.md)
 - [Roadmap](project/roadmap.md)
+- [State-of-the-art roadmap extension](project/state-of-the-art-roadmap.md)
 - [Risk register](project/risk-register.md)
 - [Tech debt](project/tech-debt.md)
 - [Quality score](project/quality-score.md)

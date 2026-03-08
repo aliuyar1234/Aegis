@@ -1,0 +1,47 @@
+id: phase-16-capacity-budgets
+phase: PHASE-16
+name: Capacity and SLO gate
+objective: Validate that phase-16 capacity and overload doctrine are modeled as explicit
+  SLO profiles, budget profiles, and policy links.
+fixtures:
+- docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+- docs/design-docs/capacity-model.md
+- meta/slo-profiles.yaml
+- meta/performance-budgets.yaml
+- meta/load-shed-policies.yaml
+- schema/jsonschema/slo-profiles.schema.json
+- schema/jsonschema/performance-budgets.schema.json
+- schema/jsonschema/load-shed-policies.schema.json
+- schema/jsonschema/capacity-report.schema.json
+- scripts/run_phase16_capacity.py
+- tests/phase-gates/phase-16-capacity-budgets.yaml
+- tests/performance/test_phase16_capacity_assets.py
+tests:
+- TS-031
+acceptance:
+- AC-071
+steps:
+- id: slo-profiles
+  description: verify phase-16 SLO profiles exist and bind to named budget and overload
+    policies
+  expected:
+  - each SLO profile references a committed budget profile
+  - each SLO profile references a committed overload policy
+  evidence:
+  - meta/slo-profiles.yaml
+  - meta/performance-budgets.yaml
+  - meta/load-shed-policies.yaml
+- id: budget-profiles
+  description: verify the budget manifest now covers phase-16 fleet-operability budgets
+  expected:
+  - performance budgets include shared, premium, and storage-growth profiles
+  evidence:
+  - meta/performance-budgets.yaml
+- id: overload-links
+  description: verify the capacity report is reproducible
+  expected:
+  - a fresh capacity report matches the modeled SLO and overload surface
+  evidence:
+  - scripts/run_phase16_capacity.py
+proves:
+- phase-16 capacity work has a machine-checkable planning surface

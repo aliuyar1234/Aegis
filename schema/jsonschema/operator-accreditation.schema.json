@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/operator-accreditation.schema.json",
+  "title": "OperatorAccreditation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "tracks"],
+  "properties": {
+    "program_id": { "type": "string", "const": "operator-accreditation" },
+    "version": { "type": "integer", "const": 1 },
+    "tracks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "display_name",
+          "deployment_tracks",
+          "required_exercises",
+          "required_evidence",
+          "allowed_actions",
+          "renewal_window_days",
+          "runbook_ref"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "display_name": { "type": "string", "minLength": 1 },
+          "deployment_tracks": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          },
+          "required_exercises": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          },
+          "required_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "allowed_actions": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z_][a-z0-9_]*$" }
+          },
+          "renewal_window_days": { "type": "integer", "minimum": 1 },
+          "runbook_ref": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

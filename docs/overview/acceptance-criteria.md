@@ -26,5 +26,12 @@ This file explains how to use those criteria.
 - PHASE-11: voice/media path contracts and gates
 - PHASE-12: OSS/managed split outputs
 - PHASE-13: enterprise controls and readiness gate
+- PHASE-14: replay oracle, determinism taxonomy, simulation DSL, contract conformance, replay diffing, benchmark scorecards, and fixture authoring flow
+- PHASE-15: compatibility windows, upcasters, rolling upgrades, restore drills, standby promotion, and release evidence
+- PHASE-16: capacity/SLO policy, deterministic placement, overload doctrine, noisy-neighbor isolation, storage-scaling evidence, and fleet triage bundles
+- PHASE-17: regional topology profiles, region-aware placement, evacuation drills, session mobility continuity, and regional evidence bundles
+- PHASE-18: extension certification levels, sandbox profiles, policy bundles, public compatibility tracks, and ecosystem evidence bundles
+- PHASE-19: adoption profiles, reference deployment tracks, operator drills, golden-path starter kits, and adoption evidence bundles
+- PHASE-20: operator accreditation, rollout-wave governance, incident-review packets, deprecation discipline, and lifecycle evidence bundles
 
 Read `meta/acceptance-criteria.yaml` for the exact statements and linked tests.

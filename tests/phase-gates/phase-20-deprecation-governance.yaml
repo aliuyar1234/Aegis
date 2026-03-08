@@ -1,0 +1,34 @@
+id: phase-20-deprecation-governance
+phase: PHASE-20
+name: Deprecation governance gate
+objective: Validate that phase-20 sunsets are modeled as explicit governance policies
+  with notice, freeze, successor, and rollback surfaces.
+fixtures:
+- docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+- docs/design-docs/deprecation-governance.md
+- docs/runbooks/extension-sunset.md
+- meta/deprecation-governance.yaml
+- schema/jsonschema/deprecation-governance.schema.json
+- schema/jsonschema/deprecation-governance-report.schema.json
+- scripts/run_phase20_deprecation.py
+- tests/lifecycle/test_phase20_deprecation_assets.py
+- tests/phase-gates/phase-20-deprecation-governance.yaml
+tests:
+- TS-055
+acceptance:
+- AC-095
+steps:
+- id: deprecation-policies
+  description: verify sunset policies bind asset ids, successor refs, and rollback surfaces
+  expected:
+  - each policy targets committed assets and defines a notice window and freeze actions
+  evidence:
+  - meta/deprecation-governance.yaml
+- id: reproducible-deprecation-report
+  description: verify the deprecation report is reproducible
+  expected:
+  - the report fails when sunset targets or successor paths drift from committed assets
+  evidence:
+  - scripts/run_phase20_deprecation.py
+proves:
+- phase-20 deprecation discipline is machine-checkable rather than ad hoc release communication

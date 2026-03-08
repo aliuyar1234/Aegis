@@ -1,0 +1,16 @@
+id: release-evidence-manifest
+version: 1
+candidate:
+  release_id: phase15-evidence-train
+  runtime_release: 0.11.0
+required_reports:
+- phase15-compatibility-report
+- phase15-upcaster-coverage-report
+- phase15-upgrade-drill-report
+- phase15-restore-drill-report
+- phase15-standby-promotion-report
+required_gates:
+- tests/phase-gates/phase-15-rolling-upgrade.yaml
+- tests/phase-gates/phase-15-restore-drill.yaml
+- tests/phase-gates/phase-15-standby-promotion.yaml
+- tests/phase-gates/phase-15-release-evidence.yaml

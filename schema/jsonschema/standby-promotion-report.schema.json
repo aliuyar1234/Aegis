@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/standby-promotion-report.schema.json",
+  "title": "StandbyPromotionReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "promotion_results", "verdict"],
+  "properties": {
+    "id": { "type": "string", "const": "phase15-standby-promotion-report" },
+    "promotion_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["promotion_id", "topology_profile", "verdict"],
+        "properties": {
+          "promotion_id": { "type": "string" },
+          "topology_profile": { "type": "string" },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "verdict": { "type": "string", "enum": ["pass", "fail"] }
+  }
+}

@@ -1,0 +1,19 @@
+id: restore-drill-fixtures
+version: 1
+drills:
+- id: default-managed-restore
+  recovery_profile: default-managed
+  observed_rto_minutes: 24
+  observed_rpo_minutes: 4
+  event_chain_integrity_verified: true
+  checkpoint_references_verified: true
+  artifact_inventory_reconciled: true
+  replay_tail_applied: true
+- id: dedicated-enterprise-restore
+  recovery_profile: dedicated-enterprise
+  observed_rto_minutes: 18
+  observed_rpo_minutes: 3
+  event_chain_integrity_verified: true
+  checkpoint_references_verified: true
+  artifact_inventory_reconciled: true
+  replay_tail_applied: true

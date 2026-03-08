@@ -210,3 +210,552 @@ test_suites:
   - schema/proto
   proves: Validates that transport subjects map to real proto messages and cancel
     consumers cover dispatch worker kinds.
+- id: TS-019
+  title: Replay oracle and determinism validation
+  command: pytest tests/replay_oracle -q
+  paths:
+  - tests/replay_oracle
+  - tests/phase-gates/phase-14-replay-equivalence.yaml
+  - meta/determinism-classes.yaml
+  - meta/replay-equivalence.yaml
+  - schema/jsonschema/determinism-classification.schema.json
+  - schema/jsonschema/replay-oracle.schema.json
+  - docs/design-docs/replay-oracle.md
+  - docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+  proves: Validates replay equivalence rules, determinism classes, and the machine-checkable
+    phase-14 replay-oracle gate assets.
+- id: TS-020
+  title: Deterministic simulation validation
+  command: pytest tests/simulation -q
+  paths:
+  - tests/simulation
+  - tests/phase-gates/phase-14-simulation.yaml
+  - meta/fault-injection-matrix.yaml
+  - meta/simulation-scenarios.yaml
+  - schema/jsonschema/fault-injection-step.schema.json
+  - schema/jsonschema/fault-injection-matrix.schema.json
+  - schema/jsonschema/simulation-scenario.schema.json
+  - schema/jsonschema/simulation-scenario-manifest.schema.json
+  - schema/jsonschema/simulation-result.schema.json
+  - docs/design-docs/simulation-lab.md
+  - scripts/run_simulation_scenario.py
+  proves: Validates the phase-14 simulation DSL, fault matrix, deterministic runner,
+    and machine-checkable simulation gate assets.
+- id: TS-021
+  title: Contract conformance validation
+  command: pytest tests/conformance -q
+  paths:
+  - tests/conformance
+  - tests/phase-gates/phase-14-contract-conformance.yaml
+  - schema/transport-topology.yaml
+  - schema/proto/aegis/runtime/v1/worker.proto
+  - schema/jsonschema/conformance-fixture-manifest.schema.json
+  - schema/jsonschema/conformance-report.schema.json
+  - docs/design-docs/contract-conformance.md
+  - scripts/run_contract_conformance.py
+  proves: Validates conformance fixtures against the canonical transport topology,
+    lifecycle stages, and sample cross-language conformance reports.
+- id: TS-022
+  title: Replay differential validation
+  command: pytest tests/replay_diff -q
+  paths:
+  - tests/replay_diff
+  - tests/phase-gates/phase-14-replay-diff.yaml
+  - meta/replay-fixtures.yaml
+  - schema/jsonschema/replay-fixture-manifest.schema.json
+  - schema/jsonschema/replay-diff-result.schema.json
+  - docs/design-docs/replay-diffing.md
+  - scripts/run_replay_diff.py
+  proves: Validates replay-diff fixtures, structured diff reports, and the phase-14
+    replay differential gate against current and previous supported baselines.
+- id: TS-023
+  title: Benchmark corpus and scorecard validation
+  command: pytest tests/benchmarks -q
+  paths:
+  - benchmarks/README.md
+  - tests/benchmarks
+  - tests/phase-gates/phase-14-benchmark-scorecard.yaml
+  - meta/benchmark-corpus.yaml
+  - meta/performance-budgets.yaml
+  - docs/design-docs/benchmark-corpus.md
+  - docs/generated/phase-14-benchmark-scorecard.json
+  - schema/jsonschema/benchmark-corpus.schema.json
+  - schema/jsonschema/performance-budgets.schema.json
+  - schema/jsonschema/benchmark-run.schema.json
+  - schema/jsonschema/benchmark-scorecard.schema.json
+  - scripts/run_benchmark_corpus.py
+  proves: Validates the deterministic benchmark corpus, budget manifests, and the
+    committed phase-14 correctness scorecard artifact.
+- id: TS-024
+  title: Simulation fixture authoring-flow validation
+  command: pytest tests/scaffolding -q
+  paths:
+  - tests/scaffolding
+  - docs/runbooks/author-simulation-fixture.md
+  - scripts/scaffold_simulation_fixture.py
+  - schema/jsonschema/simulation-scenario.schema.json
+  - schema/jsonschema/simulation-result.schema.json
+  proves: Validates the documented scaffold workflow, ensures fixtures are not auto-registered,
+    and proves that scaffolded scenarios validate and run end to end.
+- id: TS-025
+  title: Compatibility matrix and skew-policy validation
+  command: pytest tests/compatibility -q
+  paths:
+  - tests/compatibility
+  - docs/design-docs/upgrade-compatibility.md
+  - meta/compatibility-matrix.yaml
+  - meta/version-skew-rules.yaml
+  - schema/jsonschema/compatibility-matrix.schema.json
+  - schema/jsonschema/compatibility-report.schema.json
+  - schema/jsonschema/version-skew-rules.schema.json
+  - scripts/run_phase15_compatibility.py
+  proves: Validates that phase-15 compatibility windows and version-skew rules exist
+    as machine-readable upgrade-governance artifacts.
+- id: TS-026
+  title: Upcaster manifest and migration-asset validation
+  command: pytest tests/migrations -q
+  paths:
+  - tests/migrations
+  - docs/design-docs/schema-evolution.md
+  - meta/upcaster-manifests.yaml
+  - meta/upcaster-fixtures.yaml
+  - schema/jsonschema/upcaster-fixture-manifest.schema.json
+  - schema/jsonschema/upcaster-coverage-report.schema.json
+  - schema/jsonschema/upcaster-manifest.schema.json
+  - scripts/run_upcaster_coverage.py
+  proves: Validates that phase-15 schema-evolution work starts from explicit upcaster
+    manifests instead of hidden migration assumptions.
+- id: TS-027
+  title: Rolling-upgrade asset validation
+  command: pytest tests/upgrade_dr -q
+  paths:
+  - tests/upgrade_dr
+  - docs/design-docs/rolling-upgrades.md
+  - docs/runbooks/rolling-upgrade.md
+  - meta/upgrade-strategies.yaml
+  - meta/upgrade-drill-fixtures.yaml
+  - schema/jsonschema/upgrade-drill-manifest.schema.json
+  - schema/jsonschema/upgrade-drill-report.schema.json
+  - schema/jsonschema/upgrade-strategies.schema.json
+  - scripts/run_upgrade_drill.py
+  - tests/phase-gates/phase-15-rolling-upgrade.yaml
+  proves: Validates the machine-readable and runbook surface for lease-safe rolling
+    upgrades before mixed-version execution work is implemented.
+- id: TS-028
+  title: Disaster-recovery and restore-objective validation
+  command: pytest tests/disaster_recovery -q
+  paths:
+  - tests/disaster_recovery
+  - docs/design-docs/disaster-recovery.md
+  - docs/runbooks/pitr-restore.md
+  - meta/recovery-objectives.yaml
+  - meta/restore-drill-fixtures.yaml
+  - schema/jsonschema/recovery-objective.schema.json
+  - schema/jsonschema/restore-drill-manifest.schema.json
+  - schema/jsonschema/restore-drill-report.schema.json
+  - scripts/run_restore_drill.py
+  - tests/phase-gates/phase-15-restore-drill.yaml
+  proves: Validates phase-15 recovery objectives and restore-drill planning surfaces.
+- id: TS-029
+  title: Standby-topology and promotion-surface validation
+  command: pytest tests/topology -q
+  paths:
+  - tests/topology
+  - docs/design-docs/standby-topology.md
+  - docs/runbooks/standby-promotion.md
+  - meta/topology-profiles.yaml
+  - meta/standby-promotion-evidence.yaml
+  - schema/jsonschema/topology-profiles.schema.json
+  - schema/jsonschema/standby-promotion-evidence.schema.json
+  - schema/jsonschema/standby-promotion-report.schema.json
+  - scripts/run_standby_promotion.py
+  - tests/phase-gates/phase-15-standby-promotion.yaml
+  proves: Validates phase-15 warm-standby topology profiles and promotion boundaries.
+- id: TS-030
+  title: Release-evidence gate validation
+  command: pytest tests/release_evidence -q
+  paths:
+  - tests/release_evidence
+  - docs/governance/release-evidence-gates.md
+  - docs/generated/phase-15-release-evidence.json
+  - meta/compatibility-matrix.yaml
+  - meta/release-evidence-manifest.yaml
+  - meta/version-skew-rules.yaml
+  - meta/upgrade-strategies.yaml
+  - meta/recovery-objectives.yaml
+  - schema/jsonschema/release-evidence-manifest.schema.json
+  - schema/jsonschema/release-evidence-bundle.schema.json
+  - scripts/build_phase15_release_evidence.py
+  - tests/phase-gates/phase-15-release-evidence.yaml
+  proves: Validates that phase-15 release readiness is modeled as explicit evidence
+    across compatibility, upgrade, and recovery surfaces.
+- id: TS-031
+  title: Capacity-model and SLO-profile validation
+  command: pytest tests/performance/test_phase16_capacity_assets.py -q
+  paths:
+  - tests/performance/test_phase16_capacity_assets.py
+  - docs/design-docs/capacity-model.md
+  - meta/slo-profiles.yaml
+  - meta/performance-budgets.yaml
+  - meta/load-shed-policies.yaml
+  - schema/jsonschema/slo-profiles.schema.json
+  - schema/jsonschema/performance-budgets.schema.json
+  - schema/jsonschema/load-shed-policies.schema.json
+  - schema/jsonschema/capacity-report.schema.json
+  - scripts/run_phase16_capacity.py
+  - tests/phase-gates/phase-16-capacity-budgets.yaml
+  proves: Validates that phase-16 capacity and SLO work exists as explicit machine-readable
+    budgets, policy links, and a reproducible capacity report.
+- id: TS-032
+  title: Placement policy and pool-taxonomy validation
+  command: pytest tests/placement -q
+  paths:
+  - tests/placement
+  - docs/design-docs/placement-engine.md
+  - meta/placement-policies.yaml
+  - schema/jsonschema/placement-policies.schema.json
+  - schema/jsonschema/placement-decision.schema.json
+  - schema/jsonschema/placement-report.schema.json
+  - scripts/run_phase16_placement.py
+  - tests/phase-gates/phase-16-placement.yaml
+  proves: Validates that phase-16 placement policy, pool taxonomy, and deterministic
+    routing examples are machine-checkable and reproducible.
+- id: TS-033
+  title: Load-shedding and overload-doctrine validation
+  command: pytest tests/load_shedding -q
+  paths:
+  - tests/load_shedding
+  - docs/design-docs/load-shedding.md
+  - docs/runbooks/overload-response.md
+  - meta/load-shed-policies.yaml
+  - meta/slo-profiles.yaml
+  - schema/jsonschema/load-shed-policies.schema.json
+  - schema/jsonschema/load-shed-report.schema.json
+  - scripts/run_phase16_overload.py
+  - tests/phase-gates/phase-16-overload.yaml
+  proves: Validates that phase-16 overload responses protect critical runtime paths
+    through explicit policy instead of implicit degradation.
+- id: TS-034
+  title: Noisy-neighbor isolation validation
+  command: pytest tests/noisy_neighbor -q
+  paths:
+  - tests/noisy_neighbor
+  - docs/design-docs/isolation-profiles.md
+  - docs/runbooks/hot-tenant-isolation.md
+  - meta/isolation-profiles.yaml
+  - schema/jsonschema/isolation-profiles.schema.json
+  - schema/jsonschema/isolation-report.schema.json
+  - scripts/run_phase16_isolation.py
+  - tests/phase-gates/phase-16-isolation.yaml
+  proves: Validates that phase-16 hot-tenant and workflow-class isolation responses
+    are explicit, attributed, and bounded.
+- id: TS-035
+  title: Storage-growth and transport-scaling validation
+  command: pytest tests/performance/storage_growth -q
+  paths:
+  - tests/performance/storage_growth
+  - docs/design-docs/data-plane-scaling.md
+  - meta/storage-growth-fixtures.yaml
+  - meta/performance-budgets.yaml
+  - schema/jsonschema/storage-growth-manifest.schema.json
+  - schema/jsonschema/storage-growth-report.schema.json
+  - scripts/run_phase16_storage_scaling.py
+  - tests/phase-gates/phase-16-storage-transport.yaml
+  proves: Validates that phase-16 scaling work models truth-store, outbox, projection,
+    and artifact-index growth without weakening control-plane truth semantics.
+- id: TS-036
+  title: Fleet triage and operator-evidence validation
+  command: pytest tests/operator_fleet -q
+  paths:
+  - tests/operator_fleet
+  - docs/product-specs/fleet-triage.md
+  - docs/runbooks/top-failure-clusters.md
+  - meta/fleet-triage-manifest.yaml
+  - docs/generated/phase-16-fleet-evidence.json
+  - schema/jsonschema/fleet-triage-manifest.schema.json
+  - schema/jsonschema/operator-evidence-bundle.schema.json
+  - schema/jsonschema/fleet-triage-report.schema.json
+  - scripts/build_phase16_fleet_evidence.py
+  - tests/phase-gates/phase-16-fleet-triage.yaml
+  proves: Validates that phase-16 fleet reasoning culminates in a reproducible operator-evidence
+    bundle rather than prose-only triage guidance.
+- id: TS-037
+  title: Regional topology and fault-domain validation
+  command: pytest tests/regional_failover/test_phase17_topology_assets.py -q
+  paths:
+  - tests/regional_failover/test_phase17_topology_assets.py
+  - docs/design-docs/regional-topology.md
+  - docs/design-docs/fault-domain-policy.md
+  - meta/regional-topology-profiles.yaml
+  - meta/fault-domain-catalog.yaml
+  - schema/jsonschema/regional-topology-profiles.schema.json
+  - schema/jsonschema/fault-domain-catalog.schema.json
+  - schema/jsonschema/regional-topology-report.schema.json
+  - scripts/run_phase17_topology.py
+  - tests/phase-gates/phase-17-fault-domains.yaml
+  proves: Validates that phase-17 region roles, fault domains, and promotion boundaries
+    are explicit, machine-checkable, and reproducible.
+- id: TS-038
+  title: Region-aware placement validation
+  command: pytest tests/regional_failover/test_phase17_placement_assets.py -q
+  paths:
+  - tests/regional_failover/test_phase17_placement_assets.py
+  - docs/design-docs/region-aware-placement.md
+  - meta/regional-placement-policies.yaml
+  - schema/jsonschema/regional-placement-policies.schema.json
+  - schema/jsonschema/regional-placement-report.schema.json
+  - scripts/run_phase17_regional_placement.py
+  - tests/phase-gates/phase-17-region-placement.yaml
+  proves: Validates that phase-17 region-aware placement decisions are deterministic,
+    topology-aware, and tier-compatible.
+- id: TS-039
+  title: Regional evacuation and failover validation
+  command: pytest tests/regional_failover/test_phase17_evacuation_assets.py -q
+  paths:
+  - tests/regional_failover/test_phase17_evacuation_assets.py
+  - docs/design-docs/regional-evacuation.md
+  - docs/runbooks/regional-evacuation.md
+  - docs/runbooks/regional-promotion.md
+  - meta/regional-evacuation-fixtures.yaml
+  - schema/jsonschema/regional-evacuation-manifest.schema.json
+  - schema/jsonschema/regional-evacuation-report.schema.json
+  - scripts/run_phase17_regional_evacuation.py
+  - tests/phase-gates/phase-17-regional-evacuation.yaml
+  proves: Validates that phase-17 regional evacuation drills and bounded failover
+    evidence are explicit and reproducible.
+- id: TS-040
+  title: Session mobility and continuity validation
+  command: pytest tests/regional_failover/test_phase17_mobility_assets.py -q
+  paths:
+  - tests/regional_failover/test_phase17_mobility_assets.py
+  - docs/design-docs/session-mobility.md
+  - meta/session-mobility-manifest.yaml
+  - schema/jsonschema/session-mobility-manifest.schema.json
+  - schema/jsonschema/session-mobility-report.schema.json
+  - scripts/run_phase17_session_mobility.py
+  - tests/phase-gates/phase-17-session-mobility.yaml
+  proves: Validates that phase-17 session mobility keeps approvals, checkpoints,
+    and artifact continuity explicit during controlled evacuation.
+- id: TS-041
+  title: Regional evidence-bundle validation
+  command: pytest tests/regional_failover/test_phase17_regional_evidence_assets.py -q
+  paths:
+  - tests/regional_failover/test_phase17_regional_evidence_assets.py
+  - docs/generated/phase-17-regional-evidence.json
+  - meta/regional-evidence-manifest.yaml
+  - schema/jsonschema/regional-evidence-manifest.schema.json
+  - schema/jsonschema/regional-evidence-bundle.schema.json
+  - scripts/build_phase17_regional_evidence.py
+  - tests/phase-gates/phase-17-regional-evidence.yaml
+  proves: Validates that phase-17 regional readiness is captured as a reproducible
+    evidence bundle rather than a prose-only readiness claim.
+- id: TS-042
+  title: Extension certification validation
+  command: pytest tests/extensions_conformance/test_phase18_certification_assets.py -q
+  paths:
+  - tests/extensions_conformance/test_phase18_certification_assets.py
+  - docs/design-docs/extension-certification.md
+  - docs/runbooks/revoking-extension.md
+  - meta/extension-certification-levels.yaml
+  - tests/extensibility/fixtures/sample-extension-pack/pack.yaml
+  - schema/jsonschema/extension-certification-levels.schema.json
+  - schema/jsonschema/extension-certification-report.schema.json
+  - scripts/run_phase18_certification.py
+  - tests/phase-gates/phase-18-extension-certification.yaml
+  proves: Validates that phase-18 extension certification is modeled as explicit,
+    signed compatibility evidence over committed extension-pack artifacts.
+- id: TS-043
+  title: Sandbox-profile validation
+  command: pytest tests/sandbox_profiles -q
+  paths:
+  - tests/sandbox_profiles
+  - docs/design-docs/sandbox-profiles.md
+  - docs/runbooks/revoking-extension.md
+  - meta/sandbox-profiles.yaml
+  - schema/jsonschema/sandbox-profiles.schema.json
+  - schema/jsonschema/sandbox-profile-report.schema.json
+  - scripts/run_phase18_sandbox_profiles.py
+  - tests/phase-gates/phase-18-sandbox-profiles.yaml
+  proves: Validates that phase-18 extension isolation is explicit through committed
+    sandbox profiles and per-manifest assignments.
+- id: TS-044
+  title: Policy-bundle validation
+  command: pytest tests/policy_bundles -q
+  paths:
+  - tests/policy_bundles
+  - docs/design-docs/policy-bundles.md
+  - docs/runbooks/policy-bundle-rollback.md
+  - meta/policy-bundle-profiles.yaml
+  - schema/jsonschema/policy-bundle-manifest.schema.json
+  - schema/jsonschema/policy-bundle-report.schema.json
+  - scripts/run_phase18_policy_bundles.py
+  - tests/phase-gates/phase-18-policy-bundles.yaml
+  proves: Validates that phase-18 delegated ecosystem governance is tied to explicit
+    canonical inputs, dual control, and rollback discipline.
+- id: TS-045
+  title: Public compatibility-track validation
+  command: pytest tests/extensions_conformance/test_phase18_public_compatibility_assets.py -q
+  paths:
+  - tests/extensions_conformance/test_phase18_public_compatibility_assets.py
+  - docs/design-docs/public-compatibility-leadership.md
+  - meta/public-benchmark-manifest.yaml
+  - docs/generated/phase-14-benchmark-scorecard.json
+  - schema/jsonschema/public-benchmark-manifest.schema.json
+  - schema/jsonschema/public-compatibility-report.schema.json
+  - scripts/run_phase18_public_compatibility.py
+  - tests/phase-gates/phase-18-public-compatibility.yaml
+  proves: Validates that phase-18 public extension publication remains benchmark-backed,
+    certified, and bounded by explicit compatibility dimensions.
+- id: TS-046
+  title: Ecosystem evidence-bundle validation
+  command: pytest tests/extensions_conformance/test_phase18_ecosystem_evidence_assets.py -q
+  paths:
+  - tests/extensions_conformance/test_phase18_ecosystem_evidence_assets.py
+  - docs/generated/phase-18-ecosystem-evidence.json
+  - meta/ecosystem-evidence-manifest.yaml
+  - schema/jsonschema/ecosystem-evidence-manifest.schema.json
+  - schema/jsonschema/ecosystem-evidence-bundle.schema.json
+  - scripts/build_phase18_ecosystem_evidence.py
+  - tests/phase-gates/phase-18-ecosystem-evidence.yaml
+  proves: Validates that phase-18 ecosystem readiness is captured as a reproducible
+    evidence bundle rather than a prose-only certification claim.
+- id: TS-047
+  title: Adoption profile validation
+  command: pytest tests/adoption/test_phase19_adoption_profiles_assets.py -q
+  paths:
+  - tests/adoption/test_phase19_adoption_profiles_assets.py
+  - docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+  - docs/design-docs/adoption-profiles.md
+  - docs/runbooks/first-adopter-onboarding.md
+  - meta/adoption-profiles.yaml
+  - schema/jsonschema/adoption-profiles.schema.json
+  - schema/jsonschema/adoption-profile-report.schema.json
+  - scripts/run_phase19_adoption_profiles.py
+  - tests/phase-gates/phase-19-adoption-profiles.yaml
+  proves: Validates that phase-19 adopter classes are modeled as explicit profile
+    artifacts tied to deployment tracks, evidence, and drills.
+- id: TS-048
+  title: Reference deployment-track validation
+  command: pytest tests/adoption/test_phase19_reference_tracks_assets.py -q
+  paths:
+  - tests/adoption/test_phase19_reference_tracks_assets.py
+  - docs/design-docs/reference-deployment-tracks.md
+  - docs/runbooks/first-adopter-onboarding.md
+  - docs/runbooks/operator-training-exercise.md
+  - meta/reference-deployment-tracks.yaml
+  - schema/jsonschema/reference-deployment-tracks.schema.json
+  - schema/jsonschema/reference-deployment-report.schema.json
+  - scripts/run_phase19_reference_tracks.py
+  - tests/phase-gates/phase-19-reference-tracks.yaml
+  proves: Validates that phase-19 rollout tracks stay bound to committed deployment,
+    topology, SLO, and compatibility surfaces.
+- id: TS-049
+  title: Operator exercise validation
+  command: pytest tests/operator_training -q
+  paths:
+  - tests/operator_training
+  - docs/design-docs/operator-exercises.md
+  - docs/runbooks/operator-training-exercise.md
+  - meta/operator-exercise-manifest.yaml
+  - schema/jsonschema/operator-exercise-manifest.schema.json
+  - schema/jsonschema/operator-exercise-report.schema.json
+  - scripts/run_phase19_operator_exercises.py
+  - tests/phase-gates/phase-19-operator-exercises.yaml
+  proves: Validates that phase-19 operator enablement is grounded in bounded drills,
+    runbooks, and committed evidence surfaces.
+- id: TS-050
+  title: Golden-path starter-kit validation
+  command: pytest tests/starter_kits -q
+  paths:
+  - tests/starter_kits
+  - docs/design-docs/golden-path-starter-kits.md
+  - docs/runbooks/first-adopter-onboarding.md
+  - meta/golden-path-starter-kits.yaml
+  - schema/jsonschema/golden-path-starter-kits.schema.json
+  - schema/jsonschema/golden-path-starter-kit-report.schema.json
+  - scripts/run_phase19_starter_kits.py
+  - tests/phase-gates/phase-19-starter-kits.yaml
+  proves: Validates that phase-19 starter kits remain bounded by certified ecosystem,
+    sandbox, policy, and simulation surfaces.
+- id: TS-051
+  title: Adoption evidence-bundle validation
+  command: pytest tests/adoption/test_phase19_adoption_evidence_assets.py -q
+  paths:
+  - tests/adoption/test_phase19_adoption_evidence_assets.py
+  - docs/generated/phase-19-adoption-evidence.json
+  - meta/adoption-evidence-manifest.yaml
+  - schema/jsonschema/adoption-evidence-manifest.schema.json
+  - schema/jsonschema/adoption-evidence-bundle.schema.json
+  - scripts/build_phase19_adoption_evidence.py
+  - tests/phase-gates/phase-19-adoption-evidence.yaml
+  proves: Validates that phase-19 adoption readiness is captured as a reproducible
+    bundle rather than founder-led rollout memory.
+- id: TS-052
+  title: Operator accreditation validation
+  command: pytest tests/accreditation -q
+  paths:
+  - tests/accreditation
+  - docs/design-docs/operator-accreditation.md
+  - docs/runbooks/operator-accreditation-renewal.md
+  - meta/operator-accreditation.yaml
+  - schema/jsonschema/operator-accreditation.schema.json
+  - schema/jsonschema/operator-accreditation-report.schema.json
+  - scripts/run_phase20_operator_accreditation.py
+  - tests/phase-gates/phase-20-operator-accreditation.yaml
+  proves: Validates that phase-20 operator authority is modeled through explicit
+    accreditation tracks tied to drills, evidence, and renewal.
+- id: TS-053
+  title: Rollout-wave validation
+  command: pytest tests/rollout -q
+  paths:
+  - tests/rollout
+  - docs/design-docs/rollout-wave-governance.md
+  - docs/runbooks/rollout-wave-promotion.md
+  - meta/rollout-wave-manifest.yaml
+  - schema/jsonschema/rollout-wave-manifest.schema.json
+  - schema/jsonschema/rollout-wave-report.schema.json
+  - scripts/run_phase20_rollout_waves.py
+  - tests/phase-gates/phase-20-rollout-waves.yaml
+  proves: Validates that phase-20 rollout promotion remains anchored to committed
+    deployment tracks, accreditation, evidence, and rollback surfaces.
+- id: TS-054
+  title: Incident-review packet validation
+  command: pytest tests/incident_reviews -q
+  paths:
+  - tests/incident_reviews
+  - docs/design-docs/incident-review-packets.md
+  - docs/runbooks/customer-incident-review.md
+  - meta/incident-review-packets.yaml
+  - schema/jsonschema/incident-review-packets.schema.json
+  - schema/jsonschema/incident-review-packet-report.schema.json
+  - scripts/run_phase20_incident_reviews.py
+  - tests/phase-gates/phase-20-incident-reviews.yaml
+  proves: Validates that phase-20 incident handoff stays anchored to drills, evidence,
+    and bounded follow-up surfaces.
+- id: TS-055
+  title: Deprecation governance validation
+  command: pytest tests/lifecycle/test_phase20_deprecation_assets.py -q
+  paths:
+  - tests/lifecycle/test_phase20_deprecation_assets.py
+  - docs/design-docs/deprecation-governance.md
+  - docs/runbooks/extension-sunset.md
+  - meta/deprecation-governance.yaml
+  - schema/jsonschema/deprecation-governance.schema.json
+  - schema/jsonschema/deprecation-governance-report.schema.json
+  - scripts/run_phase20_deprecation.py
+  - tests/phase-gates/phase-20-deprecation-governance.yaml
+  proves: Validates that phase-20 sunsets are modeled as explicit governance artifacts
+    with notice, freeze, successor, and rollback boundaries.
+- id: TS-056
+  title: Lifecycle evidence-bundle validation
+  command: pytest tests/lifecycle/test_phase20_lifecycle_evidence_assets.py -q
+  paths:
+  - tests/lifecycle/test_phase20_lifecycle_evidence_assets.py
+  - docs/generated/phase-20-lifecycle-evidence.json
+  - meta/lifecycle-evidence-manifest.yaml
+  - schema/jsonschema/lifecycle-evidence-manifest.schema.json
+  - schema/jsonschema/lifecycle-evidence-bundle.schema.json
+  - scripts/build_phase20_lifecycle_evidence.py
+  - tests/phase-gates/phase-20-lifecycle-evidence.yaml
+  proves: Validates that phase-20 operational lifecycle readiness is captured as
+    a reproducible bundle rather than process folklore.

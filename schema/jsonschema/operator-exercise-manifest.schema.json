@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/operator-exercise-manifest.schema.json",
+  "title": "OperatorExerciseManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "program_id",
+    "version",
+    "exercises"
+  ],
+  "properties": {
+    "program_id": {
+      "type": "string",
+      "const": "operator-exercises"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "exercises": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "scenario_type",
+          "runbook_refs",
+          "required_evidence",
+          "expected_outcomes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "scenario_type": {
+            "type": "string",
+            "pattern": "^[a-z_][a-z0-9_]*$"
+          },
+          "runbook_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "expected_outcomes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+id: phase-17-regional-evacuation
+phase: PHASE-17
+name: Regional evacuation gate
+objective: Validate that phase-17 regional failover and evacuation drills are bounded
+  and evidence-backed.
+fixtures:
+- docs/exec-plans/active/PHASE-17-regional-topology.md
+- docs/design-docs/regional-evacuation.md
+- docs/runbooks/regional-evacuation.md
+- docs/runbooks/regional-promotion.md
+- meta/regional-evacuation-fixtures.yaml
+- schema/jsonschema/regional-evacuation-manifest.schema.json
+- schema/jsonschema/regional-evacuation-report.schema.json
+- scripts/run_phase17_regional_evacuation.py
+- tests/phase-gates/phase-17-regional-evacuation.yaml
+- tests/regional_failover/test_phase17_evacuation_assets.py
+tests:
+- TS-039
+acceptance:
+- AC-079
+steps:
+- id: evacuation-drills
+  description: verify regional drills declare source, target, and expected steps
+  expected:
+  - drills include fenced failover and restore evidence steps
+  evidence:
+  - meta/regional-evacuation-fixtures.yaml
+- id: reproducible-evacuation-report
+  description: verify drill reports are reproducible
+  expected:
+  - every drill maps to a passing report row
+  evidence:
+  - scripts/run_phase17_regional_evacuation.py
+proves:
+- phase-17 regional evacuation is machine-checkable

@@ -1,0 +1,153 @@
+id: replay-fixtures
+version: 1
+fixtures:
+- id: worker-crash-recovery
+  scenario_ref: tests/simulation/fixtures/worker-crash-recovery.yaml
+  comparison_mode: checkpoint_tail_vs_full
+  equivalence_dimensions:
+  - terminal_state
+  - event_types
+  - replay_equivalent
+  current_baseline:
+    result_signature: 26ca1a31cec6304ca70237e853faf5582467c555f66570bafdbf797f1905aed6
+    event_types:
+    - action.requested
+    - system.worker_crash_injected
+    - artifact.registered
+    terminal_state:
+      session_state: resumed
+      recovery_status: resumed_after_worker_crash
+      uncertainty_status: none
+      quarantine_status: clear
+      replay_equivalent: true
+  previous_supported_baseline:
+    event_types:
+    - action.requested
+    - system.worker_crash_injected
+    - artifact.registered
+    terminal_state:
+      session_state: resumed
+      recovery_status: resumed_after_worker_crash
+      uncertainty_status: none
+      quarantine_status: clear
+      replay_equivalent: true
+- id: node-loss-adoption
+  scenario_ref: tests/simulation/fixtures/node-loss-adoption.yaml
+  comparison_mode: checkpoint_tail_vs_full
+  equivalence_dimensions:
+  - terminal_state
+  - event_types
+  - replay_equivalent
+  current_baseline:
+    result_signature: b8d570ccdfbd7b0fe795a1a89b9c28fe27ecb5962a877358e81a2866a32d745e
+    event_types:
+    - action.requested
+    - system.node_loss_injected
+    - timer.advanced
+    terminal_state:
+      session_state: adopted
+      recovery_status: adopted_via_tail_replay
+      uncertainty_status: none
+      quarantine_status: clear
+      replay_equivalent: true
+  previous_supported_baseline:
+    event_types:
+    - action.requested
+    - system.node_loss_injected
+    - timer.advanced
+    terminal_state:
+      session_state: adopted
+      recovery_status: adopted_via_tail_replay
+      uncertainty_status: none
+      quarantine_status: clear
+      replay_equivalent: true
+- id: approval-timeout
+  scenario_ref: tests/simulation/fixtures/approval-timeout.yaml
+  comparison_mode: historical_replay
+  equivalence_dimensions:
+  - terminal_state
+  - event_types
+  - replay_equivalent
+  current_baseline:
+    result_signature: 6b19636e9856054c4fb47ff288485221471b638fcb6de5bef008da8c702972ad
+    event_types:
+    - action.requested
+    - approval.requested
+    - approval.expired
+    terminal_state:
+      session_state: approval_expired
+      recovery_status: no_recovery_required
+      uncertainty_status: explicit_operator_absence
+      quarantine_status: clear
+      replay_equivalent: true
+  previous_supported_baseline:
+    event_types:
+    - action.requested
+    - approval.requested
+    - approval.expired
+    terminal_state:
+      session_state: approval_expired
+      recovery_status: no_recovery_required
+      uncertainty_status: explicit_operator_absence
+      quarantine_status: clear
+      replay_equivalent: true
+- id: duplicate-callback
+  scenario_ref: tests/simulation/fixtures/duplicate-callback.yaml
+  comparison_mode: full_replay
+  equivalence_dimensions:
+  - terminal_state
+  - event_types
+  - replay_equivalent
+  current_baseline:
+    result_signature: feb7a766e1a41a062b31ad5cb76ff69a66ecfb7cda79a3118ec336f3883e59f7
+    event_types:
+    - action.requested
+    - action.duplicate_suppressed
+    - artifact.registered
+    terminal_state:
+      session_state: duplicate_suppressed
+      recovery_status: no_recovery_required
+      uncertainty_status: explicit_duplicate_boundary
+      quarantine_status: clear
+      replay_equivalent: true
+  previous_supported_baseline:
+    event_types:
+    - action.requested
+    - action.duplicate_suppressed
+    - artifact.registered
+    terminal_state:
+      session_state: duplicate_suppressed
+      recovery_status: no_recovery_required
+      uncertainty_status: explicit_duplicate_boundary
+      quarantine_status: clear
+      replay_equivalent: true
+- id: browser-instability
+  scenario_ref: tests/simulation/fixtures/browser-instability.yaml
+  comparison_mode: historical_replay
+  equivalence_dimensions:
+  - terminal_state
+  - event_types
+  - replay_equivalent
+  current_baseline:
+    result_signature: 74ba517f4ad0cf79c3fd0026db9b74bbceefbdc806ffff155c4e1959f95c3247
+    event_types:
+    - action.requested
+    - action.browser_degraded
+    - artifact.registered
+    terminal_state:
+      session_state: degraded
+      recovery_status: awaiting_operator_or_retry_policy
+      uncertainty_status: external_state_unknowable
+      quarantine_status: browser_execution_degraded
+      replay_equivalent: true
+  previous_supported_baseline:
+    event_types:
+    - action.requested
+    - action.browser_degraded
+    - artifact.registered
+    terminal_state:
+      session_state: degraded
+      recovery_status: awaiting_operator_or_retry_policy
+      uncertainty_status: external_state_unknowable
+      quarantine_status: browser_execution_degraded
+      replay_equivalent: true

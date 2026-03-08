@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/compatibility-matrix.schema.json",
+  "title": "CompatibilityMatrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "surfaces"],
+  "properties": {
+    "id": { "type": "string", "const": "compatibility-matrix" },
+    "version": { "type": "integer", "minimum": 1 },
+    "surfaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "current_version", "supported_versions", "notes"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "kind": {
+            "type": "string",
+            "enum": ["runtime_contract", "checkpoint", "event_payload", "policy_catalog", "extension_manifest"]
+          },
+          "current_version": { "type": "string", "minLength": 1 },
+          "supported_versions": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "notes": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

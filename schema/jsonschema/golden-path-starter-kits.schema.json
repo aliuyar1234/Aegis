@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/golden-path-starter-kits.schema.json",
+  "title": "GoldenPathStarterKits",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "program_id",
+    "version",
+    "kits"
+  ],
+  "properties": {
+    "program_id": {
+      "type": "string",
+      "const": "golden-path-starter-kits"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "kits": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "display_name",
+          "extension_pack_ref",
+          "certification_candidate_id",
+          "deployment_track",
+          "required_sandbox_profiles",
+          "policy_bundle_id",
+          "simulation_scenarios",
+          "public_track_id",
+          "docs_refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "display_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "extension_pack_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "certification_candidate_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "deployment_track": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "required_sandbox_profiles": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+            }
+          },
+          "policy_bundle_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "simulation_scenarios": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+            }
+          },
+          "public_track_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "docs_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

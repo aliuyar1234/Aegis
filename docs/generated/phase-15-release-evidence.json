@@ -1,0 +1,36 @@
+{
+  "candidate": {
+    "release_id": "phase15-evidence-train",
+    "runtime_release": "0.11.0"
+  },
+  "id": "phase15-release-evidence-bundle",
+  "reports": [
+    {
+      "id": "phase15-compatibility-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase15-upcaster-coverage-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase15-upgrade-drill-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase15-restore-drill-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase15-standby-promotion-report",
+      "verdict": "pass"
+    }
+  ],
+  "required_gates": [
+    "tests/phase-gates/phase-15-rolling-upgrade.yaml",
+    "tests/phase-gates/phase-15-restore-drill.yaml",
+    "tests/phase-gates/phase-15-standby-promotion.yaml",
+    "tests/phase-gates/phase-15-release-evidence.yaml"
+  ],
+  "verdict": "pass"
+}

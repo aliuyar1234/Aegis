@@ -1,0 +1,33 @@
+id: phase-18-sandbox-profiles
+phase: PHASE-18
+name: Sandbox-profile gate
+objective: Validate that phase-18 extension isolation is modeled as explicit sandbox profiles.
+fixtures:
+- docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+- docs/design-docs/sandbox-profiles.md
+- docs/runbooks/revoking-extension.md
+- meta/sandbox-profiles.yaml
+- schema/jsonschema/sandbox-profiles.schema.json
+- schema/jsonschema/sandbox-profile-report.schema.json
+- scripts/run_phase18_sandbox_profiles.py
+- tests/phase-gates/phase-18-sandbox-profiles.yaml
+- tests/sandbox_profiles/test_phase18_sandbox_assets.py
+tests:
+- TS-043
+acceptance:
+- AC-083
+steps:
+- id: sandbox-catalog
+  description: verify extension sandbox profiles are explicit and bounded
+  expected:
+  - profile classes, network posture, and secret ceilings are committed
+  evidence:
+  - meta/sandbox-profiles.yaml
+- id: assignment-check
+  description: verify every sample extension fixture maps to a sandbox profile
+  expected:
+  - connector, processor, and MCP fixtures all receive explicit profile assignments
+  evidence:
+  - scripts/run_phase18_sandbox_profiles.py
+proves:
+- phase-18 sandbox posture is a first-class machine-checkable surface

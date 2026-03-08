@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/operator-evidence-bundle.schema.json",
+  "title": "OperatorEvidenceBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "phase", "reports", "cluster_summaries", "export_sections", "verdict"],
+  "properties": {
+    "id": { "type": "string", "const": "phase16-operator-evidence-bundle" },
+    "phase": { "type": "string", "const": "PHASE-16" },
+    "reports": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "verdict"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^phase16-.+-report$" },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "cluster_summaries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cohort_id", "report_count", "runbook_count", "evidence_fields", "verdict"],
+        "properties": {
+          "cohort_id": { "type": "string" },
+          "report_count": { "type": "integer", "minimum": 1 },
+          "runbook_count": { "type": "integer", "minimum": 1 },
+          "evidence_fields": { "type": "integer", "minimum": 1 },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "export_sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "verdict": { "type": "string", "enum": ["pass", "fail"] }
+  }
+}

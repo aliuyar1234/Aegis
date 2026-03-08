@@ -1,0 +1,41 @@
+{
+  "evidence_groups": [
+    {
+      "id": "topology",
+      "ref_count": 2
+    },
+    {
+      "id": "placement",
+      "ref_count": 1
+    },
+    {
+      "id": "evacuation",
+      "ref_count": 1
+    },
+    {
+      "id": "mobility",
+      "ref_count": 1
+    }
+  ],
+  "id": "phase17-regional-evidence-bundle",
+  "phase": "PHASE-17",
+  "reports": [
+    {
+      "id": "phase17-regional-topology-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase17-regional-placement-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase17-regional-evacuation-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase17-session-mobility-report",
+      "verdict": "pass"
+    }
+  ],
+  "verdict": "pass"
+}

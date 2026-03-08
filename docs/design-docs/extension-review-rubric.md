@@ -11,6 +11,8 @@ Use this rubric before admitting a third-party extension pack into the Aegis com
 - no extension claims direct canonical writes, direct runtime-event emission, policy bypass, or outbox bypass
 - MCP adapters stay external-tool adapters only
 - sample extension pack layout exists and member manifests are reviewable
+- sandbox-profile assignments exist for every admitted manifest
+- certification level and governing policy bundle are explicit when public listing is requested
 - docs and sample fixtures exist and are linked from `TS-014`
 
 ## Reviewer prompts

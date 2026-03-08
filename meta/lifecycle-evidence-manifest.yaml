@@ -1,0 +1,23 @@
+bundle_id: phase20-lifecycle-evidence-bundle
+phase: PHASE-20
+evidence_groups:
+- id: operator-accreditation
+  refs:
+  - meta/operator-accreditation.yaml
+  - docs/design-docs/operator-accreditation.md
+  - docs/runbooks/operator-accreditation-renewal.md
+- id: rollout-waves
+  refs:
+  - meta/rollout-wave-manifest.yaml
+  - docs/design-docs/rollout-wave-governance.md
+  - docs/runbooks/rollout-wave-promotion.md
+- id: incident-review
+  refs:
+  - meta/incident-review-packets.yaml
+  - docs/design-docs/incident-review-packets.md
+  - docs/runbooks/customer-incident-review.md
+- id: deprecation-governance
+  refs:
+  - meta/deprecation-governance.yaml
+  - docs/design-docs/deprecation-governance.md
+  - docs/runbooks/extension-sunset.md

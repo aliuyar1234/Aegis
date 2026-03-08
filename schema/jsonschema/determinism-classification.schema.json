@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/determinism-classification.schema.json",
+  "title": "DeterminismClassificationCatalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "classes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "determinism-classes"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "classes": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "summary",
+          "replay_rule",
+          "required_capture",
+          "example_refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "deterministic",
+              "captured-nondeterministic",
+              "externally-unknowable"
+            ]
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "replay_rule": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required_capture": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "example_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

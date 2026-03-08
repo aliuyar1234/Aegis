@@ -1,0 +1,135 @@
+phase: PHASE-14
+status: completed
+name: Runtime conformance, deterministic simulation, and replay oracle
+phase_doc: docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+tasks:
+- id: P14-T01
+  phase: PHASE-14
+  title: Define replay oracle and determinism taxonomy
+  critical_path: true
+  status: done
+  deps:
+  - P08-T01
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-057
+  - AC-058
+  - AC-059
+  test_refs:
+  - TS-004
+  - TS-019
+  phase_doc: docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+  size: L
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P14-T02
+  phase: PHASE-14
+  title: Build scenario DSL and deterministic simulation runner
+  critical_path: true
+  status: done
+  deps:
+  - P14-T01
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-060
+  - AC-059
+  test_refs:
+  - TS-020
+  phase_doc: docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+  size: L
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P14-T03
+  phase: PHASE-14
+  title: Build cross-language contract conformance suite
+  critical_path: true
+  status: done
+  deps:
+  - P14-T01
+  adr_refs:
+  - ADR-0008
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-061
+  - AC-059
+  test_refs:
+  - TS-002
+  - TS-021
+  phase_doc: docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P14-T04
+  phase: PHASE-14
+  title: Build replay differential harness across versions and failure paths
+  critical_path: true
+  status: done
+  deps:
+  - P14-T02
+  - P14-T03
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-057
+  - AC-062
+  - AC-059
+  test_refs:
+  - TS-022
+  phase_doc: docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P14-T05
+  phase: PHASE-14
+  title: Create benchmark corpus and correctness scorecards
+  critical_path: false
+  status: done
+  deps:
+  - P14-T02
+  - P14-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-062
+  - AC-063
+  test_refs:
+  - TS-022
+  - TS-023
+  phase_doc: docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P14-T06
+  phase: PHASE-14
+  title: Ship developer simulation kit and fixture authoring flow
+  critical_path: false
+  status: done
+  deps:
+  - P14-T02
+  - P14-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-060
+  - AC-064
+  test_refs:
+  - TS-020
+  - TS-024
+  phase_doc: docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

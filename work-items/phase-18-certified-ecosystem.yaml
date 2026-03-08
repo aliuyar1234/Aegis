@@ -1,0 +1,108 @@
+phase: PHASE-18
+status: completed
+name: Certified ecosystem, governed extensions, and public compatibility leadership
+phase_doc: docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+tasks:
+- id: P18-T01
+  phase: PHASE-18
+  title: Define extension certification levels and signed compatibility reports
+  critical_path: true
+  status: done
+  deps: []
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-082
+  test_refs:
+  - TS-042
+  phase_doc: docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+  size: L
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P18-T02
+  phase: PHASE-18
+  title: Implement sandbox profiles and extension isolation assignments
+  critical_path: true
+  status: done
+  deps:
+  - P18-T01
+  adr_refs:
+  - ADR-0009
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-083
+  test_refs:
+  - TS-043
+  phase_doc: docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P18-T03
+  phase: PHASE-18
+  title: Define policy-bundle profiles and delegated-governance surfaces
+  critical_path: true
+  status: done
+  deps:
+  - P18-T01
+  - P18-T02
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-084
+  test_refs:
+  - TS-044
+  phase_doc: docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P18-T04
+  phase: PHASE-18
+  title: Publish benchmark-backed public compatibility tracks for certified extension
+    packs
+  critical_path: true
+  status: done
+  deps:
+  - P18-T01
+  - P18-T02
+  - P18-T03
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-085
+  test_refs:
+  - TS-045
+  phase_doc: docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P18-T05
+  phase: PHASE-18
+  title: Gate ecosystem readiness on certification, sandbox, governance, and public
+    evidence
+  critical_path: false
+  status: done
+  deps:
+  - P18-T01
+  - P18-T02
+  - P18-T03
+  - P18-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-086
+  test_refs:
+  - TS-046
+  phase_doc: docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

@@ -1,5 +1,5 @@
-current_phase: PHASE-13
-current_phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+current_phase: PHASE-20
+current_phase_doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
 completed_phases:
 - PHASE-00
 - PHASE-01
@@ -14,7 +14,14 @@ completed_phases:
 - PHASE-10
 - PHASE-11
 - PHASE-12
+- PHASE-13
+- PHASE-14
+- PHASE-15
+- PHASE-16
+- PHASE-17
+- PHASE-18
+- PHASE-19
 starting_sequence: []
-notes: Phases 00 through 13 are implemented in this repository. PHASE-13 remains
-  the terminal current phase marker because there is no successor phase, and no
-  planned tasks remain unblocked.
+notes: PHASE-20 is fully implemented. Operator accreditation tracks, rollout waves,
+  incident-review packets, deprecation governance, and the lifecycle evidence bundle
+  are in place. No successor phase is active yet in the SSOT task graph.

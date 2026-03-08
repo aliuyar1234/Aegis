@@ -1,0 +1,46 @@
+id: phase-15-rolling-upgrade
+phase: PHASE-15
+name: Rolling upgrade gate
+objective: Validate that phase-15 upgrade semantics are represented through explicit
+  docs, strategy catalogs, and test surfaces before mixed-version work begins.
+fixtures:
+- docs/exec-plans/active/PHASE-15-upgrades-dr.md
+- docs/design-docs/rolling-upgrades.md
+- docs/runbooks/rolling-upgrade.md
+- meta/upgrade-strategies.yaml
+- meta/upgrade-drill-fixtures.yaml
+- schema/jsonschema/upgrade-strategies.schema.json
+- schema/jsonschema/upgrade-drill-manifest.schema.json
+- schema/jsonschema/upgrade-drill-report.schema.json
+- scripts/run_upgrade_drill.py
+- tests/phase-gates/phase-15-rolling-upgrade.yaml
+- tests/upgrade_dr/test_phase15_upgrade_assets.py
+tests:
+- TS-027
+acceptance:
+- AC-067
+steps:
+- id: upgrade-strategy-catalog
+  description: verify rolling-upgrade strategies are machine-readable
+  expected:
+  - lease-safe drain and mixed-version windows are explicit
+  evidence:
+  - meta/upgrade-strategies.yaml
+  - schema/jsonschema/upgrade-strategies.schema.json
+  - meta/upgrade-drill-fixtures.yaml
+- id: upgrade-drill-runner
+  description: verify upgrade drill fixtures produce structured evidence
+  expected:
+  - mixed-version drills emit a passing structured report
+  evidence:
+  - scripts/run_upgrade_drill.py
+  - schema/jsonschema/upgrade-drill-report.schema.json
+- id: upgrade-runbook-surface
+  description: verify operator-facing rolling-upgrade guidance exists
+  expected:
+  - drain, adopt, and verification boundaries are documented
+  evidence:
+  - docs/design-docs/rolling-upgrades.md
+  - docs/runbooks/rolling-upgrade.md
+proves:
+- phase-15 rolling-upgrade work has a gateable artifact surface

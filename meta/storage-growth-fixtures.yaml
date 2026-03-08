@@ -1,0 +1,39 @@
+id: storage-growth-fixtures
+version: 1
+scenarios:
+- id: session-events-growth
+  component: session_events
+  budget_profile: phase16-storage-growth
+  partition_strategy: tenant_month_hash
+  retention_strategy: hot_30d_archive_365d
+  expected_peak_daily_records: 1200000
+  projector_lag_budget_ms: 1500
+  notes: Append-only truth remains in Postgres while partitions bound replay rebuild
+    windows.
+- id: outbox-growth
+  component: outbox
+  budget_profile: phase16-storage-growth
+  partition_strategy: pending_status_tenant
+  retention_strategy: acked_7d_archive_90d
+  expected_peak_daily_records: 450000
+  projector_lag_budget_ms: 1000
+  notes: Pending and acked intent paths stay queryable without changing outbox-before-side-effects
+    semantics.
+- id: projection-growth
+  component: projection_tables
+  budget_profile: phase16-storage-growth
+  partition_strategy: tenant_workspace_hotset
+  retention_strategy: current_state_plus_rolling_summaries
+  expected_peak_daily_records: 800000
+  projector_lag_budget_ms: 1200
+  notes: Projection rebuild and bounded operator queries remain distinct from canonical
+    event truth.
+- id: artifact-index-growth
+  component: artifact_index
+  budget_profile: phase16-storage-growth
+  partition_strategy: tenant_retention_class
+  retention_strategy: hot_metadata_archive_365d_cold_blob
+  expected_peak_daily_records: 600000
+  projector_lag_budget_ms: 900
+  notes: Artifact blobs stay outside the event stream while index freshness remains
+    bounded for operators.

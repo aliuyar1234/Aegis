@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/upgrade-drill-manifest.schema.json",
+  "title": "UpgradeDrillManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "drills"],
+  "properties": {
+    "id": { "type": "string", "const": "upgrade-drill-fixtures" },
+    "version": { "type": "integer", "minimum": 1 },
+    "drills": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "component_group", "strategy_ref", "from_release", "to_release", "runtime_contract_version", "checkpoint_version", "expectations"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "component_group": { "type": "string" },
+          "strategy_ref": { "type": "string" },
+          "from_release": { "type": "string" },
+          "to_release": { "type": "string" },
+          "runtime_contract_version": { "type": "string" },
+          "checkpoint_version": { "type": "string" },
+          "expectations": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

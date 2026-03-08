@@ -134,6 +134,240 @@ ENTERPRISE_FIXTURE_SCHEMA_PAIRS = [
         ROOT / "meta/dedicated-tenant-evidence.yaml",
     ),
 ]
+SIMULATION_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/fault-injection-matrix.schema.json",
+        ROOT / "meta/fault-injection-matrix.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/simulation-scenario-manifest.schema.json",
+        ROOT / "meta/simulation-scenarios.yaml",
+    ),
+]
+SIMULATION_SCENARIO_SCHEMA = ROOT / "schema/jsonschema/simulation-scenario.schema.json"
+SIMULATION_SCENARIO_FIXTURES = [
+    ROOT / "tests/simulation/fixtures/worker-crash-recovery.yaml",
+    ROOT / "tests/simulation/fixtures/node-loss-adoption.yaml",
+    ROOT / "tests/simulation/fixtures/approval-timeout.yaml",
+    ROOT / "tests/simulation/fixtures/duplicate-callback.yaml",
+    ROOT / "tests/simulation/fixtures/browser-instability.yaml",
+]
+CONFORMANCE_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/conformance-fixture-manifest.schema.json",
+        ROOT / "tests/conformance/fixtures/runtime-contract-conformance.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/conformance-report.schema.json",
+        ROOT / "tests/conformance/fixtures/sample-conformance-report.yaml",
+    ),
+]
+REPLAY_ORACLE_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/determinism-classification.schema.json",
+        ROOT / "meta/determinism-classes.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/replay-oracle.schema.json",
+        ROOT / "meta/replay-equivalence.yaml",
+    ),
+]
+REPLAY_DIFF_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/replay-fixture-manifest.schema.json",
+        ROOT / "meta/replay-fixtures.yaml",
+    ),
+]
+PHASE15_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/compatibility-matrix.schema.json",
+        ROOT / "meta/compatibility-matrix.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/version-skew-rules.schema.json",
+        ROOT / "meta/version-skew-rules.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/upcaster-manifest.schema.json",
+        ROOT / "meta/upcaster-manifests.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/upgrade-strategies.schema.json",
+        ROOT / "meta/upgrade-strategies.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/recovery-objective.schema.json",
+        ROOT / "meta/recovery-objectives.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/topology-profiles.schema.json",
+        ROOT / "meta/topology-profiles.yaml",
+    ),
+]
+PHASE15_ADVANCED_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/upcaster-fixture-manifest.schema.json",
+        ROOT / "meta/upcaster-fixtures.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/upgrade-drill-manifest.schema.json",
+        ROOT / "meta/upgrade-drill-fixtures.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/restore-drill-manifest.schema.json",
+        ROOT / "meta/restore-drill-fixtures.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/standby-promotion-evidence.schema.json",
+        ROOT / "meta/standby-promotion-evidence.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/release-evidence-manifest.schema.json",
+        ROOT / "meta/release-evidence-manifest.yaml",
+    ),
+]
+PHASE16_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/slo-profiles.schema.json",
+        ROOT / "meta/slo-profiles.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/load-shed-policies.schema.json",
+        ROOT / "meta/load-shed-policies.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/placement-policies.schema.json",
+        ROOT / "meta/placement-policies.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/isolation-profiles.schema.json",
+        ROOT / "meta/isolation-profiles.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/storage-growth-manifest.schema.json",
+        ROOT / "meta/storage-growth-fixtures.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/fleet-triage-manifest.schema.json",
+        ROOT / "meta/fleet-triage-manifest.yaml",
+    ),
+]
+PHASE17_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/regional-topology-profiles.schema.json",
+        ROOT / "meta/regional-topology-profiles.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/fault-domain-catalog.schema.json",
+        ROOT / "meta/fault-domain-catalog.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/regional-placement-policies.schema.json",
+        ROOT / "meta/regional-placement-policies.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/regional-evacuation-manifest.schema.json",
+        ROOT / "meta/regional-evacuation-fixtures.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/session-mobility-manifest.schema.json",
+        ROOT / "meta/session-mobility-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/regional-evidence-manifest.schema.json",
+        ROOT / "meta/regional-evidence-manifest.yaml",
+    ),
+]
+PHASE18_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/extension-certification-levels.schema.json",
+        ROOT / "meta/extension-certification-levels.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/sandbox-profiles.schema.json",
+        ROOT / "meta/sandbox-profiles.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/policy-bundle-manifest.schema.json",
+        ROOT / "meta/policy-bundle-profiles.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/public-benchmark-manifest.schema.json",
+        ROOT / "meta/public-benchmark-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/ecosystem-evidence-manifest.schema.json",
+        ROOT / "meta/ecosystem-evidence-manifest.yaml",
+    ),
+]
+PHASE19_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/adoption-profiles.schema.json",
+        ROOT / "meta/adoption-profiles.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/reference-deployment-tracks.schema.json",
+        ROOT / "meta/reference-deployment-tracks.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/operator-exercise-manifest.schema.json",
+        ROOT / "meta/operator-exercise-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/golden-path-starter-kits.schema.json",
+        ROOT / "meta/golden-path-starter-kits.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/adoption-evidence-manifest.schema.json",
+        ROOT / "meta/adoption-evidence-manifest.yaml",
+    ),
+]
+PHASE20_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/operator-accreditation.schema.json",
+        ROOT / "meta/operator-accreditation.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/rollout-wave-manifest.schema.json",
+        ROOT / "meta/rollout-wave-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/incident-review-packets.schema.json",
+        ROOT / "meta/incident-review-packets.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/deprecation-governance.schema.json",
+        ROOT / "meta/deprecation-governance.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/lifecycle-evidence-manifest.schema.json",
+        ROOT / "meta/lifecycle-evidence-manifest.yaml",
+    ),
+]
+BENCHMARK_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/benchmark-corpus.schema.json",
+        ROOT / "meta/benchmark-corpus.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/performance-budgets.schema.json",
+        ROOT / "meta/performance-budgets.yaml",
+    ),
+]
+BENCHMARK_SCORECARD_SCHEMA = ROOT / "schema/jsonschema/benchmark-scorecard.schema.json"
+BENCHMARK_SCORECARD = ROOT / "docs/generated/phase-14-benchmark-scorecard.json"
+PHASE15_RELEASE_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/release-evidence-bundle.schema.json"
+PHASE15_RELEASE_EVIDENCE = ROOT / "docs/generated/phase-15-release-evidence.json"
+PHASE16_FLEET_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/operator-evidence-bundle.schema.json"
+PHASE16_FLEET_EVIDENCE = ROOT / "docs/generated/phase-16-fleet-evidence.json"
+PHASE17_REGIONAL_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/regional-evidence-bundle.schema.json"
+PHASE17_REGIONAL_EVIDENCE = ROOT / "docs/generated/phase-17-regional-evidence.json"
+PHASE18_ECOSYSTEM_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/ecosystem-evidence-bundle.schema.json"
+PHASE18_ECOSYSTEM_EVIDENCE = ROOT / "docs/generated/phase-18-ecosystem-evidence.json"
+PHASE19_ADOPTION_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/adoption-evidence-bundle.schema.json"
+PHASE19_ADOPTION_EVIDENCE = ROOT / "docs/generated/phase-19-adoption-evidence.json"
+PHASE20_LIFECYCLE_EVIDENCE_SCHEMA = ROOT / "schema/jsonschema/lifecycle-evidence-bundle.schema.json"
+PHASE20_LIFECYCLE_EVIDENCE = ROOT / "docs/generated/phase-20-lifecycle-evidence.json"
 PYTHON_VENDOR_ROOT = ROOT / "py" / "vendor"
 PYTHON_BINDINGS_ROOT = ROOT / "py" / "packages" / "aegis_contracts_py" / "generated" / "proto"
 RUST_BINDINGS_ROOT = ROOT / "rs" / "crates" / "aegis_contracts_rs" / "src" / "generated" / "proto"
@@ -583,6 +817,241 @@ def validate_enterprise_artifacts() -> None:
             )
 
 
+def validate_replay_oracle_artifacts() -> None:
+    for schema_path, fixture_path in REPLAY_ORACLE_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid replay-oracle artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+
+def validate_simulation_artifacts() -> None:
+    for schema_path, fixture_path in SIMULATION_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid simulation artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    scenario_schema = load_json(SIMULATION_SCENARIO_SCHEMA)
+    for fixture_path in SIMULATION_SCENARIO_FIXTURES:
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=scenario_schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid simulation scenario "
+                f"{fixture_path.relative_to(ROOT)} for schema {SIMULATION_SCENARIO_SCHEMA.relative_to(ROOT)}: {exc}"
+            )
+
+
+def validate_conformance_artifacts() -> None:
+    for schema_path, fixture_path in CONFORMANCE_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid conformance artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+
+def validate_replay_diff_artifacts() -> None:
+    for schema_path, fixture_path in REPLAY_DIFF_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid replay-diff artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+
+def validate_phase15_artifacts() -> None:
+    for schema_path, fixture_path in PHASE15_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-15 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    for schema_path, fixture_path in PHASE15_ADVANCED_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-15 advanced artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    release_schema = load_json(PHASE15_RELEASE_EVIDENCE_SCHEMA)
+    release_bundle = load_json(PHASE15_RELEASE_EVIDENCE)
+    try:
+        validate(instance=release_bundle, schema=release_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-15 release evidence "
+            f"{PHASE15_RELEASE_EVIDENCE.relative_to(ROOT)} for schema {PHASE15_RELEASE_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_phase16_artifacts() -> None:
+    for schema_path, fixture_path in PHASE16_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-16 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    fleet_schema = load_json(PHASE16_FLEET_EVIDENCE_SCHEMA)
+    fleet_bundle = load_json(PHASE16_FLEET_EVIDENCE)
+    try:
+        validate(instance=fleet_bundle, schema=fleet_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-16 fleet evidence "
+            f"{PHASE16_FLEET_EVIDENCE.relative_to(ROOT)} for schema {PHASE16_FLEET_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_phase17_artifacts() -> None:
+    for schema_path, fixture_path in PHASE17_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-17 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    regional_schema = load_json(PHASE17_REGIONAL_EVIDENCE_SCHEMA)
+    regional_bundle = load_json(PHASE17_REGIONAL_EVIDENCE)
+    try:
+        validate(instance=regional_bundle, schema=regional_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-17 regional evidence "
+            f"{PHASE17_REGIONAL_EVIDENCE.relative_to(ROOT)} for schema {PHASE17_REGIONAL_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_phase18_artifacts() -> None:
+    for schema_path, fixture_path in PHASE18_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-18 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    ecosystem_schema = load_json(PHASE18_ECOSYSTEM_EVIDENCE_SCHEMA)
+    ecosystem_bundle = load_json(PHASE18_ECOSYSTEM_EVIDENCE)
+    try:
+        validate(instance=ecosystem_bundle, schema=ecosystem_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-18 ecosystem evidence "
+            f"{PHASE18_ECOSYSTEM_EVIDENCE.relative_to(ROOT)} for schema {PHASE18_ECOSYSTEM_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_phase19_artifacts() -> None:
+    for schema_path, fixture_path in PHASE19_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-19 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    adoption_schema = load_json(PHASE19_ADOPTION_EVIDENCE_SCHEMA)
+    adoption_bundle = load_json(PHASE19_ADOPTION_EVIDENCE)
+    try:
+        validate(instance=adoption_bundle, schema=adoption_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-19 adoption evidence "
+            f"{PHASE19_ADOPTION_EVIDENCE.relative_to(ROOT)} for schema {PHASE19_ADOPTION_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_phase20_artifacts() -> None:
+    for schema_path, fixture_path in PHASE20_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid phase-20 artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    lifecycle_schema = load_json(PHASE20_LIFECYCLE_EVIDENCE_SCHEMA)
+    lifecycle_bundle = load_json(PHASE20_LIFECYCLE_EVIDENCE)
+    try:
+        validate(instance=lifecycle_bundle, schema=lifecycle_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid phase-20 lifecycle evidence "
+            f"{PHASE20_LIFECYCLE_EVIDENCE.relative_to(ROOT)} for schema {PHASE20_LIFECYCLE_EVIDENCE_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_benchmark_artifacts() -> None:
+    for schema_path, fixture_path in BENCHMARK_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid benchmark artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+    scorecard_schema = load_json(BENCHMARK_SCORECARD_SCHEMA)
+    scorecard = load_json(BENCHMARK_SCORECARD)
+    try:
+        validate(instance=scorecard, schema=scorecard_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid benchmark scorecard "
+            f"{BENCHMARK_SCORECARD.relative_to(ROOT)} for schema {BENCHMARK_SCORECARD_SCHEMA.relative_to(ROOT)}: {exc}"
+        )
+
+
 schema_dirs = [
     ROOT / "schema/jsonschema",
     ROOT / "schema/event-payloads",
@@ -718,6 +1187,17 @@ validate_extension_pack()
 validate_media_fixtures()
 validate_oss_managed_artifacts()
 validate_enterprise_artifacts()
+validate_replay_oracle_artifacts()
+validate_simulation_artifacts()
+validate_conformance_artifacts()
+validate_replay_diff_artifacts()
+validate_phase15_artifacts()
+validate_phase16_artifacts()
+validate_phase17_artifacts()
+validate_phase18_artifacts()
+validate_phase19_artifacts()
+validate_phase20_artifacts()
+validate_benchmark_artifacts()
 
 if subject_map["dispatch"]["message"] != "ActionDispatch":
     fail("Transport subject mapping for dispatch drifted from ActionDispatch")

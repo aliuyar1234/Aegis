@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/performance-budgets.schema.json",
+  "title": "PerformanceBudgets",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "profiles"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "performance-budgets"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/profile"
+      }
+    },
+    "case_overrides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "benchmark_case",
+          "budgets"
+        ],
+        "properties": {
+          "benchmark_case": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "budgets": {
+            "$ref": "#/$defs/budgets"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_event_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_fault_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_artifact_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_estimated_runtime_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_session_start_latency_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_action_dispatch_latency_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_projector_lag_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_outbox_pending": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_artifact_index_lag_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_queue_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_cohort_query_latency_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "min_correctness_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "minProperties": 1
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "budgets"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "budgets": {
+          "$ref": "#/$defs/budgets"
+        }
+      }
+    }
+  }
+}

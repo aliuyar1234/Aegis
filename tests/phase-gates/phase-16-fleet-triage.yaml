@@ -1,0 +1,37 @@
+id: phase-16-fleet-triage
+phase: PHASE-16
+name: Fleet triage gate
+objective: Validate that phase-16 fleet reasoning culminates in a reproducible operator
+  evidence bundle with cohort-level failure clustering.
+fixtures:
+- docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+- docs/product-specs/fleet-triage.md
+- docs/runbooks/top-failure-clusters.md
+- meta/fleet-triage-manifest.yaml
+- docs/generated/phase-16-fleet-evidence.json
+- schema/jsonschema/fleet-triage-manifest.schema.json
+- schema/jsonschema/fleet-triage-report.schema.json
+- schema/jsonschema/operator-evidence-bundle.schema.json
+- scripts/build_phase16_fleet_evidence.py
+- tests/phase-gates/phase-16-fleet-triage.yaml
+- tests/operator_fleet/test_phase16_fleet_assets.py
+tests:
+- TS-036
+acceptance:
+- AC-076
+steps:
+- id: cohort-manifest
+  description: verify bounded cohort definitions and evidence fields are explicit
+  expected:
+  - fleet triage cohorts are committed, bounded, and linked to report surfaces
+  evidence:
+  - meta/fleet-triage-manifest.yaml
+- id: reproducible-bundle
+  description: verify the operator evidence bundle is reproducible from committed reports
+  expected:
+  - the committed fleet evidence bundle matches fresh builder output
+  evidence:
+  - scripts/build_phase16_fleet_evidence.py
+  - docs/generated/phase-16-fleet-evidence.json
+proves:
+- phase-16 fleet triage is modeled as reproducible evidence rather than prose-only guidance

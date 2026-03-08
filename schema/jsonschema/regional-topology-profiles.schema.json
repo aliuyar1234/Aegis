@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/regional-topology-profiles.schema.json",
+  "title": "RegionalTopologyProfiles",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "profiles"],
+  "properties": {
+    "id": { "type": "string", "const": "regional-topology-profiles" },
+    "version": { "type": "integer", "minimum": 1 },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "topology_kind",
+          "primary_region",
+          "standby_regions",
+          "authoritative_region",
+          "supported_tiers",
+          "fault_domains",
+          "promotion_preconditions",
+          "evacuation_modes"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "topology_kind": { "type": "string", "minLength": 1 },
+          "primary_region": { "type": "string", "minLength": 1 },
+          "standby_regions": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "authoritative_region": { "type": "string", "minLength": 1 },
+          "supported_tiers": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "fault_domains": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "promotion_preconditions": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "evacuation_modes": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

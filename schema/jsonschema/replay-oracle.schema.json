@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/replay-oracle.schema.json",
+  "title": "ReplayOracle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "modes",
+    "equivalence_dimensions",
+    "comparison_exclusions",
+    "requirements"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "replay-equivalence"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "modes": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "description",
+          "comparison_basis"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "full-replay",
+              "checkpoint-tail-replay",
+              "historical-replay"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "comparison_basis": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "equivalence_dimensions": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "statement"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "comparison_exclusions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "statement",
+          "applies_to",
+          "determinism_classes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "applies_to": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "full-replay",
+                "checkpoint-tail-replay",
+                "historical-replay"
+              ]
+            }
+          },
+          "determinism_classes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "deterministic",
+                "captured-nondeterministic",
+                "externally-unknowable"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

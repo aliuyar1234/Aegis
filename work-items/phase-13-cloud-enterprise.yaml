@@ -1,5 +1,5 @@
 phase: PHASE-13
-status: current
+status: completed
 name: Cloud and enterprise hardening
 phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
 tasks:

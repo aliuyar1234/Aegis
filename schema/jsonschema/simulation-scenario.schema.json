@@ -1,0 +1,291 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/simulation-scenario.schema.json",
+  "title": "SimulationScenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "seed",
+    "description",
+    "steps",
+    "expected_terminal_state",
+    "proves"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "kind",
+              "command"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+              },
+              "kind": {
+                "const": "command"
+              },
+              "command": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "action_id",
+                  "worker_kind",
+                  "effect"
+                ],
+                "properties": {
+                  "action_id": {
+                    "type": "string"
+                  },
+                  "worker_kind": {
+                    "type": "string"
+                  },
+                  "effect": {
+                    "type": "string",
+                    "enum": [
+                      "read",
+                      "write",
+                      "control"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "kind",
+              "approval"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+              },
+              "kind": {
+                "const": "approval"
+              },
+              "approval": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "action",
+                  "approval_id"
+                ],
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "request",
+                      "grant",
+                      "deny",
+                      "expire"
+                    ]
+                  },
+                  "approval_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "kind",
+              "fault"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+              },
+              "kind": {
+                "const": "fault_injection"
+              },
+              "fault": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "fault_id",
+                  "target",
+                  "scope",
+                  "expected_runtime_response"
+                ],
+                "properties": {
+                  "fault_id": {
+                    "type": "string",
+                    "enum": [
+                      "worker_crash",
+                      "node_loss",
+                      "approval_timeout",
+                      "duplicate_callback",
+                      "browser_instability"
+                    ]
+                  },
+                  "target": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "scope": {
+                    "type": "string",
+                    "enum": [
+                      "session",
+                      "worker",
+                      "node",
+                      "approval",
+                      "browser"
+                    ]
+                  },
+                  "expected_runtime_response": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "kind",
+              "timer"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+              },
+              "kind": {
+                "const": "timer"
+              },
+              "timer": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "advance_ms"
+                ],
+                "properties": {
+                  "advance_ms": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "kind",
+              "artifact"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+              },
+              "kind": {
+                "const": "artifact_capture"
+              },
+              "artifact": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "label"
+                ],
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "screenshot",
+                      "dom_snapshot",
+                      "trace",
+                      "evidence_note"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "expected_terminal_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "session_state",
+        "recovery_status",
+        "uncertainty_status",
+        "quarantine_status",
+        "replay_equivalent"
+      ],
+      "properties": {
+        "session_state": {
+          "type": "string"
+        },
+        "recovery_status": {
+          "type": "string"
+        },
+        "uncertainty_status": {
+          "type": "string"
+        },
+        "quarantine_status": {
+          "type": "string"
+        },
+        "replay_equivalent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "proves": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

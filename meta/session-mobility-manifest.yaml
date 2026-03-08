@@ -1,0 +1,27 @@
+id: session-mobility-manifest
+version: 1
+scenarios:
+- id: checkpoint-tail-migration
+  mobility_mode: controlled_failover
+  source_region: eu-central-1
+  target_region: eu-west-1
+  checkpoint_continuity: required
+  approval_continuity: rebind_without_reapproval
+  artifact_continuity: immutable_refs_preserved
+  expected_authoritative_region: eu-west-1
+- id: dedicated-approval-carryforward
+  mobility_mode: compliance_driven_relocation
+  source_region: us-east-1
+  target_region: us-west-2
+  checkpoint_continuity: required
+  approval_continuity: operator_review_required
+  artifact_continuity: immutable_refs_preserved
+  expected_authoritative_region: us-west-2
+- id: artifact-lineage-preservation
+  mobility_mode: controlled_failover
+  source_region: eu-central-1
+  target_region: eu-west-1
+  checkpoint_continuity: required
+  approval_continuity: rebind_without_reapproval
+  artifact_continuity: retention_and_hash_preserved
+  expected_authoritative_region: eu-west-1

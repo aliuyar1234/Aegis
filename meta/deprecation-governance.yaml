@@ -1,0 +1,41 @@
+program_id: deprecation-governance
+version: 1
+policies:
+- id: starter-kit-sunset
+  asset_kind: starter_kit
+  asset_ids:
+  - certified-support-ops
+  - dedicated-certified-support-ops
+  successor_refs:
+  - docs/design-docs/golden-path-starter-kits.md
+  - meta/reference-deployment-tracks.yaml
+  notice_window_days: 90
+  freeze_actions:
+  - block_new_adoptions
+  - require_explicit_exception
+  rollback_runbook_ref: docs/runbooks/extension-sunset.md
+- id: certified-pack-revocation
+  asset_kind: certified_extension_pack
+  asset_ids:
+  - sample-support-extension-pack
+  successor_refs:
+  - docs/runbooks/revoking-extension.md
+  - docs/runbooks/extension-sunset.md
+  notice_window_days: 30
+  freeze_actions:
+  - freeze_public_track
+  - block_new_certifications
+  rollback_runbook_ref: docs/runbooks/extension-sunset.md
+- id: deployment-track-retirement
+  asset_kind: deployment_track
+  asset_ids:
+  - shared-evaluation
+  - dedicated-regional-rollout
+  successor_refs:
+  - docs/design-docs/reference-deployment-tracks.md
+  - docs/runbooks/first-adopter-onboarding.md
+  notice_window_days: 120
+  freeze_actions:
+  - block_new_wave_promotions
+  - require_migration_review
+  rollback_runbook_ref: docs/runbooks/rollout-wave-promotion.md

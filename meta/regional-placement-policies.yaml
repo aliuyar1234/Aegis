@@ -1,0 +1,44 @@
+id: regional-placement-policies
+version: 1
+policies:
+- id: shared-eu-regional-routing
+  topology_profile_ref: eu-shared-warm-standby
+  prefer_primary_region: true
+  allow_standby_on_failover: true
+  required_fault_domain_roles:
+  - primary_fault_domain
+  - regional_standby
+  preserve_single_owner: true
+- id: dedicated-us-regional-routing
+  topology_profile_ref: dedicated-regional-standby
+  prefer_primary_region: true
+  allow_standby_on_failover: true
+  required_fault_domain_roles:
+  - dedicated_primary
+  - dedicated_standby
+  preserve_single_owner: true
+decision_fixtures:
+- id: shared-primary-placement
+  policy_ref: shared-eu-regional-routing
+  tenant_tier: tier-b
+  topology_state: healthy
+  source_region: eu-central-1
+  expected_region: eu-central-1
+- id: shared-standby-failover
+  policy_ref: shared-eu-regional-routing
+  tenant_tier: tier-c
+  topology_state: failover
+  source_region: eu-central-1
+  expected_region: eu-west-1
+- id: dedicated-primary-placement
+  policy_ref: dedicated-us-regional-routing
+  tenant_tier: dedicated
+  topology_state: healthy
+  source_region: us-east-1
+  expected_region: us-east-1
+- id: dedicated-standby-failover
+  policy_ref: dedicated-us-regional-routing
+  tenant_tier: dedicated
+  topology_state: failover
+  source_region: us-east-1
+  expected_region: us-west-2

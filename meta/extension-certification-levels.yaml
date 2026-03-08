@@ -1,0 +1,59 @@
+program_id: aegis-extension-certification
+version: 1
+signing_profile:
+  id: ecosystem-release-signing-v1
+  digest_algorithm: sha256
+  signer_role: runtime_release_manager
+levels:
+- id: reviewed
+  display_name: Reviewed
+  requirements:
+    schema_valid: true
+    compatibility_bounded: true
+    sandbox_profile_required: true
+    certification_report_required: true
+    public_listing_allowed: false
+    required_evidence_groups:
+    - manifest
+    - sandbox
+    - review
+- id: verified
+  display_name: Verified
+  requirements:
+    schema_valid: true
+    compatibility_bounded: true
+    sandbox_profile_required: true
+    certification_report_required: true
+    public_listing_allowed: true
+    required_evidence_groups:
+    - manifest
+    - sandbox
+    - governance
+    - replay
+- id: certified
+  display_name: Certified
+  requirements:
+    schema_valid: true
+    compatibility_bounded: true
+    sandbox_profile_required: true
+    certification_report_required: true
+    public_listing_allowed: true
+    required_evidence_groups:
+    - manifest
+    - sandbox
+    - governance
+    - replay
+    - benchmark
+review_windows:
+  revocation_sla_hours: 24
+  required_recertification_days: 180
+candidates:
+- id: sample-support-extension-pack
+  pack_ref: tests/extensibility/fixtures/sample-extension-pack/pack.yaml
+  target_level: certified
+  required_profiles:
+  - partner-reviewed
+  - restricted-artifact
+  - edge-adapter
+  policy_bundle: default-third-party
+  public_track: certified-support-pack

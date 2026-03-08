@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/public-compatibility-report.schema.json",
+  "title": "PublicCompatibilityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "tracks",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase18-public-compatibility-report"
+    },
+    "tracks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "track_id",
+          "candidate_id",
+          "certification_level",
+          "published_case_count",
+          "compatibility_dimension_count",
+          "verdict"
+        ],
+        "properties": {
+          "track_id": {
+            "type": "string"
+          },
+          "candidate_id": {
+            "type": "string"
+          },
+          "certification_level": {
+            "type": "string"
+          },
+          "published_case_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "compatibility_dimension_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

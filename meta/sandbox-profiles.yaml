@@ -1,0 +1,55 @@
+program_id: extension-sandbox-profiles
+version: 1
+profiles:
+- id: restricted-artifact
+  display_name: Restricted artifact processor
+  allowed_kinds:
+  - artifact_processor
+  allowed_sdk_languages:
+  - python
+  - rust
+  network_modes:
+  - none
+  max_secret_count: 0
+  mcp_allowed: false
+  requires_artifact_outputs: true
+  policy_bundle: artifact-only
+- id: partner-reviewed
+  display_name: Partner reviewed connector
+  allowed_kinds:
+  - tool_connector
+  allowed_sdk_languages:
+  - python
+  - rust
+  network_modes:
+  - egress_allowlist
+  max_secret_count: 4
+  mcp_allowed: false
+  requires_artifact_outputs: true
+  policy_bundle: default-third-party
+- id: edge-adapter
+  display_name: Edge adapter
+  allowed_kinds:
+  - mcp_adapter
+  allowed_sdk_languages:
+  - python
+  - rust
+  network_modes:
+  - egress_allowlist
+  max_secret_count: 4
+  mcp_allowed: true
+  requires_artifact_outputs: true
+  policy_bundle: default-third-party
+assignments:
+- manifest_ref: tests/extensibility/fixtures/sample-connector.yaml
+  profile: partner-reviewed
+- manifest_ref: tests/extensibility/fixtures/sample-artifact-processor.yaml
+  profile: restricted-artifact
+- manifest_ref: tests/extensibility/fixtures/sample-mcp-adapter.yaml
+  profile: edge-adapter
+- manifest_ref: tests/extensibility/fixtures/sample-extension-pack/connectors/sample-billing-connector.yaml
+  profile: partner-reviewed
+- manifest_ref: tests/extensibility/fixtures/sample-extension-pack/artifact-processors/sample-redaction-processor.yaml
+  profile: restricted-artifact
+- manifest_ref: tests/extensibility/fixtures/sample-extension-pack/mcp-adapters/sample-crm-mcp-adapter.yaml
+  profile: edge-adapter

@@ -1,0 +1,34 @@
+id: phase-18-policy-bundles
+phase: PHASE-18
+name: Policy-bundle gate
+objective: Validate that phase-18 delegated-governance bundles are explicit, reviewable,
+  and rollback-ready.
+fixtures:
+- docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+- docs/design-docs/policy-bundles.md
+- docs/runbooks/policy-bundle-rollback.md
+- meta/policy-bundle-profiles.yaml
+- schema/jsonschema/policy-bundle-manifest.schema.json
+- schema/jsonschema/policy-bundle-report.schema.json
+- scripts/run_phase18_policy_bundles.py
+- tests/phase-gates/phase-18-policy-bundles.yaml
+- tests/policy_bundles/test_phase18_policy_bundle_assets.py
+tests:
+- TS-044
+acceptance:
+- AC-084
+steps:
+- id: bundle-inputs
+  description: verify policy bundles bind to explicit canonical inputs
+  expected:
+  - tool, dangerous-action, RBAC, ABAC, and compatibility inputs are committed
+  evidence:
+  - meta/policy-bundle-profiles.yaml
+- id: rollback-discipline
+  description: verify governance includes dual control and rollback linkage
+  expected:
+  - bundle governance references rollback runbooks and explicit approval roles
+  evidence:
+  - scripts/run_phase18_policy_bundles.py
+proves:
+- phase-18 delegated ecosystem governance is machine-checkable rather than reviewer folklore

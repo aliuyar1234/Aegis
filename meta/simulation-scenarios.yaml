@@ -1,0 +1,43 @@
+id: simulation-scenarios
+version: 1
+scenarios:
+- id: worker-crash-recovery
+  scenario_ref: tests/simulation/fixtures/worker-crash-recovery.yaml
+  covers_faults:
+  - worker_crash
+  expected_terminal_state: resumed
+  tags:
+  - recovery
+  - browser_wedge
+- id: node-loss-adoption
+  scenario_ref: tests/simulation/fixtures/node-loss-adoption.yaml
+  covers_faults:
+  - node_loss
+  expected_terminal_state: adopted
+  tags:
+  - leases
+  - replay
+- id: approval-timeout
+  scenario_ref: tests/simulation/fixtures/approval-timeout.yaml
+  covers_faults:
+  - approval_timeout
+  expected_terminal_state: approval_expired
+  tags:
+  - approvals
+  - policy
+- id: duplicate-callback
+  scenario_ref: tests/simulation/fixtures/duplicate-callback.yaml
+  covers_faults:
+  - duplicate_callback
+  expected_terminal_state: duplicate_suppressed
+  tags:
+  - transport
+  - uncertainty
+- id: browser-instability
+  scenario_ref: tests/simulation/fixtures/browser-instability.yaml
+  covers_faults:
+  - browser_instability
+  expected_terminal_state: degraded
+  tags:
+  - browser_wedge
+  - artifacts

@@ -1,0 +1,35 @@
+id: phase-16-isolation
+phase: PHASE-16
+name: Noisy-neighbor isolation gate
+objective: Validate that phase-16 hot-tenant and workflow-class isolation is explicit,
+  bounded, and preserves unaffected classes.
+fixtures:
+- docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+- docs/design-docs/isolation-profiles.md
+- docs/runbooks/hot-tenant-isolation.md
+- meta/isolation-profiles.yaml
+- schema/jsonschema/isolation-profiles.schema.json
+- schema/jsonschema/isolation-report.schema.json
+- scripts/run_phase16_isolation.py
+- tests/phase-gates/phase-16-isolation.yaml
+- tests/noisy_neighbor/test_phase16_isolation_assets.py
+tests:
+- TS-034
+acceptance:
+- AC-074
+steps:
+- id: isolation-profiles
+  description: verify isolation profiles declare scope, signals, mitigation actions,
+    and preserved classes
+  expected:
+  - profiles cover tenant and workflow-class pressure
+  evidence:
+  - meta/isolation-profiles.yaml
+- id: isolation-scenarios
+  description: verify scenarios map to the expected isolation profiles
+  expected:
+  - scenario preserve classes are a subset of the declared profile preserve classes
+  evidence:
+  - scripts/run_phase16_isolation.py
+proves:
+- phase-16 isolation rules are machine-checkable

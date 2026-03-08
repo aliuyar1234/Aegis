@@ -1,0 +1,130 @@
+phase: PHASE-16
+status: completed
+name: Fleet scheduling, isolation, and SLO-driven operability
+phase_doc: docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+tasks:
+- id: P16-T01
+  phase: PHASE-16
+  title: Define capacity model, SLO profiles, and overload doctrine
+  critical_path: true
+  status: done
+  deps: []
+  adr_refs:
+  - ADR-0003
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-071
+  test_refs:
+  - TS-031
+  phase_doc: docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+  size: L
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P16-T02
+  phase: PHASE-16
+  title: Implement session placement engine and pool taxonomy
+  critical_path: true
+  status: done
+  deps:
+  - P16-T01
+  adr_refs:
+  - ADR-0002
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-072
+  test_refs:
+  - TS-032
+  phase_doc: docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P16-T03
+  phase: PHASE-16
+  title: Build adaptive admission control and load shedding
+  critical_path: true
+  status: done
+  deps:
+  - P16-T01
+  - P16-T02
+  adr_refs:
+  - ADR-0006
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-073
+  test_refs:
+  - TS-033
+  phase_doc: docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P16-T04
+  phase: PHASE-16
+  title: Implement noisy-neighbor isolation and hot-tenant mitigation
+  critical_path: true
+  status: done
+  deps:
+  - P16-T02
+  - P16-T03
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-074
+  test_refs:
+  - TS-034
+  phase_doc: docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P16-T05
+  phase: PHASE-16
+  title: Formalize storage and transport scaling plan
+  critical_path: true
+  status: done
+  deps:
+  - P16-T01
+  adr_refs:
+  - ADR-0003
+  - ADR-0007
+  - ADR-0014
+  - ADR-0015
+  acceptance_refs:
+  - AC-075
+  test_refs:
+  - TS-035
+  phase_doc: docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P16-T06
+  phase: PHASE-16
+  title: Add fleet forensics and operator evidence bundles
+  critical_path: false
+  status: done
+  deps:
+  - P16-T01
+  - P16-T02
+  - P16-T03
+  - P16-T04
+  - P16-T05
+  adr_refs:
+  - ADR-0002
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-076
+  test_refs:
+  - TS-036
+  phase_doc: docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

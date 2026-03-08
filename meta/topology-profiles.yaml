@@ -1,0 +1,17 @@
+id: topology-profiles
+version: 1
+profiles:
+- id: single-region-warm-standby
+  topology_kind: warm_standby
+  truth_store_mode: primary_plus_restorable_standby
+  promotion_rules:
+  - require fencing confirmation before promotion
+  - require restore evidence before enabling authoritative ownership
+  - require operator verification of single-owner invariants after promotion
+- id: dedicated-warm-standby
+  topology_kind: warm_standby
+  truth_store_mode: dedicated_primary_plus_standby
+  promotion_rules:
+  - require tenant-isolation verification before promotion
+  - require restore evidence before enabling authoritative ownership
+  - require operator verification of single-owner invariants after promotion

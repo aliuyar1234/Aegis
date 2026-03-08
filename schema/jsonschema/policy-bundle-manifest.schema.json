@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/policy-bundle-manifest.schema.json",
+  "title": "PolicyBundleManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "program_id",
+    "version",
+    "default_bundle",
+    "bundles"
+  ],
+  "properties": {
+    "program_id": {
+      "type": "string",
+      "const": "delegated-governance-policy-bundles"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "default_bundle": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "bundles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "display_name",
+          "scopes",
+          "inputs",
+          "governance"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "display_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scopes": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "allowed_tiers",
+              "allowed_kinds"
+            ],
+            "properties": {
+              "allowed_tiers": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "tier_a",
+                    "tier_b",
+                    "tier_c"
+                  ]
+                }
+              },
+              "allowed_kinds": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "tool_connector",
+                    "artifact_processor",
+                    "mcp_adapter"
+                  ]
+                }
+              }
+            }
+          },
+          "inputs": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool_registry_ref",
+              "dangerous_actions_ref",
+              "rbac_roles_ref",
+              "abac_attributes_ref",
+              "compatibility_policy_ref"
+            ],
+            "properties": {
+              "tool_registry_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "dangerous_actions_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "rbac_roles_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "abac_attributes_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "compatibility_policy_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "governance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "dual_control_required",
+              "approval_roles",
+              "rollback_runbook_ref",
+              "explanation_fields"
+            ],
+            "properties": {
+              "dual_control_required": {
+                "type": "boolean"
+              },
+              "approval_roles": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z_][a-z0-9_]*$"
+                }
+              },
+              "rollback_runbook_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "explanation_fields": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

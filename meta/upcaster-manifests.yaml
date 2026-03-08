@@ -1,0 +1,31 @@
+id: upcaster-manifests
+version: 1
+upcasters:
+- id: session-checkpoint-v0-to-v1
+  subject_kind: checkpoint
+  subject_id: session-checkpoint
+  from_version: session-checkpoint-v0
+  to_version: session-checkpoint-v1
+  strategy: map_fields
+  handler_ref: aegis.events.checkpoints.upcast_v0_to_v1
+- id: session-checkpoint-v1-noop
+  subject_kind: checkpoint
+  subject_id: session-checkpoint
+  from_version: session-checkpoint-v1
+  to_version: session-checkpoint-v1
+  strategy: noop
+  handler_ref: aegis.events.checkpoints.noop_v1
+- id: runtime-event-v0-to-v1
+  subject_kind: event_payload
+  subject_id: event-payload-catalog
+  from_version: v0
+  to_version: v1
+  strategy: normalize_payload_shape
+  handler_ref: aegis.events.upcasters.event_v0_to_v1
+- id: runtime-event-v1-noop
+  subject_kind: event_payload
+  subject_id: event-payload-catalog
+  from_version: v1
+  to_version: v1
+  strategy: noop
+  handler_ref: aegis.events.upcasters.noop_v1

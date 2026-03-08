@@ -1,0 +1,33 @@
+id: upcaster-fixtures
+version: 1
+fixtures:
+- id: session-checkpoint-v0-supported
+  subject_kind: checkpoint
+  subject_id: session-checkpoint
+  input_version: session-checkpoint-v0
+  expected_outcome: upcast_to_current
+  expected_target_version: session-checkpoint-v1
+- id: session-checkpoint-v1-supported
+  subject_kind: checkpoint
+  subject_id: session-checkpoint
+  input_version: session-checkpoint-v1
+  expected_outcome: upcast_to_current
+  expected_target_version: session-checkpoint-v1
+- id: runtime-event-v0-supported
+  subject_kind: event_payload
+  subject_id: event-payload-catalog
+  input_version: v0
+  expected_outcome: upcast_to_current
+  expected_target_version: v1
+- id: runtime-event-v1-supported
+  subject_kind: event_payload
+  subject_id: event-payload-catalog
+  input_version: v1
+  expected_outcome: upcast_to_current
+  expected_target_version: v1
+- id: session-checkpoint-v2-unsupported
+  subject_kind: checkpoint
+  subject_id: session-checkpoint
+  input_version: session-checkpoint-v2
+  expected_outcome: incompatible_quarantine
+  expected_target_version: null

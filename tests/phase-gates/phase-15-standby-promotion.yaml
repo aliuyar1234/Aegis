@@ -1,0 +1,46 @@
+id: phase-15-standby-promotion
+phase: PHASE-15
+name: Standby promotion gate
+objective: Validate that phase-15 standby-topology and promotion artifacts preserve
+  the single-owner boundary at the planning surface.
+fixtures:
+- docs/exec-plans/active/PHASE-15-upgrades-dr.md
+- docs/design-docs/standby-topology.md
+- docs/runbooks/standby-promotion.md
+- meta/topology-profiles.yaml
+- meta/standby-promotion-evidence.yaml
+- schema/jsonschema/topology-profiles.schema.json
+- schema/jsonschema/standby-promotion-evidence.schema.json
+- schema/jsonschema/standby-promotion-report.schema.json
+- scripts/run_standby_promotion.py
+- tests/phase-gates/phase-15-standby-promotion.yaml
+- tests/topology/test_phase15_topology_assets.py
+tests:
+- TS-029
+acceptance:
+- AC-069
+steps:
+- id: topology-profiles
+  description: verify standby topology profiles are machine-readable
+  expected:
+  - promotion rules are explicit
+  evidence:
+  - meta/topology-profiles.yaml
+  - schema/jsonschema/topology-profiles.schema.json
+  - meta/standby-promotion-evidence.yaml
+- id: standby-runbook-surface
+  description: verify promotion guidance exists
+  expected:
+  - fencing and verification boundaries are documented
+  evidence:
+  - docs/design-docs/standby-topology.md
+  - docs/runbooks/standby-promotion.md
+- id: standby-promotion-runner
+  description: verify standby promotion evidence produces a structured report
+  expected:
+  - promotion checks emit a passing structured report
+  evidence:
+  - scripts/run_standby_promotion.py
+  - schema/jsonschema/standby-promotion-report.schema.json
+proves:
+- phase-15 standby promotion work has a gateable artifact surface

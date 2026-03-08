@@ -1,0 +1,35 @@
+id: phase-20-rollout-waves
+phase: PHASE-20
+name: Rollout waves gate
+objective: Validate that phase-20 rollout waves are anchored to explicit deployment,
+  accreditation, evidence, and rollback surfaces.
+fixtures:
+- docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+- docs/design-docs/rollout-wave-governance.md
+- docs/runbooks/rollout-wave-promotion.md
+- meta/rollout-wave-manifest.yaml
+- schema/jsonschema/rollout-wave-manifest.schema.json
+- schema/jsonschema/rollout-wave-report.schema.json
+- scripts/run_phase20_rollout_waves.py
+- tests/rollout/test_phase20_rollout_assets.py
+- tests/phase-gates/phase-20-rollout-waves.yaml
+tests:
+- TS-053
+acceptance:
+- AC-093
+steps:
+- id: rollout-wave-bindings
+  description: verify each wave binds deployment track, flavor, accreditation, and evidence
+  expected:
+  - deployment flavor stays consistent with the referenced track
+  - accreditation, rollback, and notice surfaces are committed
+  evidence:
+  - meta/rollout-wave-manifest.yaml
+- id: reproducible-rollout-report
+  description: verify the rollout-wave report is reproducible
+  expected:
+  - the report fails when rollout prerequisites drift from committed deployment surfaces
+  evidence:
+  - scripts/run_phase20_rollout_waves.py
+proves:
+- phase-20 rollout promotion is machine-checkable rather than release-memory process

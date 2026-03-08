@@ -1,0 +1,35 @@
+id: compatibility-matrix
+version: 1
+surfaces:
+- id: runtime-contract
+  kind: runtime_contract
+  current_version: v1
+  supported_versions:
+  - v1
+  notes: Runtime envelope compatibility for dispatch, progress, cancel, and terminal callbacks.
+- id: session-checkpoint
+  kind: checkpoint
+  current_version: session-checkpoint-v1
+  supported_versions:
+  - session-checkpoint-v0
+  - session-checkpoint-v1
+  notes: Checkpoint compatibility governs hydrate and replay entry points.
+- id: event-payload-catalog
+  kind: event_payload
+  current_version: v1
+  supported_versions:
+  - v0
+  - v1
+  notes: Event payload versions must remain compatible with replay and upcasters.
+- id: tool-registry
+  kind: policy_catalog
+  current_version: v1
+  supported_versions:
+  - v1
+  notes: Policy/runtime catalog surfaces are versioned separately from worker envelopes.
+- id: extension-api
+  kind: extension_manifest
+  current_version: v1alpha1
+  supported_versions:
+  - v1alpha1
+  notes: Extension compatibility remains bounded by the machine-readable extension policy.

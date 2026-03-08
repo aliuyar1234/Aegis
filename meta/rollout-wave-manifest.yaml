@@ -1,0 +1,38 @@
+program_id: rollout-waves
+version: 1
+waves:
+- id: shared-wave-1
+  display_name: Shared cloud wave 1
+  deployment_track: shared-evaluation
+  deployment_flavor_id: shared_cloud
+  accreditation_track: shared-control-operator
+  change_window: managed_weekday
+  promotion_criteria:
+  - phase-15 release evidence current
+  - phase-16 fleet evidence reviewed
+  - phase-19 adoption evidence current
+  required_evidence:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-16-fleet-evidence.json
+  - docs/generated/phase-19-adoption-evidence.json
+  rollback_runbook_ref: docs/runbooks/rollout-wave-promotion.md
+  customer_notice_refs:
+  - docs/runbooks/first-adopter-onboarding.md
+- id: dedicated-wave-1
+  display_name: Dedicated regional wave 1
+  deployment_track: dedicated-regional-rollout
+  deployment_flavor_id: dedicated_deployment
+  accreditation_track: dedicated-regional-operator
+  change_window: coordinated_change_window
+  promotion_criteria:
+  - phase-15 release evidence current
+  - phase-17 regional evidence reviewed
+  - phase-19 adoption evidence current
+  required_evidence:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-17-regional-evidence.json
+  - docs/generated/phase-19-adoption-evidence.json
+  rollback_runbook_ref: docs/runbooks/rollout-wave-promotion.md
+  customer_notice_refs:
+  - docs/runbooks/first-adopter-onboarding.md
+  - docs/runbooks/regional-promotion.md

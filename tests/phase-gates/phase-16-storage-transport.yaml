@@ -1,0 +1,35 @@
+id: phase-16-storage-transport
+phase: PHASE-16
+name: Storage and transport scaling gate
+objective: Validate that phase-16 growth planning preserves control-plane truth semantics
+  while modeling event, outbox, projection, and artifact-index scale.
+fixtures:
+- docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+- docs/design-docs/data-plane-scaling.md
+- meta/storage-growth-fixtures.yaml
+- meta/performance-budgets.yaml
+- schema/jsonschema/storage-growth-manifest.schema.json
+- schema/jsonschema/storage-growth-report.schema.json
+- scripts/run_phase16_storage_scaling.py
+- tests/phase-gates/phase-16-storage-transport.yaml
+- tests/performance/storage_growth/test_phase16_storage_assets.py
+tests:
+- TS-035
+acceptance:
+- AC-075
+steps:
+- id: growth-scenarios
+  description: verify growth scenarios exist for truth-store, outbox, projections,
+    and artifact indexes
+  expected:
+  - committed scenarios model the primary scale surfaces
+  evidence:
+  - meta/storage-growth-fixtures.yaml
+- id: scaling-report
+  description: verify the storage scaling report is reproducible
+  expected:
+  - every committed growth scenario maps to a passing report row
+  evidence:
+  - scripts/run_phase16_storage_scaling.py
+proves:
+- phase-16 storage and transport scaling is machine-checkable

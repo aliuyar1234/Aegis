@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/replay-fixture-manifest.schema.json",
+  "title": "ReplayFixtureManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "fixtures"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "replay-fixtures"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "fixtures": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "scenario_ref",
+          "comparison_mode",
+          "equivalence_dimensions",
+          "current_baseline",
+          "previous_supported_baseline"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "scenario_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "comparison_mode": {
+            "type": "string",
+            "enum": [
+              "full_replay",
+              "checkpoint_tail_vs_full",
+              "historical_replay"
+            ]
+          },
+          "equivalence_dimensions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "current_baseline": {
+            "$ref": "#/$defs/baseline"
+          },
+          "previous_supported_baseline": {
+            "$ref": "#/$defs/baseline_no_signature"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "terminal_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "session_state",
+        "recovery_status",
+        "uncertainty_status",
+        "quarantine_status",
+        "replay_equivalent"
+      ],
+      "properties": {
+        "session_state": { "type": "string" },
+        "recovery_status": { "type": "string" },
+        "uncertainty_status": { "type": "string" },
+        "quarantine_status": { "type": "string" },
+        "replay_equivalent": { "type": "boolean" }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result_signature",
+        "event_types",
+        "terminal_state"
+      ],
+      "properties": {
+        "result_signature": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "event_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "terminal_state": {
+          "$ref": "#/$defs/terminal_state"
+        }
+      }
+    },
+    "baseline_no_signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_types",
+        "terminal_state"
+      ],
+      "properties": {
+        "event_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "terminal_state": {
+          "$ref": "#/$defs/terminal_state"
+        }
+      }
+    }
+  }
+}

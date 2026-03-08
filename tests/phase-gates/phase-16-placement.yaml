@@ -1,0 +1,35 @@
+id: phase-16-placement
+phase: PHASE-16
+name: Placement policy gate
+objective: Validate that phase-16 placement rules and pool taxonomy are deterministic
+  and explainable.
+fixtures:
+- docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+- docs/design-docs/placement-engine.md
+- meta/placement-policies.yaml
+- schema/jsonschema/placement-policies.schema.json
+- schema/jsonschema/placement-decision.schema.json
+- schema/jsonschema/placement-report.schema.json
+- scripts/run_phase16_placement.py
+- tests/phase-gates/phase-16-placement.yaml
+- tests/placement/test_phase16_placement_assets.py
+tests:
+- TS-032
+acceptance:
+- AC-072
+steps:
+- id: pool-taxonomy
+  description: verify pool taxonomy captures tier, capability, fault-domain, and
+    isolation mode
+  expected:
+  - pool taxonomy enumerates shared, isolated, and dedicated pools
+  evidence:
+  - meta/placement-policies.yaml
+- id: deterministic-fixtures
+  description: verify deterministic decision fixtures exist for the placement runner
+  expected:
+  - identical fixture inputs lead to the expected selected pool
+  evidence:
+  - scripts/run_phase16_placement.py
+proves:
+- phase-16 placement policy is modeled and reproducible

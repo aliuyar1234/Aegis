@@ -1,0 +1,25 @@
+id: runtime-contract-conformance-report
+version: 1
+manifest_ref: tests/conformance/fixtures/runtime-contract-conformance.yaml
+languages:
+- language: elixir
+  runtime_surface: control_plane
+  status: pass
+- language: python
+  runtime_surface: worker
+  status: pass
+- language: rust
+  runtime_surface: sidecar
+  status: pass
+covered_messages:
+- WorkerRegistration
+- WorkerHeartbeat
+- ActionDispatch
+- ActionCancel
+- ActionAccepted
+- ActionProgress
+- ActionHeartbeat
+- ActionCompleted
+- ActionFailed
+- ActionCancelled
+verdict: pass

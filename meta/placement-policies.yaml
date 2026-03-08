@@ -1,0 +1,85 @@
+id: placement-policies
+version: 1
+pool_taxonomy:
+- id: shared-browser-eu-1
+  pool_kind: browser
+  fault_domain: eu-central-1a
+  supported_tiers:
+  - tier-a
+  - tier-b
+  capabilities:
+  - browser
+  - readonly
+  - effectful
+  isolation_mode: shared
+  priority: 20
+  active: true
+- id: shared-browser-eu-2
+  pool_kind: browser
+  fault_domain: eu-central-1b
+  supported_tiers:
+  - tier-a
+  - tier-b
+  capabilities:
+  - browser
+  - readonly
+  isolation_mode: shared
+  priority: 10
+  active: true
+- id: premium-browser-eu-1
+  pool_kind: browser
+  fault_domain: eu-central-1a
+  supported_tiers:
+  - tier-c
+  - dedicated
+  capabilities:
+  - browser
+  - readonly
+  - effectful
+  - premium_interactive
+  isolation_mode: isolated
+  priority: 30
+  active: true
+- id: control-plane-dedicated-eu-1
+  pool_kind: control
+  fault_domain: eu-central-1a
+  supported_tiers:
+  - dedicated
+  capabilities:
+  - control_plane
+  - replay
+  - audit_export
+  isolation_mode: dedicated
+  priority: 40
+  active: true
+rules:
+- id: prefer-tier-matched-pool
+  description: Select the highest-priority active pool that supports the tenant tier
+    and required capability.
+- id: keep-fault-domain-local
+  description: Prefer pools in the requested fault domain when a compatible active
+    pool exists.
+- id: prefer-isolated-for-premium
+  description: Premium and dedicated tiers must prefer isolated or dedicated pools
+    over shared pools.
+decision_fixtures:
+- id: standard-browser-session
+  tenant_tier: tier-b
+  required_capability: browser
+  preferred_fault_domain: eu-central-1a
+  expected_pool: shared-browser-eu-1
+- id: readonly-browser-fallback
+  tenant_tier: tier-b
+  required_capability: readonly
+  preferred_fault_domain: eu-central-1b
+  expected_pool: shared-browser-eu-2
+- id: premium-effectful-browser
+  tenant_tier: tier-c
+  required_capability: premium_interactive
+  preferred_fault_domain: eu-central-1a
+  expected_pool: premium-browser-eu-1
+- id: dedicated-control-owner
+  tenant_tier: dedicated
+  required_capability: control_plane
+  preferred_fault_domain: eu-central-1a
+  expected_pool: control-plane-dedicated-eu-1

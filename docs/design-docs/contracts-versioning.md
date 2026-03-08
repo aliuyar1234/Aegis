@@ -9,6 +9,7 @@ Aegis uses explicit, versioned contracts to keep Elixir, Python, and Rust cohere
 - Event registry and payload mapping: `schema/event-catalog/`
 - Transport topology: `schema/transport-topology.yaml`
 - Codegen config: `buf.yaml`, `buf.gen.yaml`
+- Conformance fixtures: `tests/conformance/`
 
 ## Rules
 
@@ -32,3 +33,6 @@ Aegis uses explicit, versioned contracts to keep Elixir, Python, and Rust cohere
 Elixir must consume the same canonical `.proto` sources as Python and Rust. The control plane is not allowed to fork runtime messages into ad hoc Elixir-only structs. The chosen Elixir protobuf library may change later, but `schema/proto/` remains the SSOT.
 
 At the moment, Elixir still ships a generated manifest module rather than checked-in protobuf bindings. That remains an explicit follow-up item: the repo now proves Buf lint/codegen, manifest freshness, and real Python binding importability, but Elixir still needs a final library choice and build integration step.
+
+See `docs/design-docs/contract-conformance.md` for the PHASE-14 fixture-driven conformance
+surface that ties transport subject bindings to runtime lifecycle messages.

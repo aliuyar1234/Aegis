@@ -1,0 +1,49 @@
+id: phase-14-benchmark-scorecard
+phase: PHASE-14
+name: Benchmark corpus and scorecard gate
+objective: Validate reproducible benchmark scorecards derived from the deterministic
+  phase-14 replay and simulation corpus.
+fixtures:
+- benchmarks/README.md
+- docs/design-docs/benchmark-corpus.md
+- docs/generated/phase-14-benchmark-scorecard.json
+- meta/benchmark-corpus.yaml
+- meta/performance-budgets.yaml
+- schema/jsonschema/benchmark-corpus.schema.json
+- schema/jsonschema/performance-budgets.schema.json
+- schema/jsonschema/benchmark-run.schema.json
+- schema/jsonschema/benchmark-scorecard.schema.json
+- scripts/run_benchmark_corpus.py
+- tests/phase-gates/phase-14-benchmark-scorecard.yaml
+- tests/benchmarks/test_benchmark_assets.py
+tests:
+- TS-023
+acceptance:
+- AC-063
+steps:
+- id: benchmark-corpus
+  description: verify the benchmark corpus maps deterministic scenarios to replay-diff fixtures
+  expected:
+  - every benchmark case references a registered simulation scenario
+  - every benchmark case references a replay-diff fixture
+  evidence:
+  - meta/benchmark-corpus.yaml
+  - meta/replay-fixtures.yaml
+- id: budget-profiles
+  description: verify the benchmark budgets are explicit and deterministic
+  expected:
+  - phase-14 scorecards use machine-readable budget profiles and case overrides
+  - deterministic scorecards block budget regressions
+  evidence:
+  - meta/performance-budgets.yaml
+  - schema/jsonschema/performance-budgets.schema.json
+- id: generated-scorecard
+  description: verify the benchmark runner produces the committed scorecard artifact
+  expected:
+  - the committed scorecard matches fresh runner output
+  - scorecard drift would fail the benchmark suite
+  evidence:
+  - scripts/run_benchmark_corpus.py
+  - docs/generated/phase-14-benchmark-scorecard.json
+proves:
+- phase-14 correctness scorecards are reproducible and budgeted

@@ -1,0 +1,18 @@
+id: recovery-objectives
+version: 1
+profiles:
+- id: default-managed
+  rto_target_minutes: 30
+  rpo_target_minutes: 5
+  evidence_requirements:
+  - event-chain integrity verified
+  - checkpoint references verified
+  - artifact inventory reconciliation completed
+- id: dedicated-enterprise
+  rto_target_minutes: 20
+  rpo_target_minutes: 5
+  evidence_requirements:
+  - event-chain integrity verified
+  - checkpoint references verified
+  - artifact inventory reconciliation completed
+  - standby-promotion evidence recorded

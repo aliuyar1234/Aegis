@@ -1,0 +1,32 @@
+id: worker-crash-recovery
+version: 1
+seed: 1401
+description: Recover from a browser worker crash without losing the authoritative session timeline.
+steps:
+- id: start-browser
+  kind: command
+  command:
+    action_id: browser.open
+    worker_kind: browser
+    effect: control
+- id: crash-browser-worker
+  kind: fault_injection
+  fault:
+    fault_id: worker_crash
+    target: browser-worker-1
+    scope: worker
+    expected_runtime_response: recovery_resume_or_adopt
+- id: capture-recovery-evidence
+  kind: artifact_capture
+  artifact:
+    kind: trace
+    label: worker-recovery-trace
+expected_terminal_state:
+  session_state: resumed
+  recovery_status: resumed_after_worker_crash
+  uncertainty_status: none
+  quarantine_status: clear
+  replay_equivalent: true
+proves:
+- worker crash paths are modeled deterministically
+- recovery evidence is preserved without external re-execution

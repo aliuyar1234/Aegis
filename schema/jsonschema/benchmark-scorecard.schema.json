@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/benchmark-scorecard.schema.json",
+  "title": "BenchmarkScorecard",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "corpus_id",
+    "budget_manifest_id",
+    "cost_model_id",
+    "cases",
+    "summary",
+    "overall_verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase-14-benchmark-scorecard"
+    },
+    "corpus_id": {
+      "type": "string",
+      "const": "phase-14-benchmark-corpus"
+    },
+    "budget_manifest_id": {
+      "type": "string",
+      "const": "performance-budgets"
+    },
+    "cost_model_id": {
+      "type": "string"
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "benchmark_case",
+          "scenario_id",
+          "replay_fixture_id",
+          "budget_profile",
+          "metrics",
+          "budget_evaluation",
+          "verdict"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^benchmark-run-[a-z0-9][a-z0-9_.-]*$"
+          },
+          "benchmark_case": {
+            "type": "string"
+          },
+          "scenario_id": {
+            "type": "string"
+          },
+          "replay_fixture_id": {
+            "type": "string"
+          },
+          "budget_profile": {
+            "type": "string"
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "event_count",
+              "fault_count",
+              "artifact_count",
+              "estimated_runtime_ms",
+              "correctness_score",
+              "current_signature_match",
+              "previous_supported_equivalent"
+            ],
+            "properties": {
+              "event_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "fault_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "artifact_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "estimated_runtime_ms": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "correctness_score": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "current_signature_match": {
+                "type": "boolean"
+              },
+              "previous_supported_equivalent": {
+                "type": "boolean"
+              }
+            }
+          },
+          "budget_evaluation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "event_count_within_budget",
+              "fault_count_within_budget",
+              "artifact_count_within_budget",
+              "estimated_runtime_within_budget",
+              "correctness_score_within_budget"
+            ],
+            "properties": {
+              "event_count_within_budget": {
+                "type": "boolean"
+              },
+              "fault_count_within_budget": {
+                "type": "boolean"
+              },
+              "artifact_count_within_budget": {
+                "type": "boolean"
+              },
+              "estimated_runtime_within_budget": {
+                "type": "boolean"
+              },
+              "correctness_score_within_budget": {
+                "type": "boolean"
+              }
+            }
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_count",
+        "passed",
+        "failed"
+      ],
+      "properties": {
+        "case_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "overall_verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

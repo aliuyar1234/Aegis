@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/compatibility-report.schema.json",
+  "title": "CompatibilityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "surface_results", "skew_rule_results", "verdict"],
+  "properties": {
+    "id": { "type": "string", "const": "phase15-compatibility-report" },
+    "surface_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["surface_id", "observed_versions", "current_version", "supported_versions", "verdict"],
+        "properties": {
+          "surface_id": { "type": "string" },
+          "observed_versions": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "current_version": { "type": "string" },
+          "supported_versions": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "skew_rule_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rule_id", "components", "verdict"],
+        "properties": {
+          "rule_id": { "type": "string" },
+          "components": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "verdict": { "type": "string", "enum": ["pass", "fail"] }
+  }
+}

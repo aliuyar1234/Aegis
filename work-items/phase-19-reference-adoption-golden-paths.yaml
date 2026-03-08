@@ -1,0 +1,111 @@
+phase: PHASE-19
+status: completed
+name: Reference adoption, operator drills, and golden-path starter kits
+phase_doc: docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+tasks:
+- id: P19-T01
+  phase: PHASE-19
+  title: Define adoption profiles and first-adopter readiness rules
+  critical_path: true
+  status: done
+  deps:
+  - P15-T06
+  - P16-T06
+  - P18-T05
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-087
+  test_refs:
+  - TS-047
+  phase_doc: docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P19-T02
+  phase: PHASE-19
+  title: Implement reference deployment tracks for shared and dedicated rollouts
+  critical_path: true
+  status: done
+  deps:
+  - P15-T06
+  - P16-T06
+  - P17-T05
+  - P18-T04
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-088
+  test_refs:
+  - TS-048
+  phase_doc: docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P19-T03
+  phase: PHASE-19
+  title: Build operator training and incident exercise manifests
+  critical_path: true
+  status: done
+  deps:
+  - P15-T06
+  - P16-T06
+  - P17-T05
+  - P18-T03
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-089
+  test_refs:
+  - TS-049
+  phase_doc: docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P19-T04
+  phase: PHASE-19
+  title: Create golden-path starter kits for certified extension packs
+  critical_path: true
+  status: done
+  deps:
+  - P14-T06
+  - P18-T05
+  adr_refs:
+  - ADR-0008
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-090
+  test_refs:
+  - TS-050
+  phase_doc: docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P19-T05
+  phase: PHASE-19
+  title: Gate adoption readiness on profiles, tracks, drills, and starter-kit evidence
+  critical_path: false
+  status: done
+  deps:
+  - P19-T01
+  - P19-T02
+  - P19-T03
+  - P19-T04
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-091
+  test_refs:
+  - TS-051
+  phase_doc: docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

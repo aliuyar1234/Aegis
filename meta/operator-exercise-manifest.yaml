@@ -1,0 +1,37 @@
+program_id: operator-exercises
+version: 1
+exercises:
+- id: approval-escalation-recovery
+  scenario_type: approval_and_recovery
+  runbook_refs:
+  - docs/runbooks/operator-training-exercise.md
+  - docs/runbooks/approval-timeout.md
+  - docs/runbooks/operator-intervention.md
+  required_evidence:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-16-fleet-evidence.json
+  expected_outcomes:
+  - approval waits are identified and escalated through the operator path
+  - intervention remains event-backed and replay-compatible
+- id: regional-failover-command
+  scenario_type: regional_failover
+  runbook_refs:
+  - docs/runbooks/operator-training-exercise.md
+  - docs/runbooks/regional-evacuation.md
+  - docs/runbooks/regional-promotion.md
+  required_evidence:
+  - docs/generated/phase-17-regional-evidence.json
+  expected_outcomes:
+  - evacuation steps stay bounded by committed promotion rules
+  - session continuity evidence is reviewed before promotion
+- id: extension-revocation-response
+  scenario_type: ecosystem_revocation
+  runbook_refs:
+  - docs/runbooks/operator-training-exercise.md
+  - docs/runbooks/revoking-extension.md
+  - docs/runbooks/policy-bundle-rollback.md
+  required_evidence:
+  - docs/generated/phase-18-ecosystem-evidence.json
+  expected_outcomes:
+  - the extension is revoked without policy or sandbox ambiguity
+  - the rollback path stays linked to committed governance artifacts

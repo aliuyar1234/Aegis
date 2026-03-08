@@ -1,0 +1,34 @@
+id: determinism-classes
+version: 1
+classes:
+- id: deterministic
+  summary: Recomputed from canonical event history and runtime rules.
+  replay_rule: Recompute directly from event history without external execution.
+  required_capture:
+  - canonical event payloads
+  - checkpoint state for hydrate-from-tail optimization only
+  example_refs:
+  - session lifecycle state
+  - approval status
+  - action ledger status
+  - quarantine classification
+- id: captured-nondeterministic
+  summary: Produced by an external system or time-sensitive source but replayable from recorded evidence.
+  replay_rule: Consume captured payloads or artifacts and never re-dispatch the original side effect.
+  required_capture:
+  - normalized result payloads
+  - artifact references or evidence metadata
+  example_refs:
+  - browser DOM snapshot
+  - screenshot or trace
+  - provider response payload
+  - worker completion payload
+- id: externally-unknowable
+  summary: Cannot be reconstructed exactly from canonical history and captured evidence.
+  replay_rule: Preserve uncertainty and evidence only; do not fabricate exact external-world reconstruction.
+  required_capture:
+  - uncertainty classification
+  - operator-visible evidence bundle
+  example_refs:
+  - hidden external system state after an effectful mutation
+  - counterfactual world state that was never observed

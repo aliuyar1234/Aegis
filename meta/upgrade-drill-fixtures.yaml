@@ -1,0 +1,24 @@
+id: upgrade-drill-fixtures
+version: 1
+drills:
+- id: control-plane-drain-adopt
+  component_group: elixir_runtime
+  strategy_ref: lease-safe-drain
+  from_release: 0.10.0
+  to_release: 0.11.0
+  runtime_contract_version: v1
+  checkpoint_version: session-checkpoint-v1
+  expectations:
+  - single_owner_preserved
+  - duplicate_side_effects_blocked
+  - replay_equivalence_preserved
+- id: mixed-worker-observation-window
+  component_group: python_workers
+  strategy_ref: mixed-version-observation-window
+  from_release: 0.10.0
+  to_release: 0.11.0
+  runtime_contract_version: v1
+  checkpoint_version: session-checkpoint-v1
+  expectations:
+  - dispatch_contract_compatible
+  - replay_equivalence_preserved

@@ -118,6 +118,14 @@ The sample pack fixture under `tests/extensibility/fixtures/sample-extension-pac
 
 The review rubric is `docs/design-docs/extension-review-rubric.md`.
 
-## Remaining later Phase 10 work
+## Later-phase maturity
 
-Only packaging polish beyond the sample pack is left for later phases.
+PHASE-18 builds on this base contract with:
+
+- certification levels and signed compatibility reports
+- sandbox profiles and per-manifest isolation assignments
+- delegated-governance policy bundles
+- benchmark-backed public compatibility publication
+
+This document remains the bounded contract surface.
+Certification and public listing rules are defined in the phase-18 design docs rather than being smuggled into the base manifest contract.

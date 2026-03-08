@@ -1,0 +1,69 @@
+id: fleet-triage-manifest
+version: 1
+bundle_id: phase16-operator-evidence-bundle
+required_reports:
+- phase16-capacity-report
+- phase16-placement-report
+- phase16-load-shed-report
+- phase16-isolation-report
+- phase16-storage-growth-report
+cohorts:
+- id: degraded-recovery-cluster
+  selection:
+    health: degraded
+    wait_reason: lease_recovery
+    min_size: 3
+  failure_signature: Sessions stalled in degraded recovery after queue pressure or
+    owner churn.
+  report_refs:
+  - phase16-capacity-report
+  - phase16-load-shed-report
+  - phase16-isolation-report
+  runbook_refs:
+  - docs/runbooks/overload-response.md
+  - docs/runbooks/top-failure-clusters.md
+  evidence_fields:
+  - owner_node
+  - lease_epoch
+  - wait_reason
+  - queue_depth
+  - isolation_action
+- id: premium-placement-drift
+  selection:
+    health: warning
+    wait_reason: capacity_wait
+    min_size: 2
+  failure_signature: Premium or dedicated sessions routed to a fallback pool instead
+    of an isolated tier-matched pool.
+  report_refs:
+  - phase16-placement-report
+  - phase16-capacity-report
+  runbook_refs:
+  - docs/runbooks/top-failure-clusters.md
+  evidence_fields:
+  - tenant_tier
+  - required_capability
+  - selected_pool
+  - preferred_fault_domain
+- id: storage-lag-cluster
+  selection:
+    health: degraded
+    wait_reason: projection_lag
+    min_size: 2
+  failure_signature: Projection or artifact-index lag exceeds the bounded storage-growth
+    profile.
+  report_refs:
+  - phase16-storage-growth-report
+  - phase16-capacity-report
+  runbook_refs:
+  - docs/runbooks/top-failure-clusters.md
+  evidence_fields:
+  - component
+  - projector_lag_budget_ms
+  - retention_strategy
+  - partition_strategy
+export_sections:
+- cluster_summaries
+- report_verdicts
+- runbook_links
+- evidence_fields

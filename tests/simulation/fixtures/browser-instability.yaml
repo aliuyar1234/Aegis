@@ -1,0 +1,32 @@
+id: browser-instability
+version: 1
+seed: 1405
+description: Surface degraded browser execution with explicit evidence and no fake certainty.
+steps:
+- id: open-browser
+  kind: command
+  command:
+    action_id: browser.open
+    worker_kind: browser
+    effect: control
+- id: browser-instability-detected
+  kind: fault_injection
+  fault:
+    fault_id: browser_instability
+    target: browser-context-1
+    scope: browser
+    expected_runtime_response: degraded_mode_or_quarantine_with_evidence
+- id: capture-dom
+  kind: artifact_capture
+  artifact:
+    kind: dom_snapshot
+    label: unstable-browser-dom
+expected_terminal_state:
+  session_state: degraded
+  recovery_status: awaiting_operator_or_retry_policy
+  uncertainty_status: external_state_unknowable
+  quarantine_status: browser_execution_degraded
+  replay_equivalent: true
+proves:
+- browser instability remains explicit instead of silently retried away
+- captured evidence is available for historical replay

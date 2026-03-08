@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/benchmark-corpus.schema.json",
+  "title": "BenchmarkCorpus",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "cost_model",
+    "cases"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase-14-benchmark-corpus"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "cost_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "scenario_ref",
+          "replay_fixture_id",
+          "budget_profile"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "scenario_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "replay_fixture_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "budget_profile": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          }
+        }
+      }
+    }
+  }
+}

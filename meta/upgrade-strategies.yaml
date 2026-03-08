@@ -1,0 +1,23 @@
+id: upgrade-strategies
+version: 1
+strategies:
+- id: lease-safe-drain
+  rollout_kind: rolling
+  requires:
+  - compatibility-matrix
+  - version-skew-rules
+  guarantees:
+  - no duplicate authoritative owner during node drain
+  - replay and suppression behavior remain consistent across the allowed version window
+  operator_checks:
+  - confirm node is fenced before shutdown
+  - confirm active sessions are adopted or quiesced before removal
+- id: mixed-version-observation-window
+  rollout_kind: bounded_mixed_version
+  requires:
+  - compatibility-matrix
+  - upcaster-manifests
+  guarantees:
+  - mixed-version windows are bounded and observable
+  operator_checks:
+  - confirm replay-diff evidence remains green before widening the window

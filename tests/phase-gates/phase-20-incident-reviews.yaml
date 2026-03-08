@@ -1,0 +1,36 @@
+id: phase-20-incident-reviews
+phase: PHASE-20
+name: Incident review packets gate
+objective: Validate that phase-20 incident reviews are modeled as explicit packets
+  tied to drills, evidence, and follow-up surfaces.
+fixtures:
+- docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+- docs/design-docs/incident-review-packets.md
+- docs/runbooks/customer-incident-review.md
+- meta/incident-review-packets.yaml
+- schema/jsonschema/incident-review-packets.schema.json
+- schema/jsonschema/incident-review-packet-report.schema.json
+- scripts/run_phase20_incident_reviews.py
+- tests/incident_reviews/test_phase20_incident_review_assets.py
+- tests/phase-gates/phase-20-incident-reviews.yaml
+tests:
+- TS-054
+acceptance:
+- AC-094
+steps:
+- id: incident-packets
+  description: verify incident packets bind source exercises, accreditation, runbooks,
+    and evidence
+  expected:
+  - each packet references a committed source exercise and accreditation track
+  - each packet includes bounded evidence and follow-up refs
+  evidence:
+  - meta/incident-review-packets.yaml
+- id: reproducible-incident-report
+  description: verify the incident-review report is reproducible
+  expected:
+  - the report fails when packet inputs drift from committed exercise or evidence surfaces
+  evidence:
+  - scripts/run_phase20_incident_reviews.py
+proves:
+- phase-20 incident review stays anchored to reproducible runtime evidence rather than narrative-only handoff

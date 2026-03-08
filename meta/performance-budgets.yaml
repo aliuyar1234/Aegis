@@ -1,0 +1,54 @@
+id: performance-budgets
+version: 1
+profiles:
+- id: phase14-default
+  description: Deterministic correctness and fixture-cost budgets for phase-14 scorecards.
+  budgets:
+    max_event_count: 4
+    max_fault_count: 1
+    max_artifact_count: 1
+    max_estimated_runtime_ms: 320
+    min_correctness_score: 100
+- id: phase16-shared-standard
+  description: Shared-pool fleet budget for standard control-plane and execution-path
+    traffic.
+  budgets:
+    max_session_start_latency_ms: 1500
+    max_action_dispatch_latency_ms: 800
+    max_projector_lag_ms: 1200
+    max_outbox_pending: 4000
+    max_artifact_index_lag_ms: 900
+    max_queue_depth: 250
+    max_cohort_query_latency_ms: 1800
+- id: phase16-premium-isolated
+  description: Premium isolated-pool budget for higher-priority tenants and effectful
+    browser workloads.
+  budgets:
+    max_session_start_latency_ms: 900
+    max_action_dispatch_latency_ms: 500
+    max_projector_lag_ms: 700
+    max_outbox_pending: 1800
+    max_artifact_index_lag_ms: 550
+    max_queue_depth: 120
+    max_cohort_query_latency_ms: 1200
+- id: phase16-storage-growth
+  description: Growth-oriented budget profile for truth-store, outbox, projector,
+    and artifact-index scaling drills.
+  budgets:
+    max_projector_lag_ms: 1500
+    max_outbox_pending: 5000
+    max_artifact_index_lag_ms: 1000
+    max_queue_depth: 300
+case_overrides:
+- benchmark_case: approval-timeout
+  budgets:
+    max_fault_count: 1
+    max_artifact_count: 0
+    max_estimated_runtime_ms: 260
+- benchmark_case: duplicate-callback
+  budgets:
+    max_fault_count: 1
+    max_estimated_runtime_ms: 260
+- benchmark_case: browser-instability
+  budgets:
+    max_estimated_runtime_ms: 275

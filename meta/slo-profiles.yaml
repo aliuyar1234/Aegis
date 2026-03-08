@@ -1,0 +1,80 @@
+id: slo-profiles
+version: 1
+profiles:
+- id: shared-standard-control
+  tenant_tier: tier-b
+  scope: control-plane
+  budget_profile: phase16-shared-standard
+  overload_policy_ref: shared-standard-overload
+  protected_classes:
+  - operator_control
+  - recovery
+  - effectful_approved
+  shed_classes:
+  - readonly_probe
+  - bulk_replay_export
+  - speculative_prefetch
+  slis:
+  - id: session_start_p95_ms
+    description: p95 time from admitted session intent to active authoritative owner.
+    target: 1500
+    unit: ms
+  - id: action_dispatch_p95_ms
+    description: p95 time from committed outbox intent to worker dispatch acknowledgement.
+    target: 800
+    unit: ms
+  - id: projector_lag_p95_ms
+    description: p95 projection freshness gap under steady-state shared load.
+    target: 1200
+    unit: ms
+- id: premium-isolated-browser
+  tenant_tier: tier-c
+  scope: execution-plane
+  budget_profile: phase16-premium-isolated
+  overload_policy_ref: premium-isolated-overload
+  protected_classes:
+  - operator_control
+  - recovery
+  - effectful_approved
+  - premium_interactive
+  shed_classes:
+  - readonly_probe
+  - background_index_refresh
+  slis:
+  - id: session_start_p95_ms
+    description: p95 time from admitted premium session intent to active authoritative
+      owner.
+    target: 900
+    unit: ms
+  - id: action_dispatch_p95_ms
+    description: p95 time from committed effectful intent to worker dispatch acknowledgement
+      in isolated pools.
+    target: 500
+    unit: ms
+  - id: artifact_index_lag_p95_ms
+    description: p95 time between immutable artifact registration and searchable
+      operator visibility.
+    target: 550
+    unit: ms
+- id: dedicated-enterprise-fleet
+  tenant_tier: dedicated
+  scope: fleet-triage
+  budget_profile: phase16-premium-isolated
+  overload_policy_ref: dedicated-enterprise-overload
+  protected_classes:
+  - operator_control
+  - recovery
+  - effectful_approved
+  - audit_export
+  shed_classes:
+  - bulk_replay_export
+  - historical_index_backfill
+  slis:
+  - id: cohort_query_p95_ms
+    description: p95 time to render fleet-triage cohorts with bounded evidence references.
+    target: 1200
+    unit: ms
+  - id: projector_lag_p95_ms
+    description: p95 projection freshness gap under dedicated deployment traffic.
+    target: 700
+    unit: ms

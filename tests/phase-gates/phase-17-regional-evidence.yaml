@@ -1,0 +1,34 @@
+id: phase-17-regional-evidence
+phase: PHASE-17
+name: Regional evidence gate
+objective: Validate that phase-17 regional readiness is captured as a reproducible
+  evidence bundle across topology, placement, evacuation, and mobility.
+fixtures:
+- docs/exec-plans/active/PHASE-17-regional-topology.md
+- docs/generated/phase-17-regional-evidence.json
+- meta/regional-evidence-manifest.yaml
+- schema/jsonschema/regional-evidence-manifest.schema.json
+- schema/jsonschema/regional-evidence-bundle.schema.json
+- scripts/build_phase17_regional_evidence.py
+- tests/phase-gates/phase-17-regional-evidence.yaml
+- tests/regional_failover/test_phase17_regional_evidence_assets.py
+tests:
+- TS-041
+acceptance:
+- AC-081
+steps:
+- id: evidence-groups
+  description: verify regional evidence groups are explicit and bounded
+  expected:
+  - topology, placement, evacuation, and mobility evidence groups are committed
+  evidence:
+  - meta/regional-evidence-manifest.yaml
+- id: reproducible-regional-bundle
+  description: verify the regional evidence bundle is reproducible
+  expected:
+  - the committed evidence bundle matches fresh builder output
+  evidence:
+  - scripts/build_phase17_regional_evidence.py
+  - docs/generated/phase-17-regional-evidence.json
+proves:
+- phase-17 regional readiness is modeled as reproducible evidence

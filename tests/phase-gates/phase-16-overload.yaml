@@ -1,0 +1,35 @@
+id: phase-16-overload
+phase: PHASE-16
+name: Overload doctrine gate
+objective: Validate that phase-16 overload responses are explicit policy decisions
+  rather than hidden degradation.
+fixtures:
+- docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+- docs/design-docs/load-shedding.md
+- docs/runbooks/overload-response.md
+- meta/load-shed-policies.yaml
+- schema/jsonschema/load-shed-policies.schema.json
+- schema/jsonschema/load-shed-report.schema.json
+- scripts/run_phase16_overload.py
+- tests/phase-gates/phase-16-overload.yaml
+- tests/load_shedding/test_phase16_overload_assets.py
+tests:
+- TS-033
+acceptance:
+- AC-073
+steps:
+- id: protected-classes
+  description: verify operator, recovery, and approved effectful classes stay protected
+  expected:
+  - protected classes are explicit in every overload policy
+  evidence:
+  - meta/load-shed-policies.yaml
+- id: bounded-shed-actions
+  description: verify delay and reject actions are modeled as bounded policy actions
+  expected:
+  - soft pressure delays lower-priority work
+  - hard pressure rejects declared shed classes
+  evidence:
+  - scripts/run_phase16_overload.py
+proves:
+- phase-16 overload doctrine is machine-checkable

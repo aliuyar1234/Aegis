@@ -68,3 +68,41 @@ P13-T02,PHASE-13,Define dedicated deployment and key-isolation path for Tier C t
 P13-T03,PHASE-13,"Define retention classes, archival policy, and operational SLO surfaces",True,P02-T01;P09-T02,ADR-0014;ADR-0015,AC-053,TS-017,done
 P13-T04,PHASE-13,Create enterprise acceptance checklist and release gate,False,P13-T01;P13-T02;P13-T03,ADR-0015,AC-054;AC-055,TS-017,done
 P13-T05,PHASE-13,"Create enterprise control matrix, dedicated-tenant evidence bundle, and enterprise readiness gate assets",True,P13-T01;P13-T02;P13-T03,ADR-0013;ADR-0015,AC-052;AC-053;AC-054,TS-017,done
+P14-T01,PHASE-14,Define replay oracle and determinism taxonomy,True,P08-T01,ADR-0012;ADR-0015,AC-057;AC-058;AC-059,TS-004;TS-019,done
+P14-T02,PHASE-14,Build scenario DSL and deterministic simulation runner,True,P14-T01,ADR-0012;ADR-0015,AC-060;AC-059,TS-020,done
+P14-T03,PHASE-14,Build cross-language contract conformance suite,True,P14-T01,ADR-0008;ADR-0012;ADR-0015,AC-061;AC-059,TS-002;TS-021,done
+P14-T04,PHASE-14,Build replay differential harness across versions and failure paths,True,P14-T02;P14-T03,ADR-0012;ADR-0015,AC-057;AC-062;AC-059,TS-022,done
+P14-T05,PHASE-14,Create benchmark corpus and correctness scorecards,False,P14-T02;P14-T04,ADR-0012;ADR-0015,AC-062;AC-063,TS-022;TS-023,done
+P14-T06,PHASE-14,Ship developer simulation kit and fixture authoring flow,False,P14-T02;P14-T04,ADR-0012;ADR-0015,AC-060;AC-064,TS-020;TS-024,done
+P15-T01,PHASE-15,Define compatibility matrix and version-skew policy,True,,ADR-0012;ADR-0015,AC-065,TS-025,done
+P15-T02,PHASE-15,Build event/checkpoint upcaster pipeline,True,P15-T01,ADR-0012;ADR-0015,AC-066,TS-026,done
+P15-T03,PHASE-15,Implement rolling upgrade and lease-safe drain/adopt protocol,True,P15-T01;P15-T02,ADR-0012;ADR-0015,AC-067,TS-027,done
+P15-T04,PHASE-15,"Build backup, PITR, and restore-drill harness",True,P15-T02,ADR-0012;ADR-0015,AC-068,TS-028,done
+P15-T05,PHASE-15,Add warm-standby topology and promotion evidence,False,P15-T03;P15-T04,ADR-0012;ADR-0015,AC-069,TS-029,done
+P15-T06,PHASE-15,Gate releases on compatibility and recovery evidence,False,P15-T01;P15-T02;P15-T03;P15-T04;P15-T05,ADR-0012;ADR-0015,AC-070,TS-030,done
+P16-T01,PHASE-16,"Define capacity model, SLO profiles, and overload doctrine",True,,ADR-0003;ADR-0013;ADR-0015,AC-071,TS-031,done
+P16-T02,PHASE-16,Implement session placement engine and pool taxonomy,True,P16-T01,ADR-0002;ADR-0013;ADR-0015,AC-072,TS-032,done
+P16-T03,PHASE-16,Build adaptive admission control and load shedding,True,P16-T01;P16-T02,ADR-0006;ADR-0013;ADR-0015,AC-073,TS-033,done
+P16-T04,PHASE-16,Implement noisy-neighbor isolation and hot-tenant mitigation,True,P16-T02;P16-T03,ADR-0013;ADR-0015,AC-074,TS-034,done
+P16-T05,PHASE-16,Formalize storage and transport scaling plan,True,P16-T01,ADR-0003;ADR-0007;ADR-0014;ADR-0015,AC-075,TS-035,done
+P16-T06,PHASE-16,Add fleet forensics and operator evidence bundles,False,P16-T01;P16-T02;P16-T03;P16-T04;P16-T05,ADR-0002;ADR-0013;ADR-0015,AC-076,TS-036,done
+P17-T01,PHASE-17,Define regional topology profiles and fault-domain catalog,True,,ADR-0002;ADR-0003;ADR-0015,AC-077,TS-037,done
+P17-T02,PHASE-17,Implement region-aware placement and failover routing policy,True,P17-T01,ADR-0002;ADR-0013;ADR-0015,AC-078,TS-038,done
+P17-T03,PHASE-17,Build regional evacuation and failover drill harness,True,P17-T01;P17-T02,ADR-0002;ADR-0012;ADR-0015,AC-079,TS-039,done
+P17-T04,PHASE-17,"Model session mobility, approval continuity, and artifact lineage",True,P17-T01;P17-T03,ADR-0005;ADR-0011;ADR-0015,AC-080,TS-040,done
+P17-T05,PHASE-17,"Gate regional readiness on topology, evacuation, and mobility evidence",False,P17-T01;P17-T02;P17-T03;P17-T04,ADR-0002;ADR-0012;ADR-0015,AC-081,TS-041,done
+P18-T01,PHASE-18,Define extension certification levels and signed compatibility reports,True,,ADR-0011;ADR-0015,AC-082,TS-042,done
+P18-T02,PHASE-18,Implement sandbox profiles and extension isolation assignments,True,P18-T01,ADR-0009;ADR-0011;ADR-0015,AC-083,TS-043,done
+P18-T03,PHASE-18,Define policy-bundle profiles and delegated-governance surfaces,True,P18-T01;P18-T02,ADR-0011;ADR-0015,AC-084,TS-044,done
+P18-T04,PHASE-18,Publish benchmark-backed public compatibility tracks for certified extension packs,True,P18-T01;P18-T02;P18-T03,ADR-0012;ADR-0015,AC-085,TS-045,done
+P18-T05,PHASE-18,"Gate ecosystem readiness on certification, sandbox, governance, and public evidence",False,P18-T01;P18-T02;P18-T03;P18-T04,ADR-0012;ADR-0015,AC-086,TS-046,done
+P19-T01,PHASE-19,Define adoption profiles and first-adopter readiness rules,True,P15-T06;P16-T06;P18-T05,ADR-0015,AC-087,TS-047,done
+P19-T02,PHASE-19,Implement reference deployment tracks for shared and dedicated rollouts,True,P15-T06;P16-T06;P17-T05;P18-T04,ADR-0013;ADR-0015,AC-088,TS-048,done
+P19-T03,PHASE-19,Build operator training and incident exercise manifests,True,P15-T06;P16-T06;P17-T05;P18-T03,ADR-0011;ADR-0015,AC-089,TS-049,done
+P19-T04,PHASE-19,Create golden-path starter kits for certified extension packs,True,P14-T06;P18-T05,ADR-0008;ADR-0011;ADR-0015,AC-090,TS-050,done
+P19-T05,PHASE-19,"Gate adoption readiness on profiles, tracks, drills, and starter-kit evidence",False,P19-T01;P19-T02;P19-T03;P19-T04,ADR-0015,AC-091,TS-051,done
+P20-T01,PHASE-20,Define operator accreditation tracks and renewal rules,True,P19-T03,ADR-0011;ADR-0015,AC-092,TS-052,done
+P20-T02,PHASE-20,Implement rollout-wave and change-window manifests for shared and dedicated deployments,True,P19-T02;P20-T01,ADR-0013;ADR-0015,AC-093,TS-053,done
+P20-T03,PHASE-20,Build incident-review packet manifests and customer handoff evidence links,True,P19-T03;P20-T01,ADR-0012;ADR-0015,AC-094,TS-054,done
+P20-T04,PHASE-20,"Create deprecation and sunset governance for starter kits, tracks, and certified extensions",True,P19-T04;P19-T05,ADR-0008;ADR-0011;ADR-0015,AC-095,TS-055,done
+P20-T05,PHASE-20,"Gate lifecycle readiness on accreditation, rollout, incident review, and deprecation evidence",False,P20-T01;P20-T02;P20-T03;P20-T04,ADR-0015,AC-096,TS-056,done

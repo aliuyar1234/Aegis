@@ -91,6 +91,30 @@ Future enterprise packaging adds bounded console deltas rather than a new contro
 - retention and archive backlog indicators
 - enterprise-specific runbook links for audit export, key isolation, and retention recovery
 
+## Future Phase-16 fleet operability deltas
+
+Future fleet operability work extends the console with bounded cohort reasoning rather
+than replacing session detail and replay:
+
+- fleet triage by shared failure signature
+- placement and isolation drift markers
+- bounded evidence-bundle export for operator handoff
+- runbook-linked cohort summaries for overload, hot-tenant pressure, and storage lag
+
+The Phase 16 design SSOT is `docs/product-specs/fleet-triage.md`.
+
+## Future Phase-17 regional deltas
+
+Future regional-topology work adds bounded regional context rather than a separate
+operator product:
+
+- authoritative region and standby-region markers on fleet and detail surfaces
+- fault-domain and evacuation-state markers for affected cohorts
+- bounded regional evidence-bundle export for failover drills
+- runbook links for regional evacuation and regional promotion
+
+The Phase 17 design SSOT is `docs/design-docs/regional-topology.md`.
+
 ## Anti-patterns
 
 - UI-only state transitions

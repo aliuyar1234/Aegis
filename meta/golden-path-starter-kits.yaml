@@ -1,0 +1,40 @@
+program_id: golden-path-starter-kits
+version: 1
+kits:
+- id: certified-support-ops
+  display_name: Certified support operations starter kit
+  extension_pack_ref: tests/extensibility/fixtures/sample-extension-pack/pack.yaml
+  certification_candidate_id: sample-support-extension-pack
+  deployment_track: shared-evaluation
+  required_sandbox_profiles:
+  - partner-reviewed
+  - restricted-artifact
+  - edge-adapter
+  policy_bundle_id: default-third-party
+  simulation_scenarios:
+  - worker-crash-recovery
+  - approval-timeout
+  - browser-instability
+  public_track_id: certified-support-pack
+  docs_refs:
+  - docs/design-docs/golden-path-starter-kits.md
+  - docs/runbooks/first-adopter-onboarding.md
+- id: dedicated-certified-support-ops
+  display_name: Dedicated certified support operations starter kit
+  extension_pack_ref: tests/extensibility/fixtures/sample-extension-pack/pack.yaml
+  certification_candidate_id: sample-support-extension-pack
+  deployment_track: dedicated-regional-rollout
+  required_sandbox_profiles:
+  - partner-reviewed
+  - restricted-artifact
+  - edge-adapter
+  policy_bundle_id: default-third-party
+  simulation_scenarios:
+  - node-loss-adoption
+  - approval-timeout
+  - browser-instability
+  public_track_id: certified-support-pack
+  docs_refs:
+  - docs/design-docs/golden-path-starter-kits.md
+  - docs/runbooks/first-adopter-onboarding.md
+  - docs/runbooks/operator-training-exercise.md

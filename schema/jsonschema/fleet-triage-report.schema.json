@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/fleet-triage-report.schema.json",
+  "title": "FleetTriageReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "cohort_results", "verdict"],
+  "properties": {
+    "id": { "type": "string", "const": "phase16-fleet-triage-report" },
+    "cohort_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cohort_id", "report_count", "runbook_count", "evidence_fields", "verdict"],
+        "properties": {
+          "cohort_id": { "type": "string" },
+          "report_count": { "type": "integer", "minimum": 1 },
+          "runbook_count": { "type": "integer", "minimum": 1 },
+          "evidence_fields": { "type": "integer", "minimum": 1 },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "verdict": { "type": "string", "enum": ["pass", "fail"] }
+  }
+}

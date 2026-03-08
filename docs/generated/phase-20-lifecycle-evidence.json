@@ -1,0 +1,41 @@
+{
+  "evidence_groups": [
+    {
+      "id": "operator-accreditation",
+      "ref_count": 3
+    },
+    {
+      "id": "rollout-waves",
+      "ref_count": 3
+    },
+    {
+      "id": "incident-review",
+      "ref_count": 3
+    },
+    {
+      "id": "deprecation-governance",
+      "ref_count": 3
+    }
+  ],
+  "id": "phase20-lifecycle-evidence-bundle",
+  "phase": "PHASE-20",
+  "reports": [
+    {
+      "id": "phase20-operator-accreditation-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase20-rollout-wave-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase20-incident-review-packet-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase20-deprecation-governance-report",
+      "verdict": "pass"
+    }
+  ],
+  "verdict": "pass"
+}

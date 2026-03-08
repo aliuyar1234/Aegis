@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/adoption-evidence-manifest.schema.json",
+  "title": "AdoptionEvidenceManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundle_id",
+    "phase",
+    "evidence_groups"
+  ],
+  "properties": {
+    "bundle_id": {
+      "type": "string",
+      "const": "phase19-adoption-evidence-bundle"
+    },
+    "phase": {
+      "type": "string",
+      "const": "PHASE-19"
+    },
+    "evidence_groups": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]*$"
+          },
+          "refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

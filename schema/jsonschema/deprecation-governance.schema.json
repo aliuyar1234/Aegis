@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/deprecation-governance.schema.json",
+  "title": "DeprecationGovernance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["program_id", "version", "policies"],
+  "properties": {
+    "program_id": { "type": "string", "const": "deprecation-governance" },
+    "version": { "type": "integer", "const": 1 },
+    "policies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "asset_kind",
+          "asset_ids",
+          "successor_refs",
+          "notice_window_days",
+          "freeze_actions",
+          "rollback_runbook_ref"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "asset_kind": {
+            "type": "string",
+            "enum": ["starter_kit", "certified_extension_pack", "deployment_track"]
+          },
+          "asset_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          },
+          "successor_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "notice_window_days": { "type": "integer", "minimum": 1 },
+          "freeze_actions": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z_][a-z0-9_]*$" }
+          },
+          "rollback_runbook_ref": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

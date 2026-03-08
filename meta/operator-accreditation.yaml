@@ -1,0 +1,42 @@
+program_id: operator-accreditation
+version: 1
+tracks:
+- id: shared-control-operator
+  display_name: Shared control operator
+  deployment_tracks:
+  - shared-evaluation
+  required_exercises:
+  - approval-escalation-recovery
+  required_evidence:
+  - docs/generated/phase-16-fleet-evidence.json
+  - docs/generated/phase-19-adoption-evidence.json
+  allowed_actions:
+  - join_session
+  - add_operator_note
+  - pause_session
+  - abort_session
+  - takeover_session
+  renewal_window_days: 90
+  runbook_ref: docs/runbooks/operator-accreditation-renewal.md
+- id: dedicated-regional-operator
+  display_name: Dedicated regional operator
+  deployment_tracks:
+  - dedicated-regional-rollout
+  required_exercises:
+  - approval-escalation-recovery
+  - regional-failover-command
+  - extension-revocation-response
+  required_evidence:
+  - docs/generated/phase-16-fleet-evidence.json
+  - docs/generated/phase-17-regional-evidence.json
+  - docs/generated/phase-18-ecosystem-evidence.json
+  - docs/generated/phase-19-adoption-evidence.json
+  allowed_actions:
+  - join_session
+  - add_operator_note
+  - pause_session
+  - takeover_session
+  - promote_region
+  - revoke_extension
+  renewal_window_days: 60
+  runbook_ref: docs/runbooks/operator-accreditation-renewal.md

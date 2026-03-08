@@ -1,0 +1,134 @@
+{
+  "budget_manifest_id": "performance-budgets",
+  "cases": [
+    {
+      "benchmark_case": "worker-crash-recovery",
+      "budget_evaluation": {
+        "artifact_count_within_budget": true,
+        "correctness_score_within_budget": true,
+        "estimated_runtime_within_budget": true,
+        "event_count_within_budget": true,
+        "fault_count_within_budget": true
+      },
+      "budget_profile": "phase14-default",
+      "id": "benchmark-run-worker-crash-recovery",
+      "metrics": {
+        "artifact_count": 1,
+        "correctness_score": 100,
+        "current_signature_match": true,
+        "estimated_runtime_ms": 295,
+        "event_count": 3,
+        "fault_count": 1,
+        "previous_supported_equivalent": true
+      },
+      "replay_fixture_id": "worker-crash-recovery",
+      "scenario_id": "worker-crash-recovery",
+      "verdict": "pass"
+    },
+    {
+      "benchmark_case": "node-loss-adoption",
+      "budget_evaluation": {
+        "artifact_count_within_budget": true,
+        "correctness_score_within_budget": true,
+        "estimated_runtime_within_budget": true,
+        "event_count_within_budget": true,
+        "fault_count_within_budget": true
+      },
+      "budget_profile": "phase14-default",
+      "id": "benchmark-run-node-loss-adoption",
+      "metrics": {
+        "artifact_count": 0,
+        "correctness_score": 100,
+        "current_signature_match": true,
+        "estimated_runtime_ms": 280,
+        "event_count": 3,
+        "fault_count": 1,
+        "previous_supported_equivalent": true
+      },
+      "replay_fixture_id": "node-loss-adoption",
+      "scenario_id": "node-loss-adoption",
+      "verdict": "pass"
+    },
+    {
+      "benchmark_case": "approval-timeout",
+      "budget_evaluation": {
+        "artifact_count_within_budget": true,
+        "correctness_score_within_budget": true,
+        "estimated_runtime_within_budget": true,
+        "event_count_within_budget": true,
+        "fault_count_within_budget": true
+      },
+      "budget_profile": "phase14-default",
+      "id": "benchmark-run-approval-timeout",
+      "metrics": {
+        "artifact_count": 0,
+        "correctness_score": 100,
+        "current_signature_match": true,
+        "estimated_runtime_ms": 260,
+        "event_count": 3,
+        "fault_count": 1,
+        "previous_supported_equivalent": true
+      },
+      "replay_fixture_id": "approval-timeout",
+      "scenario_id": "approval-timeout",
+      "verdict": "pass"
+    },
+    {
+      "benchmark_case": "duplicate-callback",
+      "budget_evaluation": {
+        "artifact_count_within_budget": true,
+        "correctness_score_within_budget": true,
+        "estimated_runtime_within_budget": true,
+        "event_count_within_budget": true,
+        "fault_count_within_budget": true
+      },
+      "budget_profile": "phase14-default",
+      "id": "benchmark-run-duplicate-callback",
+      "metrics": {
+        "artifact_count": 1,
+        "correctness_score": 100,
+        "current_signature_match": true,
+        "estimated_runtime_ms": 260,
+        "event_count": 3,
+        "fault_count": 1,
+        "previous_supported_equivalent": true
+      },
+      "replay_fixture_id": "duplicate-callback",
+      "scenario_id": "duplicate-callback",
+      "verdict": "pass"
+    },
+    {
+      "benchmark_case": "browser-instability",
+      "budget_evaluation": {
+        "artifact_count_within_budget": true,
+        "correctness_score_within_budget": true,
+        "estimated_runtime_within_budget": true,
+        "event_count_within_budget": true,
+        "fault_count_within_budget": true
+      },
+      "budget_profile": "phase14-default",
+      "id": "benchmark-run-browser-instability",
+      "metrics": {
+        "artifact_count": 1,
+        "correctness_score": 100,
+        "current_signature_match": true,
+        "estimated_runtime_ms": 275,
+        "event_count": 3,
+        "fault_count": 1,
+        "previous_supported_equivalent": true
+      },
+      "replay_fixture_id": "browser-instability",
+      "scenario_id": "browser-instability",
+      "verdict": "pass"
+    }
+  ],
+  "corpus_id": "phase-14-benchmark-corpus",
+  "cost_model_id": "phase14_fixture_derived",
+  "id": "phase-14-benchmark-scorecard",
+  "overall_verdict": "pass",
+  "summary": {
+    "case_count": 5,
+    "failed": 0,
+    "passed": 5
+  }
+}

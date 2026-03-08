@@ -113,6 +113,9 @@ Fork from a checkpoint and sandbox alternate decisions or model outputs. Not on 
 
 Nondeterministic outputs must be captured as event payloads or artifacts.
 
+See `docs/design-docs/replay-oracle.md` for the formal replay-equivalence and determinism
+taxonomy added after the baseline replay model.
+
 ## Replay semantics for models and browsers
 
 Historical replay never re-calls:

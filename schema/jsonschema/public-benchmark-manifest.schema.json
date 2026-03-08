@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/public-benchmark-manifest.schema.json",
+  "title": "PublicBenchmarkManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "program_id",
+    "version",
+    "benchmark_source_ref",
+    "scorecard_ref",
+    "tracks",
+    "publication_requirements"
+  ],
+  "properties": {
+    "program_id": {
+      "type": "string",
+      "const": "public-compatibility-leadership"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "benchmark_source_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scorecard_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tracks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "display_name",
+          "candidate_id",
+          "pack_ref",
+          "certification_level",
+          "benchmark_classes",
+          "compatibility_dimensions"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "display_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidate_id": {
+            "type": "string"
+          },
+          "pack_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "certification_level": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "benchmark_classes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "correctness",
+                "replay_cost",
+                "recovery_time",
+                "transport_conformance"
+              ]
+            }
+          },
+          "compatibility_dimensions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "runtime_release",
+                "extension_api",
+                "sandbox_profile",
+                "policy_bundle"
+              ]
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "publication_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "require_certified_level",
+        "require_scorecard_ref",
+        "require_sandbox_profile_ref",
+        "require_policy_bundle_ref",
+        "public_report_schema_ref"
+      ],
+      "properties": {
+        "require_certified_level": {
+          "type": "boolean"
+        },
+        "require_scorecard_ref": {
+          "type": "boolean"
+        },
+        "require_sandbox_profile_ref": {
+          "type": "boolean"
+        },
+        "require_policy_bundle_ref": {
+          "type": "boolean"
+        },
+        "public_report_schema_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

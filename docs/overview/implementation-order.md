@@ -4,19 +4,26 @@ This document defines the build order, what to defer, and the first concrete suc
 
 ## Build order
 
-1. PHASE-01 — Session kernel and state model
-2. PHASE-02 — Event log, checkpoints, and replay
-3. PHASE-03 — Lease ownership, fencing, and recovery
-4. PHASE-04 — Worker contracts, transport, and execution bridge
-5. PHASE-05 — Browser baseline: read-only flows, artifacts, resumable handles
-6. PHASE-06 — Operator console and session inspection
-7. PHASE-07 — Policy, approvals, capability tokens, dangerous-action defaults
-8. PHASE-08 — Effectful browser flows, uncertainty, chaos, and demo gates
-9. PHASE-09 — Multitenancy, quotas, authz, and audit
-10. PHASE-10 — Extensibility surface and connector SDK
-11. PHASE-11 — Voice/media expansion path
-12. PHASE-12 — OSS core vs managed platform split
-13. PHASE-13 — Cloud and enterprise hardening
+1. PHASE-01 - Session kernel and state model
+2. PHASE-02 - Event log, checkpoints, and replay
+3. PHASE-03 - Lease ownership, fencing, and recovery
+4. PHASE-04 - Worker contracts, transport, and execution bridge
+5. PHASE-05 - Browser baseline: read-only flows, artifacts, resumable handles
+6. PHASE-06 - Operator console and session inspection
+7. PHASE-07 - Policy, approvals, capability tokens, dangerous-action defaults
+8. PHASE-08 - Effectful browser flows, uncertainty, chaos, and demo gates
+9. PHASE-09 - Multitenancy, quotas, authz, and audit
+10. PHASE-10 - Extensibility surface and connector SDK
+11. PHASE-11 - Voice/media expansion path
+12. PHASE-12 - OSS core vs managed platform split
+13. PHASE-13 - Cloud and enterprise hardening
+14. PHASE-14 - Runtime conformance, deterministic simulation, and replay oracle
+15. PHASE-15 - Upgrade safety, schema evolution, and disaster recovery
+16. PHASE-16 - Fleet scheduling, isolation, and SLO-driven operability
+17. PHASE-17 - Regional topology, fault domains, and session mobility
+18. PHASE-18 - Certified ecosystem, governed extensions, and public compatibility leadership
+19. PHASE-19 - Reference adoption, operator drills, and golden-path starter kits
+20. PHASE-20 - Operational lifecycle governance, rollout waves, and deprecation discipline
 
 ## What not to build first
 

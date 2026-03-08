@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/fleet-triage-manifest.schema.json",
+  "title": "FleetTriageManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "bundle_id", "required_reports", "cohorts", "export_sections"],
+  "properties": {
+    "id": { "type": "string", "const": "fleet-triage-manifest" },
+    "version": { "type": "integer", "minimum": 1 },
+    "bundle_id": { "type": "string", "const": "phase16-operator-evidence-bundle" },
+    "required_reports": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^phase16-.+-report$" }
+    },
+    "cohorts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "selection",
+          "failure_signature",
+          "report_refs",
+          "runbook_refs",
+          "evidence_fields"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "selection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["health", "wait_reason", "min_size"],
+            "properties": {
+              "health": { "type": "string", "minLength": 1 },
+              "wait_reason": { "type": "string", "minLength": 1 },
+              "min_size": { "type": "integer", "minimum": 1 }
+            }
+          },
+          "failure_signature": { "type": "string", "minLength": 1 },
+          "report_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^phase16-.+-report$" }
+          },
+          "runbook_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^docs/.+\\.md$" }
+          },
+          "evidence_fields": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          }
+        }
+      }
+    },
+    "export_sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+    }
+  }
+}

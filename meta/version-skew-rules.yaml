@@ -1,0 +1,29 @@
+id: version-skew-rules
+version: 1
+rules:
+- id: control-plane-bounded-mixed-window
+  components:
+  - elixir_runtime
+  - elixir_gateway
+  - elixir_events
+  allowed_skew: n_minus_one_release_same_contract
+  deny_when:
+  - replay_contract_version differs
+  - checkpoint_version differs without an upcaster
+  notes: Control-plane nodes may run a bounded mixed-version release window only when replay contract and checkpoint compatibility remain intact.
+- id: worker-n-minus-one
+  components:
+  - python_workers
+  - rust_sidecars
+  allowed_skew: n_minus_one
+  deny_when:
+  - transport contract is not listed in the compatibility matrix
+  - capability token claim shape differs
+  notes: Execution-plane components may lag by one supported contract window when explicitly listed.
+- id: extension-manifest-window
+  components:
+  - extension_manifests
+  allowed_skew: listed_in_manifest
+  deny_when:
+  - extension manifest version is outside the compatibility matrix
+  notes: Extensions are governed by explicit manifest compatibility declarations.

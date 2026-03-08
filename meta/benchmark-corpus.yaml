@@ -1,0 +1,28 @@
+id: phase-14-benchmark-corpus
+version: 1
+cost_model:
+  id: phase14_fixture_derived
+  version: 1
+  description: Deterministic fixture-derived cost model for replay and simulation
+    regression scorecards. It is not a wall-clock throughput claim.
+cases:
+- id: worker-crash-recovery
+  scenario_ref: tests/simulation/fixtures/worker-crash-recovery.yaml
+  replay_fixture_id: worker-crash-recovery
+  budget_profile: phase14-default
+- id: node-loss-adoption
+  scenario_ref: tests/simulation/fixtures/node-loss-adoption.yaml
+  replay_fixture_id: node-loss-adoption
+  budget_profile: phase14-default
+- id: approval-timeout
+  scenario_ref: tests/simulation/fixtures/approval-timeout.yaml
+  replay_fixture_id: approval-timeout
+  budget_profile: phase14-default
+- id: duplicate-callback
+  scenario_ref: tests/simulation/fixtures/duplicate-callback.yaml
+  replay_fixture_id: duplicate-callback
+  budget_profile: phase14-default
+- id: browser-instability
+  scenario_ref: tests/simulation/fixtures/browser-instability.yaml
+  replay_fixture_id: browser-instability
+  budget_profile: phase14-default

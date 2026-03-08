@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/replay-diff-result.schema.json",
+  "title": "ReplayDiffResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "fixture_results",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "replay-diff-report"
+    },
+    "fixture_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture_id",
+          "comparison_mode",
+          "current_signature_match",
+          "previous_supported_equivalent",
+          "verdict"
+        ],
+        "properties": {
+          "fixture_id": { "type": "string" },
+          "comparison_mode": { "type": "string" },
+          "current_signature_match": { "type": "boolean" },
+          "previous_supported_equivalent": { "type": "boolean" },
+          "verdict": {
+            "type": "string",
+            "enum": ["pass", "fail"]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "fail"]
+    }
+  }
+}

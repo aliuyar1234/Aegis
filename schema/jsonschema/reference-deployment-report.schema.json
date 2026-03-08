@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/reference-deployment-report.schema.json",
+  "title": "ReferenceDeploymentReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "tracks",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase19-reference-deployment-report"
+    },
+    "tracks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "track_id",
+          "runbook_count",
+          "evidence_count",
+          "verdict"
+        ],
+        "properties": {
+          "track_id": {
+            "type": "string"
+          },
+          "runbook_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "evidence_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

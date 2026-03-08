@@ -1,0 +1,24 @@
+bundle_id: phase19-adoption-evidence-bundle
+phase: PHASE-19
+evidence_groups:
+- id: adoption-profiles
+  refs:
+  - meta/adoption-profiles.yaml
+  - docs/design-docs/adoption-profiles.md
+  - docs/runbooks/first-adopter-onboarding.md
+- id: reference-tracks
+  refs:
+  - meta/reference-deployment-tracks.yaml
+  - docs/design-docs/reference-deployment-tracks.md
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-16-fleet-evidence.json
+- id: operator-exercises
+  refs:
+  - meta/operator-exercise-manifest.yaml
+  - docs/design-docs/operator-exercises.md
+  - docs/runbooks/operator-training-exercise.md
+- id: starter-kits
+  refs:
+  - meta/golden-path-starter-kits.yaml
+  - docs/design-docs/golden-path-starter-kits.md
+  - docs/generated/phase-18-ecosystem-evidence.json

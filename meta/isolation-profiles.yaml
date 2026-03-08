@@ -1,0 +1,76 @@
+id: isolation-profiles
+version: 1
+profiles:
+- id: hot-tenant-browser-throttle
+  scope: tenant
+  applies_to_tiers:
+  - tier-a
+  - tier-b
+  signals:
+  - queue_depth
+  - concurrent_browser_contexts
+  mitigation_actions:
+  - throttle_new_sessions
+  - pin_to_isolated_pool
+  preserve_classes:
+  - operator_control
+  - recovery
+  - effectful_approved
+  runbook_refs:
+  - docs/runbooks/hot-tenant-isolation.md
+- id: workflow-class-replay-backpressure
+  scope: workflow_class
+  applies_to_tiers:
+  - tier-b
+  - tier-c
+  - dedicated
+  signals:
+  - projector_lag_ms
+  - queue_depth
+  mitigation_actions:
+  - delay_bulk_replay_export
+  - isolate_replay_backfill
+  preserve_classes:
+  - operator_control
+  - recovery
+  - effectful_approved
+  runbook_refs:
+  - docs/runbooks/hot-tenant-isolation.md
+- id: dedicated-audit-lane-preservation
+  scope: tenant
+  applies_to_tiers:
+  - dedicated
+  signals:
+  - cohort_query_latency_ms
+  - artifact_index_lag_ms
+  mitigation_actions:
+  - reserve_dedicated_control_pool
+  - suspend_historical_index_backfill
+  preserve_classes:
+  - operator_control
+  - audit_export
+  - recovery
+  runbook_refs:
+  - docs/runbooks/hot-tenant-isolation.md
+scenarios:
+- id: tenant-browser-surge
+  tenant_id: tenant-hydra
+  workflow_class: browser_effectful
+  expected_profile: hot-tenant-browser-throttle
+  preserve_classes:
+  - operator_control
+  - recovery
+- id: replay-export-storm
+  tenant_id: tenant-ops
+  workflow_class: bulk_replay_export
+  expected_profile: workflow-class-replay-backpressure
+  preserve_classes:
+  - operator_control
+  - effectful_approved
+- id: dedicated-audit-burst
+  tenant_id: tenant-enterprise
+  workflow_class: audit_export
+  expected_profile: dedicated-audit-lane-preservation
+  preserve_classes:
+  - audit_export
+  - recovery

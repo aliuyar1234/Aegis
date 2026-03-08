@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/sandbox-profiles.schema.json",
+  "title": "SandboxProfiles",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "program_id",
+    "version",
+    "profiles",
+    "assignments"
+  ],
+  "properties": {
+    "program_id": {
+      "type": "string",
+      "const": "extension-sandbox-profiles"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "display_name",
+          "allowed_kinds",
+          "allowed_sdk_languages",
+          "network_modes",
+          "max_secret_count",
+          "mcp_allowed",
+          "requires_artifact_outputs",
+          "policy_bundle"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "display_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "allowed_kinds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "tool_connector",
+                "artifact_processor",
+                "mcp_adapter"
+              ]
+            }
+          },
+          "allowed_sdk_languages": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "elixir",
+                "python",
+                "rust"
+              ]
+            }
+          },
+          "network_modes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "none",
+                "egress_allowlist"
+              ]
+            }
+          },
+          "max_secret_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "mcp_allowed": {
+            "type": "boolean"
+          },
+          "requires_artifact_outputs": {
+            "type": "boolean"
+          },
+          "policy_bundle": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          }
+        }
+      }
+    },
+    "assignments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "manifest_ref",
+          "profile"
+        ],
+        "properties": {
+          "manifest_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "profile": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          }
+        }
+      }
+    }
+  }
+}

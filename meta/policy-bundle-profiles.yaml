@@ -1,0 +1,57 @@
+program_id: delegated-governance-policy-bundles
+version: 1
+default_bundle: default-third-party
+bundles:
+- id: default-third-party
+  display_name: Default third-party ecosystem bundle
+  scopes:
+    allowed_tiers:
+    - tier_a
+    - tier_b
+    allowed_kinds:
+    - tool_connector
+    - artifact_processor
+    - mcp_adapter
+  inputs:
+    tool_registry_ref: schema/tool-registry.yaml
+    dangerous_actions_ref: meta/dangerous-action-classes.yaml
+    rbac_roles_ref: meta/rbac-roles.yaml
+    abac_attributes_ref: meta/abac-attributes.yaml
+    compatibility_policy_ref: meta/extension-compatibility-policy.yaml
+  governance:
+    dual_control_required: true
+    approval_roles:
+    - platform_reviewer
+    - security_reviewer
+    rollback_runbook_ref: docs/runbooks/policy-bundle-rollback.md
+    explanation_fields:
+    - required_scopes
+    - dangerous_action_classes
+    - network.mode
+    - supported_tiers
+- id: artifact-only
+  display_name: Artifact-only ecosystem bundle
+  scopes:
+    allowed_tiers:
+    - tier_a
+    - tier_b
+    - tier_c
+    allowed_kinds:
+    - artifact_processor
+  inputs:
+    tool_registry_ref: schema/tool-registry.yaml
+    dangerous_actions_ref: meta/dangerous-action-classes.yaml
+    rbac_roles_ref: meta/rbac-roles.yaml
+    abac_attributes_ref: meta/abac-attributes.yaml
+    compatibility_policy_ref: meta/extension-compatibility-policy.yaml
+  governance:
+    dual_control_required: true
+    approval_roles:
+    - platform_reviewer
+    - privacy_reviewer
+    rollback_runbook_ref: docs/runbooks/policy-bundle-rollback.md
+    explanation_fields:
+    - artifact_access.inputs
+    - artifact_access.outputs
+    - network.mode
+    - supported_tiers

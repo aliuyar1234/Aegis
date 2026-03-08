@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/adoption-profiles.schema.json",
+  "title": "AdoptionProfiles",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "program_id",
+    "version",
+    "profiles"
+  ],
+  "properties": {
+    "program_id": {
+      "type": "string",
+      "const": "adoption-profiles"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "display_name",
+          "adopter_class",
+          "deployment_track",
+          "starter_kit",
+          "required_evidence",
+          "operator_exercises",
+          "onboarding_runbook_ref"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "display_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "adopter_class": {
+            "type": "string",
+            "pattern": "^[a-z_][a-z0-9_]*$"
+          },
+          "deployment_track": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "starter_kit": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "required_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "operator_exercises": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+            }
+          },
+          "onboarding_runbook_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

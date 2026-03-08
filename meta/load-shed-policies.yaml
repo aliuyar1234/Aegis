@@ -1,0 +1,96 @@
+id: load-shed-policies
+version: 1
+policies:
+- id: shared-standard-overload
+  scope: shared
+  triggers:
+  - metric: queue_depth
+    level: soft
+    threshold: 250
+  - metric: projector_lag_ms
+    level: hard
+    threshold: 1200
+  protected_classes:
+  - operator_control
+  - recovery
+  - effectful_approved
+  shed_classes:
+  - readonly_probe
+  - bulk_replay_export
+  - speculative_prefetch
+  actions:
+  - level: soft
+    decision: delay
+    applies_to:
+    - readonly_probe
+    - speculative_prefetch
+    max_delay_ms: 2000
+  - level: hard
+    decision: reject
+    applies_to:
+    - bulk_replay_export
+    - speculative_prefetch
+    max_delay_ms: 0
+  runbook_refs:
+  - docs/runbooks/overload-response.md
+- id: premium-isolated-overload
+  scope: premium_isolated
+  triggers:
+  - metric: queue_depth
+    level: soft
+    threshold: 120
+  - metric: artifact_index_lag_ms
+    level: hard
+    threshold: 550
+  protected_classes:
+  - operator_control
+  - recovery
+  - effectful_approved
+  - premium_interactive
+  shed_classes:
+  - readonly_probe
+  - background_index_refresh
+  actions:
+  - level: soft
+    decision: delay
+    applies_to:
+    - background_index_refresh
+    max_delay_ms: 1000
+  - level: hard
+    decision: reject
+    applies_to:
+    - readonly_probe
+    - background_index_refresh
+    max_delay_ms: 0
+  runbook_refs:
+  - docs/runbooks/overload-response.md
+- id: dedicated-enterprise-overload
+  scope: dedicated
+  triggers:
+  - metric: projector_lag_ms
+    level: soft
+    threshold: 700
+  - metric: cohort_query_latency_ms
+    level: hard
+    threshold: 1200
+  protected_classes:
+  - operator_control
+  - recovery
+  - effectful_approved
+  - audit_export
+  shed_classes:
+  - bulk_replay_export
+  - historical_index_backfill
+  actions:
+  - level: soft
+    decision: delay
+    applies_to:
+    - historical_index_backfill
+    max_delay_ms: 1500
+  - level: hard
+    decision: reject
+    applies_to:
+    - bulk_replay_export
+    max_delay_ms: 0
+  runbook_refs:
+  - docs/runbooks/overload-response.md

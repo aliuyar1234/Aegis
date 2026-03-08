@@ -1,0 +1,109 @@
+phase: PHASE-17
+status: completed
+name: Regional topology, fault domains, and session mobility
+phase_doc: docs/exec-plans/active/PHASE-17-regional-topology.md
+tasks:
+- id: P17-T01
+  phase: PHASE-17
+  title: Define regional topology profiles and fault-domain catalog
+  critical_path: true
+  status: done
+  deps: []
+  adr_refs:
+  - ADR-0002
+  - ADR-0003
+  - ADR-0015
+  acceptance_refs:
+  - AC-077
+  test_refs:
+  - TS-037
+  phase_doc: docs/exec-plans/active/PHASE-17-regional-topology.md
+  size: L
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P17-T02
+  phase: PHASE-17
+  title: Implement region-aware placement and failover routing policy
+  critical_path: true
+  status: done
+  deps:
+  - P17-T01
+  adr_refs:
+  - ADR-0002
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-078
+  test_refs:
+  - TS-038
+  phase_doc: docs/exec-plans/active/PHASE-17-regional-topology.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P17-T03
+  phase: PHASE-17
+  title: Build regional evacuation and failover drill harness
+  critical_path: true
+  status: done
+  deps:
+  - P17-T01
+  - P17-T02
+  adr_refs:
+  - ADR-0002
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-079
+  test_refs:
+  - TS-039
+  phase_doc: docs/exec-plans/active/PHASE-17-regional-topology.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P17-T04
+  phase: PHASE-17
+  title: Model session mobility, approval continuity, and artifact lineage
+  critical_path: true
+  status: done
+  deps:
+  - P17-T01
+  - P17-T03
+  adr_refs:
+  - ADR-0005
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-080
+  test_refs:
+  - TS-040
+  phase_doc: docs/exec-plans/active/PHASE-17-regional-topology.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P17-T05
+  phase: PHASE-17
+  title: Gate regional readiness on topology, evacuation, and mobility evidence
+  critical_path: false
+  status: done
+  deps:
+  - P17-T01
+  - P17-T02
+  - P17-T03
+  - P17-T04
+  adr_refs:
+  - ADR-0002
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-081
+  test_refs:
+  - TS-041
+  phase_doc: docs/exec-plans/active/PHASE-17-regional-topology.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

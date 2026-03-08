@@ -1,0 +1,22 @@
+id: regional-evidence-manifest
+version: 1
+bundle_id: phase17-regional-evidence-bundle
+required_reports:
+- phase17-regional-topology-report
+- phase17-regional-placement-report
+- phase17-regional-evacuation-report
+- phase17-session-mobility-report
+evidence_groups:
+- id: topology
+  refs:
+  - meta/regional-topology-profiles.yaml
+  - meta/fault-domain-catalog.yaml
+- id: placement
+  refs:
+  - meta/regional-placement-policies.yaml
+- id: evacuation
+  refs:
+  - meta/regional-evacuation-fixtures.yaml
+- id: mobility
+  refs:
+  - meta/session-mobility-manifest.yaml

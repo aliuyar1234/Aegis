@@ -1,0 +1,29 @@
+program_id: adoption-profiles
+version: 1
+profiles:
+- id: platform-team-evaluation
+  display_name: Platform team evaluation
+  adopter_class: platform_team
+  deployment_track: shared-evaluation
+  starter_kit: certified-support-ops
+  required_evidence:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-16-fleet-evidence.json
+  - docs/generated/phase-18-ecosystem-evidence.json
+  operator_exercises:
+  - approval-escalation-recovery
+  onboarding_runbook_ref: docs/runbooks/first-adopter-onboarding.md
+- id: regulated-enterprise-rollout
+  display_name: Regulated enterprise rollout
+  adopter_class: regulated_enterprise
+  deployment_track: dedicated-regional-rollout
+  starter_kit: dedicated-certified-support-ops
+  required_evidence:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-16-fleet-evidence.json
+  - docs/generated/phase-17-regional-evidence.json
+  - docs/generated/phase-18-ecosystem-evidence.json
+  operator_exercises:
+  - regional-failover-command
+  - extension-revocation-response
+  onboarding_runbook_ref: docs/runbooks/first-adopter-onboarding.md

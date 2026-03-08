@@ -4,6 +4,74 @@ generated_files:
   sources:
   - work-items/task-index.yaml
   - meta/phase-gates.yaml
+- path: docs/generated/phase-14-benchmark-scorecard.json
+  generator: python3 scripts/run_benchmark_corpus.py meta/benchmark-corpus.yaml meta/performance-budgets.yaml --write docs/generated/phase-14-benchmark-scorecard.json
+  sources:
+  - meta/benchmark-corpus.yaml
+  - meta/performance-budgets.yaml
+  - meta/replay-fixtures.yaml
+  - tests/simulation/fixtures/worker-crash-recovery.yaml
+  - tests/simulation/fixtures/node-loss-adoption.yaml
+  - tests/simulation/fixtures/approval-timeout.yaml
+  - tests/simulation/fixtures/duplicate-callback.yaml
+  - tests/simulation/fixtures/browser-instability.yaml
+- path: docs/generated/phase-15-release-evidence.json
+  generator: python3 scripts/build_phase15_release_evidence.py --write docs/generated/phase-15-release-evidence.json
+  sources:
+  - meta/release-evidence-manifest.yaml
+  - meta/compatibility-matrix.yaml
+  - meta/version-skew-rules.yaml
+  - meta/upcaster-manifests.yaml
+  - meta/upcaster-fixtures.yaml
+  - meta/upgrade-strategies.yaml
+  - meta/upgrade-drill-fixtures.yaml
+  - meta/recovery-objectives.yaml
+  - meta/restore-drill-fixtures.yaml
+  - meta/topology-profiles.yaml
+  - meta/standby-promotion-evidence.yaml
+- path: docs/generated/phase-16-fleet-evidence.json
+  generator: python3 scripts/build_phase16_fleet_evidence.py --write docs/generated/phase-16-fleet-evidence.json
+  sources:
+  - meta/fleet-triage-manifest.yaml
+  - meta/slo-profiles.yaml
+  - meta/load-shed-policies.yaml
+  - meta/placement-policies.yaml
+  - meta/isolation-profiles.yaml
+  - meta/storage-growth-fixtures.yaml
+  - meta/performance-budgets.yaml
+- path: docs/generated/phase-17-regional-evidence.json
+  generator: python3 scripts/build_phase17_regional_evidence.py --write docs/generated/phase-17-regional-evidence.json
+  sources:
+  - meta/regional-evidence-manifest.yaml
+  - meta/regional-topology-profiles.yaml
+  - meta/fault-domain-catalog.yaml
+  - meta/regional-placement-policies.yaml
+  - meta/regional-evacuation-fixtures.yaml
+  - meta/session-mobility-manifest.yaml
+- path: docs/generated/phase-18-ecosystem-evidence.json
+  generator: python3 scripts/build_phase18_ecosystem_evidence.py --write docs/generated/phase-18-ecosystem-evidence.json
+  sources:
+  - meta/extension-certification-levels.yaml
+  - meta/sandbox-profiles.yaml
+  - meta/policy-bundle-profiles.yaml
+  - meta/public-benchmark-manifest.yaml
+  - meta/ecosystem-evidence-manifest.yaml
+- path: docs/generated/phase-19-adoption-evidence.json
+  generator: python3 scripts/build_phase19_adoption_evidence.py --write docs/generated/phase-19-adoption-evidence.json
+  sources:
+  - meta/adoption-profiles.yaml
+  - meta/reference-deployment-tracks.yaml
+  - meta/operator-exercise-manifest.yaml
+  - meta/golden-path-starter-kits.yaml
+  - meta/adoption-evidence-manifest.yaml
+- path: docs/generated/phase-20-lifecycle-evidence.json
+  generator: python3 scripts/build_phase20_lifecycle_evidence.py --write docs/generated/phase-20-lifecycle-evidence.json
+  sources:
+  - meta/operator-accreditation.yaml
+  - meta/rollout-wave-manifest.yaml
+  - meta/incident-review-packets.yaml
+  - meta/deprecation-governance.yaml
+  - meta/lifecycle-evidence-manifest.yaml
 - path: docs/generated/traceability-matrix.csv
   generator: python3 scripts/generate_docs.py
   sources:
@@ -87,6 +155,41 @@ generated_files:
   - work-items/task-index.yaml
   - meta/phase-gates.yaml
 - path: work-items/phase-13-cloud-enterprise.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-14-runtime-conformance-simulation.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-15-upgrades-dr.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-16-fleet-scheduling-isolation.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-17-regional-topology.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-18-certified-ecosystem.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-19-reference-adoption-golden-paths.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-20-operational-lifecycle-governance.yaml
   generator: python3 scripts/generate_docs.py
   sources:
   - work-items/task-index.yaml

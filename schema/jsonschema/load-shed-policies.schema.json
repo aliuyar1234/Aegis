@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/load-shed-policies.schema.json",
+  "title": "LoadShedPolicies",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "policies"],
+  "properties": {
+    "id": { "type": "string", "const": "load-shed-policies" },
+    "version": { "type": "integer", "minimum": 1 },
+    "policies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "scope",
+          "triggers",
+          "protected_classes",
+          "shed_classes",
+          "actions",
+          "runbook_refs"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "scope": { "type": "string", "minLength": 1 },
+          "triggers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["metric", "level", "threshold"],
+              "properties": {
+                "metric": { "type": "string", "minLength": 1 },
+                "level": { "type": "string", "enum": ["soft", "hard"] },
+                "threshold": { "type": "integer", "minimum": 1 }
+              }
+            }
+          },
+          "protected_classes": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          },
+          "shed_classes": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          },
+          "actions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["level", "decision", "applies_to", "max_delay_ms"],
+              "properties": {
+                "level": { "type": "string", "enum": ["soft", "hard"] },
+                "decision": { "type": "string", "enum": ["delay", "reject"] },
+                "applies_to": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+                },
+                "max_delay_ms": { "type": "integer", "minimum": 0 }
+              }
+            }
+          },
+          "runbook_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^docs/.+\\.md$" }
+          }
+        }
+      }
+    }
+  }
+}

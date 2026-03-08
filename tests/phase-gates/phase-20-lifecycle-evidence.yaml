@@ -1,0 +1,34 @@
+id: phase-20-lifecycle-evidence
+phase: PHASE-20
+name: Lifecycle evidence gate
+objective: Validate that phase-20 operational lifecycle readiness is captured as
+  a reproducible evidence bundle.
+fixtures:
+- docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+- docs/generated/phase-20-lifecycle-evidence.json
+- meta/lifecycle-evidence-manifest.yaml
+- schema/jsonschema/lifecycle-evidence-manifest.schema.json
+- schema/jsonschema/lifecycle-evidence-bundle.schema.json
+- scripts/build_phase20_lifecycle_evidence.py
+- tests/lifecycle/test_phase20_lifecycle_evidence_assets.py
+- tests/phase-gates/phase-20-lifecycle-evidence.yaml
+tests:
+- TS-056
+acceptance:
+- AC-096
+steps:
+- id: lifecycle-evidence-groups
+  description: verify lifecycle evidence groups are explicit and bounded
+  expected:
+  - accreditation, rollout, incident-review, and deprecation evidence groups are committed
+  evidence:
+  - meta/lifecycle-evidence-manifest.yaml
+- id: reproducible-lifecycle-bundle
+  description: verify the lifecycle evidence bundle is reproducible
+  expected:
+  - the committed bundle matches fresh builder output
+  evidence:
+  - scripts/build_phase20_lifecycle_evidence.py
+  - docs/generated/phase-20-lifecycle-evidence.json
+proves:
+- phase-20 lifecycle readiness is modeled as reproducible evidence rather than process folklore

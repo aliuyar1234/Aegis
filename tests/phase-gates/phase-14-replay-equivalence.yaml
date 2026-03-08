@@ -1,0 +1,51 @@
+id: phase-14-replay-equivalence
+phase: PHASE-14
+name: Replay equivalence gate
+objective: Validate that replay equivalence and determinism boundaries are explicit,
+  machine-checkable, and tied to concrete artifacts.
+fixtures:
+- docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+- docs/design-docs/replay-oracle.md
+- docs/design-docs/event-replay-model.md
+- meta/determinism-classes.yaml
+- meta/replay-equivalence.yaml
+- schema/jsonschema/determinism-classification.schema.json
+- schema/jsonschema/replay-oracle.schema.json
+- tests/phase-gates/phase-14-replay-equivalence.yaml
+- tests/replay_oracle/test_replay_oracle_assets.py
+tests:
+- TS-004
+- TS-019
+acceptance:
+- AC-057
+- AC-058
+- AC-059
+steps:
+- id: determinism-catalog
+  description: verify canonical determinism classes and their replay rules exist
+  expected:
+  - deterministic, captured-nondeterministic, and externally unknowable classes are explicit
+  - each class explains replay behavior and capture requirements
+  evidence:
+  - meta/determinism-classes.yaml
+  - schema/jsonschema/determinism-classification.schema.json
+  - docs/design-docs/replay-oracle.md
+- id: replay-modes
+  description: verify replay modes and equivalence dimensions are explicit
+  expected:
+  - full replay, checkpoint-tail replay, and historical replay define comparison rules
+  - equivalence dimensions cover session truth, approvals, actions, artifacts, and uncertainty
+  evidence:
+  - meta/replay-equivalence.yaml
+  - schema/jsonschema/replay-oracle.schema.json
+  - docs/design-docs/replay-oracle.md
+- id: gate-assets
+  description: verify the phase-14 gate references concrete implementation assets
+  expected:
+  - the active phase doc, design doc, schemas, and tests are all wired together
+  evidence:
+  - docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+  - tests/replay_oracle/test_replay_oracle_assets.py
+  - tests/phase-gates/phase-14-replay-equivalence.yaml
+proves:
+- replay equivalence and determinism boundaries are explicit repository contracts

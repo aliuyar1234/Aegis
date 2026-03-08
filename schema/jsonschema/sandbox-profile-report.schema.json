@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/sandbox-profile-report.schema.json",
+  "title": "SandboxProfileReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "assessments",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase18-sandbox-profile-report"
+    },
+    "assessments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "manifest_id",
+          "profile_id",
+          "kind",
+          "network_mode",
+          "secret_count",
+          "verdict"
+        ],
+        "properties": {
+          "manifest_id": {
+            "type": "string"
+          },
+          "profile_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "tool_connector",
+              "artifact_processor",
+              "mcp_adapter"
+            ]
+          },
+          "network_mode": {
+            "type": "string",
+            "enum": [
+              "none",
+              "egress_allowlist"
+            ]
+          },
+          "secret_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

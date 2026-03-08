@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/placement-decision.schema.json",
+  "title": "PlacementDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["fixture_id", "selected_pool", "expected_pool", "verdict"],
+  "properties": {
+    "fixture_id": { "type": "string" },
+    "selected_pool": { "type": "string" },
+    "expected_pool": { "type": "string" },
+    "verdict": { "type": "string", "enum": ["pass", "fail"] }
+  }
+}

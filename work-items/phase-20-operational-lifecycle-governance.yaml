@@ -1,0 +1,109 @@
+phase: PHASE-20
+status: current
+name: Operational lifecycle governance, rollout waves, and deprecation discipline
+phase_doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+tasks:
+- id: P20-T01
+  phase: PHASE-20
+  title: Define operator accreditation tracks and renewal rules
+  critical_path: true
+  status: done
+  deps:
+  - P19-T03
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-092
+  test_refs:
+  - TS-052
+  phase_doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P20-T02
+  phase: PHASE-20
+  title: Implement rollout-wave and change-window manifests for shared and dedicated
+    deployments
+  critical_path: true
+  status: done
+  deps:
+  - P19-T02
+  - P20-T01
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-093
+  test_refs:
+  - TS-053
+  phase_doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P20-T03
+  phase: PHASE-20
+  title: Build incident-review packet manifests and customer handoff evidence links
+  critical_path: true
+  status: done
+  deps:
+  - P19-T03
+  - P20-T01
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-094
+  test_refs:
+  - TS-054
+  phase_doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P20-T04
+  phase: PHASE-20
+  title: Create deprecation and sunset governance for starter kits, tracks, and certified
+    extensions
+  critical_path: true
+  status: done
+  deps:
+  - P19-T04
+  - P19-T05
+  adr_refs:
+  - ADR-0008
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-095
+  test_refs:
+  - TS-055
+  phase_doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P20-T05
+  phase: PHASE-20
+  title: Gate lifecycle readiness on accreditation, rollout, incident review, and
+    deprecation evidence
+  critical_path: false
+  status: done
+  deps:
+  - P20-T01
+  - P20-T02
+  - P20-T03
+  - P20-T04
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-096
+  test_refs:
+  - TS-056
+  phase_doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

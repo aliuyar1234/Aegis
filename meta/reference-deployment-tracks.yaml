@@ -1,0 +1,34 @@
+program_id: reference-deployment-tracks
+version: 1
+tracks:
+- id: shared-evaluation
+  display_name: Shared cloud evaluation
+  deployment_flavor_id: shared_cloud
+  topology_profile_id: single-region-warm-standby
+  regional_topology_profile_id: eu-shared-warm-standby
+  slo_profile_id: shared-standard-control
+  public_track_id: certified-support-pack
+  required_evidence:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-16-fleet-evidence.json
+  - docs/generated/phase-18-ecosystem-evidence.json
+  runbook_refs:
+  - docs/runbooks/first-adopter-onboarding.md
+  - docs/runbooks/operator-training-exercise.md
+- id: dedicated-regional-rollout
+  display_name: Dedicated regional rollout
+  deployment_flavor_id: dedicated_deployment
+  topology_profile_id: dedicated-warm-standby
+  regional_topology_profile_id: dedicated-regional-standby
+  slo_profile_id: dedicated-enterprise-fleet
+  public_track_id: certified-support-pack
+  required_evidence:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-16-fleet-evidence.json
+  - docs/generated/phase-17-regional-evidence.json
+  - docs/generated/phase-18-ecosystem-evidence.json
+  runbook_refs:
+  - docs/runbooks/first-adopter-onboarding.md
+  - docs/runbooks/operator-training-exercise.md
+  - docs/runbooks/regional-evacuation.md
+  - docs/runbooks/regional-promotion.md

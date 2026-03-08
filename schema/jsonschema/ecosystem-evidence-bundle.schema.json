@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/ecosystem-evidence-bundle.schema.json",
+  "title": "EcosystemEvidenceBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "phase",
+    "reports",
+    "evidence_groups",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase18-ecosystem-evidence-bundle"
+    },
+    "phase": {
+      "type": "string",
+      "const": "PHASE-18"
+    },
+    "reports": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "verdict"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^phase18-.+-report$"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "evidence_groups": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "ref_count"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ref_count": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

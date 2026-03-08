@@ -1,0 +1,42 @@
+id: regional-topology-profiles
+version: 1
+profiles:
+- id: eu-shared-warm-standby
+  topology_kind: regional_warm_standby
+  primary_region: eu-central-1
+  standby_regions:
+  - eu-west-1
+  authoritative_region: eu-central-1
+  supported_tiers:
+  - tier-b
+  - tier-c
+  fault_domains:
+  - eu-central-1a
+  - eu-central-1b
+  - eu-west-1a
+  promotion_preconditions:
+  - fencing confirmation recorded
+  - restore evidence current
+  - placement policy switched to standby region
+  evacuation_modes:
+  - controlled_failover
+  - operator_driven_evacuation
+- id: dedicated-regional-standby
+  topology_kind: dedicated_regional_standby
+  primary_region: us-east-1
+  standby_regions:
+  - us-west-2
+  authoritative_region: us-east-1
+  supported_tiers:
+  - dedicated
+  fault_domains:
+  - us-east-1a
+  - us-east-1b
+  - us-west-2a
+  promotion_preconditions:
+  - dedicated isolation verified
+  - restore evidence current
+  - approval continuity reviewed
+  evacuation_modes:
+  - controlled_failover
+  - compliance_driven_relocation

@@ -1,0 +1,46 @@
+id: phase-14-replay-diff
+phase: PHASE-14
+name: Replay differential gate
+objective: Validate that replay fixtures compare the current deterministic result
+  against current and previous supported baselines.
+fixtures:
+- docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+- docs/design-docs/replay-diffing.md
+- meta/replay-fixtures.yaml
+- schema/jsonschema/replay-fixture-manifest.schema.json
+- schema/jsonschema/replay-diff-result.schema.json
+- scripts/run_replay_diff.py
+- tests/phase-gates/phase-14-replay-diff.yaml
+- tests/replay_diff/test_replay_diff_assets.py
+tests:
+- TS-022
+acceptance:
+- AC-057
+- AC-059
+- AC-062
+steps:
+- id: replay-fixture-manifest
+  description: verify replay fixtures reference deterministic scenarios and supported baselines
+  expected:
+  - replay fixtures cover the critical phase-14 scenarios
+  - current and previous supported baselines are explicit
+  evidence:
+  - meta/replay-fixtures.yaml
+  - schema/jsonschema/replay-fixture-manifest.schema.json
+- id: replay-diff-runner
+  description: verify the replay diff harness emits structured pass or fail output
+  expected:
+  - every fixture compares against current signature and previous supported equivalence
+  - any divergence would produce a structured failing report
+  evidence:
+  - scripts/run_replay_diff.py
+  - schema/jsonschema/replay-diff-result.schema.json
+- id: replay-diff-tests
+  description: verify the replay diff tests and gate are wired to concrete assets
+  expected:
+  - the replay diff suite validates the fixture manifest and runner behavior
+  evidence:
+  - tests/replay_diff/test_replay_diff_assets.py
+  - tests/phase-gates/phase-14-replay-diff.yaml
+proves:
+- replay-diff drift would be gate-blocking and explicit

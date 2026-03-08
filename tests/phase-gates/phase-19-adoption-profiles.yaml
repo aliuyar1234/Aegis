@@ -1,0 +1,39 @@
+id: phase-19-adoption-profiles
+phase: PHASE-19
+name: Adoption profiles gate
+objective: Validate that phase-19 adopter classes are modeled as explicit, bounded
+  onboarding profiles rather than founder-memory guidance.
+fixtures:
+- docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+- docs/design-docs/adoption-profiles.md
+- docs/runbooks/first-adopter-onboarding.md
+- meta/adoption-profiles.yaml
+- schema/jsonschema/adoption-profiles.schema.json
+- schema/jsonschema/adoption-profile-report.schema.json
+- scripts/run_phase19_adoption_profiles.py
+- tests/adoption/test_phase19_adoption_profiles_assets.py
+- tests/phase-gates/phase-19-adoption-profiles.yaml
+tests:
+- TS-047
+acceptance:
+- AC-087
+steps:
+- id: adopter-classes
+  description: verify first-adopter profiles bind deployment tracks, drills, and
+    required evidence
+  expected:
+  - each adoption profile references a bounded deployment track and starter kit
+  - each adoption profile references at least one operator exercise and onboarding
+    runbook
+  evidence:
+  - meta/adoption-profiles.yaml
+- id: reproducible-profile-report
+  description: verify the adoption profile runner emits a structured report
+  expected:
+  - the report summarizes profile links and fails on missing evidence or mismatched
+    kit bindings
+  evidence:
+  - scripts/run_phase19_adoption_profiles.py
+proves:
+- phase-19 first-adopter guidance is machine-checkable rather than ad hoc onboarding
+  lore

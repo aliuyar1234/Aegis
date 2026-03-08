@@ -1,0 +1,37 @@
+id: phase-17-fault-domains
+phase: PHASE-17
+name: Regional topology gate
+objective: Validate that phase-17 region roles, standby semantics, and fault-domain
+  catalogs are machine-checkable.
+fixtures:
+- docs/exec-plans/active/PHASE-17-regional-topology.md
+- docs/design-docs/regional-topology.md
+- docs/design-docs/fault-domain-policy.md
+- meta/regional-topology-profiles.yaml
+- meta/fault-domain-catalog.yaml
+- schema/jsonschema/regional-topology-profiles.schema.json
+- schema/jsonschema/fault-domain-catalog.schema.json
+- schema/jsonschema/regional-topology-report.schema.json
+- scripts/run_phase17_topology.py
+- tests/phase-gates/phase-17-fault-domains.yaml
+- tests/regional_failover/test_phase17_topology_assets.py
+tests:
+- TS-037
+acceptance:
+- AC-077
+steps:
+- id: topology-profiles
+  description: verify regional topology profiles declare primary, standby, and promotion
+    boundaries
+  expected:
+  - every profile has an authoritative primary region and at least one standby region
+  evidence:
+  - meta/regional-topology-profiles.yaml
+- id: fault-domain-catalog
+  description: verify fault domains and standby eligibility are explicit
+  expected:
+  - fault domains map to concrete regions and roles
+  evidence:
+  - meta/fault-domain-catalog.yaml
+proves:
+- phase-17 regional topology is machine-checkable

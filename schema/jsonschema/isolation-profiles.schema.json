@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/isolation-profiles.schema.json",
+  "title": "IsolationProfiles",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "profiles", "scenarios"],
+  "properties": {
+    "id": { "type": "string", "const": "isolation-profiles" },
+    "version": { "type": "integer", "minimum": 1 },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "scope",
+          "applies_to_tiers",
+          "signals",
+          "mitigation_actions",
+          "preserve_classes",
+          "runbook_refs"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "scope": { "type": "string", "minLength": 1 },
+          "applies_to_tiers": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "signals": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "mitigation_actions": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          },
+          "preserve_classes": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          },
+          "runbook_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^docs/.+\\.md$" }
+          }
+        }
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "tenant_id", "workflow_class", "expected_profile", "preserve_classes"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "tenant_id": { "type": "string", "minLength": 1 },
+          "workflow_class": { "type": "string", "minLength": 1 },
+          "expected_profile": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "preserve_classes": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          }
+        }
+      }
+    }
+  }
+}

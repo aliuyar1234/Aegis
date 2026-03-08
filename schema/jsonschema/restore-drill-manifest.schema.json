@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/restore-drill-manifest.schema.json",
+  "title": "RestoreDrillManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "drills"],
+  "properties": {
+    "id": { "type": "string", "const": "restore-drill-fixtures" },
+    "version": { "type": "integer", "minimum": 1 },
+    "drills": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "recovery_profile", "observed_rto_minutes", "observed_rpo_minutes", "event_chain_integrity_verified", "checkpoint_references_verified", "artifact_inventory_reconciled", "replay_tail_applied"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "recovery_profile": { "type": "string" },
+          "observed_rto_minutes": { "type": "integer", "minimum": 0 },
+          "observed_rpo_minutes": { "type": "integer", "minimum": 0 },
+          "event_chain_integrity_verified": { "type": "boolean" },
+          "checkpoint_references_verified": { "type": "boolean" },
+          "artifact_inventory_reconciled": { "type": "boolean" },
+          "replay_tail_applied": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

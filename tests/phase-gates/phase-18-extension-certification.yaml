@@ -1,0 +1,33 @@
+id: phase-18-extension-certification
+phase: PHASE-18
+name: Extension certification gate
+objective: Validate that phase-18 extension certification is modeled as an explicit,
+  signed compatibility surface.
+fixtures:
+- docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+- docs/design-docs/extension-certification.md
+- meta/extension-certification-levels.yaml
+- schema/jsonschema/extension-certification-levels.schema.json
+- schema/jsonschema/extension-certification-report.schema.json
+- scripts/run_phase18_certification.py
+- tests/phase-gates/phase-18-extension-certification.yaml
+- tests/extensions_conformance/test_phase18_certification_assets.py
+tests:
+- TS-042
+acceptance:
+- AC-082
+steps:
+- id: certification-levels
+  description: verify certification levels, candidate packs, and recertification windows are explicit
+  expected:
+  - certification levels, signing posture, and candidate-pack enrollment are committed
+  evidence:
+  - meta/extension-certification-levels.yaml
+- id: signed-report-shape
+  description: verify the certification runner emits a structured compatibility report
+  expected:
+  - the report contains deterministic signing metadata and bounded certification verdicts
+  evidence:
+  - scripts/run_phase18_certification.py
+proves:
+- phase-18 extension certification is machine-checkable rather than partner-process prose

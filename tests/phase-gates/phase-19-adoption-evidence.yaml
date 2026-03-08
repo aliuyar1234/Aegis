@@ -1,0 +1,35 @@
+id: phase-19-adoption-evidence
+phase: PHASE-19
+name: Adoption evidence gate
+objective: Validate that phase-19 adoption readiness is captured as a reproducible
+  evidence bundle across profiles, tracks, drills, and starter kits.
+fixtures:
+- docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+- docs/generated/phase-19-adoption-evidence.json
+- meta/adoption-evidence-manifest.yaml
+- schema/jsonschema/adoption-evidence-manifest.schema.json
+- schema/jsonschema/adoption-evidence-bundle.schema.json
+- scripts/build_phase19_adoption_evidence.py
+- tests/adoption/test_phase19_adoption_evidence_assets.py
+- tests/phase-gates/phase-19-adoption-evidence.yaml
+tests:
+- TS-051
+acceptance:
+- AC-091
+steps:
+- id: evidence-groups
+  description: verify adoption evidence groups are explicit and bounded
+  expected:
+  - profiles, tracks, drills, and starter-kit evidence groups are committed
+  evidence:
+  - meta/adoption-evidence-manifest.yaml
+- id: reproducible-adoption-bundle
+  description: verify the adoption evidence bundle is reproducible
+  expected:
+  - the committed evidence bundle matches fresh builder output
+  evidence:
+  - scripts/build_phase19_adoption_evidence.py
+  - docs/generated/phase-19-adoption-evidence.json
+proves:
+- phase-19 adoption readiness is modeled as reproducible evidence rather than hand-held
+  rollout guidance

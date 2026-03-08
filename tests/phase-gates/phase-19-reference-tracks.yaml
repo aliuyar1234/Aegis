@@ -1,0 +1,36 @@
+id: phase-19-reference-tracks
+phase: PHASE-19
+name: Reference deployment tracks gate
+objective: Validate that phase-19 deployment tracks bind flavors, topology, SLO,
+  and compatibility surfaces explicitly.
+fixtures:
+- docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+- docs/design-docs/reference-deployment-tracks.md
+- docs/runbooks/first-adopter-onboarding.md
+- docs/runbooks/operator-training-exercise.md
+- meta/reference-deployment-tracks.yaml
+- schema/jsonschema/reference-deployment-tracks.schema.json
+- schema/jsonschema/reference-deployment-report.schema.json
+- scripts/run_phase19_reference_tracks.py
+- tests/adoption/test_phase19_reference_tracks_assets.py
+- tests/phase-gates/phase-19-reference-tracks.yaml
+tests:
+- TS-048
+acceptance:
+- AC-088
+steps:
+- id: track-bindings
+  description: verify each deployment track binds to committed flavor, topology,
+    regional, and SLO identifiers
+  expected:
+  - each track references existing deployment, topology, regional, and SLO manifests
+  evidence:
+  - meta/reference-deployment-tracks.yaml
+- id: reproducible-track-report
+  description: verify the reference-track report is reproducible
+  expected:
+  - the report fails when required evidence or runbook links drift
+  evidence:
+  - scripts/run_phase19_reference_tracks.py
+proves:
+- phase-19 deployment onboarding stays anchored to committed runtime evidence surfaces

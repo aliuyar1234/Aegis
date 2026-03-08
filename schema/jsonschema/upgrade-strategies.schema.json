@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/upgrade-strategies.schema.json",
+  "title": "UpgradeStrategies",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "strategies"],
+  "properties": {
+    "id": { "type": "string", "const": "upgrade-strategies" },
+    "version": { "type": "integer", "minimum": 1 },
+    "strategies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "rollout_kind", "requires", "guarantees", "operator_checks"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "rollout_kind": { "type": "string", "minLength": 1 },
+          "requires": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "guarantees": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "operator_checks": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/golden-path-starter-kit-report.schema.json",
+  "title": "GoldenPathStarterKitReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kits",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase19-starter-kit-report"
+    },
+    "kits": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kit_id",
+          "scenario_count",
+          "profile_count",
+          "doc_count",
+          "verdict"
+        ],
+        "properties": {
+          "kit_id": {
+            "type": "string"
+          },
+          "scenario_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "profile_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "doc_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

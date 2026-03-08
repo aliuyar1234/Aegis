@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/storage-growth-manifest.schema.json",
+  "title": "StorageGrowthManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "scenarios"],
+  "properties": {
+    "id": { "type": "string", "const": "storage-growth-fixtures" },
+    "version": { "type": "integer", "minimum": 1 },
+    "scenarios": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "component",
+          "budget_profile",
+          "partition_strategy",
+          "retention_strategy",
+          "expected_peak_daily_records",
+          "projector_lag_budget_ms",
+          "notes"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "component": { "type": "string", "minLength": 1 },
+          "budget_profile": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "partition_strategy": { "type": "string", "minLength": 1 },
+          "retention_strategy": { "type": "string", "minLength": 1 },
+          "expected_peak_daily_records": { "type": "integer", "minimum": 1 },
+          "projector_lag_budget_ms": { "type": "integer", "minimum": 1 },
+          "notes": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

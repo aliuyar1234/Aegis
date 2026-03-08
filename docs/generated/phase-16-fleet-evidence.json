@@ -1,0 +1,56 @@
+{
+  "cluster_summaries": [
+    {
+      "cohort_id": "degraded-recovery-cluster",
+      "evidence_fields": 5,
+      "report_count": 3,
+      "runbook_count": 2,
+      "verdict": "pass"
+    },
+    {
+      "cohort_id": "premium-placement-drift",
+      "evidence_fields": 4,
+      "report_count": 2,
+      "runbook_count": 1,
+      "verdict": "pass"
+    },
+    {
+      "cohort_id": "storage-lag-cluster",
+      "evidence_fields": 4,
+      "report_count": 2,
+      "runbook_count": 1,
+      "verdict": "pass"
+    }
+  ],
+  "export_sections": [
+    "cluster_summaries",
+    "report_verdicts",
+    "runbook_links",
+    "evidence_fields"
+  ],
+  "id": "phase16-operator-evidence-bundle",
+  "phase": "PHASE-16",
+  "reports": [
+    {
+      "id": "phase16-capacity-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase16-placement-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase16-load-shed-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase16-isolation-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase16-storage-growth-report",
+      "verdict": "pass"
+    }
+  ],
+  "verdict": "pass"
+}

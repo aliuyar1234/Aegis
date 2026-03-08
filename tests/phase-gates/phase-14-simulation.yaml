@@ -1,0 +1,57 @@
+id: phase-14-simulation
+phase: PHASE-14
+name: Deterministic simulation gate
+objective: Validate that the phase-14 simulation DSL, fault matrix, fixtures, and
+  runner are machine-checkable and deterministic.
+fixtures:
+- docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+- docs/design-docs/simulation-lab.md
+- meta/fault-injection-matrix.yaml
+- meta/simulation-scenarios.yaml
+- schema/jsonschema/fault-injection-step.schema.json
+- schema/jsonschema/fault-injection-matrix.schema.json
+- schema/jsonschema/simulation-scenario.schema.json
+- schema/jsonschema/simulation-scenario-manifest.schema.json
+- schema/jsonschema/simulation-result.schema.json
+- scripts/run_simulation_scenario.py
+- tests/simulation/fixtures/worker-crash-recovery.yaml
+- tests/simulation/fixtures/node-loss-adoption.yaml
+- tests/simulation/fixtures/approval-timeout.yaml
+- tests/simulation/fixtures/duplicate-callback.yaml
+- tests/simulation/fixtures/browser-instability.yaml
+- tests/phase-gates/phase-14-simulation.yaml
+- tests/simulation/test_simulation_assets.py
+tests:
+- TS-020
+acceptance:
+- AC-060
+- AC-059
+steps:
+- id: fault-matrix
+  description: verify the canonical fault matrix exists and covers the initial supported failures
+  expected:
+  - worker crash, node loss, approval timeout, duplicate callback, and browser instability are explicit
+  - each fault declares deterministic expectations and runtime response class
+  evidence:
+  - meta/fault-injection-matrix.yaml
+  - schema/jsonschema/fault-injection-matrix.schema.json
+- id: scenario-dsl
+  description: verify simulation scenarios and manifest are machine-checkable
+  expected:
+  - scenario fixtures validate against the canonical DSL schema
+  - the manifest references concrete fixtures for every supported fault class
+  evidence:
+  - meta/simulation-scenarios.yaml
+  - schema/jsonschema/simulation-scenario.schema.json
+  - schema/jsonschema/simulation-scenario-manifest.schema.json
+- id: deterministic-runner
+  description: verify the simulation runner emits deterministic result payloads
+  expected:
+  - rerunning the same scenario yields the same canonical result signature
+  - result payloads include emitted events, applied faults, and terminal state
+  evidence:
+  - scripts/run_simulation_scenario.py
+  - schema/jsonschema/simulation-result.schema.json
+  - tests/simulation/test_simulation_assets.py
+proves:
+- deterministic simulation assets exist for replay and recovery work

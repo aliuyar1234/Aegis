@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/fault-injection-step.schema.json",
+  "title": "FaultInjectionStep",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "fault_id",
+    "target",
+    "scope",
+    "expected_runtime_response"
+  ],
+  "properties": {
+    "fault_id": {
+      "type": "string",
+      "enum": [
+        "worker_crash",
+        "node_loss",
+        "approval_timeout",
+        "duplicate_callback",
+        "browser_instability"
+      ]
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "session",
+        "worker",
+        "node",
+        "approval",
+        "browser"
+      ]
+    },
+    "expected_runtime_response": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

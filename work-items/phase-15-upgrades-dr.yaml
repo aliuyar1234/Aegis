@@ -1,0 +1,124 @@
+phase: PHASE-15
+status: completed
+name: Upgrade safety, schema evolution, and disaster recovery
+phase_doc: docs/exec-plans/active/PHASE-15-upgrades-dr.md
+tasks:
+- id: P15-T01
+  phase: PHASE-15
+  title: Define compatibility matrix and version-skew policy
+  critical_path: true
+  status: done
+  deps: []
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-065
+  test_refs:
+  - TS-025
+  phase_doc: docs/exec-plans/active/PHASE-15-upgrades-dr.md
+  size: L
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P15-T02
+  phase: PHASE-15
+  title: Build event/checkpoint upcaster pipeline
+  critical_path: true
+  status: done
+  deps:
+  - P15-T01
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-066
+  test_refs:
+  - TS-026
+  phase_doc: docs/exec-plans/active/PHASE-15-upgrades-dr.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P15-T03
+  phase: PHASE-15
+  title: Implement rolling upgrade and lease-safe drain/adopt protocol
+  critical_path: true
+  status: done
+  deps:
+  - P15-T01
+  - P15-T02
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-067
+  test_refs:
+  - TS-027
+  phase_doc: docs/exec-plans/active/PHASE-15-upgrades-dr.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P15-T04
+  phase: PHASE-15
+  title: Build backup, PITR, and restore-drill harness
+  critical_path: true
+  status: done
+  deps:
+  - P15-T02
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-068
+  test_refs:
+  - TS-028
+  phase_doc: docs/exec-plans/active/PHASE-15-upgrades-dr.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P15-T05
+  phase: PHASE-15
+  title: Add warm-standby topology and promotion evidence
+  critical_path: false
+  status: done
+  deps:
+  - P15-T03
+  - P15-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-069
+  test_refs:
+  - TS-029
+  phase_doc: docs/exec-plans/active/PHASE-15-upgrades-dr.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P15-T06
+  phase: PHASE-15
+  title: Gate releases on compatibility and recovery evidence
+  critical_path: false
+  status: done
+  deps:
+  - P15-T01
+  - P15-T02
+  - P15-T03
+  - P15-T04
+  - P15-T05
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-070
+  test_refs:
+  - TS-030
+  phase_doc: docs/exec-plans/active/PHASE-15-upgrades-dr.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

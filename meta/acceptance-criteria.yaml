@@ -352,3 +352,267 @@ acceptance_criteria:
     items and no hidden placeholder drift.
   tests:
   - TS-001
+- id: AC-057
+  phase: PHASE-14
+  statement: Replay equivalence rules define what current-state equality means across
+    full replay, checkpoint-tail replay, and historical replay.
+  tests:
+  - TS-004
+  - TS-019
+- id: AC-058
+  phase: PHASE-14
+  statement: Determinism classes explicitly separate recomputable state, captured
+    nondeterministic evidence, and externally unknowable state.
+  tests:
+  - TS-004
+  - TS-019
+- id: AC-059
+  phase: PHASE-14
+  statement: The phase-14 replay-equivalence gate is machine-checkable and references
+    concrete docs, schemas, metadata, and tests.
+  tests:
+  - TS-019
+- id: AC-060
+  phase: PHASE-14
+  statement: Deterministic simulation scenarios, the canonical fault matrix, and
+    a simulation runner exist as machine-checkable assets tied to replay and recovery
+    work.
+  tests:
+  - TS-020
+- id: AC-061
+  phase: PHASE-14
+  statement: Cross-language contract conformance fixtures cover dispatch, cancel,
+    progress, heartbeat, and terminal worker lifecycle messages against the canonical
+    transport topology.
+  tests:
+  - TS-002
+  - TS-021
+- id: AC-062
+  phase: PHASE-14
+  statement: Replay diff fixtures compare current results against current and previous
+    supported baselines and block on structured divergence rather than silently normalizing
+    drift.
+  tests:
+  - TS-022
+- id: AC-063
+  phase: PHASE-14
+  statement: Benchmark corpus inputs, deterministic performance budgets, and the
+    generated phase-14 correctness scorecard are reproducible from committed fixtures
+    and block budget regressions.
+  tests:
+  - TS-023
+- id: AC-064
+  phase: PHASE-14
+  statement: Contributors can scaffold a valid deterministic simulation fixture,
+    run it through the simulation runner, and register it through an explicit documented
+    workflow without hidden manifest mutation.
+  tests:
+  - TS-024
+- id: AC-065
+  phase: PHASE-15
+  statement: Compatibility windows and denied version-skew combinations are explicit
+    for runtime, workers, schemas, checkpoints, policies, and extensions.
+  tests:
+  - TS-025
+- id: AC-066
+  phase: PHASE-15
+  statement: Historical event and checkpoint versions map to explicit upcaster manifests
+    instead of hidden migration assumptions.
+  tests:
+  - TS-026
+- id: AC-067
+  phase: PHASE-15
+  statement: Rolling-upgrade strategy artifacts define lease-safe drain, adopt,
+    and mixed-version safety boundaries.
+  tests:
+  - TS-027
+- id: AC-068
+  phase: PHASE-15
+  statement: Recovery objectives and restore-drill surfaces define evidence-backed
+    PITR and artifact-reconciliation expectations.
+  tests:
+  - TS-028
+- id: AC-069
+  phase: PHASE-15
+  statement: Standby-topology profiles and promotion gates preserve the single-owner
+    invariant during controlled recovery.
+  tests:
+  - TS-029
+- id: AC-070
+  phase: PHASE-15
+  statement: Release evidence is modeled as a gateable artifact that depends on
+    compatibility, upgrade, and restore proof surfaces.
+  tests:
+  - TS-030
+- id: AC-071
+  phase: PHASE-16
+  statement: Capacity profiles, SLI/SLO targets, and overload doctrine are explicit
+    for critical control-plane and execution-plane paths, with each profile tied
+    to documented budgets and policy references.
+  tests:
+  - TS-031
+- id: AC-072
+  phase: PHASE-16
+  statement: Placement policy and execution-pool taxonomy make session-owner and
+    worker-pool routing deterministic, explainable, and compatible with tenancy,
+    fault-domain, and capability constraints.
+  tests:
+  - TS-032
+- id: AC-073
+  phase: PHASE-16
+  statement: Admission control and load-shedding rules protect operator-critical,
+    recovery, and effectful execution paths under synthetic overload instead of degrading
+    them implicitly.
+  tests:
+  - TS-033
+- id: AC-074
+  phase: PHASE-16
+  statement: Noisy-neighbor isolation profiles identify pressure-causing tenants
+    or workflow classes, define bounded mitigation responses, and preserve unaffected
+    budget classes.
+  tests:
+  - TS-034
+- id: AC-075
+  phase: PHASE-16
+  statement: Storage and transport scaling surfaces model growth for truth-store,
+    outbox, projection, and artifact-index paths without weakening Postgres-as-truth
+    or append-only runtime invariants.
+  tests:
+  - TS-035
+- id: AC-076
+  phase: PHASE-16
+  statement: Fleet triage surfaces provide cohort-level failure clustering, bounded
+    evidence export, and SLO-aware operator reasoning rather than only per-session
+    inspection.
+  tests:
+  - TS-036
+- id: AC-077
+  phase: PHASE-17
+  statement: Regional topology profiles and fault-domain catalogs explicitly define
+    region roles, promotion preconditions, evacuation boundaries, and warm-standby
+    semantics without introducing active-active authority.
+  tests:
+  - TS-037
+- id: AC-078
+  phase: PHASE-17
+  statement: Region-aware placement policies route sessions and execution pools by
+    fault domain, tenant tier, and topology state while preserving the single-owner
+    invariant.
+  tests:
+  - TS-038
+- id: AC-079
+  phase: PHASE-17
+  statement: Regional evacuation and failover drills model fencing, restore, and
+    bounded promotion evidence instead of ad hoc incident steps.
+  tests:
+  - TS-039
+- id: AC-080
+  phase: PHASE-17
+  statement: Session mobility surfaces preserve checkpoint lineage, approval binding,
+    and artifact continuity during controlled regional evacuation without live multi-owner
+    behavior.
+  tests:
+  - TS-040
+- id: AC-081
+  phase: PHASE-17
+  statement: Regional readiness is modeled as a reproducible evidence bundle across
+    topology, placement, evacuation, and mobility proof surfaces.
+  tests:
+  - TS-041
+- id: AC-082
+  phase: PHASE-18
+  statement: Extension certification levels explicitly define review requirements,
+    signing posture, recertification windows, and candidate-pack enrollment for the
+    supported ecosystem surface.
+  tests:
+  - TS-042
+- id: AC-083
+  phase: PHASE-18
+  statement: Sandbox profiles bound network posture, secret volume, extension kind,
+    and MCP eligibility for each admitted extension fixture.
+  tests:
+  - TS-043
+- id: AC-084
+  phase: PHASE-18
+  statement: Policy bundles define delegated-governance inputs, dual-control rules,
+    rollback discipline, and explanation fields instead of relying on ad hoc reviewer
+    knowledge.
+  tests:
+  - TS-044
+- id: AC-085
+  phase: PHASE-18
+  statement: Public compatibility tracks tie certified extension packs to bounded
+    benchmark classes, compatibility dimensions, and publication requirements without
+    implying runtime bypass.
+  tests:
+  - TS-045
+- id: AC-086
+  phase: PHASE-18
+  statement: Ecosystem readiness is modeled as a reproducible evidence bundle across
+    certification, sandbox, policy, and public compatibility reports.
+  tests:
+  - TS-046
+- id: AC-087
+  phase: PHASE-19
+  statement: Adoption profiles tie adopter classes to bounded deployment tracks,
+    required evidence, operator drills, and onboarding runbooks.
+  tests:
+  - TS-047
+- id: AC-088
+  phase: PHASE-19
+  statement: Reference deployment tracks bind deployment flavors, topology surfaces,
+    SLO profiles, and public compatibility tracks instead of relying on implicit
+    environment lore.
+  tests:
+  - TS-048
+- id: AC-089
+  phase: PHASE-19
+  statement: Operator exercise manifests define bounded drills with runbook references,
+    evidence prerequisites, and expected outcomes linked to already implemented
+    failure and governance surfaces.
+  tests:
+  - TS-049
+- id: AC-090
+  phase: PHASE-19
+  statement: Golden-path starter kits package certified extension packs, sandbox
+    and policy bindings, simulation scenarios, and deployment guidance without
+    implying runtime bypass.
+  tests:
+  - TS-050
+- id: AC-091
+  phase: PHASE-19
+  statement: Adoption readiness is modeled as a reproducible evidence bundle across
+    adoption profiles, reference tracks, operator drills, and starter kits.
+  tests:
+  - TS-051
+- id: AC-092
+  phase: PHASE-20
+  statement: Operator accreditation tracks bind exercises, required evidence, renewal
+    cadence, and bounded authority to explicit deployment tracks.
+  tests:
+  - TS-052
+- id: AC-093
+  phase: PHASE-20
+  statement: Rollout-wave manifests bind deployment tracks, change windows, promotion
+    criteria, and rollback surfaces instead of relying on implicit release lore.
+  tests:
+  - TS-053
+- id: AC-094
+  phase: PHASE-20
+  statement: Incident-review packet manifests define reproducible handoff evidence,
+    source exercises, and follow-up references linked to committed runtime outputs.
+  tests:
+  - TS-054
+- id: AC-095
+  phase: PHASE-20
+  statement: Deprecation governance defines sunset windows, successor paths, freeze
+    actions, and rollback boundaries for certified packs, starter kits, and rollout
+    tracks.
+  tests:
+  - TS-055
+- id: AC-096
+  phase: PHASE-20
+  statement: Lifecycle readiness is modeled as a reproducible evidence bundle across
+    accreditation, rollout, incident review, and deprecation surfaces.
+  tests:
+  - TS-056

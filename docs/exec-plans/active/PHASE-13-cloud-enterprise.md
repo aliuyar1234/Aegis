@@ -1,6 +1,6 @@
     # PHASE-13 — Cloud and enterprise hardening
 
-    **Status:** current
+    **Status:** completed
 
     ## Phase goal
 

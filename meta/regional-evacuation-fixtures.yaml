@@ -1,0 +1,25 @@
+id: regional-evacuation-fixtures
+version: 1
+drills:
+- id: shared-eu-evacuation
+  topology_profile_ref: eu-shared-warm-standby
+  trigger: regional_control_plane_loss
+  source_region: eu-central-1
+  target_region: eu-west-1
+  expected_steps:
+  - fence_primary_region
+  - validate_restore_evidence
+  - switch_placement_policy
+  - promote_standby_region
+  - verify_single_owner
+- id: dedicated-us-compliance-relocation
+  topology_profile_ref: dedicated-regional-standby
+  trigger: compliance_driven_relocation
+  source_region: us-east-1
+  target_region: us-west-2
+  expected_steps:
+  - drain_authoritative_sessions
+  - export_approval_continuity_evidence
+  - validate_restore_evidence
+  - promote_target_region
+  - verify_artifact_lineage

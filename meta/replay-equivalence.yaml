@@ -1,0 +1,52 @@
+id: replay-equivalence
+version: 1
+modes:
+- id: full-replay
+  description: Rebuild session truth from genesis events only.
+  comparison_basis: Equivalent current truth and operator-visible timeline state.
+- id: checkpoint-tail-replay
+  description: Load the latest compatible checkpoint and replay the tail events after it.
+  comparison_basis: Equivalent current truth to full replay for supported fixtures.
+- id: historical-replay
+  description: Render operator-visible history without any external re-execution.
+  comparison_basis: Equivalent timeline, evidence, approval, and uncertainty surfaces.
+equivalence_dimensions:
+- id: session-state
+  statement: Lifecycle, waiting state, completion state, mode, and owner-visible status match.
+- id: action-ledger
+  statement: Action attempts, terminal outcomes, retry state, and suppression state match.
+- id: approval-ledger
+  statement: Approval requests, grants, denials, and expirations match.
+- id: artifact-catalog
+  statement: Artifact metadata, evidence references, and timeline attachments match.
+- id: uncertainty-surface
+  statement: Uncertainty, quarantine, and externally unknowable boundaries remain explicit.
+comparison_exclusions:
+- trace_id
+- span_id
+- recorded_at
+- process_local_timing
+requirements:
+- id: no-side-effect-reexecution
+  statement: Historical replay and replay validation flows never re-dispatch external side effects.
+  applies_to:
+  - full-replay
+  - checkpoint-tail-replay
+  - historical-replay
+  determinism_classes:
+  - deterministic
+  - captured-nondeterministic
+- id: checkpoint-tail-converges-with-full
+  statement: Checkpoint-tail replay yields equivalent current truth to full replay for supported fixtures and compatible checkpoint versions.
+  applies_to:
+  - full-replay
+  - checkpoint-tail-replay
+  determinism_classes:
+  - deterministic
+  - captured-nondeterministic
+- id: unknowable-state-stays-unknowable
+  statement: Replay must surface externally unknowable state as uncertainty or evidence, never fabricated exact state.
+  applies_to:
+  - historical-replay
+  determinism_classes:
+  - externally-unknowable

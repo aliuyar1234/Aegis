@@ -227,7 +227,7 @@ phases:
   unlocks:
   - PHASE-13
 - id: PHASE-13
-  status: current
+  status: completed
   name: Cloud and enterprise hardening
   doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
   task_file: work-items/phase-13-cloud-enterprise.yaml
@@ -243,4 +243,170 @@ phases:
   - AC-056
   tests:
   - TS-017
+  unlocks: []
+- id: PHASE-14
+  status: completed
+  name: Runtime conformance, deterministic simulation, and replay oracle
+  doc: docs/exec-plans/active/PHASE-14-runtime-conformance-simulation.md
+  task_file: work-items/phase-14-runtime-conformance-simulation.yaml
+  prereqs:
+  - PHASE-13
+  acceptance:
+  - AC-057
+  - AC-058
+  - AC-059
+  - AC-060
+  - AC-061
+  - AC-062
+  - AC-063
+  - AC-064
+  tests:
+  - TS-004
+  - TS-019
+  - TS-020
+  - TS-021
+  - TS-022
+  - TS-023
+  - TS-024
+  unlocks:
+  - PHASE-15
+- id: PHASE-15
+  status: completed
+  name: Upgrade safety, schema evolution, and disaster recovery
+  doc: docs/exec-plans/active/PHASE-15-upgrades-dr.md
+  task_file: work-items/phase-15-upgrades-dr.yaml
+  prereqs:
+  - PHASE-14
+  acceptance:
+  - AC-065
+  - AC-066
+  - AC-067
+  - AC-068
+  - AC-069
+  - AC-070
+  tests:
+  - TS-025
+  - TS-026
+  - TS-027
+  - TS-028
+  - TS-029
+  - TS-030
+  unlocks:
+  - PHASE-16
+- id: PHASE-16
+  status: completed
+  name: Fleet scheduling, isolation, and SLO-driven operability
+  doc: docs/exec-plans/active/PHASE-16-fleet-scheduling-isolation.md
+  task_file: work-items/phase-16-fleet-scheduling-isolation.yaml
+  prereqs:
+  - PHASE-14
+  - PHASE-15
+  acceptance:
+  - AC-071
+  - AC-072
+  - AC-073
+  - AC-074
+  - AC-075
+  - AC-076
+  tests:
+  - TS-031
+  - TS-032
+  - TS-033
+  - TS-034
+  - TS-035
+  - TS-036
+  unlocks:
+  - PHASE-17
+- id: PHASE-17
+  status: completed
+  name: Regional topology, fault domains, and session mobility
+  doc: docs/exec-plans/active/PHASE-17-regional-topology.md
+  task_file: work-items/phase-17-regional-topology.yaml
+  prereqs:
+  - PHASE-15
+  - PHASE-16
+  acceptance:
+  - AC-077
+  - AC-078
+  - AC-079
+  - AC-080
+  - AC-081
+  tests:
+  - TS-037
+  - TS-038
+  - TS-039
+  - TS-040
+  - TS-041
+  unlocks:
+  - PHASE-18
+- id: PHASE-18
+  status: completed
+  name: Certified ecosystem, governed extensions, and public compatibility leadership
+  doc: docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+  task_file: work-items/phase-18-certified-ecosystem.yaml
+  prereqs:
+  - PHASE-10
+  - PHASE-14
+  - PHASE-17
+  acceptance:
+  - AC-082
+  - AC-083
+  - AC-084
+  - AC-085
+  - AC-086
+  tests:
+  - TS-042
+  - TS-043
+  - TS-044
+  - TS-045
+  - TS-046
+  unlocks:
+  - PHASE-19
+- id: PHASE-19
+  status: completed
+  name: Reference adoption, operator drills, and golden-path starter kits
+  doc: docs/exec-plans/active/PHASE-19-reference-adoption-golden-paths.md
+  task_file: work-items/phase-19-reference-adoption-golden-paths.yaml
+  prereqs:
+  - PHASE-15
+  - PHASE-16
+  - PHASE-17
+  - PHASE-18
+  acceptance:
+  - AC-087
+  - AC-088
+  - AC-089
+  - AC-090
+  - AC-091
+  tests:
+  - TS-047
+  - TS-048
+  - TS-049
+  - TS-050
+  - TS-051
+  unlocks:
+  - PHASE-20
+- id: PHASE-20
+  status: current
+  name: Operational lifecycle governance, rollout waves, and deprecation discipline
+  doc: docs/exec-plans/active/PHASE-20-operational-lifecycle-governance.md
+  task_file: work-items/phase-20-operational-lifecycle-governance.yaml
+  prereqs:
+  - PHASE-15
+  - PHASE-16
+  - PHASE-17
+  - PHASE-18
+  - PHASE-19
+  acceptance:
+  - AC-092
+  - AC-093
+  - AC-094
+  - AC-095
+  - AC-096
+  tests:
+  - TS-052
+  - TS-053
+  - TS-054
+  - TS-055
+  - TS-056
   unlocks: []

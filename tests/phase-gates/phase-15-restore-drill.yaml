@@ -1,0 +1,46 @@
+id: phase-15-restore-drill
+phase: PHASE-15
+name: Restore drill gate
+objective: Validate that phase-15 recovery objectives and restore-drill artifacts
+  are machine-readable before implementation deepens.
+fixtures:
+- docs/exec-plans/active/PHASE-15-upgrades-dr.md
+- docs/design-docs/disaster-recovery.md
+- docs/runbooks/pitr-restore.md
+- meta/recovery-objectives.yaml
+- meta/restore-drill-fixtures.yaml
+- schema/jsonschema/recovery-objective.schema.json
+- schema/jsonschema/restore-drill-manifest.schema.json
+- schema/jsonschema/restore-drill-report.schema.json
+- scripts/run_restore_drill.py
+- tests/phase-gates/phase-15-restore-drill.yaml
+- tests/disaster_recovery/test_phase15_recovery_assets.py
+tests:
+- TS-028
+acceptance:
+- AC-068
+steps:
+- id: recovery-objectives
+  description: verify RTO/RPO profiles and evidence requirements are machine-readable
+  expected:
+  - restore success criteria are explicit
+  evidence:
+  - meta/recovery-objectives.yaml
+  - schema/jsonschema/recovery-objective.schema.json
+  - meta/restore-drill-fixtures.yaml
+- id: restore-runbook-surface
+  description: verify PITR restore guidance exists
+  expected:
+  - restore and replay-tail verification surfaces are documented
+  evidence:
+  - docs/design-docs/disaster-recovery.md
+  - docs/runbooks/pitr-restore.md
+- id: restore-drill-runner
+  description: verify restore drill fixtures produce structured evidence
+  expected:
+  - restore drills emit a passing structured report
+  evidence:
+  - scripts/run_restore_drill.py
+  - schema/jsonschema/restore-drill-report.schema.json
+proves:
+- phase-15 restore work has a gateable artifact surface

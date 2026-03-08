@@ -1,0 +1,32 @@
+id: duplicate-callback
+version: 1
+seed: 1404
+description: Suppress duplicate terminal callbacks deterministically and preserve evidence.
+steps:
+- id: dispatch-effect
+  kind: command
+  command:
+    action_id: browser.submit_form
+    worker_kind: browser
+    effect: write
+- id: duplicate-terminal-callback
+  kind: fault_injection
+  fault:
+    fault_id: duplicate_callback
+    target: browser.submit_form
+    scope: session
+    expected_runtime_response: duplicate_suppressed_or_uncertainty_classified
+- id: capture-duplicate-evidence
+  kind: artifact_capture
+  artifact:
+    kind: evidence_note
+    label: duplicate-callback-note
+expected_terminal_state:
+  session_state: duplicate_suppressed
+  recovery_status: no_recovery_required
+  uncertainty_status: explicit_duplicate_boundary
+  quarantine_status: clear
+  replay_equivalent: true
+proves:
+- duplicate completion suppression stays deterministic
+- evidence survives without mutating canonical truth twice

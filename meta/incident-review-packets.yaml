@@ -1,0 +1,46 @@
+program_id: incident-review-packets
+version: 1
+packets:
+- id: shared-approval-recovery-review
+  incident_class: approval_and_recovery
+  source_exercise: approval-escalation-recovery
+  accreditation_track: shared-control-operator
+  required_evidence:
+  - docs/generated/phase-15-release-evidence.json
+  - docs/generated/phase-16-fleet-evidence.json
+  - docs/generated/phase-19-adoption-evidence.json
+  runbook_refs:
+  - docs/runbooks/customer-incident-review.md
+  - docs/runbooks/operator-training-exercise.md
+  - docs/runbooks/approval-timeout.md
+  follow_up_refs:
+  - docs/design-docs/operator-exercises.md
+  - docs/design-docs/adoption-profiles.md
+- id: dedicated-regional-review
+  incident_class: regional_failover
+  source_exercise: regional-failover-command
+  accreditation_track: dedicated-regional-operator
+  required_evidence:
+  - docs/generated/phase-17-regional-evidence.json
+  - docs/generated/phase-19-adoption-evidence.json
+  runbook_refs:
+  - docs/runbooks/customer-incident-review.md
+  - docs/runbooks/regional-evacuation.md
+  - docs/runbooks/regional-promotion.md
+  follow_up_refs:
+  - docs/design-docs/operator-exercises.md
+  - docs/design-docs/reference-deployment-tracks.md
+- id: extension-revocation-review
+  incident_class: ecosystem_revocation
+  source_exercise: extension-revocation-response
+  accreditation_track: dedicated-regional-operator
+  required_evidence:
+  - docs/generated/phase-18-ecosystem-evidence.json
+  - docs/generated/phase-19-adoption-evidence.json
+  runbook_refs:
+  - docs/runbooks/customer-incident-review.md
+  - docs/runbooks/revoking-extension.md
+  - docs/runbooks/policy-bundle-rollback.md
+  follow_up_refs:
+  - docs/design-docs/deprecation-governance.md
+  - docs/design-docs/golden-path-starter-kits.md

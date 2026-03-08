@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/slo-profiles.schema.json",
+  "title": "SloProfiles",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "profiles"],
+  "properties": {
+    "id": { "type": "string", "const": "slo-profiles" },
+    "version": { "type": "integer", "minimum": 1 },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "tenant_tier",
+          "scope",
+          "budget_profile",
+          "overload_policy_ref",
+          "protected_classes",
+          "shed_classes",
+          "slis"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "tenant_tier": { "type": "string", "minLength": 1 },
+          "scope": { "type": "string", "minLength": 1 },
+          "budget_profile": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "overload_policy_ref": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "protected_classes": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          },
+          "shed_classes": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" }
+          },
+          "slis": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "description", "target", "unit"],
+              "properties": {
+                "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+                "description": { "type": "string", "minLength": 1 },
+                "target": { "type": "integer", "minimum": 1 },
+                "unit": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

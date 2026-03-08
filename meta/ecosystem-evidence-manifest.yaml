@@ -1,0 +1,23 @@
+bundle_id: phase18-ecosystem-evidence-bundle
+phase: PHASE-18
+evidence_groups:
+- id: certification
+  refs:
+  - meta/extension-certification-levels.yaml
+  - tests/extensibility/fixtures/sample-extension-pack/pack.yaml
+  - docs/design-docs/extension-certification.md
+- id: sandbox
+  refs:
+  - meta/sandbox-profiles.yaml
+  - docs/design-docs/sandbox-profiles.md
+  - docs/runbooks/revoking-extension.md
+- id: policy-bundles
+  refs:
+  - meta/policy-bundle-profiles.yaml
+  - docs/design-docs/policy-bundles.md
+  - docs/runbooks/policy-bundle-rollback.md
+- id: public-compatibility
+  refs:
+  - meta/public-benchmark-manifest.yaml
+  - docs/design-docs/public-compatibility-leadership.md
+  - docs/generated/phase-14-benchmark-scorecard.json

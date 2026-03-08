@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/conformance-report.schema.json",
+  "title": "ConformanceReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "manifest_ref",
+    "languages",
+    "covered_messages",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "manifest_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "languages": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "language",
+          "runtime_surface",
+          "status"
+        ],
+        "properties": {
+          "language": {
+            "type": "string",
+            "enum": [
+              "elixir",
+              "python",
+              "rust"
+            ]
+          },
+          "runtime_surface": {
+            "type": "string",
+            "enum": [
+              "control_plane",
+              "worker",
+              "sidecar"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "warning",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "covered_messages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

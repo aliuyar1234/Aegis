@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/topology-profiles.schema.json",
+  "title": "TopologyProfiles",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "profiles"],
+  "properties": {
+    "id": { "type": "string", "const": "topology-profiles" },
+    "version": { "type": "integer", "minimum": 1 },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "topology_kind", "truth_store_mode", "promotion_rules"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]*$" },
+          "topology_kind": { "type": "string", "minLength": 1 },
+          "truth_store_mode": { "type": "string", "minLength": 1 },
+          "promotion_rules": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

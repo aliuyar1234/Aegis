@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/restore-drill-report.schema.json",
+  "title": "RestoreDrillReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "drill_results", "verdict"],
+  "properties": {
+    "id": { "type": "string", "const": "phase15-restore-drill-report" },
+    "drill_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["drill_id", "recovery_profile", "verdict"],
+        "properties": {
+          "drill_id": { "type": "string" },
+          "recovery_profile": { "type": "string" },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "verdict": { "type": "string", "enum": ["pass", "fail"] }
+  }
+}

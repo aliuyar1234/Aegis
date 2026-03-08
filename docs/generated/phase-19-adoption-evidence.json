@@ -1,0 +1,41 @@
+{
+  "evidence_groups": [
+    {
+      "id": "adoption-profiles",
+      "ref_count": 3
+    },
+    {
+      "id": "reference-tracks",
+      "ref_count": 4
+    },
+    {
+      "id": "operator-exercises",
+      "ref_count": 3
+    },
+    {
+      "id": "starter-kits",
+      "ref_count": 3
+    }
+  ],
+  "id": "phase19-adoption-evidence-bundle",
+  "phase": "PHASE-19",
+  "reports": [
+    {
+      "id": "phase19-adoption-profiles-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase19-reference-deployment-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase19-operator-exercise-report",
+      "verdict": "pass"
+    },
+    {
+      "id": "phase19-starter-kit-report",
+      "verdict": "pass"
+    }
+  ],
+  "verdict": "pass"
+}

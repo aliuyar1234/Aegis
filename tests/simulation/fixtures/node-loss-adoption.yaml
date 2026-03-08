@@ -1,0 +1,31 @@
+id: node-loss-adoption
+version: 1
+seed: 1402
+description: Adopt a session after runtime node loss using lease-safe tail replay.
+steps:
+- id: dispatch-read
+  kind: command
+  command:
+    action_id: billing.lookup
+    worker_kind: browser
+    effect: read
+- id: lose-runtime-node
+  kind: fault_injection
+  fault:
+    fault_id: node_loss
+    target: runtime-node-a
+    scope: node
+    expected_runtime_response: lease_adoption_and_tail_replay
+- id: replay-tail
+  kind: timer
+  timer:
+    advance_ms: 500
+expected_terminal_state:
+  session_state: adopted
+  recovery_status: adopted_via_tail_replay
+  uncertainty_status: none
+  quarantine_status: clear
+  replay_equivalent: true
+proves:
+- lease adoption remains deterministic under node loss
+- checkpoint-tail replay converges with authoritative truth

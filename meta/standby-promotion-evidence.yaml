@@ -1,0 +1,15 @@
+id: standby-promotion-evidence
+version: 1
+promotions:
+- id: single-region-promotion
+  topology_profile: single-region-warm-standby
+  recovery_drill_id: default-managed-restore
+  fencing_confirmed: true
+  restore_evidence_confirmed: true
+  single_owner_verified: true
+- id: dedicated-tenant-promotion
+  topology_profile: dedicated-warm-standby
+  recovery_drill_id: dedicated-enterprise-restore
+  fencing_confirmed: true
+  restore_evidence_confirmed: true
+  single_owner_verified: true

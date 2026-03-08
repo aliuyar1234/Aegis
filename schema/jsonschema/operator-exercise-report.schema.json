@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/operator-exercise-report.schema.json",
+  "title": "OperatorExerciseReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "exercises",
+    "verdict"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "phase19-operator-exercise-report"
+    },
+    "exercises": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "exercise_id",
+          "runbook_count",
+          "evidence_count",
+          "outcome_count",
+          "verdict"
+        ],
+        "properties": {
+          "exercise_id": {
+            "type": "string"
+          },
+          "runbook_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "evidence_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "outcome_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    }
+  }
+}

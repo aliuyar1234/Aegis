@@ -1,0 +1,32 @@
+id: approval-timeout
+version: 1
+seed: 1403
+description: Expire an approval wait deterministically without guessing operator intent.
+steps:
+- id: request-dangerous-write
+  kind: command
+  command:
+    action_id: billing.update_address
+    worker_kind: browser
+    effect: write
+- id: wait-for-approval
+  kind: approval
+  approval:
+    action: request
+    approval_id: apv-001
+- id: expire-approval
+  kind: fault_injection
+  fault:
+    fault_id: approval_timeout
+    target: apv-001
+    scope: approval
+    expected_runtime_response: approval_expired_and_session_wait_state_updated
+expected_terminal_state:
+  session_state: approval_expired
+  recovery_status: no_recovery_required
+  uncertainty_status: explicit_operator_absence
+  quarantine_status: clear
+  replay_equivalent: true
+proves:
+- approval timeout paths remain explicit
+- operator absence is not fabricated into approval

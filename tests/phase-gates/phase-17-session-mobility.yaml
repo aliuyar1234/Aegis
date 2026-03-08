@@ -1,0 +1,34 @@
+id: phase-17-session-mobility
+phase: PHASE-17
+name: Session mobility gate
+objective: Validate that phase-17 mobility work preserves checkpoints, approvals,
+  and artifact lineage during controlled regional movement.
+fixtures:
+- docs/exec-plans/active/PHASE-17-regional-topology.md
+- docs/design-docs/session-mobility.md
+- meta/session-mobility-manifest.yaml
+- schema/jsonschema/session-mobility-manifest.schema.json
+- schema/jsonschema/session-mobility-report.schema.json
+- scripts/run_phase17_session_mobility.py
+- tests/phase-gates/phase-17-session-mobility.yaml
+- tests/regional_failover/test_phase17_mobility_assets.py
+tests:
+- TS-040
+acceptance:
+- AC-080
+steps:
+- id: mobility-scenarios
+  description: verify mobility scenarios declare checkpoint, approval, and artifact
+    continuity
+  expected:
+  - continuity expectations are explicit and region-bounded
+  evidence:
+  - meta/session-mobility-manifest.yaml
+- id: reproducible-mobility-report
+  description: verify the mobility report is reproducible
+  expected:
+  - every scenario maps to a passing continuity report row
+  evidence:
+  - scripts/run_phase17_session_mobility.py
+proves:
+- phase-17 session mobility is modeled as continuity, not active-active ownership

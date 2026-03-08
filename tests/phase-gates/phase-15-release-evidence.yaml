@@ -1,0 +1,43 @@
+id: phase-15-release-evidence
+phase: PHASE-15
+name: Release evidence gate
+objective: Validate that phase-15 release readiness is modeled as explicit evidence
+  rather than an informal checklist.
+fixtures:
+- docs/exec-plans/active/PHASE-15-upgrades-dr.md
+- docs/governance/release-evidence-gates.md
+- docs/generated/phase-15-release-evidence.json
+- meta/compatibility-matrix.yaml
+- meta/release-evidence-manifest.yaml
+- meta/version-skew-rules.yaml
+- meta/upgrade-strategies.yaml
+- meta/recovery-objectives.yaml
+- schema/jsonschema/release-evidence-manifest.schema.json
+- schema/jsonschema/release-evidence-bundle.schema.json
+- scripts/build_phase15_release_evidence.py
+- tests/phase-gates/phase-15-release-evidence.yaml
+- tests/release_evidence/test_phase15_release_evidence_assets.py
+tests:
+- TS-030
+acceptance:
+- AC-070
+steps:
+- id: evidence-surface
+  description: verify release evidence categories are explicit
+  expected:
+  - compatibility, upgrade, and recovery evidence all appear in the gate surface
+  evidence:
+  - docs/governance/release-evidence-gates.md
+  - meta/compatibility-matrix.yaml
+  - meta/version-skew-rules.yaml
+  - meta/upgrade-strategies.yaml
+  - meta/recovery-objectives.yaml
+- id: release-evidence-bundle
+  description: verify the release evidence bundle is reproducible and structured
+  expected:
+  - the committed release evidence bundle matches fresh runner output
+  evidence:
+  - scripts/build_phase15_release_evidence.py
+  - docs/generated/phase-15-release-evidence.json
+proves:
+- phase-15 release gating work has a machine-checkable planning surface

@@ -1,0 +1,27 @@
+program_id: public-compatibility-leadership
+version: 1
+benchmark_source_ref: meta/benchmark-corpus.yaml
+scorecard_ref: docs/generated/phase-14-benchmark-scorecard.json
+tracks:
+- id: certified-support-pack
+  display_name: Certified Support Extension Pack
+  candidate_id: sample-support-extension-pack
+  pack_ref: tests/extensibility/fixtures/sample-extension-pack/pack.yaml
+  certification_level: certified
+  benchmark_classes:
+  - correctness
+  - replay_cost
+  - recovery_time
+  compatibility_dimensions:
+  - runtime_release
+  - extension_api
+  - sandbox_profile
+  - policy_bundle
+  notes: Public tracks summarize bounded compatibility and replay-oriented evidence
+    rather than promising runtime bypass.
+publication_requirements:
+  require_certified_level: true
+  require_scorecard_ref: true
+  require_sandbox_profile_ref: true
+  require_policy_bundle_ref: true
+  public_report_schema_ref: schema/jsonschema/public-compatibility-report.schema.json

@@ -1,0 +1,34 @@
+id: phase-17-region-placement
+phase: PHASE-17
+name: Region-aware placement gate
+objective: Validate that phase-17 regional placement decisions are deterministic and
+  tied to topology state.
+fixtures:
+- docs/exec-plans/active/PHASE-17-regional-topology.md
+- docs/design-docs/region-aware-placement.md
+- meta/regional-placement-policies.yaml
+- schema/jsonschema/regional-placement-policies.schema.json
+- schema/jsonschema/regional-placement-report.schema.json
+- scripts/run_phase17_regional_placement.py
+- tests/phase-gates/phase-17-region-placement.yaml
+- tests/regional_failover/test_phase17_placement_assets.py
+tests:
+- TS-038
+acceptance:
+- AC-078
+steps:
+- id: placement-policies
+  description: verify regional policies reference topology profiles and preserve single-owner
+    constraints
+  expected:
+  - policies stay topology-aware and failover-bounded
+  evidence:
+  - meta/regional-placement-policies.yaml
+- id: decision-fixtures
+  description: verify regional routing fixtures are reproducible
+  expected:
+  - healthy and failover states route to the expected region
+  evidence:
+  - scripts/run_phase17_regional_placement.py
+proves:
+- phase-17 regional placement is reproducible

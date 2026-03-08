@@ -84,3 +84,13 @@ This roadmap assumes a strong team, no pressure to optimize for the easiest MVP,
 ## What roadmap does not mean
 
 This roadmap is **not** license to parallelize everything. The implementation order remains governed by `../overview/implementation-order.md` and the phase docs.
+
+## Post-PHASE-13 extension
+
+PHASE-20 is now the active continuation of the original roadmap.
+It turns the adoption and ecosystem-proof surfaces from PHASE-15 through PHASE-19
+into ongoing lifecycle governance: accreditation, rollout promotion, incident review,
+and deprecation discipline.
+
+For the broader successor arc beyond the original PHASE-00 through PHASE-13 plan,
+see [State-of-the-art roadmap extension](state-of-the-art-roadmap.md).

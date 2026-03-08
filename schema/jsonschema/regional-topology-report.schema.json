@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/regional-topology-report.schema.json",
+  "title": "RegionalTopologyReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "profile_results", "domain_results", "verdict"],
+  "properties": {
+    "id": { "type": "string", "const": "phase17-regional-topology-report" },
+    "profile_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["profile_id", "standby_count", "precondition_count", "verdict"],
+        "properties": {
+          "profile_id": { "type": "string" },
+          "standby_count": { "type": "integer", "minimum": 1 },
+          "precondition_count": { "type": "integer", "minimum": 1 },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "domain_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["domain_id", "region", "standby_eligible", "verdict"],
+        "properties": {
+          "domain_id": { "type": "string" },
+          "region": { "type": "string" },
+          "standby_eligible": { "type": "boolean" },
+          "verdict": { "type": "string", "enum": ["pass", "fail"] }
+        }
+      }
+    },
+    "verdict": { "type": "string", "enum": ["pass", "fail"] }
+  }
+}

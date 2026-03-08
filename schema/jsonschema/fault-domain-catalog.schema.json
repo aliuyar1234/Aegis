@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/fault-domain-catalog.schema.json",
+  "title": "FaultDomainCatalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "domains"],
+  "properties": {
+    "id": { "type": "string", "const": "fault-domain-catalog" },
+    "version": { "type": "integer", "minimum": 1 },
+    "domains": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "region", "role", "blast_radius", "standby_eligible", "supported_tiers"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "region": { "type": "string", "minLength": 1 },
+          "role": { "type": "string", "minLength": 1 },
+          "blast_radius": { "type": "string", "minLength": 1 },
+          "standby_eligible": { "type": "boolean" },
+          "supported_tiers": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

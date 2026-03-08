@@ -1,0 +1,34 @@
+id: phase-18-ecosystem-evidence
+phase: PHASE-18
+name: Ecosystem evidence gate
+objective: Validate that phase-18 ecosystem readiness is captured as a reproducible
+  evidence bundle.
+fixtures:
+- docs/exec-plans/active/PHASE-18-certified-ecosystem.md
+- docs/generated/phase-18-ecosystem-evidence.json
+- meta/ecosystem-evidence-manifest.yaml
+- schema/jsonschema/ecosystem-evidence-manifest.schema.json
+- schema/jsonschema/ecosystem-evidence-bundle.schema.json
+- scripts/build_phase18_ecosystem_evidence.py
+- tests/phase-gates/phase-18-ecosystem-evidence.yaml
+- tests/extensions_conformance/test_phase18_ecosystem_evidence_assets.py
+tests:
+- TS-046
+acceptance:
+- AC-086
+steps:
+- id: ecosystem-evidence-groups
+  description: verify certification, sandbox, policy, and publication evidence groups are explicit
+  expected:
+  - the committed manifest enumerates bounded ecosystem evidence groups
+  evidence:
+  - meta/ecosystem-evidence-manifest.yaml
+- id: reproducible-ecosystem-bundle
+  description: verify the ecosystem evidence bundle is reproducible
+  expected:
+  - the committed bundle matches fresh builder output
+  evidence:
+  - scripts/build_phase18_ecosystem_evidence.py
+  - docs/generated/phase-18-ecosystem-evidence.json
+proves:
+- phase-18 ecosystem readiness is modeled as reproducible evidence rather than prose-only claims

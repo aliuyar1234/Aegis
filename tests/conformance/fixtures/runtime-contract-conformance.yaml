@@ -1,0 +1,93 @@
+id: runtime-contract-conformance
+version: 1
+fixtures:
+- id: worker-register
+  subject_name: worker_register
+  message_name: WorkerRegistration
+  worker_kind: all
+  lifecycle_stage: registry
+  required_fields:
+  - worker_id
+  - worker_kind
+  - supported_contract_versions
+- id: worker-heartbeat
+  subject_name: worker_heartbeat
+  message_name: WorkerHeartbeat
+  worker_kind: all
+  lifecycle_stage: heartbeat
+  required_fields:
+  - worker_id
+  - observed_at
+  - available_capacity
+- id: action-dispatch
+  subject_name: dispatch
+  message_name: ActionDispatch
+  worker_kind: browser
+  lifecycle_stage: dispatch
+  required_fields:
+  - execution_id
+  - action_id
+  - capability_token
+- id: action-cancel
+  subject_name: cancel
+  message_name: ActionCancel
+  worker_kind: browser
+  lifecycle_stage: cancel
+  required_fields:
+  - execution_id
+  - action_id
+  - cancel_requested_at
+- id: action-accepted
+  subject_name: accepted
+  message_name: ActionAccepted
+  worker_kind: browser
+  lifecycle_stage: accepted
+  required_fields:
+  - execution_id
+  - worker_id
+  - accepted_at
+- id: action-progress
+  subject_name: progress
+  message_name: ActionProgress
+  worker_kind: browser
+  lifecycle_stage: progress
+  required_fields:
+  - execution_id
+  - action_id
+  - progress_seq
+- id: action-heartbeat
+  subject_name: heartbeat
+  message_name: ActionHeartbeat
+  worker_kind: browser
+  lifecycle_stage: heartbeat
+  required_fields:
+  - execution_id
+  - worker_id
+  - heartbeat_seq
+- id: action-completed
+  subject_name: completed
+  message_name: ActionCompleted
+  worker_kind: browser
+  lifecycle_stage: completed
+  required_fields:
+  - execution_id
+  - action_id
+  - completed_at
+- id: action-failed
+  subject_name: failed
+  message_name: ActionFailed
+  worker_kind: browser
+  lifecycle_stage: failed
+  required_fields:
+  - execution_id
+  - action_id
+  - error_code
+- id: action-cancelled
+  subject_name: cancelled
+  message_name: ActionCancelled
+  worker_kind: browser
+  lifecycle_stage: cancelled
+  required_fields:
+  - execution_id
+  - action_id
+  - cancelled_at
