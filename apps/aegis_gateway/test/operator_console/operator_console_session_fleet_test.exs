@@ -769,9 +769,12 @@ defmodule OperatorConsoleSessionFleetTest do
         environment: "production",
         reveal_redacted: false
       },
-      overrides
+      normalize_auth_overrides(overrides)
     )
   end
+
+  defp normalize_auth_overrides(overrides) when is_list(overrides), do: Enum.into(overrides, %{})
+  defp normalize_auth_overrides(overrides) when is_map(overrides), do: overrides
 
   defp reviewer_auth(tenant_id, workspace_id, overrides \\ %{}) do
     Map.merge(
