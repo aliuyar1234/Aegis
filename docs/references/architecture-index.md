@@ -15,6 +15,7 @@ Use this file to find the right document quickly.
 - `../design-docs/observability-model.md`
 - `../design-docs/security-governance.md`
 - `../design-docs/multitenancy.md`
+- `../design-docs/extensibility-surface.md`
 
 ## Product surfaces
 - `../product-specs/product-definition.md`

@@ -12,6 +12,6 @@ defmodule AegisRuntime do
   def report_lease_ambiguity(session_id, attrs), do: Aegis.Runtime.report_lease_ambiguity(session_id, attrs)
   def snapshot(session_id), do: Aegis.Runtime.snapshot(session_id)
   def projection(session_id), do: Aegis.Runtime.projection(session_id)
-  def events(session_id), do: Aegis.Runtime.events(session_id)
+  def events(session_id, scope \\ []), do: Aegis.Runtime.events(session_id, scope)
   def lease(session_id), do: Aegis.Runtime.lease(session_id)
 end

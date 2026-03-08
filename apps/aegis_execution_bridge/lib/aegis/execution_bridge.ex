@@ -21,7 +21,7 @@ defmodule Aegis.ExecutionBridge do
   - lease authority (`aegis_leases`)
   """
 
-  alias Aegis.ExecutionBridge.{InMemoryTransport, Store, TransportTopology}
+  alias Aegis.ExecutionBridge.{AdmissionControl, InMemoryTransport, Store, TransportTopology}
   alias Aegis.Runtime
 
   @dispatchable_event_types ["policy.evaluated", "approval.granted", "action.cancel_requested"]
@@ -131,12 +131,18 @@ defmodule Aegis.ExecutionBridge do
   def process_worker_registration(attrs) do
     attrs = normalize_map(Map.new(attrs))
     contract_versions = Map.get(attrs, :supported_contract_versions, ["v1"])
+    attributes =
+      Map.get(attrs, :attributes, %{})
+      |> Map.new()
+      |> Map.put_new("worker_pool_id", Map.get(attrs, :worker_pool_id, "shared"))
+      |> Map.put_new("isolation_tier", Map.get(attrs, :isolation_tier, "tier_a"))
 
     if "v1" in contract_versions do
       {:ok,
        Store.upsert_worker_registration(
          attrs
          |> Map.put(:supported_contract_versions, contract_versions)
+         |> Map.put(:attributes, attributes)
          |> Map.put_new(:available_capacity, Map.get(attrs, :advertised_capacity, 0))
        )}
     else
@@ -153,6 +159,19 @@ defmodule Aegis.ExecutionBridge do
         {:error, :unknown_worker}
 
       registration ->
+        attributes =
+          registration.attributes
+          |> Map.new()
+          |> Map.merge(Map.get(attrs, :attributes, %{}) |> Map.new())
+          |> Map.put_new(
+            "worker_pool_id",
+            Map.get(attrs, :worker_pool_id, Map.get(registration.attributes, :worker_pool_id, "shared"))
+          )
+          |> Map.put_new(
+            "isolation_tier",
+            Map.get(attrs, :isolation_tier, Map.get(registration.attributes, :isolation_tier, "tier_a"))
+          )
+
         {:ok,
          Store.upsert_worker_registration(%{
            worker_id: registration.worker_id,
@@ -162,7 +181,7 @@ defmodule Aegis.ExecutionBridge do
            advertised_capacity: registration.advertised_capacity,
            available_capacity:
              Map.get(attrs, :available_capacity, registration.available_capacity),
-           attributes: Map.get(attrs, :attributes, registration.attributes),
+           attributes: attributes,
            status: "active",
            last_seen_at: Map.get(attrs, :observed_at, now())
          })}
@@ -243,76 +262,111 @@ defmodule Aegis.ExecutionBridge do
     execution_id = deterministic_execution_id(row.session_id, fetch_value(payload, :action_id))
     contract_version = Map.get(headers, "x-aegis-contract-version", "v1")
     isolation_tier = Map.get(headers, "x-aegis-isolation-tier", "tier_a")
-    dispatch_subject = TransportTopology.subject_for(:dispatch, worker_kind)
-
-    execution =
-      Store.upsert_execution(%{
-        execution_id: execution_id,
-        session_id: row.session_id,
-        action_id: fetch_value(payload, :action_id),
-        worker_kind: worker_kind,
-        contract_version: contract_version,
-        dispatch_subject: dispatch_subject,
-        trace_id: fetch_value(payload, :trace_id) || Map.get(headers, "x-aegis-trace-id"),
-        idempotency_key: fetch_value(payload, :idempotency_key),
-        isolation_tier: isolation_tier,
-        status: "dispatched",
-        lease_epoch: session_ref.lease_epoch,
-        accept_deadline: accept_deadline,
-        soft_deadline: soft_deadline,
-        hard_deadline: hard_deadline,
-        last_payload: payload
-      })
-
-    message = %{
-      ref: session_ref,
-      contract_version: contract_version,
-      execution_id: execution.execution_id,
-      action_id: execution.action_id,
+    route_key = fetch_value(payload, :dispatch_route_key) || "shared"
+    dispatch_subject = TransportTopology.routed_subject_for(:dispatch, worker_kind, route_key)
+    action_scope = %{
+      tenant_id: session_ref.tenant_id,
+      workspace_id: session_ref.workspace_id,
+      isolation_tier: isolation_tier
+    }
+    action_attrs = %{
+      action_id: fetch_value(payload, :action_id),
       tool_id: fetch_value(payload, :tool_id),
-      tool_schema_version: fetch_value(payload, :tool_schema_version),
-      capability_token: fetch_value(payload, :capability_token_ref) || "",
-      trace_id: execution.trace_id || "",
-      idempotency_key: execution.idempotency_key || "",
-      isolation_tier: isolation_tier,
-      input: fetch_value(payload, :input) || %{},
-      accept_deadline: iso8601(accept_deadline),
-      soft_deadline: iso8601(soft_deadline),
-      hard_deadline: iso8601(hard_deadline)
+      worker_kind: worker_kind,
+      mutating: Map.get(payload, :mutating, false)
     }
 
-    with {:ok, _published} <- InMemoryTransport.publish(dispatch_subject, message, headers),
-         {:ok, _runtime_result} <-
-           dispatch_runtime_command(
-             session_ref,
-             {:dispatch_action,
-              %{
-                action_id: execution.action_id,
-                execution_id: execution.execution_id,
-                worker_kind: worker_kind,
-                worker_subject: dispatch_subject,
-                accept_deadline: iso8601(accept_deadline),
-                soft_deadline: iso8601(soft_deadline),
-                hard_deadline: iso8601(hard_deadline),
-                contract_version: contract_version,
-                capability_token_required: present?(fetch_value(payload, :capability_token_ref)),
-                trace_id: execution.trace_id,
-                idempotency_key: execution.idempotency_key
-              }},
-             actor_kind: "system",
-             actor_id: "execution_bridge",
-             trace_id: execution.trace_id,
-             idempotency_key: execution.idempotency_key,
-             correlation_id: execution.execution_id
-           ) do
-      Store.mark_outbox_published(row.outbox_id)
+    case AdmissionControl.admit_dispatch(action_scope, action_attrs) do
+      :ok ->
+        execution =
+          with :ok <- ensure_outbox_scope(row, session_ref) do
+            Store.upsert_execution(%{
+              execution_id: execution_id,
+              tenant_id: session_ref.tenant_id,
+              workspace_id: session_ref.workspace_id,
+              session_id: row.session_id,
+              action_id: fetch_value(payload, :action_id),
+              worker_kind: worker_kind,
+              contract_version: contract_version,
+              dispatch_subject: dispatch_subject,
+              trace_id: fetch_value(payload, :trace_id) || Map.get(headers, "x-aegis-trace-id"),
+              idempotency_key: fetch_value(payload, :idempotency_key),
+              isolation_tier: isolation_tier,
+              status: "dispatched",
+              lease_epoch: session_ref.lease_epoch,
+              accept_deadline: accept_deadline,
+              soft_deadline: soft_deadline,
+              hard_deadline: hard_deadline,
+              last_payload: payload
+            })
+          end
 
-      {:ok,
-       %{
-         outbox_id: row.outbox_id,
-         execution_id: execution.execution_id,
-         subject: dispatch_subject
-       }}
+        message = %{
+          ref: session_ref,
+          contract_version: contract_version,
+          execution_id: execution.execution_id,
+          action_id: execution.action_id,
+          tool_id: fetch_value(payload, :tool_id),
+          tool_schema_version: fetch_value(payload, :tool_schema_version),
+          capability_token: fetch_value(payload, :capability_token_ref) || "",
+          trace_id: execution.trace_id || "",
+          idempotency_key: execution.idempotency_key || "",
+          isolation_tier: isolation_tier,
+          input: fetch_value(payload, :input) || %{},
+          accept_deadline: iso8601(accept_deadline),
+          soft_deadline: iso8601(soft_deadline),
+          hard_deadline: iso8601(hard_deadline)
+        }
+
+        with execution when is_map(execution) <- execution,
+             {:ok, _published} <- InMemoryTransport.publish(dispatch_subject, message, headers),
+             {:ok, _runtime_result} <-
+               dispatch_runtime_command(
+                 session_ref,
+                 {:dispatch_action,
+                  %{
+                    action_id: execution.action_id,
+                    execution_id: execution.execution_id,
+                    worker_kind: worker_kind,
+                    isolation_tier: isolation_tier,
+                    worker_pool_id: fetch_value(payload, :worker_pool_id),
+                    dispatch_route_key: route_key,
+                    worker_subject: dispatch_subject,
+                    accept_deadline: iso8601(accept_deadline),
+                    soft_deadline: iso8601(soft_deadline),
+                    hard_deadline: iso8601(hard_deadline),
+                    contract_version: contract_version,
+                    capability_token_required: present?(fetch_value(payload, :capability_token_ref)),
+                    trace_id: execution.trace_id,
+                    idempotency_key: execution.idempotency_key
+                  }},
+                 actor_kind: "system",
+                 actor_id: "execution_bridge",
+                 trace_id: execution.trace_id,
+                 idempotency_key: execution.idempotency_key,
+                 correlation_id: execution.execution_id
+               ) do
+          Store.mark_outbox_published(row.outbox_id)
+
+          {:ok,
+           %{
+             outbox_id: row.outbox_id,
+             execution_id: execution.execution_id,
+             subject: dispatch_subject
+           }}
+        end
+
+      {:error, {:quota_exceeded, quota_class, details}} ->
+        Store.release_outbox(row.outbox_id)
+
+        {:ok,
+         %{
+           outbox_id: row.outbox_id,
+           action_id: fetch_value(payload, :action_id),
+           deferred: true,
+           quota_class: quota_class,
+           quota: details
+         }}
     end
   end
 
@@ -336,6 +390,9 @@ defmodule Aegis.ExecutionBridge do
       tool_id: action.tool_id,
       tool_schema_version: action.tool_schema_version,
       worker_kind: action.worker_kind,
+      isolation_tier: Map.get(action, :isolation_tier, "tier_a"),
+      worker_pool_id: Map.get(action, :worker_pool_id),
+      dispatch_route_key: Map.get(action, :dispatch_route_key, "shared"),
       input: action.input,
       risk_class: action.risk_class,
       dangerous_action_class: Map.get(action, :dangerous_action_class),
@@ -358,11 +415,15 @@ defmodule Aegis.ExecutionBridge do
     session_ref = session_ref_from_headers(headers)
 
     execution =
-      Store.fetch_execution(fetch_value(payload, :execution_id)) ||
-        Store.fetch_execution_by_action(row.session_id, fetch_value(payload, :action_id)) ||
+      Store.fetch_execution(fetch_value(payload, :execution_id), session_ref) ||
+        Store.fetch_execution_by_action(
+          row.session_id,
+          fetch_value(payload, :action_id),
+          session_ref
+        ) ||
         raise ArgumentError, "unknown execution for cancel #{inspect(payload)}"
 
-    cancel_subject = TransportTopology.subject_for(:cancel, execution.worker_kind)
+    cancel_subject = routed_cancel_subject(execution)
     cancel_requested_at = resolve_deadline(fetch_value(payload, :cancel_requested_at), 0)
 
     with {:ok, _published} <-
@@ -396,8 +457,10 @@ defmodule Aegis.ExecutionBridge do
     execution_id = fetch_value(payload, :execution_id)
 
     with :ok <- ensure_expected_subject(kind, worker_kind),
+         :ok <- ensure_header_scope(headers, session_ref),
          :ok <- ensure_session_started(session_ref),
-         execution when not is_nil(execution) <- Store.fetch_execution(execution_id) do
+         execution when not is_nil(execution) <- Store.fetch_execution(execution_id, session_ref),
+         :ok <- ensure_execution_scope(execution, session_ref) do
       if terminal_execution?(execution) do
         handle_terminal_callback(kind, execution, payload, headers, session_ref)
       else
@@ -876,6 +939,60 @@ defmodule Aegis.ExecutionBridge do
     end
   end
 
+  defp ensure_outbox_scope(row, session_ref) do
+    cond do
+      row.tenant_id != session_ref.tenant_id ->
+        {:error,
+         {:scope_mismatch, :tenant_id,
+          %{expected: row.tenant_id, actual: session_ref.tenant_id, session_id: row.session_id}}}
+
+      row.workspace_id != session_ref.workspace_id ->
+        {:error,
+         {:scope_mismatch, :workspace_id,
+          %{expected: row.workspace_id, actual: session_ref.workspace_id, session_id: row.session_id}}}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp ensure_execution_scope(execution, session_ref) do
+    cond do
+      execution.tenant_id != session_ref.tenant_id ->
+        {:error,
+         {:scope_mismatch, :tenant_id,
+          %{expected: execution.tenant_id, actual: session_ref.tenant_id, execution_id: execution.execution_id}}}
+
+      execution.workspace_id != session_ref.workspace_id ->
+        {:error,
+         {:scope_mismatch, :workspace_id,
+          %{expected: execution.workspace_id, actual: session_ref.workspace_id, execution_id: execution.execution_id}}}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp ensure_header_scope(headers, session_ref) do
+    tenant_id = Map.get(headers, "x-aegis-tenant-id")
+    workspace_id = Map.get(headers, "x-aegis-workspace-id")
+
+    cond do
+      present?(tenant_id) and tenant_id != session_ref.tenant_id ->
+        {:error,
+         {:scope_mismatch, :tenant_id,
+          %{expected: session_ref.tenant_id, actual: tenant_id, session_id: session_ref.session_id}}}
+
+      present?(workspace_id) and workspace_id != session_ref.workspace_id ->
+        {:error,
+         {:scope_mismatch, :workspace_id,
+          %{expected: session_ref.workspace_id, actual: workspace_id, session_id: session_ref.session_id}}}
+
+      true ->
+        :ok
+    end
+  end
+
   defp ensure_expected_subject(kind, worker_kind) do
     expected_names =
       MapSet.new(["accepted", "progress", "completed", "failed", "cancelled", "heartbeat"])
@@ -1039,6 +1156,12 @@ defmodule Aegis.ExecutionBridge do
 
   defp registry_headers do
     %{"x-aegis-contract-version" => "v1"}
+  end
+
+  defp routed_cancel_subject(execution) do
+    execution.dispatch_subject
+    |> to_string()
+    |> String.replace(".command.dispatch.", ".command.cancel.")
   end
 
   defp fetch_value(map, key) do

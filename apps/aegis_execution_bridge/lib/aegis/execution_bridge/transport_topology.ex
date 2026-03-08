@@ -44,6 +44,16 @@ defmodule Aegis.ExecutionBridge.TransportTopology do
     |> String.replace("{worker_kind}", worker_kind)
   end
 
+  def routed_subject_for(name, worker_kind, route_key)
+      when is_atom(name) and is_binary(worker_kind) do
+    base_subject = subject_for(name, worker_kind)
+
+    case normalize_route_key(route_key) do
+      "shared" -> base_subject
+      route_key -> base_subject <> "." <> route_key
+    end
+  end
+
   def timeout_class(timeout_class) do
     timeout_class =
       case timeout_class do
@@ -128,4 +138,8 @@ defmodule Aegis.ExecutionBridge.TransportTopology do
   defp do_matches_subject?([pattern_head | pattern_tail], [subject_head | subject_tail]) do
     pattern_head == subject_head and do_matches_subject?(pattern_tail, subject_tail)
   end
+
+  defp normalize_route_key(nil), do: "shared"
+  defp normalize_route_key(""), do: "shared"
+  defp normalize_route_key(route_key), do: route_key
 end

@@ -33,7 +33,10 @@
 - lease epochs and fencing
 - capability tokens with narrow scope and expiry
 - universal tenant/workspace scoping
+- quota and admission control for live sessions and effectful execution
+- durable `isolation_tier`, `worker_pool_id`, and routed dispatch metadata for higher-isolation tenants
 - event integrity checks
 - audit trail for operator and approval actions
 - signed URL controls for artifacts
+- artifact retention and redaction metadata preserved alongside timeline evidence
 - RBAC/ABAC enforcement on console and API surfaces

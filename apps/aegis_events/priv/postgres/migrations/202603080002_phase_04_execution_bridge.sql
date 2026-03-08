@@ -20,6 +20,8 @@ CREATE INDEX IF NOT EXISTS worker_registrations_kind_status_idx
 
 CREATE TABLE IF NOT EXISTS action_executions (
     execution_id TEXT PRIMARY KEY,
+    tenant_id TEXT NOT NULL,
+    workspace_id TEXT NOT NULL,
     session_id TEXT NOT NULL REFERENCES sessions(session_id) ON DELETE CASCADE,
     action_id TEXT NOT NULL,
     worker_kind TEXT NOT NULL,
@@ -56,8 +58,30 @@ CREATE TABLE IF NOT EXISTS action_executions (
     UNIQUE(session_id, action_id)
 );
 
+ALTER TABLE action_executions
+    ADD COLUMN IF NOT EXISTS tenant_id TEXT;
+
+ALTER TABLE action_executions
+    ADD COLUMN IF NOT EXISTS workspace_id TEXT;
+
+UPDATE action_executions AS e
+SET tenant_id = s.tenant_id,
+    workspace_id = s.workspace_id
+FROM sessions AS s
+WHERE e.session_id = s.session_id
+  AND (e.tenant_id IS NULL OR e.workspace_id IS NULL);
+
+ALTER TABLE action_executions
+    ALTER COLUMN tenant_id SET NOT NULL;
+
+ALTER TABLE action_executions
+    ALTER COLUMN workspace_id SET NOT NULL;
+
 CREATE INDEX IF NOT EXISTS action_executions_status_idx
     ON action_executions(status, accept_deadline, hard_deadline);
 
 CREATE INDEX IF NOT EXISTS action_executions_session_action_idx
     ON action_executions(session_id, action_id);
+
+CREATE INDEX IF NOT EXISTS action_executions_scope_status_idx
+    ON action_executions(tenant_id, workspace_id, status, accept_deadline, hard_deadline);

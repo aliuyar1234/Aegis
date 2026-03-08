@@ -1,0 +1,71 @@
+id: sample-redaction-processor
+display_name: Sample Redaction Processor
+version: 0.1.0
+kind: artifact_processor
+sdk:
+  language: python
+  package: aegis_ext.sample_redaction
+  entry_module: redaction_processor
+runtime_contract_version: v1
+extension_api_version: v1alpha1
+lifecycle:
+  install:
+    handler: redaction_processor.install
+    timeout_class: medium
+    idempotent: true
+  start:
+    handler: redaction_processor.start
+    timeout_class: short
+    idempotent: true
+  health_check:
+    handler: redaction_processor.health_check
+    timeout_class: short
+    idempotent: true
+  run:
+    handler: redaction_processor.run
+    timeout_class: medium
+    idempotent: true
+  shutdown:
+    handler: redaction_processor.shutdown
+    timeout_class: short
+    idempotent: true
+capability_boundary:
+  required_scopes:
+    - artifact.read
+    - artifact.redact
+  allowed_tools: []
+  dangerous_action_classes: []
+  secrets: []
+  network:
+    mode: none
+  artifact_access:
+    inputs:
+      - screenshot
+      - dom_snapshot
+    outputs:
+      - redacted_screenshot
+      - redaction_report
+compatibility:
+  aegis_runtime:
+    min: 0.10.0
+    max: 0.10.x
+  extension_api:
+    min: v1alpha1
+    max: v1alpha1
+  tool_registry:
+    min: v1
+    max: v1
+  supported_tiers:
+    - tier_a
+    - tier_b
+    - tier_c
+artifact_processor:
+  accepted_artifact_kinds:
+    - screenshot
+    - dom_snapshot
+  emitted_artifact_kinds:
+    - redacted_screenshot
+    - redaction_report
+  processing_mode: batch
+  max_input_bytes: 5242880
+notes: Example artifact processor manifest showing bounded artifact interfaces.

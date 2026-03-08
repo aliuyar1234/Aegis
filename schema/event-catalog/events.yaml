@@ -4,6 +4,7 @@ events:
   determinism: deterministic
   description: Session created and persisted.
   required_payload:
+  - isolation_tier
   - session_kind
   - requested_by
   version: 1
@@ -130,6 +131,9 @@ events:
   - tool_id
   - tool_schema_version
   - worker_kind
+  - isolation_tier
+  - worker_pool_id
+  - dispatch_route_key
   - risk_class
   - idempotency_class
   - timeout_class
@@ -207,6 +211,9 @@ events:
   - action_id
   - execution_id
   - worker_kind
+  - isolation_tier
+  - worker_pool_id
+  - dispatch_route_key
   - worker_subject
   - accept_deadline
   - contract_version

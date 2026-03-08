@@ -45,12 +45,12 @@ P08-T03,PHASE-08,Implement browser instability recovery playbook hooks and degra
 P08-T04,PHASE-08,Create and automate chaos and recovery scenarios for internal demo acceptance,True,P08-T01;P08-T02;P08-T03;P08-T06,ADR-0015,AC-036,TS-010;TS-012,done
 P08-T05,PHASE-08,Create public demo script and acceptance artifact set,False,P08-T04,ADR-0009;ADR-0015,AC-037,TS-012,done
 P08-T06,PHASE-08,"Implement effectful browser mutation flows with approval-bound writes, capability tokens, before/after artifacts, and uncertainty surfacing",True,P05-T03;P07-T03;P07-T04,ADR-0009;ADR-0011;ADR-0012,AC-033;AC-034,TS-007;TS-009;TS-010,done
-P09-T01,PHASE-09,"Enforce tenant/workspace scoping across tables, contracts, and events",True,P02-T01;P04-T01,ADR-0013,AC-038,TS-011,planned
-P09-T02,PHASE-09,"Implement quotas and admission control for sessions, browser contexts, and effectful actions",True,P09-T01,ADR-0013,AC-039,TS-011,planned
-P09-T03,PHASE-09,Implement tiered worker-pool isolation and routing metadata,True,P09-T01,ADR-0013,AC-038,TS-011,planned
-P09-T04,PHASE-09,Integrate RBAC/ABAC checks into operator and API control surfaces,True,P07-T03;P07-T04,ADR-0011;ADR-0013,AC-040,TS-011,planned
-P09-T05,PHASE-09,Update threat models and security docs based on implementation realities,False,P09-T04,ADR-0013;ADR-0015,AC-041,TS-001;TS-011,planned
-P10-T01,PHASE-10,"Define extension contracts for new tools, connectors, and artifact processors",True,P07-T01,ADR-0008,AC-042,TS-014,planned
+P09-T01,PHASE-09,"Enforce tenant/workspace scoping across tables, contracts, and events",True,P02-T01;P04-T01,ADR-0013,AC-038,TS-011,done
+P09-T02,PHASE-09,"Implement quotas and admission control for sessions, browser contexts, and effectful actions",True,P09-T01,ADR-0013,AC-039,TS-011,done
+P09-T03,PHASE-09,Implement tiered worker-pool isolation and routing metadata,True,P09-T01,ADR-0013,AC-038,TS-011,done
+P09-T04,PHASE-09,Integrate RBAC/ABAC checks into operator and API control surfaces,True,P07-T03;P07-T04,ADR-0011;ADR-0013,AC-040,TS-011,done
+P09-T05,PHASE-09,Update threat models and security docs based on implementation realities,False,P09-T04,ADR-0013;ADR-0015,AC-041,TS-001;TS-011,done
+P10-T01,PHASE-10,"Define extension contracts for new tools, connectors, and artifact processors",True,P07-T01,ADR-0008,AC-042,TS-014,done
 P10-T02,PHASE-10,Define MCP adapter boundary without making MCP the internal runtime protocol,True,P10-T01,ADR-0008,AC-044,TS-014,planned
 P10-T03,PHASE-10,Create compatibility and versioning policy for third-party extensions,True,P10-T01,ADR-0008;ADR-0015,AC-043,TS-014,planned
 P10-T04,PHASE-10,Create sample extension pack layout and review rubric,False,P10-T03,ADR-0015,AC-042;AC-043,TS-014,planned

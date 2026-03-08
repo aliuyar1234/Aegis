@@ -1,5 +1,5 @@
 phase: PHASE-10
-status: planned
+status: current
 name: Extensibility surface, connector SDK, and compatibility policy
 phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
 tasks:
@@ -7,7 +7,7 @@ tasks:
   phase: PHASE-10
   title: Define extension contracts for new tools, connectors, and artifact processors
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P07-T01
   adr_refs:

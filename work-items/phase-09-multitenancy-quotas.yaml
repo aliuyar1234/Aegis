@@ -1,5 +1,5 @@
 phase: PHASE-09
-status: current
+status: completed
 name: Multitenancy, quotas, authz, audit, and trust boundaries
 phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
 tasks:
@@ -7,7 +7,7 @@ tasks:
   phase: PHASE-09
   title: Enforce tenant/workspace scoping across tables, contracts, and events
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P02-T01
   - P04-T01
@@ -27,7 +27,7 @@ tasks:
   title: Implement quotas and admission control for sessions, browser contexts, and
     effectful actions
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P09-T01
   adr_refs:
@@ -45,7 +45,7 @@ tasks:
   phase: PHASE-09
   title: Implement tiered worker-pool isolation and routing metadata
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P09-T01
   adr_refs:
@@ -63,7 +63,7 @@ tasks:
   phase: PHASE-09
   title: Integrate RBAC/ABAC checks into operator and API control surfaces
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P07-T03
   - P07-T04
@@ -83,7 +83,7 @@ tasks:
   phase: PHASE-09
   title: Update threat models and security docs based on implementation realities
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P09-T04
   adr_refs:

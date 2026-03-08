@@ -19,26 +19,27 @@ defmodule Aegis.Projection.SessionFleet do
   @exact_match_filters ~w(tenant_id workspace_id session_id phase control_mode health wait_reason owner_node)a
   @boolean_filters ~w(fenced has_pending_approval has_in_flight_action)a
 
-  @spec list(map() | keyword()) :: [map()]
-  def list(filters \\ %{}) do
+  @spec list(map() | keyword(), map() | keyword()) :: [map()]
+  def list(filters \\ %{}, scope \\ %{}) do
     filters = normalize_filters(filters)
+    scope = normalize_filters(scope)
 
-    Events.sessions()
-    |> Enum.map(&build_view/1)
+    Events.sessions(scope)
+    |> Enum.map(&build_view(&1, scope))
     |> Enum.reject(&is_nil/1)
     |> Enum.filter(&matches_filters?(&1, filters))
     |> Enum.sort_by(&sort_key/1)
   end
 
-  @spec fetch(String.t()) :: {:ok, map()} | {:error, term()}
-  def fetch(session_id) when is_binary(session_id) do
-    with {:ok, replay} <- Runtime.historical_replay(session_id) do
+  @spec fetch(String.t(), map() | keyword()) :: {:ok, map()} | {:error, term()}
+  def fetch(session_id, scope \\ %{}) when is_binary(session_id) do
+    with {:ok, replay} <- Runtime.historical_replay(session_id, scope) do
       {:ok, Projection.from_snapshot(replay.replay_state)}
     end
   end
 
-  defp build_view(session_row) do
-    case Runtime.historical_replay(session_row.session_id) do
+  defp build_view(session_row, scope) do
+    case Runtime.historical_replay(session_row.session_id, scope) do
       {:ok, replay} -> Projection.from_snapshot(replay.replay_state)
       {:error, _reason} -> nil
     end

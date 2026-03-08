@@ -3,6 +3,7 @@
     session_id: "session-replay",
     tenant_id: "tenant-replay",
     workspace_id: "workspace-replay",
+    isolation_tier: "tier_a",
     session_kind: "browser_operation",
     requested_by: "fixture",
     owner_node: "runtime@node",
@@ -31,6 +32,7 @@
       seq_no: 1,
       type: "session.created",
       payload: %{
+        isolation_tier: "tier_a",
         session_kind: "browser_operation",
         requested_by: "fixture"
       },

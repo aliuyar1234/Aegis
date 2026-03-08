@@ -43,6 +43,26 @@ DANGEROUS_ACTION_GENERATED_TARGET = (
     / "generated"
     / "dangerous_action_catalog.ex"
 )
+RBAC_ROLES_ROOT = ROOT / "meta" / "rbac-roles.yaml"
+RBAC_ROLES_GENERATED_TARGET = (
+    ROOT / "apps" / "aegis_policy" / "lib" / "aegis" / "policy" / "generated" / "rbac_roles.ex"
+)
+ABAC_ATTRIBUTES_ROOT = ROOT / "meta" / "abac-attributes.yaml"
+ABAC_ATTRIBUTES_GENERATED_TARGET = (
+    ROOT
+    / "apps"
+    / "aegis_policy"
+    / "lib"
+    / "aegis"
+    / "policy"
+    / "generated"
+    / "abac_attributes.ex"
+)
+EXTENSION_MANIFEST_SCHEMA = ROOT / "schema/jsonschema/connector-manifest.schema.json"
+EXTENSION_MANIFEST_FIXTURES = [
+    ROOT / "tests/extensibility/fixtures/sample-connector.yaml",
+    ROOT / "tests/extensibility/fixtures/sample-artifact-processor.yaml",
+]
 PYTHON_VENDOR_ROOT = ROOT / "py" / "vendor"
 PYTHON_BINDINGS_ROOT = ROOT / "py" / "packages" / "aegis_contracts_py" / "generated" / "proto"
 RUST_BINDINGS_ROOT = ROOT / "rs" / "crates" / "aegis_contracts_rs" / "src" / "generated" / "proto"
@@ -159,6 +179,24 @@ def dangerous_action_source_digest() -> str:
     digest.update(DANGEROUS_ACTION_ROOT.relative_to(ROOT).as_posix().encode("utf-8"))
     digest.update(b"\0")
     digest.update(DANGEROUS_ACTION_ROOT.read_bytes())
+    digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def rbac_roles_source_digest() -> str:
+    digest = hashlib.sha256()
+    digest.update(RBAC_ROLES_ROOT.relative_to(ROOT).as_posix().encode("utf-8"))
+    digest.update(b"\0")
+    digest.update(RBAC_ROLES_ROOT.read_bytes())
+    digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def abac_attributes_source_digest() -> str:
+    digest = hashlib.sha256()
+    digest.update(ABAC_ATTRIBUTES_ROOT.relative_to(ROOT).as_posix().encode("utf-8"))
+    digest.update(b"\0")
+    digest.update(ABAC_ATTRIBUTES_ROOT.read_bytes())
     digest.update(b"\0")
     return digest.hexdigest()
 
@@ -346,6 +384,41 @@ def validate_tool_registry() -> None:
             f"{DANGEROUS_ACTION_GENERATED_TARGET.relative_to(ROOT)}"
         )
 
+    rbac_digest = rbac_roles_source_digest()
+    if not RBAC_ROLES_GENERATED_TARGET.exists():
+        fail(
+            "Missing generated RBAC catalog manifest: "
+            f"{RBAC_ROLES_GENERATED_TARGET.relative_to(ROOT)}"
+        )
+    if f'@source_digest "{rbac_digest}"' not in RBAC_ROLES_GENERATED_TARGET.read_text(encoding="utf-8"):
+        fail(
+            "Stale generated RBAC catalog manifest: "
+            f"{RBAC_ROLES_GENERATED_TARGET.relative_to(ROOT)}"
+        )
+
+    abac_digest = abac_attributes_source_digest()
+    if not ABAC_ATTRIBUTES_GENERATED_TARGET.exists():
+        fail(
+            "Missing generated ABAC catalog manifest: "
+            f"{ABAC_ATTRIBUTES_GENERATED_TARGET.relative_to(ROOT)}"
+        )
+    if f'@source_digest "{abac_digest}"' not in ABAC_ATTRIBUTES_GENERATED_TARGET.read_text(encoding="utf-8"):
+        fail(
+            "Stale generated ABAC catalog manifest: "
+            f"{ABAC_ATTRIBUTES_GENERATED_TARGET.relative_to(ROOT)}"
+        )
+
+
+def validate_extension_manifests() -> None:
+    schema = load_json(EXTENSION_MANIFEST_SCHEMA)
+
+    for fixture in EXTENSION_MANIFEST_FIXTURES:
+        payload = yaml.safe_load(fixture.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(f"Invalid extension manifest fixture {fixture.relative_to(ROOT)}: {exc}")
+
 
 schema_dirs = [
     ROOT / "schema/jsonschema",
@@ -476,6 +549,7 @@ for target, marker in generated_targets.items():
 validate_generated_python_bindings(proto_defs, digest)
 validate_generated_rust_bindings(proto_defs, digest)
 validate_tool_registry()
+validate_extension_manifests()
 
 if subject_map["dispatch"]["message"] != "ActionDispatch":
     fail("Transport subject mapping for dispatch drifted from ActionDispatch")

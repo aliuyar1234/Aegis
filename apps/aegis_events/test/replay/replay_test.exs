@@ -37,8 +37,12 @@ defmodule Aegis.Events.ReplayTest do
     assert checkpoint_created.prev_event_hash == owned.event_hash
     assert result.last_seq_no == 3
     assert result.checkpoint.checkpoint_id == "ckp-session-replay-3"
+    assert result.checkpoint.tenant_id == session.tenant_id
+    assert result.checkpoint.workspace_id == session.workspace_id
     assert length(result.outbox_entries) == 3
     assert Enum.all?(result.outbox_entries, &(&1.status == "pending"))
+    assert Enum.all?(result.outbox_entries, &(&1.tenant_id == session.tenant_id))
+    assert Enum.all?(result.outbox_entries, &(&1.workspace_id == session.workspace_id))
 
     assert count_rows("sessions") == 1
     assert count_rows("session_events") == 3
@@ -201,6 +205,55 @@ defmodule Aegis.Events.ReplayTest do
     assert hydrated.integrity_failure.code == "hash_chain_mismatch"
   end
 
+  test "scopes replay, checkpoint, and outbox reads by tenant and workspace" do
+    fixture = fixture()
+    session = fixture.session_state
+
+    {:ok, _} = Events.append(session, fixture.raw_events)
+
+    scope = %{tenant_id: session.tenant_id, workspace_id: session.workspace_id}
+
+    assert [%Aegis.Events.Checkpoint{} = checkpoint] = Events.checkpoints(session.session_id, scope)
+    assert checkpoint.tenant_id == session.tenant_id
+    assert checkpoint.workspace_id == session.workspace_id
+
+    assert [_ | _] = Events.outbox(session.session_id, scope)
+    assert [_ | _] = Events.events(session.session_id, scope)
+    assert {:ok, replay} = Events.historical_replay(session.session_id, scope)
+    assert replay.replay_state.session_id == session.session_id
+
+    wrong_scope = %{tenant_id: "tenant-other", workspace_id: session.workspace_id}
+    assert [] == Events.events(session.session_id, wrong_scope)
+    assert [] == Events.checkpoints(session.session_id, wrong_scope)
+    assert [] == Events.outbox(session.session_id, wrong_scope)
+    assert {:error, :unknown_session} = Events.historical_replay(session.session_id, wrong_scope)
+  end
+
+  test "persists isolation tier across session rows, created events, and replay state" do
+    fixture = fixture()
+    session = Map.put(fixture.session_state, :isolation_tier, "tier_b")
+
+    raw_events =
+      Enum.map(fixture.raw_events, fn
+        %{type: "session.created", payload: payload} = event ->
+          %{event | payload: Map.put(payload, :isolation_tier, "tier_b")}
+
+        event ->
+          event
+      end)
+
+    assert {:ok, _result} = Events.append(session, raw_events)
+
+    [session_row] = Events.sessions(%{tenant_id: session.tenant_id, workspace_id: session.workspace_id})
+    assert session_row.isolation_tier == "tier_b"
+
+    [created_event | _rest] = Events.events(session.session_id)
+    assert created_event.payload.isolation_tier == "tier_b"
+
+    assert {:ok, hydrated} = Events.hydrate(session.session_id)
+    assert hydrated.replay_state.isolation_tier == "tier_b"
+  end
+
   test "sql migration artifact defines the canonical phase 02 tables" do
     migration =
       Path.join(
@@ -213,6 +266,11 @@ defmodule Aegis.Events.ReplayTest do
     assert migration =~ "CREATE TABLE IF NOT EXISTS session_events"
     assert migration =~ "CREATE TABLE IF NOT EXISTS session_checkpoints"
     assert migration =~ "CREATE TABLE IF NOT EXISTS outbox"
+    assert migration =~ "ALTER TABLE session_checkpoints"
+    assert migration =~ "ALTER TABLE outbox"
+    assert migration =~ "tenant_id TEXT NOT NULL"
+    assert migration =~ "workspace_id TEXT NOT NULL"
+    assert migration =~ "isolation_tier TEXT NOT NULL"
   end
 
   defp count_rows(table) do

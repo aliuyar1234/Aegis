@@ -12,4 +12,5 @@ Read in this order for new implementers:
 6. `observability-model.md`
 7. `security-governance.md`
 8. `multitenancy.md`
-9. `future-voice-media.md`
+9. `extensibility-surface.md`
+10. `future-voice-media.md`

@@ -9,6 +9,9 @@
     "tool_id",
     "tool_schema_version",
     "worker_kind",
+    "isolation_tier",
+    "worker_pool_id",
+    "dispatch_route_key",
     "risk_class",
     "idempotency_class",
     "timeout_class",
@@ -26,6 +29,20 @@
       "type": "string"
     },
     "worker_kind": {
+      "type": "string"
+    },
+    "isolation_tier": {
+      "type": "string",
+      "enum": [
+        "tier_a",
+        "tier_b",
+        "tier_c"
+      ]
+    },
+    "worker_pool_id": {
+      "type": "string"
+    },
+    "dispatch_route_key": {
       "type": "string"
     },
     "risk_class": {
@@ -89,6 +106,24 @@
       ]
     },
     "approved_argument_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "action_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "policy_decision": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "policy_reason": {
       "type": [
         "string",
         "null"

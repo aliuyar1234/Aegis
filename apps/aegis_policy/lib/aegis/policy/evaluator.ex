@@ -19,9 +19,12 @@ defmodule Aegis.Policy.Evaluator do
   @spec evaluate_action(map(), map()) :: {:ok, map()} | {:error, term()}
   def evaluate_action(request, session_context) when is_map(request) and is_map(session_context) do
     descriptor = ToolRegistry.fetch!(Map.fetch!(request, :tool_id))
+    isolation_tier = Map.get(session_context, :isolation_tier, "tier_a") |> normalize_string()
     mutating = mutating?(request, descriptor)
     dangerous_action_class = dangerous_action_class(request, descriptor, mutating)
     risk_class = Map.get(request, :risk_class, descriptor["risk_class"])
+    worker_kind = Map.get(request, :worker_kind, derive_worker_kind(Map.fetch!(request, :tool_id)))
+    routing = routing_metadata(session_context, worker_kind, isolation_tier)
     decision = decide(session_context, mutating, dangerous_action_class)
     input_digest = digest(Map.get(request, :input, %{}))
 
@@ -29,11 +32,14 @@ defmodule Aegis.Policy.Evaluator do
       %{
         tenant_id: Map.fetch!(session_context, :tenant_id),
         workspace_id: Map.fetch!(session_context, :workspace_id),
+        isolation_tier: isolation_tier,
         session_id: Map.fetch!(session_context, :session_id),
         action_id: Map.fetch!(request, :action_id),
         tool_id: Map.fetch!(request, :tool_id),
         tool_schema_version: Map.get(request, :tool_schema_version, descriptor["version"]),
-        worker_kind: Map.get(request, :worker_kind, derive_worker_kind(Map.fetch!(request, :tool_id))),
+        worker_kind: worker_kind,
+        worker_pool_id: routing.worker_pool_id,
+        dispatch_route_key: routing.dispatch_route_key,
         risk_class: risk_class,
         dangerous_action_class: dangerous_action_class,
         idempotency_class: Map.get(request, :idempotency_class, descriptor["idempotency_class"]),
@@ -50,37 +56,42 @@ defmodule Aegis.Policy.Evaluator do
     approval_expires_at = approval_expires_at(request)
     required_scopes = Map.fetch!(descriptor, "required_scopes")
 
-    {capability_token, approved_argument_digest, token_claims} =
-      maybe_issue_token(
-        session_context,
-        action_core,
-        decision,
-        approval_expires_at,
-        required_scopes,
-        request
-      )
+    with :ok <- ensure_tool_allowed_in_tier(descriptor, isolation_tier) do
+      {capability_token, approved_argument_digest, token_claims} =
+        maybe_issue_token(
+          session_context,
+          action_core,
+          decision,
+          approval_expires_at,
+          required_scopes,
+          request
+        )
 
-    {:ok,
-     %{
-       descriptor: descriptor,
-       tool_schema_version: action_core.tool_schema_version,
-       action_hash: action_hash,
-       approved_argument_digest: approved_argument_digest,
-       capability_token_ref: capability_token,
-       capability_token_claims: token_claims,
-       approval_required: decision == "require_approval",
-       approval_expires_at: approval_expires_at,
-       decision: decision,
-       reason: reason_for(decision, dangerous_action_class, session_context),
-       constraints: constraints_for(decision, session_context),
-       risk_class: risk_class,
-       dangerous_action_class: dangerous_action_class,
-       mutating: mutating,
-       worker_kind: action_core.worker_kind,
-       idempotency_class: action_core.idempotency_class,
-       timeout_class: action_core.timeout_class,
-       required_scopes: required_scopes
-     }}
+      {:ok,
+       %{
+         descriptor: descriptor,
+         tool_schema_version: action_core.tool_schema_version,
+         action_hash: action_hash,
+         approved_argument_digest: approved_argument_digest,
+         capability_token_ref: capability_token,
+         capability_token_claims: token_claims,
+         approval_required: decision == "require_approval",
+         approval_expires_at: approval_expires_at,
+         decision: decision,
+         reason: reason_for(decision, dangerous_action_class, session_context),
+         constraints: constraints_for(decision, session_context),
+         risk_class: risk_class,
+         dangerous_action_class: dangerous_action_class,
+         mutating: mutating,
+         worker_kind: action_core.worker_kind,
+         isolation_tier: isolation_tier,
+         worker_pool_id: action_core.worker_pool_id,
+         dispatch_route_key: action_core.dispatch_route_key,
+         idempotency_class: action_core.idempotency_class,
+         timeout_class: action_core.timeout_class,
+         required_scopes: required_scopes
+       }}
+    end
   rescue
     error in ArgumentError -> {:error, error.message}
   end
@@ -274,6 +285,41 @@ defmodule Aegis.Policy.Evaluator do
     tool_id
     |> String.split(".", parts: 2)
     |> List.first()
+  end
+
+  defp ensure_tool_allowed_in_tier(descriptor, isolation_tier) do
+    if isolation_tier in Map.get(descriptor, "allow_in_tiers", ["tier_a", "tier_b", "tier_c"]) do
+      :ok
+    else
+      {:error, {:tool_not_allowed_in_tier, Map.fetch!(descriptor, "tool_id"), isolation_tier}}
+    end
+  end
+
+  defp routing_metadata(session_context, worker_kind, isolation_tier) do
+    route_key =
+      case isolation_tier do
+        "tier_b" -> "tenant-" <> route_segment(Map.fetch!(session_context, :tenant_id))
+        "tier_c" -> "dedicated-" <> route_segment(Map.fetch!(session_context, :tenant_id))
+        _ -> "shared"
+      end
+
+    %{
+      isolation_tier: isolation_tier,
+      dispatch_route_key: route_key,
+      worker_pool_id: "#{worker_kind}:#{route_key}"
+    }
+  end
+
+  defp route_segment(value) do
+    value
+    |> to_string()
+    |> String.downcase()
+    |> String.replace(~r/[^a-z0-9]+/, "-")
+    |> String.trim("-")
+    |> case do
+      "" -> "default"
+      segment -> segment
+    end
   end
 
   defp normalize(value) when is_map(value) do

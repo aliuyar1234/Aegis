@@ -8,6 +8,9 @@
     "action_id",
     "execution_id",
     "worker_kind",
+    "isolation_tier",
+    "worker_pool_id",
+    "dispatch_route_key",
     "worker_subject",
     "accept_deadline",
     "contract_version"
@@ -20,6 +23,20 @@
       "type": "string"
     },
     "worker_kind": {
+      "type": "string"
+    },
+    "isolation_tier": {
+      "type": "string",
+      "enum": [
+        "tier_a",
+        "tier_b",
+        "tier_c"
+      ]
+    },
+    "worker_pool_id": {
+      "type": "string"
+    },
+    "dispatch_route_key": {
       "type": "string"
     },
     "worker_subject": {

@@ -81,11 +81,20 @@ test_suites:
     and chaos fixtures.
 - id: TS-011
   title: Security, multitenancy, and trust-boundary tests
-  command: pytest tests/security -q
+  command: python3 scripts/run_security_suite.py
   paths:
+  - apps/aegis_policy/test/authorizer_test.exs
+  - apps/aegis_events/test/replay/replay_test.exs
+  - apps/aegis_execution_bridge/test/execution_bridge/execution_bridge_test.exs
+  - apps/aegis_execution_bridge/test/execution_bridge/admission_control_test.exs
+  - apps/aegis_gateway/test/operator_console/operator_console_authorization_test.exs
+  - docs/design-docs/security-governance.md
+  - docs/threat-models/runtime-threat-model.md
+  - docs/threat-models/browser-wedge-threats.md
+  - docs/threat-models/enterprise-control-matrix.md
   - tests/security
-  proves: Validates RBAC/ABAC catalogs, tenancy scoping, quotas, and canonical-table
-    write prohibitions.
+  proves: Validates RBAC/ABAC catalogs, tenancy scoping, quotas, trust-boundary
+    documentation, and canonical-table write prohibitions.
 - id: TS-012
   title: Phase-gate scenario validation
   command: python3 scripts/run_phase_gate.py tests/phase-gates/internal-demo.yaml
@@ -108,9 +117,11 @@ test_suites:
   paths:
   - tests/extensibility
   - tests/extensibility/fixtures/sample-connector.yaml
+  - tests/extensibility/fixtures/sample-artifact-processor.yaml
   - schema/jsonschema/connector-manifest.schema.json
-  proves: Validates extension schemas, compatibility policy, and sample connector
-    fixtures.
+  - docs/design-docs/extensibility-surface.md
+  proves: Validates extension schemas, lifecycle and capability boundaries, and
+    sample connector fixtures.
 - id: TS-015
   title: Voice/media boundary tests
   command: python3 scripts/run_phase_gate.py tests/phase-gates/media-expansion.yaml

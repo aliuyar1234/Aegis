@@ -48,14 +48,14 @@ defmodule Aegis.Runtime do
   @spec lease(String.t()) :: {:ok, Aegis.Leases.SessionLease.t()} | {:error, term()}
   def lease(session_id), do: SessionKernel.lease(session_id)
 
-  @spec events(String.t()) :: [Aegis.Events.Envelope.t()]
-  def events(session_id), do: Aegis.Events.events(session_id)
+  @spec events(String.t(), map() | keyword()) :: [Aegis.Events.Envelope.t()]
+  def events(session_id, scope \\ %{}), do: Aegis.Events.events(session_id, scope)
 
-  @spec historical_replay(String.t()) :: {:ok, map()} | {:error, term()}
-  def historical_replay(session_id), do: Aegis.Events.historical_replay(session_id)
+  @spec historical_replay(String.t(), map() | keyword()) :: {:ok, map()} | {:error, term()}
+  def historical_replay(session_id, scope \\ %{}), do: Aegis.Events.historical_replay(session_id, scope)
 
-  @spec hydrate(String.t()) :: {:ok, map()} | {:error, term()}
-  def hydrate(session_id), do: Aegis.Events.hydrate(session_id)
+  @spec hydrate(String.t(), map() | keyword()) :: {:ok, map()} | {:error, term()}
+  def hydrate(session_id, scope \\ %{}), do: Aegis.Events.hydrate(session_id, scope)
 
   @spec tree_pid(String.t()) :: pid() | nil
   def tree_pid(session_id), do: Naming.whereis(session_id, :session_tree)

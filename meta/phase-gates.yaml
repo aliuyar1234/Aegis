@@ -162,7 +162,7 @@ phases:
   unlocks:
   - PHASE-09
 - id: PHASE-09
-  status: current
+  status: completed
   name: Multitenancy, quotas, authz, audit, and trust boundaries
   doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
   task_file: work-items/phase-09-multitenancy-quotas.yaml
@@ -180,7 +180,7 @@ phases:
   - PHASE-10
   - PHASE-13
 - id: PHASE-10
-  status: planned
+  status: current
   name: Extensibility surface, connector SDK, and compatibility policy
   doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
   task_file: work-items/phase-10-extensibility-surface.yaml

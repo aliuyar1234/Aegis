@@ -227,6 +227,7 @@ defmodule Aegis.Runtime.SessionKernel do
         session_id: replay_state.session_id,
         tenant_id: replay_state.tenant_id,
         workspace_id: replay_state.workspace_id,
+        isolation_tier: Map.get(replay_state, :isolation_tier, "tier_a"),
         session_kind: replay_state.session_kind,
         requested_by: replay_state.requested_by,
         owner_node: Map.get(session_attrs, :owner_node, replay_state.owner_node),
@@ -237,6 +238,7 @@ defmodule Aegis.Runtime.SessionKernel do
     |> SessionState.put_durable(%{
       session_kind: replay_state.session_kind,
       requested_by: replay_state.requested_by,
+      isolation_tier: Map.get(replay_state, :isolation_tier, "tier_a"),
       owner_node: replay_state.owner_node,
       phase: to_runtime_atom(replay_state.phase),
       control_mode: to_runtime_atom(replay_state.control_mode),

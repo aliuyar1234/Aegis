@@ -18,13 +18,13 @@ PostgreSQL is the canonical system of record.
 - `worker_registrations`
 - `outbox_messages`
 - `projected_session_views`
-- `quota_counters`
 - `schema_versions`
 
 ## sessions
 
 Stores current coarse projection for admission and query efficiency:
 - tenant/workspace ids
+- isolation tier
 - lifecycle fields
 - latest checkpoint pointer
 - latest seq_no
@@ -32,6 +32,11 @@ Stores current coarse projection for admission and query efficiency:
 - summary view fields
 
 This is not a substitute for the timeline.
+
+Phase 09 admission currently derives live-session counts from `sessions` plus the
+latest terminal event state rather than maintaining a separate quota counter
+table. Dedicated counters remain an optimization path if admission hot spots
+need it later.
 
 ## session_events
 

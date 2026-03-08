@@ -1,23 +1,32 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://aegis.runtime/schema/connector-manifest.schema.json",
-  "title": "ConnectorManifest",
+  "title": "ExtensionManifest",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "id",
+    "display_name",
     "version",
     "kind",
-    "input_schema_ref",
-    "output_schema_ref",
-    "runtime_contract_version"
+    "sdk",
+    "runtime_contract_version",
+    "extension_api_version",
+    "lifecycle",
+    "capability_boundary",
+    "compatibility"
   ],
   "properties": {
     "id": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9_-]+)*$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
     },
     "version": {
-      "type": "string"
+      "$ref": "#/$defs/versionString"
     },
     "kind": {
       "type": "string",
@@ -27,19 +36,410 @@
         "mcp_adapter"
       ]
     },
-    "input_schema_ref": {
-      "type": "string"
-    },
-    "output_schema_ref": {
-      "type": "string"
+    "sdk": {
+      "$ref": "#/$defs/sdk"
     },
     "runtime_contract_version": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
+    },
+    "extension_api_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lifecycle": {
+      "$ref": "#/$defs/lifecycle"
+    },
+    "capability_boundary": {
+      "$ref": "#/$defs/capabilityBoundary"
     },
     "compatibility": {
-      "type": "array",
-      "items": {
-        "type": "string"
+      "$ref": "#/$defs/compatibility"
+    },
+    "tool_connector": {
+      "$ref": "#/$defs/toolConnectorInterface"
+    },
+    "artifact_processor": {
+      "$ref": "#/$defs/artifactProcessorInterface"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "tool_connector"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "tool_connector"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "artifact_processor"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "artifact_processor"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "versionString": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$"
+    },
+    "versionRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "min",
+        "max"
+      ],
+      "properties": {
+        "min": {
+          "$ref": "#/$defs/versionString"
+        },
+        "max": {
+          "$ref": "#/$defs/versionString"
+        }
+      }
+    },
+    "sdk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "package",
+        "entry_module"
+      ],
+      "properties": {
+        "language": {
+          "type": "string",
+          "enum": [
+            "elixir",
+            "python",
+            "rust"
+          ]
+        },
+        "package": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry_module": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "lifecycleHook": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "handler",
+        "timeout_class",
+        "idempotent"
+      ],
+      "properties": {
+        "handler": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timeout_class": {
+          "type": "string",
+          "enum": [
+            "short",
+            "medium",
+            "long",
+            "manual_only"
+          ]
+        },
+        "idempotent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "install",
+        "start",
+        "health_check",
+        "run",
+        "shutdown"
+      ],
+      "properties": {
+        "install": {
+          "$ref": "#/$defs/lifecycleHook"
+        },
+        "start": {
+          "$ref": "#/$defs/lifecycleHook"
+        },
+        "health_check": {
+          "$ref": "#/$defs/lifecycleHook"
+        },
+        "run": {
+          "$ref": "#/$defs/lifecycleHook"
+        },
+        "shutdown": {
+          "$ref": "#/$defs/lifecycleHook"
+        }
+      }
+    },
+    "networkBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "none",
+            "egress_allowlist"
+          ]
+        },
+        "allowlist": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]+$"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "egress_allowlist"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "allowlist"
+            ],
+            "properties": {
+              "allowlist": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "artifactAccess": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inputs",
+        "outputs"
+      ],
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "capabilityBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_scopes",
+        "allowed_tools",
+        "dangerous_action_classes",
+        "secrets",
+        "network",
+        "artifact_access"
+      ],
+      "properties": {
+        "required_scopes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allowed_tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          }
+        },
+        "dangerous_action_classes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          }
+        },
+        "secrets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_]+$"
+          }
+        },
+        "network": {
+          "$ref": "#/$defs/networkBoundary"
+        },
+        "artifact_access": {
+          "$ref": "#/$defs/artifactAccess"
+        }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aegis_runtime",
+        "extension_api",
+        "tool_registry",
+        "supported_tiers"
+      ],
+      "properties": {
+        "aegis_runtime": {
+          "$ref": "#/$defs/versionRange"
+        },
+        "extension_api": {
+          "$ref": "#/$defs/versionRange"
+        },
+        "tool_registry": {
+          "$ref": "#/$defs/versionRange"
+        },
+        "supported_tiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "tier_a",
+              "tier_b",
+              "tier_c"
+            ]
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "toolConnectorInterface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tools"
+      ],
+      "properties": {
+        "tools": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool_id",
+              "input_schema_ref",
+              "output_schema_ref",
+              "executor_kind",
+              "artifact_expectations"
+            ],
+            "properties": {
+              "tool_id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+              },
+              "input_schema_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "output_schema_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "executor_kind": {
+                "type": "string",
+                "enum": [
+                  "python",
+                  "rust"
+                ]
+              },
+              "mutating": {
+                "type": "boolean"
+              },
+              "artifact_expectations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "artifactProcessorInterface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accepted_artifact_kinds",
+        "emitted_artifact_kinds",
+        "processing_mode",
+        "max_input_bytes"
+      ],
+      "properties": {
+        "accepted_artifact_kinds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "emitted_artifact_kinds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "processing_mode": {
+          "type": "string",
+          "enum": [
+            "batch",
+            "stream"
+          ]
+        },
+        "max_input_bytes": {
+          "type": "integer",
+          "minimum": 1
+        }
       }
     }
   }

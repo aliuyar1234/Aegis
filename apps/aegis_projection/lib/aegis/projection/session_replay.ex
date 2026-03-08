@@ -11,14 +11,14 @@ defmodule Aegis.Projection.SessionReplay do
   alias Aegis.Runtime
   alias Aegis.Runtime.Projection
 
-  @spec fetch(String.t(), map() | keyword()) :: {:ok, map()} | {:error, term()}
-  def fetch(session_id, opts \\ []) when is_binary(session_id) do
+  @spec fetch(String.t(), map() | keyword(), map() | keyword()) :: {:ok, map()} | {:error, term()}
+  def fetch(session_id, opts \\ [], scope \\ %{}) when is_binary(session_id) do
     opts = Map.new(opts)
 
-    with {:ok, replay} <- Runtime.historical_replay(session_id) do
+    with {:ok, replay} <- Runtime.historical_replay(session_id, scope) do
       selected_seq_no = normalize_selected_seq_no(opts[:seq_no], replay.replay_state.last_seq_no)
-      {:ok, selected} = Events.replay_at(session_id, selected_seq_no)
-      checkpoints = Events.checkpoints(session_id)
+      {:ok, selected} = Events.replay_at(session_id, selected_seq_no, scope)
+      checkpoints = Events.checkpoints(session_id, scope)
       artifacts = build_artifact_index(replay.timeline, replay.replay_state.recent_artifacts)
 
       {:ok,
@@ -45,9 +45,10 @@ defmodule Aegis.Projection.SessionReplay do
     end
   end
 
-  @spec artifact_view(String.t(), String.t()) :: {:ok, map()} | {:error, term()}
-  def artifact_view(session_id, artifact_id) when is_binary(session_id) and is_binary(artifact_id) do
-    with {:ok, replay} <- Runtime.historical_replay(session_id) do
+  @spec artifact_view(String.t(), String.t(), map() | keyword()) :: {:ok, map()} | {:error, term()}
+  def artifact_view(session_id, artifact_id, scope \\ %{})
+      when is_binary(session_id) and is_binary(artifact_id) do
+    with {:ok, replay} <- Runtime.historical_replay(session_id, scope) do
       artifacts = build_artifact_index(replay.timeline, replay.replay_state.recent_artifacts)
 
       case Map.get(artifacts, artifact_id) do

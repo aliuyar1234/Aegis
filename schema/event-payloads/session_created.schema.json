@@ -5,10 +5,19 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "isolation_tier",
     "session_kind",
     "requested_by"
   ],
   "properties": {
+    "isolation_tier": {
+      "type": "string",
+      "enum": [
+        "tier_a",
+        "tier_b",
+        "tier_c"
+      ]
+    },
     "session_kind": {
       "type": "string"
     },

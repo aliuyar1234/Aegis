@@ -5,6 +5,7 @@ defmodule Aegis.Events.Replay do
     %{
       tenant_id: session_row.tenant_id,
       workspace_id: session_row.workspace_id,
+      isolation_tier: Map.get(session_row, :isolation_tier, "tier_a"),
       session_id: session_row.session_id,
       session_kind: Map.get(session_row, :session_kind, "browser_operation"),
       requested_by: Map.get(session_row, :requested_by, "system"),
@@ -41,6 +42,7 @@ defmodule Aegis.Events.Replay do
     %{
       tenant_id: payload.tenant_id,
       workspace_id: payload.workspace_id,
+      isolation_tier: Map.get(payload, :isolation_tier, Map.get(session_row, :isolation_tier, "tier_a")),
       session_id: payload.session_id,
       session_kind:
         Map.get(payload, :session_kind, Map.get(session_row, :session_kind, "browser_operation")),
@@ -86,6 +88,7 @@ defmodule Aegis.Events.Replay do
 
   defp do_apply(state, %{type: "session.created", payload: payload}) do
     state
+    |> Map.put(:isolation_tier, Map.get(payload, :isolation_tier, Map.get(state, :isolation_tier, "tier_a")))
     |> Map.put(:session_kind, payload.session_kind)
     |> Map.put(:requested_by, payload.requested_by)
   end
@@ -197,6 +200,9 @@ defmodule Aegis.Events.Replay do
       tool_id: tool_id,
       tool_schema_version: Map.get(payload, :tool_schema_version, "v1"),
       worker_kind: Map.get(payload, :worker_kind, derive_worker_kind(tool_id)),
+      isolation_tier: Map.get(payload, :isolation_tier, Map.get(state, :isolation_tier, "tier_a")),
+      worker_pool_id: Map.get(payload, :worker_pool_id),
+      dispatch_route_key: Map.get(payload, :dispatch_route_key),
       input: Map.get(payload, :input, %{}),
       status: "requested",
       risk_class: Map.get(payload, :risk_class, "read_only"),
@@ -246,6 +252,9 @@ defmodule Aegis.Events.Replay do
         |> Map.put(:status, "dispatched")
         |> Map.put(:execution_id, payload.execution_id)
         |> Map.put(:worker_kind, payload.worker_kind)
+        |> Map.put(:isolation_tier, Map.get(payload, :isolation_tier, Map.get(action, :isolation_tier)))
+        |> Map.put(:worker_pool_id, Map.get(payload, :worker_pool_id, Map.get(action, :worker_pool_id)))
+        |> Map.put(:dispatch_route_key, Map.get(payload, :dispatch_route_key, Map.get(action, :dispatch_route_key)))
         |> Map.put(:accept_deadline, payload.accept_deadline)
       end)
     )

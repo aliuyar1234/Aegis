@@ -22,6 +22,7 @@ defmodule Aegis.Runtime.Projection do
     %{
       tenant_id: Map.fetch!(durable, :tenant_id),
       workspace_id: Map.fetch!(durable, :workspace_id),
+      isolation_tier: Map.get(durable, :isolation_tier, "tier_a"),
       session_id: Map.fetch!(durable, :session_id),
       phase: durable |> Map.fetch!(:phase) |> to_string(),
       control_mode: durable |> Map.fetch!(:control_mode) |> to_string(),

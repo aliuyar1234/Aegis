@@ -65,6 +65,7 @@ defmodule Aegis.Runtime.CommandHandler do
 
   def bootstrap(%SessionState{} = state, metadata) do
     payload = %{
+      isolation_tier: Map.get(state.durable, :isolation_tier, "tier_a"),
       session_kind: state.durable.session_kind,
       requested_by: state.durable.requested_by
     }
@@ -530,6 +531,9 @@ defmodule Aegis.Runtime.CommandHandler do
         tool_id: tool_id,
         tool_schema_version: Map.get(attrs, :tool_schema_version, descriptor["version"]),
         worker_kind: Map.fetch!(decision, :worker_kind),
+        isolation_tier: Map.fetch!(decision, :isolation_tier),
+        worker_pool_id: Map.fetch!(decision, :worker_pool_id),
+        dispatch_route_key: Map.fetch!(decision, :dispatch_route_key),
         input: Map.get(attrs, :input, %{}),
         status: initial_action_status(Map.fetch!(decision, :decision)),
         risk_class: Map.fetch!(decision, :risk_class),
@@ -578,6 +582,9 @@ defmodule Aegis.Runtime.CommandHandler do
              tool_id: action.tool_id,
              tool_schema_version: action.tool_schema_version,
              worker_kind: action.worker_kind,
+             isolation_tier: action.isolation_tier,
+             worker_pool_id: action.worker_pool_id,
+             dispatch_route_key: action.dispatch_route_key,
              input: action.input,
              risk_class: action.risk_class,
              dangerous_action_class: action.dangerous_action_class,
@@ -658,6 +665,10 @@ defmodule Aegis.Runtime.CommandHandler do
             action_id: updated_action.action_id,
             execution_id: updated_action.execution_id,
             worker_kind: updated_action.worker_kind,
+            isolation_tier: Map.get(attrs, :isolation_tier, updated_action.isolation_tier),
+            worker_pool_id: Map.get(attrs, :worker_pool_id, updated_action.worker_pool_id),
+            dispatch_route_key:
+              Map.get(attrs, :dispatch_route_key, updated_action.dispatch_route_key),
             worker_subject: Map.fetch!(attrs, :worker_subject),
             accept_deadline: updated_action.accept_deadline,
             contract_version: Map.get(attrs, :contract_version, "v1"),
@@ -1426,6 +1437,7 @@ defmodule Aegis.Runtime.CommandHandler do
     %{
       tenant_id: state.durable.tenant_id,
       workspace_id: state.durable.workspace_id,
+      isolation_tier: Map.get(state.durable, :isolation_tier, "tier_a"),
       session_id: state.durable.session_id,
       lease_epoch: state.durable.lease_epoch,
       control_mode: state.durable.control_mode,

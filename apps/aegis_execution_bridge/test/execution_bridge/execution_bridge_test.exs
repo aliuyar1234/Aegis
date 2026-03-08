@@ -56,6 +56,8 @@ defmodule Aegis.ExecutionBridgeTest do
 
     assert registration.available_capacity == 4
     assert registration.status == "active"
+    assert registration.attributes.worker_pool_id == "shared"
+    assert registration.attributes.isolation_tier == "tier_a"
 
     assert {:ok, heartbeat} =
              ExecutionBridge.worker_heartbeat(%{
@@ -68,6 +70,8 @@ defmodule Aegis.ExecutionBridgeTest do
     assert heartbeat.available_capacity == 2
     assert heartbeat.attributes.region == "eu-central"
     assert heartbeat.attributes.load == "50%"
+    assert heartbeat.attributes.worker_pool_id == "shared"
+    assert heartbeat.attributes.isolation_tier == "tier_a"
 
     [registered_message, heartbeat_message] = ExecutionBridge.published_messages()
     assert registered_message.subject == "aegis.v1.registry.register.browser"
@@ -116,26 +120,81 @@ defmodule Aegis.ExecutionBridgeTest do
     assert published.headers["x-aegis-lease-epoch"] == Integer.to_string(lease.lease_epoch)
     assert published.headers["x-aegis-contract-version"] == "v1"
     assert published.headers["x-aegis-isolation-tier"] == "tier_a"
+    assert published.payload.isolation_tier == "tier_a"
 
     execution = ExecutionBridge.execution(dispatch_result.execution_id)
     assert execution.status == "dispatched"
+    assert execution.tenant_id == "tenant-bridge"
+    assert execution.workspace_id == "workspace-bridge"
     assert execution.worker_kind == "browser"
+    assert execution.isolation_tier == "tier_a"
+    assert execution.dispatch_subject == "aegis.v1.command.dispatch.browser"
     assert execution.trace_id == "trace-dispatch-1"
     assert execution.idempotency_key == "idem-dispatch-1"
+
+    requested_event =
+      Runtime.events(session_id)
+      |> Enum.find(&(&1.type == "action.requested"))
 
     dispatched_event =
       Runtime.events(session_id)
       |> Enum.find(&(&1.type == "action.dispatched"))
 
+    assert requested_event.payload.isolation_tier == "tier_a"
+    assert requested_event.payload.worker_pool_id == "browser:shared"
+    assert requested_event.payload.dispatch_route_key == "shared"
     assert dispatched_event.trace_id == "trace-dispatch-1"
     assert dispatched_event.idempotency_key == "idem-dispatch-1"
+    assert dispatched_event.payload.isolation_tier == "tier_a"
+    assert dispatched_event.payload.worker_pool_id == "browser:shared"
+    assert dispatched_event.payload.dispatch_route_key == "shared"
 
     outbox_row =
       Events.outbox(session_id)
       |> Enum.find(&(&1.event_type == "policy.evaluated"))
 
     assert outbox_row.status == "published"
+    assert outbox_row.tenant_id == "tenant-bridge"
+    assert outbox_row.workspace_id == "workspace-bridge"
     assert outbox_row.headers["x-aegis-trace-id"] == "trace-dispatch-1"
+  end
+
+  test "routes tier-b browser work through tenant-isolated dispatch subjects" do
+    session_id =
+      start_active_session!(%{
+        session_id: "bridge-tier-b-#{System.unique_integer([:positive])}",
+        tenant_id: "acme-tier-b",
+        workspace_id: "workspace-tier-b",
+        requested_by: "bridge-suite",
+        session_kind: "browser_operation",
+        isolation_tier: "tier_b"
+      })
+
+    execution_id = dispatch_action!(session_id, "action-tier-b-1", "trace-tier-b-1")
+
+    [published] = ExecutionBridge.published_messages()
+    assert published.subject == "aegis.v1.command.dispatch.browser.tenant-acme-tier-b"
+    assert published.payload.isolation_tier == "tier_b"
+
+    execution = ExecutionBridge.execution(execution_id)
+    assert execution.isolation_tier == "tier_b"
+    assert execution.dispatch_subject == "aegis.v1.command.dispatch.browser.tenant-acme-tier-b"
+
+    requested_event =
+      Runtime.events(session_id)
+      |> Enum.find(&(&1.type == "action.requested"))
+
+    dispatched_event =
+      Runtime.events(session_id)
+      |> Enum.find(&(&1.type == "action.dispatched"))
+
+    assert requested_event.payload.isolation_tier == "tier_b"
+    assert requested_event.payload.worker_pool_id == "browser:tenant-acme-tier-b"
+    assert requested_event.payload.dispatch_route_key == "tenant-acme-tier-b"
+    assert dispatched_event.payload.isolation_tier == "tier_b"
+    assert dispatched_event.payload.worker_pool_id == "browser:tenant-acme-tier-b"
+    assert dispatched_event.payload.dispatch_route_key == "tenant-acme-tier-b"
+    assert Runtime.projection(session_id).isolation_tier == "tier_b"
   end
 
   test "ingests progress and completion callbacks and registers worker artifacts", %{
@@ -560,6 +619,45 @@ defmodule Aegis.ExecutionBridgeTest do
     assert Enum.all?(published.deliveries, &(&1.status == :nack))
   end
 
+  test "rejects worker callbacks whose scoped ref does not match the execution scope", %{
+    session_id: session_id
+  } do
+    execution_id = dispatch_action!(session_id, "action-scope-mismatch-1", "trace-scope-mismatch-1")
+    session_ref = session_ref(session_id)
+
+    assert {:ok, _accepted} =
+             ExecutionBridge.accept_action("browser", %{
+               ref: session_ref,
+               execution_id: execution_id,
+               worker_id: "worker-browser-scope-1",
+               accepted_at: "2026-03-08T13:19:00Z"
+             })
+
+    mismatched_ref = %{session_ref | tenant_id: "tenant-other"}
+
+    assert {:error, :unknown_execution} =
+             ExecutionBridge.complete_action(
+               "browser",
+               %{
+                 ref: mismatched_ref,
+                 execution_id: execution_id,
+                 action_id: "action-scope-mismatch-1",
+                 normalized_result: %{title: "Example Domain"},
+                 raw_result_artifact_id: "artifact-scope-mismatch-1",
+                 completed_at: "2026-03-08T13:19:10Z"
+               },
+               %{"x-aegis-tenant-id" => "tenant-other"}
+             )
+
+    execution = ExecutionBridge.execution(execution_id)
+    assert execution.status == "accepted"
+
+    refute Enum.any?(
+             Runtime.events(session_id),
+             &(&1.type == "action.succeeded" and &1.payload.execution_id == execution_id)
+           )
+  end
+
   test "guardrails permit only execution-bridge-owned tables" do
     assert :ok = Guardrails.assert_write_allowed!("action_executions")
     assert :ok = Guardrails.assert_write_allowed!("worker_registrations")
@@ -608,6 +706,30 @@ defmodule Aegis.ExecutionBridgeTest do
 
     assert [{:ok, %{execution_id: execution_id}}] = ExecutionBridge.flush_dispatches()
     execution_id
+  end
+
+  defp start_active_session!(attrs) do
+    session_id = Map.fetch!(attrs, :session_id)
+
+    {:ok, tree_pid} = Runtime.start_session(attrs)
+
+    on_exit(fn ->
+      if Process.alive?(tree_pid) do
+        Process.exit(tree_pid, :shutdown)
+      end
+    end)
+
+    {:ok, lease} = Runtime.lease(session_id)
+
+    assert {:ok, _result} =
+             Runtime.dispatch(
+               session_id,
+               {:activate, %{owner_node: lease.owner_node, lease_epoch: lease.lease_epoch}},
+               owner_node: lease.owner_node,
+               lease_epoch: lease.lease_epoch
+             )
+
+    session_id
   end
 
   defp session_ref(session_id) do

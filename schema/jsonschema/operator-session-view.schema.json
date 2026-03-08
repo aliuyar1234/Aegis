@@ -23,6 +23,9 @@
     "workspace_id": {
       "type": "string"
     },
+    "isolation_tier": {
+      "type": "string"
+    },
     "session_id": {
       "type": "string"
     },

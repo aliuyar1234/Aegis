@@ -13,6 +13,7 @@ defmodule Aegis.Events.Store do
                          "session.failed",
                          "session.quarantined"
                        ])
+  @terminal_session_events ["session.completed", "session.failed"]
 
   def reset! do
     SQL.query!(
@@ -24,22 +25,58 @@ defmodule Aegis.Events.Store do
     :ok
   end
 
-  def sessions do
+  def sessions(scope \\ %{}) do
+    scope = normalize_scope(scope)
+
     SQL.query!(
       Repo,
       """
       SELECT session_id, tenant_id, workspace_id, session_kind, requested_by, owner_node,
-             last_seq_no, last_event_hash, current_checkpoint_id, inserted_at, updated_at
+             isolation_tier, last_seq_no, last_event_hash, current_checkpoint_id, inserted_at, updated_at
       FROM sessions
+      WHERE ($1::text IS NULL OR tenant_id = $1)
+        AND ($2::text IS NULL OR workspace_id = $2)
       ORDER BY updated_at DESC, session_id ASC
       """,
-      []
+      [scope.tenant_id, scope.workspace_id]
     )
     |> rows_to_maps()
     |> Enum.map(&normalize_map/1)
   end
 
-  def events(session_id) do
+  def session_exists?(session_id, scope \\ %{}) do
+    not is_nil(fetch_session_row(session_id, normalize_scope(scope)))
+  end
+
+  def live_session_count(scope \\ %{}) do
+    scope = normalize_scope(scope)
+
+    SQL.query!(
+      Repo,
+      """
+      SELECT COUNT(*)::bigint AS live_count
+      FROM sessions AS s
+      JOIN LATERAL (
+        SELECT type
+        FROM session_events AS e
+        WHERE e.session_id = s.session_id
+        ORDER BY e.seq_no DESC
+        LIMIT 1
+      ) AS latest_event ON TRUE
+      WHERE ($1::text IS NULL OR s.tenant_id = $1)
+        AND ($2::text IS NULL OR s.workspace_id = $2)
+        AND latest_event.type <> ALL($3)
+      """,
+      [scope.tenant_id, scope.workspace_id, @terminal_session_events]
+    )
+    |> rows_to_maps()
+    |> List.first()
+    |> Map.fetch!(:live_count)
+  end
+
+  def events(session_id, scope \\ %{}) do
+    scope = normalize_scope(scope)
+
     SQL.query!(
       Repo,
       """
@@ -49,40 +86,50 @@ defmodule Aegis.Events.Store do
              determinism_class, prev_event_hash, event_hash, payload
       FROM session_events
       WHERE session_id = $1
+        AND ($2::text IS NULL OR tenant_id = $2)
+        AND ($3::text IS NULL OR workspace_id = $3)
       ORDER BY seq_no ASC
       """,
-      [session_id]
+      [session_id, scope.tenant_id, scope.workspace_id]
     )
     |> rows_to_maps()
     |> Enum.map(&to_envelope/1)
   end
 
-  def checkpoints(session_id) do
+  def checkpoints(session_id, scope \\ %{}) do
+    scope = normalize_scope(scope)
+
     SQL.query!(
       Repo,
       """
-      SELECT checkpoint_id, session_id, seq_no, payload, inserted_at
+      SELECT checkpoint_id, tenant_id, workspace_id, session_id, seq_no, payload, inserted_at
       FROM session_checkpoints
       WHERE session_id = $1
+        AND ($2::text IS NULL OR tenant_id = $2)
+        AND ($3::text IS NULL OR workspace_id = $3)
       ORDER BY seq_no ASC
       """,
-      [session_id]
+      [session_id, scope.tenant_id, scope.workspace_id]
     )
     |> rows_to_maps()
     |> Enum.map(&to_checkpoint/1)
   end
 
-  def latest_checkpoint(session_id) do
+  def latest_checkpoint(session_id, scope \\ %{}) do
+    scope = normalize_scope(scope)
+
     SQL.query!(
       Repo,
       """
-      SELECT checkpoint_id, session_id, seq_no, payload, inserted_at
+      SELECT checkpoint_id, tenant_id, workspace_id, session_id, seq_no, payload, inserted_at
       FROM session_checkpoints
       WHERE session_id = $1
+        AND ($2::text IS NULL OR tenant_id = $2)
+        AND ($3::text IS NULL OR workspace_id = $3)
       ORDER BY seq_no DESC
       LIMIT 1
       """,
-      [session_id]
+      [session_id, scope.tenant_id, scope.workspace_id]
     )
     |> rows_to_maps()
     |> List.first()
@@ -92,30 +139,36 @@ defmodule Aegis.Events.Store do
     end
   end
 
-  def outbox(session_id) do
+  def outbox(session_id, scope \\ %{}) do
+    scope = normalize_scope(scope)
+
     SQL.query!(
       Repo,
       """
-      SELECT outbox_id, session_id, event_id, event_type, status, subject, headers, payload,
-             inserted_at, published_at
+      SELECT outbox_id, tenant_id, workspace_id, session_id, event_id, event_type, status,
+             subject, headers, payload, inserted_at, published_at
       FROM outbox
       WHERE session_id = $1
+        AND ($2::text IS NULL OR tenant_id = $2)
+        AND ($3::text IS NULL OR workspace_id = $3)
       ORDER BY inserted_at ASC, event_id ASC
       """,
-      [session_id]
+      [session_id, scope.tenant_id, scope.workspace_id]
     )
     |> rows_to_maps()
     |> Enum.map(&normalize_map/1)
   end
 
-  def historical_replay(session_id) do
-    case fetch_session_row(session_id) do
+  def historical_replay(session_id, scope \\ %{}) do
+    scope = normalize_scope(scope)
+
+    case fetch_session_row(session_id, scope) do
       nil ->
         {:error, :unknown_session}
 
       session_row ->
-        checkpoint = latest_checkpoint(session_id)
-        timeline = events(session_id)
+        checkpoint = latest_checkpoint(session_id, scope)
+        timeline = events(session_id, scope)
         tail = tail_after_checkpoint(timeline, checkpoint)
 
         with :ok <- validate_replay_inputs(session_row, checkpoint, timeline),
@@ -134,20 +187,24 @@ defmodule Aegis.Events.Store do
     end
   end
 
-  def replay_at(session_id, seq_no) when is_integer(seq_no) and seq_no >= 0 do
-    case fetch_session_row(session_id) do
+  def replay_at(session_id, seq_no), do: replay_at(session_id, seq_no, %{})
+
+  def replay_at(session_id, seq_no, scope) when is_integer(seq_no) and seq_no >= 0 do
+    scope = normalize_scope(scope)
+
+    case fetch_session_row(session_id, scope) do
       nil ->
         {:error, :unknown_session}
 
       session_row ->
         timeline =
           session_id
-          |> events()
+          |> events(scope)
           |> Enum.filter(&(&1.seq_no <= seq_no))
 
         checkpoint =
           session_id
-          |> checkpoints()
+          |> checkpoints(scope)
           |> Enum.filter(&(&1.seq_no <= seq_no))
           |> List.last()
 
@@ -169,14 +226,18 @@ defmodule Aegis.Events.Store do
     end
   end
 
-  def hydrate(session_id) do
-    case fetch_session_row(session_id) do
+  def hydrate(session_id), do: hydrate(session_id, %{})
+
+  def hydrate(session_id, scope) do
+    scope = normalize_scope(scope)
+
+    case fetch_session_row(session_id, scope) do
       nil ->
         {:error, :unknown_session}
 
       session_row ->
-        checkpoint = latest_checkpoint(session_id)
-        timeline = events(session_id)
+        checkpoint = latest_checkpoint(session_id, scope)
+        timeline = events(session_id, scope)
         tail = tail_after_checkpoint(timeline, checkpoint)
 
         with :ok <- validate_replay_inputs(session_row, checkpoint, timeline),
@@ -217,10 +278,10 @@ defmodule Aegis.Events.Store do
         ensure_session_row!(session_state)
         session_row = lock_session_row!(session_state.session_id)
 
-        case validate_seq(session_row, raw_events) do
-          :ok ->
-            append_transaction(session_row, session_state, raw_events, opts)
-
+        with :ok <- ensure_session_scope(session_row, session_state),
+             :ok <- validate_seq(session_row, raw_events) do
+          append_transaction(session_row, session_state, raw_events, opts)
+        else
           {:error, reason} ->
             Repo.rollback(reason)
         end
@@ -312,16 +373,17 @@ defmodule Aegis.Events.Store do
       Repo,
       """
       INSERT INTO sessions (
-        session_id, tenant_id, workspace_id, session_kind, requested_by, owner_node,
+        session_id, tenant_id, workspace_id, isolation_tier, session_kind, requested_by, owner_node,
         last_seq_no, last_event_hash, current_checkpoint_id, inserted_at, updated_at
       )
-      VALUES ($1, $2, $3, $4, $5, $6, 0, 'genesis', NULL, $7, $7)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, 0, 'genesis', NULL, $8, $8)
       ON CONFLICT (session_id) DO NOTHING
       """,
       [
         session_state.session_id,
         session_state.tenant_id,
         session_state.workspace_id,
+        Map.get(session_state, :isolation_tier, "tier_a"),
         Map.get(session_state, :session_kind, "browser_operation"),
         Map.get(session_state, :requested_by, "system"),
         Map.get(session_state, :owner_node, Atom.to_string(node())),
@@ -336,8 +398,9 @@ defmodule Aegis.Events.Store do
     case SQL.query!(
            Repo,
            """
-           SELECT session_id, tenant_id, workspace_id, session_kind, requested_by, owner_node,
-                  last_seq_no, last_event_hash, current_checkpoint_id, inserted_at, updated_at
+           SELECT session_id, tenant_id, workspace_id, isolation_tier, session_kind, requested_by,
+                  owner_node, last_seq_no, last_event_hash, current_checkpoint_id, inserted_at,
+                  updated_at
            FROM sessions
            WHERE session_id = $1
            FOR UPDATE
@@ -351,16 +414,21 @@ defmodule Aegis.Events.Store do
     end
   end
 
-  defp fetch_session_row(session_id) do
+  defp fetch_session_row(session_id, scope) do
+    scope = normalize_scope(scope)
+
     SQL.query!(
       Repo,
       """
-      SELECT session_id, tenant_id, workspace_id, session_kind, requested_by, owner_node,
-             last_seq_no, last_event_hash, current_checkpoint_id, inserted_at, updated_at
+      SELECT session_id, tenant_id, workspace_id, isolation_tier, session_kind, requested_by,
+             owner_node, last_seq_no, last_event_hash, current_checkpoint_id, inserted_at,
+             updated_at
       FROM sessions
       WHERE session_id = $1
+        AND ($2::text IS NULL OR tenant_id = $2)
+        AND ($3::text IS NULL OR workspace_id = $3)
       """,
-      [session_id]
+      [session_id, scope.tenant_id, scope.workspace_id]
     )
     |> rows_to_maps()
     |> List.first()
@@ -381,8 +449,9 @@ defmodule Aegis.Events.Store do
           current_checkpoint_id = $5,
           updated_at = $6
       WHERE session_id = $1
-      RETURNING session_id, tenant_id, workspace_id, session_kind, requested_by, owner_node,
-                last_seq_no, last_event_hash, current_checkpoint_id, inserted_at, updated_at
+      RETURNING session_id, tenant_id, workspace_id, isolation_tier, session_kind, requested_by,
+                owner_node, last_seq_no, last_event_hash, current_checkpoint_id, inserted_at,
+                updated_at
       """,
       [session_id, owner_node, last_seq_no, last_event_hash, checkpoint_id, now()]
     )
@@ -438,11 +507,15 @@ defmodule Aegis.Events.Store do
     SQL.query!(
       Repo,
       """
-      INSERT INTO session_checkpoints (checkpoint_id, session_id, seq_no, payload, inserted_at)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO session_checkpoints (
+        checkpoint_id, tenant_id, workspace_id, session_id, seq_no, payload, inserted_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       """,
       [
         checkpoint.checkpoint_id,
+        checkpoint.tenant_id,
+        checkpoint.workspace_id,
         checkpoint.session_id,
         checkpoint.seq_no,
         checkpoint.payload,
@@ -456,13 +529,15 @@ defmodule Aegis.Events.Store do
       Repo,
       """
       INSERT INTO outbox (
-        outbox_id, session_id, event_id, event_type, status, subject, headers, payload,
-        inserted_at, published_at
+        outbox_id, tenant_id, workspace_id, session_id, event_id, event_type, status, subject,
+        headers, payload, inserted_at, published_at
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       """,
       [
         outbox_row.outbox_id,
+        outbox_row.tenant_id,
+        outbox_row.workspace_id,
         outbox_row.session_id,
         outbox_row.event_id,
         outbox_row.event_type,
@@ -552,6 +627,8 @@ defmodule Aegis.Events.Store do
 
     %Checkpoint{
       checkpoint_id: checkpoint_id,
+      tenant_id: session_state.tenant_id,
+      workspace_id: session_state.workspace_id,
       session_id: session_state.session_id,
       seq_no: seq_no,
       payload: payload,
@@ -601,19 +678,21 @@ defmodule Aegis.Events.Store do
   defp build_outbox_row(session_row, envelope) do
     %{
       outbox_id: "outbox-#{envelope.event_id}",
+      tenant_id: session_row.tenant_id,
+      workspace_id: session_row.workspace_id,
       session_id: session_row.session_id,
       event_id: envelope.event_id,
       event_type: envelope.type,
       status: "pending",
       subject: "aegis.v1.event.#{String.replace(envelope.type, ".", "_")}",
-      headers: build_outbox_headers(envelope),
+      headers: build_outbox_headers(session_row, envelope),
       payload: envelope.payload,
       inserted_at: envelope.recorded_at,
       published_at: nil
     }
   end
 
-  defp build_outbox_headers(envelope) do
+  defp build_outbox_headers(session_row, envelope) do
     %{
       "x-aegis-trace-id" => envelope.trace_id,
       "x-aegis-tenant-id" => envelope.tenant_id,
@@ -621,7 +700,8 @@ defmodule Aegis.Events.Store do
       "x-aegis-session-id" => envelope.session_id,
       "x-aegis-lease-epoch" => to_string(envelope.lease_epoch),
       "x-aegis-contract-version" => "v1",
-      "x-aegis-isolation-tier" => Map.get(envelope.payload, :isolation_tier, "tier_a")
+      "x-aegis-isolation-tier" =>
+        Map.get(envelope.payload, :isolation_tier, Map.get(session_row, :isolation_tier, "tier_a"))
     }
   end
 
@@ -663,6 +743,16 @@ defmodule Aegis.Events.Store do
     payload = checkpoint.payload
 
     cond do
+      checkpoint.tenant_id != session_row.tenant_id ->
+        {:error,
+         {:checkpoint_corruption, :tenant_id_mismatch,
+          %{checkpoint_id: checkpoint.checkpoint_id, tenant_id: checkpoint.tenant_id}}}
+
+      checkpoint.workspace_id != session_row.workspace_id ->
+        {:error,
+         {:checkpoint_corruption, :workspace_id_mismatch,
+          %{checkpoint_id: checkpoint.checkpoint_id, workspace_id: checkpoint.workspace_id}}}
+
       Map.get(payload, :session_id) not in [nil, session_row.session_id] ->
         {:error,
          {:checkpoint_corruption, :session_id_mismatch,
@@ -860,6 +950,23 @@ defmodule Aegis.Events.Store do
     end
   end
 
+  defp ensure_session_scope(session_row, session_state) do
+    cond do
+      Map.get(session_state, :tenant_id, session_row.tenant_id) != session_row.tenant_id ->
+        {:error,
+         {:session_scope_mismatch, :tenant_id,
+          %{expected: session_row.tenant_id, actual: Map.get(session_state, :tenant_id)}}}
+
+      Map.get(session_state, :workspace_id, session_row.workspace_id) != session_row.workspace_id ->
+        {:error,
+         {:session_scope_mismatch, :workspace_id,
+          %{expected: session_row.workspace_id, actual: Map.get(session_state, :workspace_id)}}}
+
+      true ->
+        :ok
+    end
+  end
+
   defp tail_after_checkpoint(timeline, nil), do: timeline
 
   defp tail_after_checkpoint(timeline, checkpoint) do
@@ -896,6 +1003,8 @@ defmodule Aegis.Events.Store do
   defp to_checkpoint(row) do
     %Checkpoint{
       checkpoint_id: row.checkpoint_id,
+      tenant_id: row.tenant_id,
+      workspace_id: row.workspace_id,
       session_id: row.session_id,
       seq_no: row.seq_no,
       payload: normalize_map(row.payload),
@@ -991,6 +1100,20 @@ defmodule Aegis.Events.Store do
     rescue
       ArgumentError -> key
     end
+  end
+
+  defp normalize_scope(nil), do: %{tenant_id: nil, workspace_id: nil}
+
+  defp normalize_scope(scope) when is_list(scope) or is_map(scope) do
+    scope =
+      scope
+      |> Map.new()
+      |> normalize_map()
+
+    %{
+      tenant_id: Map.get(scope, :tenant_id),
+      workspace_id: Map.get(scope, :workspace_id)
+    }
   end
 
   defp hash_of(term) do

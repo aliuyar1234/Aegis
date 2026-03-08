@@ -1,5 +1,5 @@
-current_phase: PHASE-09
-current_phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+current_phase: PHASE-10
+current_phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
 completed_phases:
 - PHASE-00
 - PHASE-01
@@ -10,9 +10,10 @@ completed_phases:
 - PHASE-06
 - PHASE-07
 - PHASE-08
+- PHASE-09
 starting_sequence:
-- P09-T01
-- P09-T04
-notes: Phases 00 through 08 are implemented in this repository. Phase 09 is the
-  active bounded implementation pass and starts with tenant and workspace scoping
-  plus RBAC/ABAC trust-boundary enforcement.
+- P10-T02
+- P10-T03
+notes: Phases 00 through 09 are implemented in this repository. Phase 10 is the
+  active bounded implementation pass and now continues with the MCP adapter
+  boundary and compatibility policy after the extension contract surface landed.

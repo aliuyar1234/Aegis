@@ -35,7 +35,9 @@ Subjects are explicit and versioned:
 
 - `worker_kind` is the primary routing key.
 - tenant/workspace/session/trace data travel in headers, not in subject names, for Tier A.
-- higher isolation tiers may use dedicated streams or deployment namespaces without changing message contracts.
+- higher isolation tiers append a stable route key to dispatch and cancel subjects, for example `aegis.v1.command.dispatch.browser.tenant-acme`.
+- worker registrations carry `worker_pool_id` and `isolation_tier` attributes so pool affinity is explicit even when the control plane consumer remains shared.
+- Tier C may still map to a dedicated deployment namespace, but the routed subject key remains durable in events and execution metadata for replay and audit.
 
 ## Required headers
 

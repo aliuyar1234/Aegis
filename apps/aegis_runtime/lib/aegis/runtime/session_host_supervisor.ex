@@ -9,7 +9,7 @@ defmodule Aegis.Runtime.SessionHostSupervisor do
 
   use DynamicSupervisor
 
-  alias Aegis.Runtime.SessionTreeSupervisor
+  alias Aegis.Runtime.{AdmissionControl, SessionTreeSupervisor}
 
   def start_link(init_arg \\ []) do
     DynamicSupervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
@@ -20,6 +20,8 @@ defmodule Aegis.Runtime.SessionHostSupervisor do
 
   @spec start_session(map() | keyword()) :: DynamicSupervisor.on_start_child()
   def start_session(attrs) do
-    DynamicSupervisor.start_child(__MODULE__, {SessionTreeSupervisor, attrs})
+    with :ok <- AdmissionControl.admit_session(attrs) do
+      DynamicSupervisor.start_child(__MODULE__, {SessionTreeSupervisor, attrs})
+    end
   end
 end

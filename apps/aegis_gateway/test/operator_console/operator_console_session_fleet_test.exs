@@ -17,6 +17,8 @@ defmodule OperatorConsoleSessionFleetTest do
   end
 
   test "lists stable operator session views and supports bounded fleet filters" do
+    admin_auth = platform_admin_auth()
+
     approval_session_id =
       start_session!(%{
         session_id: unique_session_id("approval"),
@@ -79,7 +81,7 @@ defmodule OperatorConsoleSessionFleetTest do
     activate!(quarantined_session_id)
     dispatch!(quarantined_session_id, {:quarantine, %{reason: "operator_hold"}})
 
-    fleet = OperatorConsole.session_fleet()
+    assert {:ok, fleet} = OperatorConsole.session_fleet(admin_auth)
     session_ids = Enum.map(fleet.sessions, & &1.session_id)
 
     assert Enum.sort(session_ids) ==
@@ -104,23 +106,32 @@ defmodule OperatorConsoleSessionFleetTest do
     assert degraded_view.wait_reason == "lease_recovery"
     assert degraded_view.latest_recovery_reason == "lease_contested"
 
-    assert Enum.map(OperatorConsole.session_fleet(health: "degraded").sessions, & &1.session_id) ==
+    assert Enum.map(
+             OperatorConsole.session_fleet(admin_auth, health: "degraded") |> elem(1) |> Map.fetch!(:sessions),
+             & &1.session_id
+           ) ==
              [degraded_session_id]
 
     assert Enum.map(
              OperatorConsole.session_fleet(
+               admin_auth,
                tenant_id: "tenant-ops",
                has_pending_approval: true,
                wait_reason: "approval"
-             ).sessions,
+             )
+             |> elem(1)
+             |> Map.fetch!(:sessions),
              & &1.session_id
            ) == [approval_session_id]
 
     assert Enum.map(
              OperatorConsole.session_fleet(
+               admin_auth,
                query: "workspace-risk",
                session_ids: [degraded_session_id]
-             ).sessions,
+             )
+             |> elem(1)
+             |> Map.fetch!(:sessions),
              & &1.session_id
            ) == [degraded_session_id]
 
@@ -135,6 +146,8 @@ defmodule OperatorConsoleSessionFleetTest do
   end
 
   test "exposes single-session views and rolls up worker fleet health" do
+    auth = operator_auth("tenant-console", "workspace-console")
+
     session_id =
       start_session!(%{
         session_id: unique_session_id("worker-health"),
@@ -167,14 +180,14 @@ defmodule OperatorConsoleSessionFleetTest do
                attributes: %{"region" => "eu-central"}
              })
 
-    assert {:ok, view} = OperatorConsole.session_view(session_id)
+    assert {:ok, view} = OperatorConsole.session_view(auth, session_id)
     assert view.session_id == session_id
     assert view.phase == "active"
     assert view.health == "healthy"
     assert Map.has_key?(view, :owner_node)
     assert Map.has_key?(view, :lease_epoch)
 
-    overview = OperatorConsole.system_health_overview()
+    assert {:ok, overview} = OperatorConsole.system_health_overview(auth)
 
     assert overview.status == "degraded"
     assert overview.sessions.total == 1
@@ -190,6 +203,8 @@ defmodule OperatorConsoleSessionFleetTest do
   end
 
   test "builds session detail from replay state and checkpoint metadata" do
+    auth = operator_auth("tenant-detail", "workspace-detail")
+
     session_id =
       start_session!(%{
         session_id: unique_session_id("detail"),
@@ -221,7 +236,7 @@ defmodule OperatorConsoleSessionFleetTest do
        }}
     )
 
-    assert {:ok, detail} = OperatorConsole.session_detail(session_id)
+    assert {:ok, detail} = OperatorConsole.session_detail(auth, session_id)
 
     assert detail.session.session_id == session_id
     assert detail.session.phase == "waiting"
@@ -251,6 +266,8 @@ defmodule OperatorConsoleSessionFleetTest do
   end
 
   test "surfaces browser instability recovery context in session detail" do
+    auth = operator_auth("tenant-browser", "workspace-browser")
+
     session_id =
       start_session!(%{
         session_id: unique_session_id("browser-instability"),
@@ -295,7 +312,7 @@ defmodule OperatorConsoleSessionFleetTest do
        }}
     )
 
-    assert {:ok, detail} = OperatorConsole.session_detail(session_id)
+    assert {:ok, detail} = OperatorConsole.session_detail(auth, session_id)
 
     assert detail.current_state.health == "degraded"
     assert detail.current_state.phase == "waiting"
@@ -308,6 +325,8 @@ defmodule OperatorConsoleSessionFleetTest do
   end
 
   test "quarantines corrupted session detail replay and links the event-corruption runbook" do
+    auth = operator_auth("tenant-quarantine", "workspace-quarantine")
+
     session_id =
       start_session!(%{
         session_id: unique_session_id("detail-quarantine"),
@@ -327,7 +346,7 @@ defmodule OperatorConsoleSessionFleetTest do
       [session_id]
     )
 
-    assert {:ok, detail} = OperatorConsole.session_detail(session_id)
+    assert {:ok, detail} = OperatorConsole.session_detail(auth, session_id)
     assert detail.current_state.health == "quarantined"
     assert detail.current_state.phase == "waiting"
     assert detail.current_state.wait_reason == "external_dependency"
@@ -335,6 +354,8 @@ defmodule OperatorConsoleSessionFleetTest do
   end
 
   test "exposes replay timeline, checkpoint markers, and scrubbed historical state" do
+    review_auth = reviewer_auth("tenant-replay", "workspace-replay")
+
     session_id =
       start_session!(%{
         session_id: unique_session_id("replay"),
@@ -376,7 +397,7 @@ defmodule OperatorConsoleSessionFleetTest do
       Events.events(session_id)
       |> Enum.find(&(&1.type == "session.waiting"))
 
-    assert {:ok, replay_now} = OperatorConsole.session_replay(session_id)
+    assert {:ok, replay_now} = OperatorConsole.session_replay(review_auth, session_id)
     assert replay_now.selected_state.control_mode == "supervised"
     assert Enum.any?(replay_now.timeline, &(&1.entry_kind == "checkpoint"))
 
@@ -394,14 +415,15 @@ defmodule OperatorConsoleSessionFleetTest do
     assert has_runbook?(replay_now.runbooks, "docs/runbooks/duplicate-execution.md")
 
     assert {:ok, replay_at_wait} =
-             OperatorConsole.session_replay(session_id, seq_no: waiting_event.seq_no)
+             OperatorConsole.session_replay(review_auth, session_id, seq_no: waiting_event.seq_no)
 
     assert replay_at_wait.scrubber.selected_seq_no == waiting_event.seq_no
     assert replay_at_wait.selected_state.phase == "waiting"
     assert replay_at_wait.selected_state.control_mode == "autonomous"
     assert replay_at_wait.selected_state.recent_artifacts == []
 
-    assert {:ok, artifact} = OperatorConsole.artifact_view(session_id, "artifact-replay-1")
+    assert {:ok, artifact} =
+             OperatorConsole.artifact_view(review_auth, session_id, "artifact-replay-1")
     assert artifact.storage_ref == "s3://aegis/replay-1"
     assert artifact.action_id == "action-replay-1"
     assert artifact.registered_seq_no > waiting_event.seq_no
@@ -409,6 +431,9 @@ defmodule OperatorConsoleSessionFleetTest do
   end
 
   test "records operator intervention flows as durable runtime events" do
+    auth = operator_auth("tenant-operator", "workspace-operator", actor_id: "operator-1")
+    review_auth = reviewer_auth("tenant-operator", "workspace-operator")
+
     session_id =
       start_session!(%{
         session_id: unique_session_id("operator"),
@@ -418,20 +443,20 @@ defmodule OperatorConsoleSessionFleetTest do
 
     activate!(session_id)
 
-    assert {:ok, _result} = OperatorConsole.operator_join(session_id, "operator-1")
+    assert {:ok, _result} = OperatorConsole.operator_join(auth, session_id)
 
     assert {:ok, _result} =
              OperatorConsole.add_operator_note(
+               auth,
                session_id,
-               "operator-1",
                "note-1",
                "Need manual review"
              )
 
     assert {:ok, _result} =
-             OperatorConsole.pause_session(session_id, "operator-1", "manual_review")
+             OperatorConsole.pause_session(auth, session_id, "manual_review")
 
-    assert {:ok, paused_detail} = OperatorConsole.session_detail(session_id)
+    assert {:ok, paused_detail} = OperatorConsole.session_detail(auth, session_id)
     assert paused_detail.current_state.phase == "waiting"
     assert paused_detail.current_state.control_mode == "paused"
     assert paused_detail.current_state.wait_reason == "operator"
@@ -447,7 +472,7 @@ defmodule OperatorConsoleSessionFleetTest do
 
     assert has_runbook?(paused_detail.runbooks, "docs/runbooks/operator-intervention.md")
 
-    fleet = OperatorConsole.session_fleet(wait_reason: "operator")
+    assert {:ok, fleet} = OperatorConsole.session_fleet(auth, wait_reason: "operator")
     assert Enum.map(fleet.sessions, & &1.session_id) == [session_id]
     assert has_runbook?(fleet.runbooks, "docs/runbooks/degraded-system-mode.md")
 
@@ -470,42 +495,40 @@ defmodule OperatorConsoleSessionFleetTest do
 
     assert {:ok, _result} =
              OperatorConsole.return_control(
+               auth,
                session_id,
-               "operator-1",
                "pause_review_complete",
                :supervised
              )
 
-    assert {:ok, supervised_detail} = OperatorConsole.session_detail(session_id)
+    assert {:ok, supervised_detail} = OperatorConsole.session_detail(auth, session_id)
     assert supervised_detail.current_state.phase == "active"
     assert supervised_detail.current_state.control_mode == "supervised"
     assert supervised_detail.current_state.latest_recovery_reason == "pause_review_complete"
 
-    assert {:ok, _result} =
-             OperatorConsole.take_control(session_id, "operator-1", "manual_takeover")
+    assert {:ok, _result} = OperatorConsole.take_control(auth, session_id, "manual_takeover")
 
-    assert {:ok, takeover_detail} = OperatorConsole.session_detail(session_id)
+    assert {:ok, takeover_detail} = OperatorConsole.session_detail(auth, session_id)
     assert takeover_detail.current_state.phase == "waiting"
     assert takeover_detail.current_state.control_mode == "human_control"
     assert takeover_detail.current_state.wait_reason == "operator"
 
     assert {:ok, _result} =
              OperatorConsole.return_control(
+               auth,
                session_id,
-               "operator-1",
                "takeover_complete",
                :autonomous
              )
 
-    assert {:ok, autonomous_detail} = OperatorConsole.session_detail(session_id)
+    assert {:ok, autonomous_detail} = OperatorConsole.session_detail(auth, session_id)
     assert autonomous_detail.current_state.phase == "active"
     assert autonomous_detail.current_state.control_mode == "autonomous"
     assert autonomous_detail.current_state.latest_recovery_reason == "takeover_complete"
 
-    assert {:ok, _result} =
-             OperatorConsole.abort_session(session_id, "operator-1", "manual_abort")
+    assert {:ok, _result} = OperatorConsole.abort_session(auth, session_id, "manual_abort")
 
-    assert {:ok, cancelling_detail} = OperatorConsole.session_detail(session_id)
+    assert {:ok, cancelling_detail} = OperatorConsole.session_detail(auth, session_id)
     assert cancelling_detail.current_state.phase == "cancelling"
     assert cancelling_detail.current_state.wait_reason == "none"
     assert has_runbook?(cancelling_detail.runbooks, "docs/runbooks/operator-intervention.md")
@@ -528,7 +551,7 @@ defmodule OperatorConsoleSessionFleetTest do
     assert Enum.all?(operator_events, &(&1.actor_kind == "operator"))
     assert Enum.all?(operator_events, &(&1.actor_id == "operator-1"))
 
-    assert {:ok, replay} = OperatorConsole.session_replay(session_id)
+    assert {:ok, replay} = OperatorConsole.session_replay(review_auth, session_id)
 
     assert Enum.any?(
              replay.timeline,
@@ -548,6 +571,11 @@ defmodule OperatorConsoleSessionFleetTest do
   end
 
   test "lets operators grant and deny approval-bound actions through the gateway" do
+    grant_auth =
+      operator_auth("tenant-approval-grant", "workspace-approval-grant", actor_id: "operator-approval-1")
+
+    grant_review_auth = reviewer_auth("tenant-approval-grant", "workspace-approval-grant")
+
     grant_session_id =
       start_session!(%{
         session_id: unique_session_id("approval-grant"),
@@ -558,7 +586,7 @@ defmodule OperatorConsoleSessionFleetTest do
     activate!(grant_session_id)
     request_submit_action!(grant_session_id, "action-submit-grant-1")
 
-    assert {:ok, grant_detail} = OperatorConsole.session_detail(grant_session_id)
+    assert {:ok, grant_detail} = OperatorConsole.session_detail(grant_auth, grant_session_id)
     assert grant_detail.current_state.phase == "waiting"
     assert grant_detail.controls.grant_approval
     assert grant_detail.controls.deny_approval
@@ -567,22 +595,27 @@ defmodule OperatorConsoleSessionFleetTest do
 
     assert {:ok, _result} =
              OperatorConsole.grant_approval(
+               grant_auth,
                grant_session_id,
-               "operator-approval-1",
                approval_id,
                action_hash
              )
 
-    assert {:ok, granted_detail} = OperatorConsole.session_detail(grant_session_id)
+    assert {:ok, granted_detail} = OperatorConsole.session_detail(grant_auth, grant_session_id)
     assert granted_detail.approvals == []
     assert granted_detail.current_state.phase == "active"
 
-    assert {:ok, granted_replay} = OperatorConsole.session_replay(grant_session_id)
+    assert {:ok, granted_replay} = OperatorConsole.session_replay(grant_review_auth, grant_session_id)
 
     assert Enum.any?(
              granted_replay.timeline,
              &(&1.type == "approval.granted" and &1.headline == "Approval granted for action-submit-grant-1")
            )
+
+    deny_auth =
+      operator_auth("tenant-approval-deny", "workspace-approval-deny", actor_id: "operator-approval-2")
+
+    deny_review_auth = reviewer_auth("tenant-approval-deny", "workspace-approval-deny")
 
     deny_session_id =
       start_session!(%{
@@ -594,24 +627,24 @@ defmodule OperatorConsoleSessionFleetTest do
     activate!(deny_session_id)
     request_submit_action!(deny_session_id, "action-submit-deny-1")
 
-    assert {:ok, deny_detail} = OperatorConsole.session_detail(deny_session_id)
+    assert {:ok, deny_detail} = OperatorConsole.session_detail(deny_auth, deny_session_id)
     [%{approval_id: deny_approval_id, action_hash: deny_action_hash}] = deny_detail.approvals
 
     assert {:ok, _result} =
              OperatorConsole.deny_approval(
+               deny_auth,
                deny_session_id,
-               "operator-approval-2",
                deny_approval_id,
                deny_action_hash,
                "manual_rejection"
              )
 
-    assert {:ok, denied_detail} = OperatorConsole.session_detail(deny_session_id)
+    assert {:ok, denied_detail} = OperatorConsole.session_detail(deny_auth, deny_session_id)
     assert denied_detail.approvals == []
     assert denied_detail.current_state.phase == "active"
     assert denied_detail.in_flight_actions == []
 
-    assert {:ok, denied_replay} = OperatorConsole.session_replay(deny_session_id)
+    assert {:ok, denied_replay} = OperatorConsole.session_replay(deny_review_auth, deny_session_id)
 
     assert Enum.any?(
              denied_replay.timeline,
@@ -669,17 +702,21 @@ defmodule OperatorConsoleSessionFleetTest do
     )
   end
 
-  defp request_approval!(session_id, action_id, approval_id) do
+  defp request_approval!(session_id, action_id, approval_id, attrs \\ %{}) do
     dispatch!(
       session_id,
       {:request_approval,
-       %{
-         approval_id: approval_id,
-         action_id: action_id,
-         action_hash: "hash-#{approval_id}",
-         expires_at: "2026-03-08T12:30:00Z",
-         risk_class: "high"
-       }}
+       Map.merge(
+         %{
+           approval_id: approval_id,
+           action_id: action_id,
+           action_hash: "hash-#{approval_id}",
+           expires_at: "2026-03-08T12:30:00Z",
+           risk_class: "high",
+           dangerous_action_class: "browser_write_medium"
+         },
+         attrs
+       )}
     )
   end
 
@@ -720,5 +757,45 @@ defmodule OperatorConsoleSessionFleetTest do
 
   defp unique_session_id(prefix) do
     "#{prefix}-#{System.unique_integer([:positive])}"
+  end
+
+  defp operator_auth(tenant_id, workspace_id, overrides \\ %{}) do
+    Map.merge(
+      %{
+        actor_id: "operator-1",
+        role: "operator",
+        tenant_id: tenant_id,
+        workspace_id: workspace_id,
+        environment: "production",
+        reveal_redacted: false
+      },
+      overrides
+    )
+  end
+
+  defp reviewer_auth(tenant_id, workspace_id, overrides \\ %{}) do
+    Map.merge(
+      %{
+        actor_id: "reviewer-1",
+        role: "reviewer",
+        tenant_id: tenant_id,
+        workspace_id: workspace_id,
+        environment: "production",
+        reveal_redacted: false
+      },
+      overrides
+    )
+  end
+
+  defp platform_admin_auth(overrides \\ %{}) do
+    Map.merge(
+      %{
+        actor_id: "platform-admin-1",
+        role: "platform_admin",
+        environment: "production",
+        reveal_redacted: true
+      },
+      overrides
+    )
   end
 end

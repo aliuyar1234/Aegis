@@ -13,8 +13,8 @@ defmodule Aegis.ExecutionBridge.Store do
         SQL.query!(
           Repo,
           """
-          SELECT outbox_id, session_id, event_id, event_type, status, subject, headers, payload,
-                 inserted_at, published_at
+          SELECT outbox_id, tenant_id, workspace_id, session_id, event_id, event_type, status,
+                 subject, headers, payload, inserted_at, published_at
           FROM outbox
           WHERE status = 'pending'
             AND event_type = ANY($1)
@@ -161,24 +161,24 @@ defmodule Aegis.ExecutionBridge.Store do
       Repo,
       """
       INSERT INTO action_executions (
-        execution_id, session_id, action_id, worker_kind, worker_id, contract_version,
-        dispatch_subject, trace_id, idempotency_key, isolation_tier, status, lease_epoch,
-        accept_deadline, soft_deadline, hard_deadline, accepted_at, last_progress_seq,
-        last_heartbeat_seq, last_heartbeat_at, cancellation_reason,
+        execution_id, tenant_id, workspace_id, session_id, action_id, worker_kind, worker_id,
+        contract_version, dispatch_subject, trace_id, idempotency_key, isolation_tier, status,
+        lease_epoch, accept_deadline, soft_deadline, hard_deadline, accepted_at,
+        last_progress_seq, last_heartbeat_seq, last_heartbeat_at, cancellation_reason,
         cancellation_requested_at, completed_at, failed_at, failure_error_code,
         failure_error_class, retryable, safe_to_retry, compensation_possible,
         uncertain_side_effect, result_artifact_id, normalized_result, last_payload,
         inserted_at, updated_at
       )
       VALUES (
-        $1, $2, $3, $4, $5, $6,
-        $7, $8, $9, $10, $11, $12,
-        $13, $14, $15, $16, $17,
-        $18, $19, $20,
-        $21, $22, $23, $24,
-        $25, $26, $27, $28,
-        $29, $30, $31, $32,
-        $33, $33
+        $1, $2, $3, $4, $5, $6, $7,
+        $8, $9, $10, $11, $12, $13,
+        $14, $15, $16, $17, $18,
+        $19, $20, $21, $22,
+        $23, $24, $25, $26,
+        $27, $28, $29, $30,
+        $31, $32, $33, $34,
+        $35, $35
       )
       ON CONFLICT (session_id, action_id) DO UPDATE
       SET worker_kind = EXCLUDED.worker_kind,
@@ -193,17 +193,19 @@ defmodule Aegis.ExecutionBridge.Store do
           soft_deadline = EXCLUDED.soft_deadline,
           hard_deadline = EXCLUDED.hard_deadline,
           updated_at = EXCLUDED.updated_at
-      RETURNING execution_id, session_id, action_id, worker_kind, worker_id, contract_version,
-                dispatch_subject, trace_id, idempotency_key, isolation_tier, status,
-                lease_epoch, accept_deadline, soft_deadline, hard_deadline, accepted_at,
-                last_progress_seq, last_heartbeat_seq, last_heartbeat_at, cancellation_reason,
-                cancellation_requested_at, completed_at, failed_at, failure_error_code,
-                failure_error_class, retryable, safe_to_retry, compensation_possible,
-                uncertain_side_effect, result_artifact_id, normalized_result, last_payload,
-                inserted_at, updated_at
+      RETURNING execution_id, tenant_id, workspace_id, session_id, action_id, worker_kind,
+                worker_id, contract_version, dispatch_subject, trace_id, idempotency_key,
+                isolation_tier, status, lease_epoch, accept_deadline, soft_deadline,
+                hard_deadline, accepted_at, last_progress_seq, last_heartbeat_seq,
+                last_heartbeat_at, cancellation_reason, cancellation_requested_at,
+                completed_at, failed_at, failure_error_code, failure_error_class, retryable,
+                safe_to_retry, compensation_possible, uncertain_side_effect, result_artifact_id,
+                normalized_result, last_payload, inserted_at, updated_at
       """,
       [
         Map.fetch!(attrs, :execution_id),
+        Map.fetch!(attrs, :tenant_id),
+        Map.fetch!(attrs, :workspace_id),
         Map.fetch!(attrs, :session_id),
         Map.fetch!(attrs, :action_id),
         Map.fetch!(attrs, :worker_kind),
@@ -243,22 +245,26 @@ defmodule Aegis.ExecutionBridge.Store do
     |> normalize_map()
   end
 
-  def fetch_execution(execution_id) do
+  def fetch_execution(execution_id, scope \\ %{}) do
+    scope = normalize_scope(scope)
+
     SQL.query!(
       Repo,
       """
-      SELECT execution_id, session_id, action_id, worker_kind, worker_id, contract_version,
-             dispatch_subject, trace_id, idempotency_key, isolation_tier, status,
-             lease_epoch, accept_deadline, soft_deadline, hard_deadline, accepted_at,
-             last_progress_seq, last_heartbeat_seq, last_heartbeat_at, cancellation_reason,
-             cancellation_requested_at, completed_at, failed_at, failure_error_code,
-             failure_error_class, retryable, safe_to_retry, compensation_possible,
-             uncertain_side_effect, result_artifact_id, normalized_result, last_payload,
-             inserted_at, updated_at
+      SELECT execution_id, tenant_id, workspace_id, session_id, action_id, worker_kind,
+             worker_id, contract_version, dispatch_subject, trace_id, idempotency_key,
+             isolation_tier, status, lease_epoch, accept_deadline, soft_deadline,
+             hard_deadline, accepted_at, last_progress_seq, last_heartbeat_seq,
+             last_heartbeat_at, cancellation_reason, cancellation_requested_at, completed_at,
+             failed_at, failure_error_code, failure_error_class, retryable, safe_to_retry,
+             compensation_possible, uncertain_side_effect, result_artifact_id, normalized_result,
+             last_payload, inserted_at, updated_at
       FROM action_executions
       WHERE execution_id = $1
+        AND ($2::text IS NULL OR tenant_id = $2)
+        AND ($3::text IS NULL OR workspace_id = $3)
       """,
-      [execution_id]
+      [execution_id, scope.tenant_id, scope.workspace_id]
     )
     |> rows_to_maps()
     |> List.first()
@@ -268,22 +274,27 @@ defmodule Aegis.ExecutionBridge.Store do
     end
   end
 
-  def fetch_execution_by_action(session_id, action_id) do
+  def fetch_execution_by_action(session_id, action_id, scope \\ %{}) do
+    scope = normalize_scope(scope)
+
     SQL.query!(
       Repo,
       """
-      SELECT execution_id, session_id, action_id, worker_kind, worker_id, contract_version,
-             dispatch_subject, trace_id, idempotency_key, isolation_tier, status,
-             lease_epoch, accept_deadline, soft_deadline, hard_deadline, accepted_at,
-             last_progress_seq, last_heartbeat_seq, last_heartbeat_at, cancellation_reason,
-             cancellation_requested_at, completed_at, failed_at, failure_error_code,
-             failure_error_class, retryable, safe_to_retry, compensation_possible,
-             uncertain_side_effect, result_artifact_id, normalized_result, last_payload,
-             inserted_at, updated_at
+      SELECT execution_id, tenant_id, workspace_id, session_id, action_id, worker_kind,
+             worker_id, contract_version, dispatch_subject, trace_id, idempotency_key,
+             isolation_tier, status, lease_epoch, accept_deadline, soft_deadline,
+             hard_deadline, accepted_at, last_progress_seq, last_heartbeat_seq,
+             last_heartbeat_at, cancellation_reason, cancellation_requested_at, completed_at,
+             failed_at, failure_error_code, failure_error_class, retryable, safe_to_retry,
+             compensation_possible, uncertain_side_effect, result_artifact_id, normalized_result,
+             last_payload, inserted_at, updated_at
       FROM action_executions
-      WHERE session_id = $1 AND action_id = $2
+      WHERE session_id = $1
+        AND action_id = $2
+        AND ($3::text IS NULL OR tenant_id = $3)
+        AND ($4::text IS NULL OR workspace_id = $4)
       """,
-      [session_id, action_id]
+      [session_id, action_id, scope.tenant_id, scope.workspace_id]
     )
     |> rows_to_maps()
     |> List.first()
@@ -393,14 +404,14 @@ defmodule Aegis.ExecutionBridge.Store do
     SQL.query!(
       Repo,
       """
-      SELECT execution_id, session_id, action_id, worker_kind, worker_id, contract_version,
-             dispatch_subject, trace_id, idempotency_key, isolation_tier, status,
-             lease_epoch, accept_deadline, soft_deadline, hard_deadline, accepted_at,
-             last_progress_seq, last_heartbeat_seq, last_heartbeat_at, cancellation_reason,
-             cancellation_requested_at, completed_at, failed_at, failure_error_code,
-             failure_error_class, retryable, safe_to_retry, compensation_possible,
-             uncertain_side_effect, result_artifact_id, normalized_result, last_payload,
-             inserted_at, updated_at
+      SELECT execution_id, tenant_id, workspace_id, session_id, action_id, worker_kind,
+             worker_id, contract_version, dispatch_subject, trace_id, idempotency_key,
+             isolation_tier, status, lease_epoch, accept_deadline, soft_deadline,
+             hard_deadline, accepted_at, last_progress_seq, last_heartbeat_seq,
+             last_heartbeat_at, cancellation_reason, cancellation_requested_at, completed_at,
+             failed_at, failure_error_code, failure_error_class, retryable, safe_to_retry,
+             compensation_possible, uncertain_side_effect, result_artifact_id, normalized_result,
+             last_payload, inserted_at, updated_at
       FROM action_executions
       WHERE status <> ALL($1)
       ORDER BY inserted_at ASC
@@ -409,6 +420,37 @@ defmodule Aegis.ExecutionBridge.Store do
     )
     |> rows_to_maps()
     |> Enum.map(&normalize_map/1)
+  end
+
+  def nonterminal_execution_count(scope \\ %{}, filters \\ []) do
+    scope = normalize_scope(scope)
+    filters = filters |> Enum.into(%{}) |> normalize_map()
+
+    SQL.query!(
+      Repo,
+      """
+      SELECT COUNT(*)::bigint AS execution_count
+      FROM action_executions
+      WHERE status <> ALL($1)
+        AND ($2::text IS NULL OR tenant_id = $2)
+        AND ($3::text IS NULL OR workspace_id = $3)
+        AND ($4::text IS NULL OR worker_kind = $4)
+        AND (
+          $5::boolean IS NULL OR
+          COALESCE((last_payload->>'mutating')::boolean, false) = $5
+        )
+      """,
+      [
+        @terminal_statuses,
+        scope.tenant_id,
+        scope.workspace_id,
+        Map.get(filters, :worker_kind),
+        Map.get(filters, :mutating)
+      ]
+    )
+    |> rows_to_maps()
+    |> List.first()
+    |> Map.fetch!(:execution_count)
   end
 
   defp update_execution!(execution_id, attrs) do
@@ -458,14 +500,14 @@ defmodule Aegis.ExecutionBridge.Store do
           last_payload = $30,
           updated_at = $31
       WHERE execution_id = $1
-      RETURNING execution_id, session_id, action_id, worker_kind, worker_id, contract_version,
-                dispatch_subject, trace_id, idempotency_key, isolation_tier, status,
-                lease_epoch, accept_deadline, soft_deadline, hard_deadline, accepted_at,
-                last_progress_seq, last_heartbeat_seq, last_heartbeat_at, cancellation_reason,
-                cancellation_requested_at, completed_at, failed_at, failure_error_code,
-                failure_error_class, retryable, safe_to_retry, compensation_possible,
-                uncertain_side_effect, result_artifact_id, normalized_result, last_payload,
-                inserted_at, updated_at
+      RETURNING execution_id, tenant_id, workspace_id, session_id, action_id, worker_kind,
+                worker_id, contract_version, dispatch_subject, trace_id, idempotency_key,
+                isolation_tier, status, lease_epoch, accept_deadline, soft_deadline,
+                hard_deadline, accepted_at, last_progress_seq, last_heartbeat_seq,
+                last_heartbeat_at, cancellation_reason, cancellation_requested_at,
+                completed_at, failed_at, failure_error_code, failure_error_class, retryable,
+                safe_to_retry, compensation_possible, uncertain_side_effect, result_artifact_id,
+                normalized_result, last_payload, inserted_at, updated_at
       """,
       [
         execution_id,
@@ -534,6 +576,20 @@ defmodule Aegis.ExecutionBridge.Store do
     rescue
       ArgumentError -> key
     end
+  end
+
+  defp normalize_scope(nil), do: %{tenant_id: nil, workspace_id: nil}
+
+  defp normalize_scope(scope) when is_list(scope) or is_map(scope) do
+    scope =
+      scope
+      |> Map.new()
+      |> normalize_map()
+
+    %{
+      tenant_id: Map.get(scope, :tenant_id),
+      workspace_id: Map.get(scope, :workspace_id)
+    }
   end
 
   defp parse_datetime(nil), do: nil

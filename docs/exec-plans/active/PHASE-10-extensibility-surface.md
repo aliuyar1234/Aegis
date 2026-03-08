@@ -1,6 +1,6 @@
     # PHASE-10 — Extensibility surface, connector SDK, and compatibility policy
 
-    **Status:** planned
+    **Status:** current
 
     ## Phase goal
 

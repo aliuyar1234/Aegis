@@ -11,11 +11,11 @@ defmodule Aegis.Projection.SessionDetail do
   alias Aegis.Projection.RunbookLinks
   alias Aegis.Runtime.Projection
 
-  @spec fetch(String.t()) :: {:ok, map()} | {:error, term()}
-  def fetch(session_id) when is_binary(session_id) do
-    with {:ok, replay} <- Runtime.historical_replay(session_id) do
+  @spec fetch(String.t(), map() | keyword()) :: {:ok, map()} | {:error, term()}
+  def fetch(session_id, scope \\ %{}) when is_binary(session_id) do
+    with {:ok, replay} <- Runtime.historical_replay(session_id, scope) do
       projection = Projection.from_snapshot(replay.replay_state)
-      checkpoints = Enum.map(Events.checkpoints(session_id), &checkpoint_view/1)
+      checkpoints = Enum.map(Events.checkpoints(session_id, scope), &checkpoint_view/1)
       latest_checkpoint = if replay.latest_checkpoint, do: checkpoint_view(replay.latest_checkpoint), else: nil
 
       {:ok,
@@ -48,6 +48,7 @@ defmodule Aegis.Projection.SessionDetail do
     %{
       session_kind: replay_state.session_kind,
       requested_by: replay_state.requested_by,
+      isolation_tier: Map.get(replay_state, :isolation_tier, "tier_a"),
       owner_node: projection.owner_node,
       lease_epoch: projection.lease_epoch,
       phase: projection.phase,
