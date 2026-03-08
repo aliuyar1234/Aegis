@@ -37,9 +37,11 @@ required_paths:
 - schema/jsonschema/transport-topology.schema.json
 - schema/jsonschema/phase-gate.schema.json
 - schema/proto/README.md
+- scripts/run_test_suites.py
 - tests/browser_e2e/test_browser_fixture_semantics.py
 - tests/transport/test_transport_topology.py
 - pytest.ini
+- .github/workflows/runtime-suites.yml
 forbidden_phrases:
 - see prior message
 - as discussed above

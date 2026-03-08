@@ -45,7 +45,7 @@ for path in ROOT.rglob('*'):
     rel = path.relative_to(ROOT).as_posix()
     if rel in allow_forbidden:
         continue
-    if path.suffix.lower() not in {'.md', '.yaml', '.yml', '.json', '.proto', '.py', '.sh', '.toml', '.exs'}:
+    if path.suffix.lower() not in {'.md', '.yaml', '.yml', '.json', '.proto', '.py', '.sh', '.toml', '.ex', '.exs', '.sql'}:
         continue
     text = path.read_text(encoding='utf-8', errors='ignore').lower()
     for phrase in forbidden:
@@ -89,6 +89,8 @@ for task_id in current.get('starting_sequence', []):
         sys.exit(1)
 
 link_re = re.compile(r'\[[^\]]+\]\(([^)]+)\)')
+workflow_uses_re = re.compile(r'^\s*-\s*uses:\s*([^\s#]+)', re.MULTILINE)
+sha_ref_re = re.compile(r'^[0-9a-f]{40}$')
 for md in ROOT.rglob('*.md'):
     rel_md = md.relative_to(ROOT).as_posix()
     text = md.read_text(encoding='utf-8', errors='ignore')
@@ -106,6 +108,20 @@ for md in ROOT.rglob('*.md'):
             sys.exit(1)
         if not resolved.exists():
             print(f'Broken markdown link in {rel_md}: {target}')
+            sys.exit(1)
+
+for workflow in (ROOT / '.github' / 'workflows').glob('*.yml'):
+    rel_workflow = workflow.relative_to(ROOT).as_posix()
+    text = workflow.read_text(encoding='utf-8', errors='ignore')
+    for action_ref in workflow_uses_re.findall(text):
+        if action_ref.startswith('./') or action_ref.startswith('docker://'):
+            continue
+        if '@' not in action_ref:
+            print(f'Workflow action ref missing version in {rel_workflow}: {action_ref}')
+            sys.exit(1)
+        ref = action_ref.rsplit('@', 1)[1]
+        if sha_ref_re.fullmatch(ref) is None:
+            print(f'Workflow action is not SHA-pinned in {rel_workflow}: {action_ref}')
             sys.exit(1)
 
 for suite in yaml.safe_load((ROOT / 'meta/test-suites.yaml').read_text(encoding='utf-8'))['test_suites']:

@@ -1,6 +1,7 @@
 # TEST_STRATEGY.md
 
 The canonical machine-readable test registry is `meta/test-suites.yaml`.
+The registry-driven runner is `scripts/run_test_suites.py`.
 
 ## Principles
 
@@ -34,6 +35,7 @@ The canonical machine-readable test registry is `meta/test-suites.yaml`.
 ## Commands
 
 See `meta/test-suites.yaml` for the authoritative commands and required paths.
+Use `python3 scripts/run_test_suites.py TS-001 TS-003 ...` to execute suites directly from the registry without duplicating commands in CI or local tooling.
 
 
 ## Phase-gate contract
