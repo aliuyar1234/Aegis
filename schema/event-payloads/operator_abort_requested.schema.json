@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/operator_abort_requested.schema.json",
+  "title": "operator.abort_requested",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id",
+    "reason"
+  ],
+  "properties": {
+    "operator_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}

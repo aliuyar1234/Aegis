@@ -32,15 +32,17 @@ defmodule Aegis.Events.DatabaseSetup do
   end
 
   def ensure_schema! do
-    migration_paths()
-    |> Enum.each(fn path ->
-      path
-      |> File.read!()
-      |> String.split(~r/;\s*\r?\n/, trim: true)
-      |> Enum.map(&String.trim/1)
-      |> Enum.reject(&(&1 == ""))
-      |> Enum.each(fn statement ->
-        SQL.query!(Repo, statement, [])
+    Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
+      migration_paths()
+      |> Enum.each(fn path ->
+        path
+        |> File.read!()
+        |> String.split(~r/;\s*\r?\n/, trim: true)
+        |> Enum.map(&String.trim/1)
+        |> Enum.reject(&(&1 == ""))
+        |> Enum.each(fn statement ->
+          SQL.query!(Repo, statement, [])
+        end)
       end)
     end)
 

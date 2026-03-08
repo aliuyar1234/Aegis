@@ -19,5 +19,6 @@ defmodule AegisExecutionBridge do
   def published_messages, do: Aegis.ExecutionBridge.published_messages()
   def execution(execution_id), do: Aegis.ExecutionBridge.execution(execution_id)
   def worker_registration(worker_id), do: Aegis.ExecutionBridge.worker_registration(worker_id)
+  def worker_registrations, do: Aegis.ExecutionBridge.worker_registrations()
   def reset!, do: Aegis.ExecutionBridge.reset!()
 end

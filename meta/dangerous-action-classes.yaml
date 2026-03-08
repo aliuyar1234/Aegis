@@ -1,7 +1,7 @@
 dangerous_action_classes:
 - id: browser_write_low
   description: Low-risk browser mutation with reversible customer-neutral effect.
-  default_decision: require_approval
+  default_decision: allow_with_constraints
 - id: browser_write_medium
   description: Browser mutation affecting customer-visible state with bounded blast
     radius.

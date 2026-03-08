@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/browser-submit-input.schema.json",
+  "title": "BrowserSubmitInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "browser_handle_id",
+    "target_url",
+    "selector",
+    "mutation_class"
+  ],
+  "properties": {
+    "browser_handle_id": {
+      "type": "string"
+    },
+    "target_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "selector": {
+      "type": "string"
+    },
+    "mutation_class": {
+      "type": "string",
+      "enum": [
+        "browser_write_low",
+        "browser_write_medium",
+        "browser_write_high"
+      ]
+    },
+    "form_fields": {
+      "type": "object"
+    },
+    "expected_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trace_required_on_failure": {
+      "type": "boolean"
+    }
+  }
+}

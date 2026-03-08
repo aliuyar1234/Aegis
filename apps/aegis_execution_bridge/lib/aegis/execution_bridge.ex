@@ -24,7 +24,7 @@ defmodule Aegis.ExecutionBridge do
   alias Aegis.ExecutionBridge.{InMemoryTransport, Store, TransportTopology}
   alias Aegis.Runtime
 
-  @dispatchable_event_types ["action.requested", "action.cancel_requested"]
+  @dispatchable_event_types ["policy.evaluated", "approval.granted", "action.cancel_requested"]
   @terminal_statuses MapSet.new(["succeeded", "failed", "cancelled", "lost", "uncertain"])
 
   def flush_dispatches do
@@ -52,6 +52,10 @@ defmodule Aegis.ExecutionBridge do
            ) do
       {:ok, Store.fetch_worker_registration(Map.fetch!(attrs, :worker_id))}
     end
+  end
+
+  def worker_registrations do
+    Store.worker_registrations()
   end
 
   def worker_heartbeat(attrs) do
@@ -181,8 +185,11 @@ defmodule Aegis.ExecutionBridge do
 
   defp flush_outbox_row(row) do
     case row.event_type do
-      "action.requested" ->
-        publish_dispatch(row)
+      "policy.evaluated" ->
+        publish_policy_dispatch(row)
+
+      "approval.granted" ->
+        publish_approved_dispatch(row)
 
       "action.cancel_requested" ->
         publish_cancel(row)
@@ -197,8 +204,25 @@ defmodule Aegis.ExecutionBridge do
       {:error, {row.outbox_id, Exception.message(error)}}
   end
 
-  defp publish_dispatch(row) do
+  defp publish_policy_dispatch(row) do
     payload = normalize_map(row.payload)
+
+    case fetch_value(payload, :decision) do
+      decision when decision in ["allow", "allow_with_constraints"] ->
+        publish_dispatch(row, payload_for_action!(row.session_id, fetch_value(payload, :action_id)))
+
+      _other ->
+        Store.mark_outbox_published(row.outbox_id)
+        {:ok, %{outbox_id: row.outbox_id, action_id: fetch_value(payload, :action_id), skipped: true}}
+    end
+  end
+
+  defp publish_approved_dispatch(row) do
+    payload = normalize_map(row.payload)
+    publish_dispatch(row, payload_for_action!(row.session_id, fetch_value(payload, :action_id)))
+  end
+
+  defp publish_dispatch(row, payload) do
     headers = normalize_headers(row.headers)
     session_ref = session_ref_from_headers(headers)
 
@@ -290,6 +314,42 @@ defmodule Aegis.ExecutionBridge do
          subject: dispatch_subject
        }}
     end
+  end
+
+  defp payload_for_action!(session_id, action_id) do
+    session_state = Runtime.snapshot(session_id)
+
+    action =
+      Enum.find(session_state.durable.action_ledger, &(&1.action_id == action_id)) ||
+        raise ArgumentError, "unknown action #{inspect(action_id)} for dispatch"
+
+    if action.status in ["denied", "approval_expired"] do
+      raise ArgumentError, "action #{inspect(action_id)} is not dispatchable"
+    end
+
+    if Map.get(action, :mutating, false) and not present?(Map.get(action, :capability_token_ref)) do
+      raise ArgumentError, "mutating action #{inspect(action_id)} is missing a capability token"
+    end
+
+    %{
+      action_id: action.action_id,
+      tool_id: action.tool_id,
+      tool_schema_version: action.tool_schema_version,
+      worker_kind: action.worker_kind,
+      input: action.input,
+      risk_class: action.risk_class,
+      dangerous_action_class: Map.get(action, :dangerous_action_class),
+      idempotency_class: action.idempotency_class,
+      idempotency_key: action.idempotency_key,
+      timeout_class: action.timeout_class,
+      mutating: action.mutating,
+      accept_deadline: action.accept_deadline,
+      soft_deadline: action.soft_deadline,
+      hard_deadline: action.hard_deadline,
+      trace_id: action.trace_id,
+      capability_token_ref: Map.get(action, :capability_token_ref),
+      approved_argument_digest: Map.get(action, :approved_argument_digest)
+    }
   end
 
   defp publish_cancel(row) do

@@ -1,5 +1,5 @@
-current_phase: PHASE-06
-current_phase_doc: docs/exec-plans/active/PHASE-06-operator-console.md
+current_phase: PHASE-08
+current_phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
 completed_phases:
 - PHASE-00
 - PHASE-01
@@ -7,8 +7,11 @@ completed_phases:
 - PHASE-03
 - PHASE-04
 - PHASE-05
+- PHASE-06
+- PHASE-07
 starting_sequence:
-- P06-T01
-- P06-T02
-notes: Phases 00 through 05 are implemented in this repository. Phase 06 is the
-  active bounded implementation pass and starts with the operator console baseline.
+- P08-T01
+- P08-T02
+notes: Phases 00 through 07 are implemented in this repository. Phase 08 is the
+  active bounded implementation pass and starts with effectful browser writes,
+  uncertainty handling, and demo-gate hardening.

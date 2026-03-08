@@ -1,6 +1,6 @@
     # PHASE-06 — Operator console and session inspection baseline
 
-    **Status:** current
+    **Status:** completed
 
     ## Phase goal
 
@@ -52,7 +52,7 @@
 
     ## Test plan
 
-    - `TS-008` — Operator console and projection tests (`mix test test/operator_console`)
+    - `TS-008` — Operator console and projection tests (`python3 scripts/run_elixir_suite.py TS-008`)
 
     ## Acceptance criteria
 

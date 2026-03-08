@@ -194,7 +194,7 @@ defmodule Aegis.Runtime.SessionKernelTest do
                }
              })
 
-    assert List.last(events).type == "action.requested"
+    assert Enum.take(Enum.map(events, & &1.type), -2) == ["action.requested", "policy.evaluated"]
 
     assert {:ok, _} =
              Runtime.dispatch(session_id, {
@@ -230,12 +230,13 @@ defmodule Aegis.Runtime.SessionKernelTest do
     assert [%{action_id: "action-1"}] = projection.in_flight_actions
     assert [%{approval_id: "approval-1"}] = projection.pending_approvals
     assert [%{artifact_id: "artifact-1"}] = projection.recent_artifacts
-    assert projection.last_seq_no == 7
+    assert projection.last_seq_no == 8
 
     event_types = Runtime.events(session_id) |> Enum.map(& &1.type)
 
-    assert Enum.take(event_types, -4) == [
+    assert Enum.take(event_types, -5) == [
              "action.requested",
+             "policy.evaluated",
              "approval.requested",
              "artifact.registered",
              "session.mode_changed"

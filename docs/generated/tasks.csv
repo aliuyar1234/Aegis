@@ -29,16 +29,16 @@ P05-T02,PHASE-05,"Implement signed artifact upload, immutable artifact metadata 
 P05-T03,PHASE-05,Implement resumable browser handle model and restart-safe metadata,True,P05-T01;P02-T03,ADR-0009;ADR-0012,AC-022,TS-007;TS-010,done
 P05-T04,PHASE-05,Implement example read-only browser workflows for account lookup and billing inspection,False,P05-T03,ADR-0009,AC-020;AC-023,TS-007,done
 P05-T05,PHASE-05,"Document browser baseline boundaries, mutation taxonomy, and fixture contracts",False,P05-T03,ADR-0009;ADR-0012,AC-023,TS-007,done
-P06-T01,PHASE-06,"Implement live session list, filters, and system health overview",True,P02-T04,ADR-0015,AC-024,TS-008,planned
-P06-T02,PHASE-06,"Implement session detail view with owner, state, in-flight actions, approvals, and checkpoints",True,P06-T01,ADR-0015,AC-024;AC-025,TS-008,planned
-P06-T03,PHASE-06,Implement artifact viewer and timeline scrubber for historical replay,True,P06-T02;P05-T02,ADR-0012;ADR-0015,AC-025,TS-008;TS-012,planned
-P06-T04,PHASE-06,"Implement operator join, note, pause, abort, takeover, and return-control flows",True,P06-T02;P05-T03,ADR-0011;ADR-0015,AC-026;AC-027,TS-008,planned
-P06-T05,PHASE-06,Write operator-console product spec deltas as implementation converges,False,P06-T04,ADR-0015,AC-027,TS-001;TS-008,planned
-P07-T01,PHASE-07,Implement tool descriptor registry and JSON Schema validation path,True,P04-T01,ADR-0008;ADR-0011,AC-028,TS-009,planned
-P07-T02,PHASE-07,Implement policy evaluator and default risk classes including dangerous browser writes,True,P07-T01,ADR-0011;ADR-0009,AC-029;AC-032,TS-009;TS-011,planned
-P07-T03,PHASE-07,"Implement approval requests, approval hashing, expiration, and operator decision flow",True,P07-T02;P06-T02,ADR-0011,AC-030,TS-009;TS-008,planned
-P07-T04,PHASE-07,Implement scoped capability tokens for effectful tool execution,True,P07-T02,ADR-0011,AC-031,TS-009;TS-011,planned
-P07-T05,PHASE-07,Document dangerous-action boundaries and approval defaults for browser mutations,False,P07-T03,ADR-0009;ADR-0011,AC-032,TS-009;TS-011,planned
+P06-T01,PHASE-06,"Implement live session list, filters, and system health overview",True,P02-T04,ADR-0015,AC-024,TS-008,done
+P06-T02,PHASE-06,"Implement session detail view with owner, state, in-flight actions, approvals, and checkpoints",True,P06-T01,ADR-0015,AC-024;AC-025,TS-008,done
+P06-T03,PHASE-06,Implement artifact viewer and timeline scrubber for historical replay,True,P06-T02;P05-T02,ADR-0012;ADR-0015,AC-025,TS-008;TS-012,done
+P06-T04,PHASE-06,"Implement operator join, note, pause, abort, takeover, and return-control flows",True,P06-T02;P05-T03,ADR-0011;ADR-0015,AC-026;AC-027,TS-008,done
+P06-T05,PHASE-06,Write operator-console product spec deltas as implementation converges,False,P06-T04,ADR-0015,AC-027,TS-001;TS-008,done
+P07-T01,PHASE-07,Implement tool descriptor registry and JSON Schema validation path,True,P04-T01,ADR-0008;ADR-0011,AC-028,TS-009,done
+P07-T02,PHASE-07,Implement policy evaluator and default risk classes including dangerous browser writes,True,P07-T01,ADR-0011;ADR-0009,AC-029;AC-032,TS-009;TS-011,done
+P07-T03,PHASE-07,"Implement approval requests, approval hashing, expiration, and operator decision flow",True,P07-T02;P06-T02,ADR-0011,AC-030,TS-009;TS-008,done
+P07-T04,PHASE-07,Implement scoped capability tokens for effectful tool execution,True,P07-T02,ADR-0011,AC-031,TS-009;TS-011,done
+P07-T05,PHASE-07,Document dangerous-action boundaries and approval defaults for browser mutations,False,P07-T03,ADR-0009;ADR-0011,AC-032,TS-009;TS-011,done
 P08-T01,PHASE-08,Implement duplicate completion suppression and action uncertainty classification,True,P04-T04;P07-T02,ADR-0011;ADR-0012,AC-034,TS-010,planned
 P08-T02,PHASE-08,"Implement quarantine flows for event corruption, replay failure, and repeated hydrate crashes",True,P02-T04;P03-T04,ADR-0012;ADR-0015,AC-035,TS-010,planned
 P08-T03,PHASE-08,Implement browser instability recovery playbook hooks and degraded-mode surfacing,True,P05-T03;P06-T02,ADR-0009;ADR-0015,AC-034;AC-035,TS-007;TS-010,planned

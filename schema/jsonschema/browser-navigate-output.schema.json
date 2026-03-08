@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/browser-navigate-output.schema.json",
+  "title": "BrowserNavigateOutput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "final_url",
+    "artifact_ids"
+  ],
+  "properties": {
+    "browser_handle_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "final_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "page_title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

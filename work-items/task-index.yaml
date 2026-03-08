@@ -602,7 +602,7 @@ tasks:
   phase: PHASE-06
   title: Implement live session list, filters, and system health overview
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P02-T04
   adr_refs:
@@ -621,7 +621,7 @@ tasks:
   title: Implement session detail view with owner, state, in-flight actions, approvals,
     and checkpoints
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P06-T01
   adr_refs:
@@ -640,7 +640,7 @@ tasks:
   phase: PHASE-06
   title: Implement artifact viewer and timeline scrubber for historical replay
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P06-T02
   - P05-T02
@@ -662,7 +662,7 @@ tasks:
   title: Implement operator join, note, pause, abort, takeover, and return-control
     flows
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P06-T02
   - P05-T03
@@ -683,7 +683,7 @@ tasks:
   phase: PHASE-06
   title: Write operator-console product spec deltas as implementation converges
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P06-T04
   adr_refs:
@@ -702,7 +702,7 @@ tasks:
   phase: PHASE-07
   title: Implement tool descriptor registry and JSON Schema validation path
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P04-T01
   adr_refs:
@@ -722,7 +722,7 @@ tasks:
   title: Implement policy evaluator and default risk classes including dangerous browser
     writes
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P07-T01
   adr_refs:
@@ -744,7 +744,7 @@ tasks:
   title: Implement approval requests, approval hashing, expiration, and operator decision
     flow
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P07-T02
   - P06-T02
@@ -764,7 +764,7 @@ tasks:
   phase: PHASE-07
   title: Implement scoped capability tokens for effectful tool execution
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P07-T02
   adr_refs:
@@ -783,7 +783,7 @@ tasks:
   phase: PHASE-07
   title: Document dangerous-action boundaries and approval defaults for browser mutations
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P07-T03
   adr_refs:

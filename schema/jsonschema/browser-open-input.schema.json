@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/browser-open-input.schema.json",
+  "title": "BrowserOpenInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "headless": {
+      "type": "boolean"
+    },
+    "initial_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "storage_state_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

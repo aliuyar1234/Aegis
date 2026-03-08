@@ -1,5 +1,5 @@
 phase: PHASE-08
-status: planned
+status: current
 name: Effectful browser flows, uncertainty handling, resilience, and demo gates
 phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
 tasks:

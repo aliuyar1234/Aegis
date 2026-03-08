@@ -56,18 +56,21 @@ test_suites:
     workflow assumptions.
 - id: TS-008
   title: Operator console and projection tests
-  command: mix test test/operator_console
+  command: python3 scripts/run_elixir_suite.py TS-008
   paths:
-  - test/operator_console
+  - apps/aegis_gateway/test/operator_console
   proves: Validates operator session view, replay timeline surfaces, and intervention
     events.
 - id: TS-009
   title: Policy, approval, and capability-token tests
-  command: pytest tests/policy -q
+  command: python3 scripts/run_policy_suite.py
   paths:
+  - apps/aegis_policy/test
+  - apps/aegis_execution_bridge/test/execution_bridge/policy_dispatch_test.exs
+  - schema/tool-registry.yaml
   - tests/policy
   proves: Validates tool descriptors, dangerous-action defaults, approval binding,
-    and capability-token claims.
+    and capability-token claims across the policy boundary and canonical catalog.
 - id: TS-010
   title: Recovery, uncertainty, and chaos tests
   command: pytest tests/recovery tests/chaos -q

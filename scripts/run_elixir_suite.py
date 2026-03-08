@@ -24,6 +24,10 @@ SUITES = {
         "cwd": ROOT / "apps" / "aegis_execution_bridge",
         "command": "mix test test/execution_bridge",
     },
+    "TS-008": {
+        "cwd": ROOT / "apps" / "aegis_gateway",
+        "command": "mix test test/operator_console",
+    },
 }
 
 

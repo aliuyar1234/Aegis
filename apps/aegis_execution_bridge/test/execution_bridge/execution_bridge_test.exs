@@ -132,7 +132,7 @@ defmodule Aegis.ExecutionBridgeTest do
 
     outbox_row =
       Events.outbox(session_id)
-      |> Enum.find(&(&1.event_type == "action.requested"))
+      |> Enum.find(&(&1.event_type == "policy.evaluated"))
 
     assert outbox_row.status == "published"
     assert outbox_row.headers["x-aegis-trace-id"] == "trace-dispatch-1"

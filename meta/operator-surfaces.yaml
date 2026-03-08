@@ -10,6 +10,10 @@ surfaces:
   runbooks:
   - docs/runbooks/worker-crash.md
   - docs/runbooks/node-loss.md
+  - docs/runbooks/lease-ambiguity.md
+  - docs/runbooks/browser-instability.md
+  - docs/runbooks/artifact-store-outage.md
+  - docs/runbooks/operator-intervention.md
 - id: approvals-queue
   contracts:
   - schema/jsonschema/approval-request.schema.json
@@ -20,3 +24,4 @@ surfaces:
   - schema/jsonschema/operator-session-view.schema.json
   runbooks:
   - docs/runbooks/event-corruption-quarantine.md
+  - docs/runbooks/duplicate-execution.md

@@ -28,6 +28,12 @@
     "lease_epoch": {
       "type": "integer",
       "minimum": 0
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
     }
   }
 }

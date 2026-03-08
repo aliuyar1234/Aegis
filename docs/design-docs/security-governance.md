@@ -14,6 +14,6 @@ This document defines the implementation-level trust model for Aegis.
 ## Rules
 
 - capability tokens are required for effectful actions
-- dangerous browser writes are approval-bound by default
+- dangerous browser writes default to `allow_with_constraints`, `require_approval`, or `deny` based on the machine-readable dangerous-action class
 - worker payloads are least-privilege and may not contain broad tenant secrets
 - audit and redaction events are first-class runtime artifacts, not compliance afterthoughts

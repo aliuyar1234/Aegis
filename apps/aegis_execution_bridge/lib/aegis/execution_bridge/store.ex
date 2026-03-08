@@ -135,6 +135,22 @@ defmodule Aegis.ExecutionBridge.Store do
     end
   end
 
+  def worker_registrations do
+    SQL.query!(
+      Repo,
+      """
+      SELECT worker_id, worker_kind, worker_version, supported_contract_versions,
+             advertised_capacity, available_capacity, attributes, status, last_seen_at,
+             inserted_at, updated_at
+      FROM worker_registrations
+      ORDER BY last_seen_at DESC, worker_id ASC
+      """,
+      []
+    )
+    |> rows_to_maps()
+    |> Enum.map(&normalize_map/1)
+  end
+
   def upsert_execution(attrs) do
     Guardrails.assert_write_allowed!("action_executions")
 

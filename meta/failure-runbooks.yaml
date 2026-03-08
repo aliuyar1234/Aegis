@@ -57,6 +57,8 @@ failures:
 - id: operator_intervention
   events:
   - operator.joined
+  - operator.paused
+  - operator.abort_requested
   - operator.took_control
   - operator.returned_control
   runbook: docs/runbooks/operator-intervention.md

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/operator_paused.schema.json",
+  "title": "operator.paused",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id",
+    "reason"
+  ],
+  "properties": {
+    "operator_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}

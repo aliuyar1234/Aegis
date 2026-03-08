@@ -22,6 +22,10 @@ defmodule AegisProjection.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:aegis_events, in_umbrella: true},
+      {:aegis_execution_bridge, in_umbrella: true},
+      {:aegis_runtime, in_umbrella: true}
+    ]
   end
 end

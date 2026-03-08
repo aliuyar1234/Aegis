@@ -25,7 +25,8 @@ defmodule AegisRuntime.MixProject do
   defp deps do
     [
       {:aegis_events, in_umbrella: true},
-      {:aegis_leases, in_umbrella: true}
+      {:aegis_leases, in_umbrella: true},
+      {:aegis_policy, in_umbrella: true}
     ]
   end
 end

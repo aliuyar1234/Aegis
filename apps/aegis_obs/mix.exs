@@ -22,6 +22,8 @@ defmodule AegisObs.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:aegis_execution_bridge, in_umbrella: true}
+    ]
   end
 end

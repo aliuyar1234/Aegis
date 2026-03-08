@@ -23,11 +23,13 @@ defmodule Aegis.Events do
 
   def reset!, do: Store.reset!()
   def append(session_state, events, opts \\ []), do: Store.append(session_state, events, opts)
+  def sessions, do: Store.sessions()
   def events(session_id), do: Store.events(session_id)
   def latest_checkpoint(session_id), do: Store.latest_checkpoint(session_id)
   def checkpoints(session_id), do: Store.checkpoints(session_id)
   def outbox(session_id), do: Store.outbox(session_id)
   def historical_replay(session_id), do: Store.historical_replay(session_id)
+  def replay_at(session_id, seq_no), do: Store.replay_at(session_id, seq_no)
   def hydrate(session_id), do: Store.hydrate(session_id)
   def schema_tables, do: Aegis.Events.Schema.tables()
 end

@@ -24,6 +24,21 @@ defmodule Aegis.Events.Store do
     :ok
   end
 
+  def sessions do
+    SQL.query!(
+      Repo,
+      """
+      SELECT session_id, tenant_id, workspace_id, session_kind, requested_by, owner_node,
+             last_seq_no, last_event_hash, current_checkpoint_id, inserted_at, updated_at
+      FROM sessions
+      ORDER BY updated_at DESC, session_id ASC
+      """,
+      []
+    )
+    |> rows_to_maps()
+    |> Enum.map(&normalize_map/1)
+  end
+
   def events(session_id) do
     SQL.query!(
       Repo,
@@ -101,6 +116,35 @@ defmodule Aegis.Events.Store do
       session_row ->
         checkpoint = latest_checkpoint(session_id)
         timeline = events(session_id)
+        tail = tail_after_checkpoint(timeline, checkpoint)
+        replay_state = Replay.replay(session_row, checkpoint, tail)
+
+        {:ok,
+         %{
+           timeline: timeline,
+           replay_state: replay_state,
+           latest_checkpoint: checkpoint
+         }}
+    end
+  end
+
+  def replay_at(session_id, seq_no) when is_integer(seq_no) and seq_no >= 0 do
+    case fetch_session_row(session_id) do
+      nil ->
+        {:error, :unknown_session}
+
+      session_row ->
+        timeline =
+          session_id
+          |> events()
+          |> Enum.filter(&(&1.seq_no <= seq_no))
+
+        checkpoint =
+          session_id
+          |> checkpoints()
+          |> Enum.filter(&(&1.seq_no <= seq_no))
+          |> List.last()
+
         tail = tail_after_checkpoint(timeline, checkpoint)
         replay_state = Replay.replay(session_row, checkpoint, tail)
 

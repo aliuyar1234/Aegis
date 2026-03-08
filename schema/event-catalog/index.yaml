@@ -104,6 +104,12 @@ events:
 - type: operator.note_added
   version: 1
   schema_ref: schema/event-payloads/operator_note_added.schema.json
+- type: operator.paused
+  version: 1
+  schema_ref: schema/event-payloads/operator_paused.schema.json
+- type: operator.abort_requested
+  version: 1
+  schema_ref: schema/event-payloads/operator_abort_requested.schema.json
 - type: operator.took_control
   version: 1
   schema_ref: schema/event-payloads/operator_took_control.schema.json

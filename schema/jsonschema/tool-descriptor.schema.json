@@ -7,12 +7,18 @@
   "required": [
     "tool_id",
     "version",
+    "description",
     "executor_kind",
     "risk_class",
+    "dangerous_action_class",
     "idempotency_class",
     "timeout_class",
     "input_schema_ref",
-    "output_schema_ref"
+    "output_schema_ref",
+    "default_retry_policy",
+    "required_scopes",
+    "artifact_expectations",
+    "allow_in_tiers"
   ],
   "properties": {
     "tool_id": {
@@ -21,6 +27,10 @@
     },
     "version": {
       "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
     },
     "executor_kind": {
       "type": "string",

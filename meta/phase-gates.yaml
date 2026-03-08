@@ -103,7 +103,7 @@ phases:
   unlocks:
   - PHASE-06
 - id: PHASE-06
-  status: current
+  status: completed
   name: Operator console and session inspection baseline
   doc: docs/exec-plans/active/PHASE-06-operator-console.md
   task_file: work-items/phase-06-operator-console.yaml
@@ -120,7 +120,7 @@ phases:
   unlocks:
   - PHASE-07
 - id: PHASE-07
-  status: planned
+  status: completed
   name: Policy, approvals, capability tokens, and dangerous-action defaults
   doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
   task_file: work-items/phase-07-policy-approvals.yaml
@@ -141,7 +141,7 @@ phases:
   - PHASE-09
   - PHASE-10
 - id: PHASE-08
-  status: planned
+  status: current
   name: Effectful browser flows, uncertainty handling, resilience, and demo gates
   doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
   task_file: work-items/phase-08-resilience-chaos.yaml

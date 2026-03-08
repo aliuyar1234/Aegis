@@ -22,6 +22,11 @@ A policy evaluation produces exactly one of:
 - target environment
 - requested argument digest
 
+## Tool descriptor source of truth
+
+Tool descriptors live in `schema/tool-registry.yaml` and each descriptor must
+validate against `schema/jsonschema/tool-descriptor.schema.json`.
+
 ## Required policy outputs
 
 - decision class
@@ -38,3 +43,9 @@ Dangerous browser mutations are high-risk by default and must not dispatch until
 2. approval requirements have been met,
 3. a scoped capability token has been minted,
 4. the execution attempt carries the approved argument digest.
+
+## Default browser write classes
+
+- `browser_write_low` defaults to `allow_with_constraints` and still requires a scoped capability token.
+- `browser_write_medium` defaults to `require_approval` and binds the approval to the exact action hash and lease epoch.
+- `browser_write_high` defaults to `deny` unless a later explicit policy surface says otherwise.

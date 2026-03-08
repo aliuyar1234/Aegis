@@ -21,3 +21,41 @@ def test_worker_db_guardrails_cover_canonical_tables():
 
     assert allowed == {'action_executions', 'worker_registrations'}
     assert {'sessions', 'session_events', 'session_checkpoints', 'session_leases', 'approvals', 'outbox'} <= forbidden
+
+
+def test_capability_token_claims_enforce_scoped_identity_fields():
+    schema = yaml.safe_load((ROOT / 'schema/jsonschema/capability-token-claims.schema.json').read_text())
+    required = set(schema['required'])
+
+    assert {
+        'tenant_id',
+        'workspace_id',
+        'session_id',
+        'action_id',
+        'tool_id',
+        'approved_argument_digest',
+        'dangerous_action_class',
+        'expires_at',
+        'lease_epoch',
+        'side_effect_class',
+        'scopes',
+        'issued_to_worker_kind',
+    } <= required
+
+
+def test_approval_request_schema_binds_exact_action_scope():
+    schema = yaml.safe_load((ROOT / 'schema/jsonschema/approval-request.schema.json').read_text())
+    required = set(schema['required'])
+
+    assert {
+        'approval_id',
+        'tenant_id',
+        'workspace_id',
+        'session_id',
+        'action_id',
+        'action_hash',
+        'risk_class',
+        'dangerous_action_class',
+        'expires_at',
+        'lease_epoch',
+    } <= required

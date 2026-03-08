@@ -53,6 +53,14 @@ generated_files:
   sources:
   - work-items/task-index.yaml
   - meta/phase-gates.yaml
+- path: apps/aegis_policy/lib/aegis/policy/generated/tool_registry.ex
+  generator: python3 scripts/generate_tool_registry.py
+  sources:
+  - schema/tool-registry.yaml
+- path: apps/aegis_policy/lib/aegis/policy/generated/dangerous_action_catalog.ex
+  generator: python3 scripts/generate_tool_registry.py
+  sources:
+  - meta/dangerous-action-classes.yaml
 - path: work-items/phase-08-resilience-chaos.yaml
   generator: python3 scripts/generate_docs.py
   sources:

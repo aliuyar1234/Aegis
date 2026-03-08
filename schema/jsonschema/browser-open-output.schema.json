@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/browser-open-output.schema.json",
+  "title": "BrowserOpenOutput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "browser_handle_id",
+    "opened_at"
+  ],
+  "properties": {
+    "browser_handle_id": {
+      "type": "string"
+    },
+    "opened_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "initial_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    }
+  }
+}

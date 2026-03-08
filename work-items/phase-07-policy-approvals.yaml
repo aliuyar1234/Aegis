@@ -1,5 +1,5 @@
 phase: PHASE-07
-status: planned
+status: completed
 name: Policy, approvals, capability tokens, and dangerous-action defaults
 phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
 tasks:
@@ -7,7 +7,7 @@ tasks:
   phase: PHASE-07
   title: Implement tool descriptor registry and JSON Schema validation path
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P04-T01
   adr_refs:
@@ -27,7 +27,7 @@ tasks:
   title: Implement policy evaluator and default risk classes including dangerous browser
     writes
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P07-T01
   adr_refs:
@@ -49,7 +49,7 @@ tasks:
   title: Implement approval requests, approval hashing, expiration, and operator decision
     flow
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P07-T02
   - P06-T02
@@ -69,7 +69,7 @@ tasks:
   phase: PHASE-07
   title: Implement scoped capability tokens for effectful tool execution
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P07-T02
   adr_refs:
@@ -88,7 +88,7 @@ tasks:
   phase: PHASE-07
   title: Document dangerous-action boundaries and approval defaults for browser mutations
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P07-T03
   adr_refs:

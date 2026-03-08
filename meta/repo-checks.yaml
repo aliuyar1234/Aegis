@@ -18,6 +18,7 @@ required_paths:
 - meta/generated-files.yaml
 - work-items/task-index.yaml
 - schema/transport-topology.yaml
+- schema/tool-registry.yaml
 - schema/checkpoints/session-checkpoint-v1.schema.json
 - schema/jsonschema/capability-token-claims.schema.json
 - schema/jsonschema/artifact-metadata.schema.json

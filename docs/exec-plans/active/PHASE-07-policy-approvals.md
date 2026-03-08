@@ -1,6 +1,6 @@
     # PHASE-07 — Policy, approvals, capability tokens, and dangerous-action defaults
 
-    **Status:** planned
+    **Status:** completed
 
     ## Phase goal
 
@@ -53,7 +53,7 @@
 
     ## Test plan
 
-    - `TS-009` — Policy, approval, and capability-token tests (`pytest tests/policy -q`)
+    - `TS-009` — Policy, approval, and capability-token tests (`python3 scripts/run_policy_suite.py`)
 - `TS-011` — Security, multitenancy, and trust-boundary tests (`pytest tests/security -q`)
 
     ## Acceptance criteria

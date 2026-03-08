@@ -197,6 +197,7 @@ defmodule Aegis.Events.Replay do
       input: Map.get(payload, :input, %{}),
       status: "requested",
       risk_class: Map.get(payload, :risk_class, "read_only"),
+      dangerous_action_class: Map.get(payload, :dangerous_action_class),
       idempotency_class: Map.get(payload, :idempotency_class, "unknown"),
       idempotency_key: Map.get(payload, :idempotency_key),
       timeout_class: Map.get(payload, :timeout_class, "standard"),
@@ -208,10 +209,29 @@ defmodule Aegis.Events.Replay do
       hard_deadline: Map.get(payload, :hard_deadline),
       capability_token_ref: Map.get(payload, :capability_token_ref),
       approved_argument_digest: Map.get(payload, :approved_argument_digest),
+      action_hash: Map.get(payload, :action_hash),
+      policy_decision: Map.get(payload, :policy_decision),
+      policy_reason: Map.get(payload, :policy_reason),
       trace_id: Map.get(payload, :trace_id)
     }
 
     Map.put(state, :action_ledger, upsert(state.action_ledger, action, :action_id))
+  end
+
+  defp do_apply(state, %{type: "policy.evaluated", payload: payload}) do
+    Map.put(
+      state,
+      :action_ledger,
+      update_action(state.action_ledger, payload.action_id, fn action ->
+        action
+        |> Map.put(:action_hash, payload.action_hash)
+        |> Map.put(:risk_class, payload.risk_class)
+        |> Map.put(:dangerous_action_class, Map.get(payload, :dangerous_action_class))
+        |> Map.put(:policy_decision, payload.decision)
+        |> Map.put(:policy_reason, payload.reason)
+        |> Map.put(:status, policy_status(payload.decision, action.status))
+      end)
+    )
   end
 
   defp do_apply(state, %{type: "action.dispatched", payload: payload}) do
@@ -307,6 +327,56 @@ defmodule Aegis.Events.Replay do
     )
   end
 
+  defp do_apply(state, %{type: "operator.joined"}) do
+    state
+  end
+
+  defp do_apply(state, %{type: "operator.note_added", payload: payload}) do
+    note = %{
+      note_ref: payload.note_ref,
+      operator_id: payload.operator_id,
+      note_text: Map.get(payload, :note_text, ""),
+      recorded_at: Map.get(payload, :recorded_at)
+    }
+
+    summary_capsule =
+      state.summary_capsule
+      |> Map.put_new(:operator_notes, [])
+      |> Map.update!(:operator_notes, fn notes ->
+        (notes ++ [note])
+        |> Enum.sort_by(& &1.note_ref)
+      end)
+
+    Map.put(state, :summary_capsule, summary_capsule)
+  end
+
+  defp do_apply(state, %{type: "operator.paused"}) do
+    state
+    |> Map.put(:phase, "waiting")
+    |> Map.put(:control_mode, "paused")
+    |> Map.put(:wait_reason, "operator")
+  end
+
+  defp do_apply(state, %{type: "operator.abort_requested"}) do
+    state
+    |> Map.put(:phase, "cancelling")
+    |> Map.put(:wait_reason, "none")
+  end
+
+  defp do_apply(state, %{type: "operator.took_control"}) do
+    state
+    |> Map.put(:phase, "waiting")
+    |> Map.put(:control_mode, "human_control")
+    |> Map.put(:wait_reason, "operator")
+  end
+
+  defp do_apply(state, %{type: "operator.returned_control", payload: payload}) do
+    state
+    |> Map.put(:phase, "active")
+    |> Map.put(:wait_reason, "none")
+    |> Map.put(:latest_recovery_reason, payload.return_context)
+  end
+
   defp do_apply(state, %{type: "approval.requested", payload: payload}) do
     approval = %{
       approval_id: payload.approval_id,
@@ -314,11 +384,55 @@ defmodule Aegis.Events.Replay do
       action_hash: payload.action_hash,
       status: "pending",
       risk_class: payload.risk_class,
+      dangerous_action_class: Map.get(payload, :dangerous_action_class),
       expires_at: payload.expires_at,
-      decided_by: nil
+      decided_by: nil,
+      evidence_artifact_ids: Map.get(payload, :evidence_artifact_ids, []),
+      requested_by: Map.get(payload, :requested_by),
+      tool_id: Map.get(payload, :tool_id)
     }
 
     Map.put(state, :pending_approvals, upsert(state.pending_approvals, approval, :approval_id))
+  end
+
+  defp do_apply(state, %{type: "approval.granted", payload: payload}) do
+    state
+    |> Map.put(:pending_approvals, remove_approval(state.pending_approvals, payload.approval_id))
+    |> Map.put(
+      :action_ledger,
+      update_action(state.action_ledger, payload.action_id, fn action ->
+        action
+        |> Map.put(:status, "requested")
+        |> Map.put(:approved_argument_digest, Map.get(payload, :approved_argument_digest))
+        |> Map.put(:capability_token_ref, Map.get(payload, :capability_token_ref))
+      end)
+    )
+  end
+
+  defp do_apply(state, %{type: "approval.denied", payload: payload}) do
+    state
+    |> Map.put(:pending_approvals, remove_approval(state.pending_approvals, payload.approval_id))
+    |> Map.put(
+      :action_ledger,
+      update_action(state.action_ledger, payload.action_id, fn action ->
+        action
+        |> Map.put(:status, "denied")
+        |> Map.put(:policy_reason, Map.get(payload, :reason))
+      end)
+    )
+  end
+
+  defp do_apply(state, %{type: "approval.expired", payload: payload}) do
+    state
+    |> Map.put(:pending_approvals, remove_approval(state.pending_approvals, payload.approval_id))
+    |> Map.put(
+      :action_ledger,
+      update_action(state.action_ledger, payload.action_id, fn action ->
+        action
+        |> Map.put(:status, "approval_expired")
+        |> Map.put(:policy_reason, "approval_expired")
+      end)
+    )
   end
 
   defp do_apply(state, %{type: "artifact.registered", payload: payload}) do
@@ -329,7 +443,10 @@ defmodule Aegis.Events.Replay do
       content_type: payload.content_type,
       size_bytes: payload.size_bytes,
       retention_class: payload.retention_class,
-      redaction_state: payload.redaction_state
+      redaction_state: payload.redaction_state,
+      storage_ref: Map.get(payload, :storage_ref),
+      recorded_at: Map.get(payload, :recorded_at),
+      action_id: Map.get(payload, :action_id)
     }
 
     state
@@ -377,6 +494,16 @@ defmodule Aegis.Events.Replay do
     end)
     |> Enum.sort_by(& &1.action_id)
   end
+
+  defp remove_approval(approvals, approval_id) do
+    approvals
+    |> Enum.reject(&(&1.approval_id == approval_id))
+    |> Enum.sort_by(& &1.approval_id)
+  end
+
+  defp policy_status("require_approval", _current_status), do: "awaiting_approval"
+  defp policy_status("deny", _current_status), do: "denied"
+  defp policy_status(_decision, current_status), do: current_status
 
   defp maybe_degrade_health(state, true), do: Map.put(state, :health, "degraded")
   defp maybe_degrade_health(state, false), do: state

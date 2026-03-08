@@ -17,6 +17,32 @@ from jsonschema.validators import validator_for
 
 ROOT = Path(__file__).resolve().parents[1]
 PROTO_ROOT = ROOT / "schema" / "proto"
+TOOL_REGISTRY_ROOT = ROOT / "schema" / "tool-registry.yaml"
+TOOL_REGISTRY_GENERATED_TARGET = (
+    ROOT / "apps" / "aegis_policy" / "lib" / "aegis" / "policy" / "generated" / "tool_registry.ex"
+)
+DANGEROUS_ACTIONS_ROOT = ROOT / "meta" / "dangerous-action-classes.yaml"
+DANGEROUS_ACTIONS_GENERATED_TARGET = (
+    ROOT
+    / "apps"
+    / "aegis_policy"
+    / "lib"
+    / "aegis"
+    / "policy"
+    / "generated"
+    / "dangerous_action_catalog.ex"
+)
+DANGEROUS_ACTION_ROOT = ROOT / "meta" / "dangerous-action-classes.yaml"
+DANGEROUS_ACTION_GENERATED_TARGET = (
+    ROOT
+    / "apps"
+    / "aegis_policy"
+    / "lib"
+    / "aegis"
+    / "policy"
+    / "generated"
+    / "dangerous_action_catalog.ex"
+)
 PYTHON_VENDOR_ROOT = ROOT / "py" / "vendor"
 PYTHON_BINDINGS_ROOT = ROOT / "py" / "packages" / "aegis_contracts_py" / "generated" / "proto"
 RUST_BINDINGS_ROOT = ROOT / "rs" / "crates" / "aegis_contracts_rs" / "src" / "generated" / "proto"
@@ -107,6 +133,33 @@ def contract_source_digest() -> str:
         digest.update(path.read_bytes())
         digest.update(b"\0")
 
+    return digest.hexdigest()
+
+
+def tool_registry_source_digest() -> str:
+    digest = hashlib.sha256()
+    digest.update(TOOL_REGISTRY_ROOT.relative_to(ROOT).as_posix().encode("utf-8"))
+    digest.update(b"\0")
+    digest.update(TOOL_REGISTRY_ROOT.read_bytes())
+    digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def dangerous_actions_source_digest() -> str:
+    digest = hashlib.sha256()
+    digest.update(DANGEROUS_ACTIONS_ROOT.relative_to(ROOT).as_posix().encode("utf-8"))
+    digest.update(b"\0")
+    digest.update(DANGEROUS_ACTIONS_ROOT.read_bytes())
+    digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def dangerous_action_source_digest() -> str:
+    digest = hashlib.sha256()
+    digest.update(DANGEROUS_ACTION_ROOT.relative_to(ROOT).as_posix().encode("utf-8"))
+    digest.update(b"\0")
+    digest.update(DANGEROUS_ACTION_ROOT.read_bytes())
+    digest.update(b"\0")
     return digest.hexdigest()
 
 
@@ -215,6 +268,83 @@ def validate_generated_rust_bindings(proto_defs: list[dict[str, object]], digest
         for enum in proto_def["enums"]:
             if f"pub enum {enum}" not in rust_text:
                 fail(f"Generated Rust bindings are missing enum {enum}")
+
+
+def validate_tool_registry() -> None:
+    registry = yaml.safe_load(TOOL_REGISTRY_ROOT.read_text(encoding="utf-8"))
+    tool_schema = load_json(ROOT / "schema/jsonschema/tool-descriptor.schema.json")
+    dangerous_actions = yaml.safe_load(DANGEROUS_ACTION_ROOT.read_text(encoding="utf-8"))
+    dangerous_ids = {item["id"] for item in dangerous_actions["dangerous_action_classes"]}
+
+    if registry.get("registry_version") != 1:
+        fail("schema/tool-registry.yaml must declare registry_version: 1")
+
+    tools = registry.get("tools")
+    if not isinstance(tools, list) or not tools:
+        fail("schema/tool-registry.yaml must define a non-empty tools list")
+
+    seen_tool_ids: set[str] = set()
+    for descriptor in tools:
+        validate(instance=descriptor, schema=tool_schema)
+
+        tool_id = descriptor["tool_id"]
+        if tool_id in seen_tool_ids:
+            fail(f"Duplicate tool descriptor: {tool_id}")
+        seen_tool_ids.add(tool_id)
+
+        for schema_ref_key in ("input_schema_ref", "output_schema_ref"):
+            schema_ref = ROOT / descriptor[schema_ref_key]
+            if not schema_ref.exists():
+                fail(
+                    "Tool descriptor "
+                    f"{tool_id} references missing schema {descriptor[schema_ref_key]}"
+                )
+
+        dangerous_action_class = descriptor.get("dangerous_action_class")
+        if dangerous_action_class is not None and dangerous_action_class not in dangerous_ids:
+            fail(
+                "Tool descriptor "
+                f"{tool_id} references unknown dangerous action class {dangerous_action_class}"
+            )
+
+    digest = tool_registry_source_digest()
+    if not TOOL_REGISTRY_GENERATED_TARGET.exists():
+        fail(
+            "Missing generated tool registry manifest: "
+            f"{TOOL_REGISTRY_GENERATED_TARGET.relative_to(ROOT)}"
+        )
+    if f'@source_digest "{digest}"' not in TOOL_REGISTRY_GENERATED_TARGET.read_text(encoding="utf-8"):
+        fail(
+            "Stale generated tool registry manifest: "
+            f"{TOOL_REGISTRY_GENERATED_TARGET.relative_to(ROOT)}"
+        )
+
+    dangerous_digest = dangerous_actions_source_digest()
+    if not DANGEROUS_ACTIONS_GENERATED_TARGET.exists():
+        fail(
+            "Missing generated dangerous-action catalog manifest: "
+            f"{DANGEROUS_ACTIONS_GENERATED_TARGET.relative_to(ROOT)}"
+        )
+    if f'@source_digest "{dangerous_digest}"' not in DANGEROUS_ACTIONS_GENERATED_TARGET.read_text(encoding="utf-8"):
+        fail(
+            "Stale generated dangerous-action catalog manifest: "
+            f"{DANGEROUS_ACTIONS_GENERATED_TARGET.relative_to(ROOT)}"
+        )
+
+    dangerous_digest = dangerous_action_source_digest()
+    if not DANGEROUS_ACTION_GENERATED_TARGET.exists():
+        fail(
+            "Missing generated dangerous-action catalog manifest: "
+            f"{DANGEROUS_ACTION_GENERATED_TARGET.relative_to(ROOT)}"
+        )
+    if (
+        f'@source_digest "{dangerous_digest}"'
+        not in DANGEROUS_ACTION_GENERATED_TARGET.read_text(encoding="utf-8")
+    ):
+        fail(
+            "Stale generated dangerous-action catalog manifest: "
+            f"{DANGEROUS_ACTION_GENERATED_TARGET.relative_to(ROOT)}"
+        )
 
 
 schema_dirs = [
@@ -345,6 +475,7 @@ for target, marker in generated_targets.items():
 
 validate_generated_python_bindings(proto_defs, digest)
 validate_generated_rust_bindings(proto_defs, digest)
+validate_tool_registry()
 
 if subject_map["dispatch"]["message"] != "ActionDispatch":
     fail("Transport subject mapping for dispatch drifted from ActionDispatch")

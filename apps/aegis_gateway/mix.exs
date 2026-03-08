@@ -22,6 +22,9 @@ defmodule AegisGateway.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:aegis_obs, in_umbrella: true},
+      {:aegis_projection, in_umbrella: true}
+    ]
   end
 end

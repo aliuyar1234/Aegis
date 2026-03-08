@@ -31,6 +31,12 @@
     },
     "reason": {
       "type": "string"
+    },
+    "approved_argument_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
     }
   }
 }

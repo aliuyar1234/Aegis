@@ -27,6 +27,18 @@
     "lease_epoch": {
       "type": "integer",
       "minimum": 0
+    },
+    "approved_argument_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "capability_token_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
     }
   }
 }

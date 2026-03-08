@@ -353,8 +353,27 @@ events:
   required_payload:
   - operator_id
   - note_ref
+  - note_text
   version: 1
   schema_ref: schema/event-payloads/operator_note_added.schema.json
+- type: operator.paused
+  category: operator
+  determinism: human
+  description: Operator paused autonomous work and moved the session into an explicit operator wait.
+  required_payload:
+  - operator_id
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/operator_paused.schema.json
+- type: operator.abort_requested
+  category: operator
+  determinism: human
+  description: Operator requested an abort path for the session.
+  required_payload:
+  - operator_id
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/operator_abort_requested.schema.json
 - type: operator.took_control
   category: operator
   determinism: human

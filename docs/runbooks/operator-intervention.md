@@ -2,11 +2,11 @@
 
     ## Trigger
 
-    operator joined, took control, or returned control
+    operator joined, paused, requested abort, took control, or returned control
 
     ## Detection signals
 
-    - events: operator.joined, operator.took_control, operator.returned_control
+    - events: operator.joined, operator.paused, operator.abort_requested, operator.took_control, operator.returned_control
     - operator surface: `session-detail`
     - runbook mapping source: `meta/failure-runbooks.yaml`
 
