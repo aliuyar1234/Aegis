@@ -29,6 +29,7 @@ class WorkerExecutionContext:
     workspace_id: str = "workspace-local"
     session_id: str = "session-local"
     action_id: str | None = None
+    lease_epoch: int = 1
 
 
 @dataclass(slots=True)
@@ -60,6 +61,7 @@ class BrowserObservation:
 @dataclass(slots=True)
 class BrowserWorkflowResult:
     fixture_id: str
+    status: str
     handle: BrowserHandleState
     observations: list[BrowserObservation]
     artifact_kinds: list[str]
@@ -67,6 +69,11 @@ class BrowserWorkflowResult:
     recovery: "BrowserRecoveryPoint"
     final_url: str | None
     policy_decision: str | None
+    uncertain_side_effect: bool = False
+    uncertainty_trigger: str | None = None
+    requires_operator_takeover: bool = False
+    trace_artifact_id: str | None = None
+    submit_result: dict[str, Any] | None = None
 
 
 @dataclass(slots=True)

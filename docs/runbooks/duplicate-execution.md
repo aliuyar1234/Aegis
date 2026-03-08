@@ -12,7 +12,9 @@
 
     ## Expected system behavior
 
-    dedupe at action ledger; surface uncertainty if external effect already happened
+    dedupe identical terminal callbacks by `execution_id + terminal status`
+    conflicting terminal callbacks surface uncertainty and reclassify the action for operator review
+    single authoritative action state remains in the ledger while replay preserves the story
 
     ## Operator steps
 

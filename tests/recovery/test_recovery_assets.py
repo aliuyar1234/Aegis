@@ -4,7 +4,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_recovery_runbooks_exist():
-    for name in ['worker-crash.md','node-loss.md','lease-ambiguity.md','event-corruption-quarantine.md']:
+    for name in ['worker-crash.md','node-loss.md','lease-ambiguity.md','event-corruption-quarantine.md','duplicate-execution.md']:
         assert (ROOT / 'docs/runbooks' / name).exists()
 
 
@@ -20,3 +20,10 @@ def test_lease_ambiguity_runbook_mentions_fencing_and_degraded_mode():
     assert 'health.degraded' in content
     assert 'fenced/degraded' in content
     assert 'one node owns the next epoch' in content
+
+
+def test_duplicate_execution_runbook_mentions_uncertainty_and_replay_markers():
+    content = (ROOT / 'docs/runbooks' / 'duplicate-execution.md').read_text(encoding='utf-8')
+    assert 'duplicate completion/failure observed for same execution/action' in content
+    assert 'surface uncertainty' in content
+    assert 'duplicate markers in replay' in content

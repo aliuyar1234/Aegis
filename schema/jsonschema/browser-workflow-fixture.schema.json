@@ -76,6 +76,12 @@
             "string",
             "null"
           ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "allOf": [
@@ -98,7 +104,6 @@
             "properties": {
               "kind": {
                 "enum": [
-                  "fill",
                   "click",
                   "submit"
                 ]
@@ -108,6 +113,21 @@
           "then": {
             "required": [
               "selector"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "fill"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "selector",
+              "value"
             ]
           }
         }

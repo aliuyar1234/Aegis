@@ -42,7 +42,7 @@ defmodule Aegis.Runtime.Projection do
 
   defp in_flight_actions(action_ledger) do
     action_ledger
-    |> Enum.filter(&(&1.status not in ["succeeded", "failed", "cancelled", "denied", "approval_expired"]))
+    |> Enum.filter(&(&1.status not in ["succeeded", "failed", "cancelled", "uncertain", "denied", "approval_expired"]))
     |> Enum.sort_by(& &1.action_id)
   end
 end

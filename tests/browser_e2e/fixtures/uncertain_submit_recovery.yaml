@@ -3,7 +3,8 @@ name: Uncertain submit recovery
 mutation_class: browser_write_medium
 requires_approval: true
 expected_artifacts:
-- screenshot
+- pre_write_screenshot
+- post_write_screenshot
 - dom_snapshot
 - trace
 uncertainty_trigger: worker_loss_after_submit
@@ -13,12 +14,13 @@ steps:
   target_url: https://admin.example.local/customers
 - kind: fill
   selector: '#customer-state'
+  value: pending manual verification
 - kind: submit
   selector: button[type='submit']
 - kind: verify
   expectation:
     contains: pending manual verification
-tool_id: browser.navigate
-risk_class: medium
+tool_id: browser.submit
+risk_class: browser_write
 requires_operator_takeover_on_uncertainty: true
 expected_policy_decision: require_approval

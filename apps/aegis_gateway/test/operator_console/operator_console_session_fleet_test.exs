@@ -246,8 +246,92 @@ defmodule OperatorConsoleSessionFleetTest do
 
     assert Enum.any?(
              detail.checkpoints,
-             &(&1.checkpoint_id == detail.latest_checkpoint.checkpoint_id)
+           &(&1.checkpoint_id == detail.latest_checkpoint.checkpoint_id)
            )
+  end
+
+  test "surfaces browser instability recovery context in session detail" do
+    session_id =
+      start_session!(%{
+        session_id: unique_session_id("browser-instability"),
+        tenant_id: "tenant-browser",
+        workspace_id: "workspace-browser"
+      })
+
+    activate!(session_id)
+    request_action!(session_id, "action-browser-1")
+
+    dispatch!(
+      session_id,
+      {:register_artifact,
+       %{
+         artifact_id: "artifact-browser-instability-1",
+         artifact_kind: "post_write_screenshot",
+         storage_ref: "s3://aegis/browser-instability-1",
+         browser_handle_id: "browser-handle-1",
+         browser_snapshot_ref: "snapshot:post-write",
+         page_ref: "page-1",
+         current_url: "https://admin.example.local/customers",
+         restart_hint: "reattach:browser-handle-1",
+         read_only_baseline_complete: true,
+         action_id: "action-browser-1",
+         recorded_at: "2026-03-08T13:28:00Z"
+       }}
+    )
+
+    dispatch!(
+      session_id,
+      {:record_action_failed,
+       %{
+         action_id: "action-browser-1",
+         execution_id: "exec-browser-instability-1",
+         error_class: "browser_disconnect",
+         error_code: "browser_disconnect",
+         retryable: true,
+         safe_to_retry: false,
+         compensation_possible: false,
+         uncertain_side_effect: false,
+         failed_at: "2026-03-08T13:29:00Z"
+       }}
+    )
+
+    assert {:ok, detail} = OperatorConsole.session_detail(session_id)
+
+    assert detail.current_state.health == "degraded"
+    assert detail.current_state.phase == "waiting"
+    assert detail.current_state.wait_reason == "external_dependency"
+    assert detail.current_state.latest_recovery_reason == "browser_instability:browser_disconnect"
+    assert detail.browser_recovery.browser_handle_id == "browser-handle-1"
+    assert detail.browser_recovery.last_stable_artifact_id == "artifact-browser-instability-1"
+    assert detail.browser_recovery.restart_hint == "reattach:browser-handle-1"
+    assert has_runbook?(detail.runbooks, "docs/runbooks/browser-instability.md")
+  end
+
+  test "quarantines corrupted session detail replay and links the event-corruption runbook" do
+    session_id =
+      start_session!(%{
+        session_id: unique_session_id("detail-quarantine"),
+        tenant_id: "tenant-quarantine",
+        workspace_id: "workspace-quarantine"
+      })
+
+    activate!(session_id)
+
+    Ecto.Adapters.SQL.query!(
+      Aegis.Repo,
+      """
+      UPDATE session_events
+      SET prev_event_hash = 'corrupted-prev-hash'
+      WHERE session_id = $1 AND seq_no = 2
+      """,
+      [session_id]
+    )
+
+    assert {:ok, detail} = OperatorConsole.session_detail(session_id)
+    assert detail.current_state.health == "quarantined"
+    assert detail.current_state.phase == "waiting"
+    assert detail.current_state.wait_reason == "external_dependency"
+    assert has_runbook?(detail.runbooks, "docs/runbooks/event-corruption-quarantine.md")
   end
 
   test "exposes replay timeline, checkpoint markers, and scrubbed historical state" do

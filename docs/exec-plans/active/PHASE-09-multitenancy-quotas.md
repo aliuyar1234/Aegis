@@ -1,6 +1,6 @@
     # PHASE-09 — Multitenancy, quotas, authz, audit, and trust boundaries
 
-    **Status:** planned
+    **Status:** current
 
     ## Phase goal
 

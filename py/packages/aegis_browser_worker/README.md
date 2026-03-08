@@ -3,18 +3,19 @@
 ## Purpose
 browser automation worker for the first wedge
 
-## Phase 05 baseline
-- opens a read-only browser context
+## Phase 08 surface
+- opens read-only or effectful browser contexts
 - navigates and inspects visible state
-- captures screenshot, DOM snapshot, and trace evidence through artifact metadata
+- executes approval-bound browser writes for fixture-driven submit flows
+- captures before/after screenshots, DOM evidence, and trace artifacts
 - returns resumable browser handle metadata plus a checkpoint-friendly recovery bundle
-- rejects mutating fixture steps such as `click`, `fill`, and `submit`
+- marks uncertain writes for operator takeover instead of silently retrying
 
 ## Skeleton modules
 - `worker.py` exposes the browser worker facade
-- `dispatch.py` handles read-only dispatch inputs
+- `dispatch.py` handles fixture-oriented dispatch inputs
 - `lifecycle.py` owns the Playwright lifecycle boundary
-- `runner.py` executes fixture-driven read-only workflows
+- `runner.py` executes fixture-driven read-only and effectful workflows
 
 ## Must not do
 - own authoritative session state

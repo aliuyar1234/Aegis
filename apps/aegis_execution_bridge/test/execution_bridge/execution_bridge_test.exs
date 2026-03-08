@@ -234,6 +234,113 @@ defmodule Aegis.ExecutionBridgeTest do
            ) == 1
   end
 
+  test "deduplicates identical terminal callbacks by execution id and terminal status", %{
+    session_id: session_id
+  } do
+    execution_id =
+      dispatch_action!(session_id, "action-terminal-dedupe-1", "trace-terminal-dedupe-1")
+
+    session_ref = session_ref(session_id)
+
+    assert {:ok, _accepted} =
+             ExecutionBridge.accept_action("browser", %{
+               ref: session_ref,
+               execution_id: execution_id,
+               worker_id: "worker-browser-terminal-dedupe-1",
+               accepted_at: "2026-03-08T13:11:30Z"
+             })
+
+    completed_payload = %{
+      ref: session_ref,
+      execution_id: execution_id,
+      action_id: "action-terminal-dedupe-1",
+      normalized_result: %{title: "Example Domain"},
+      raw_result_artifact_id: "artifact-terminal-dedupe-1",
+      completed_at: "2026-03-08T13:11:40Z"
+    }
+
+    assert {:ok, completed} = ExecutionBridge.complete_action("browser", completed_payload)
+    assert completed.status == "succeeded"
+
+    assert {:ok, duplicate_execution} =
+             ExecutionBridge.complete_action("browser", completed_payload)
+
+    assert duplicate_execution.status == "succeeded"
+    assert ExecutionBridge.execution(execution_id).status == "succeeded"
+
+    assert Runtime.events(session_id)
+           |> Enum.count(
+             &(&1.type == "action.succeeded" and &1.payload.execution_id == execution_id)
+           ) == 1
+  end
+
+  test "reclassifies conflicting terminal callbacks as uncertain instead of hiding them", %{
+    session_id: session_id
+  } do
+    execution_id =
+      dispatch_action!(session_id, "action-terminal-conflict-1", "trace-terminal-conflict-1")
+
+    session_ref = session_ref(session_id)
+
+    assert {:ok, _accepted} =
+             ExecutionBridge.accept_action("browser", %{
+               ref: session_ref,
+               execution_id: execution_id,
+               worker_id: "worker-browser-terminal-conflict-1",
+               accepted_at: "2026-03-08T13:11:50Z"
+             })
+
+    assert {:ok, completed} =
+             ExecutionBridge.complete_action("browser", %{
+               ref: session_ref,
+               execution_id: execution_id,
+               action_id: "action-terminal-conflict-1",
+               normalized_result: %{title: "Example Domain"},
+               raw_result_artifact_id: "artifact-terminal-conflict-success-1",
+               completed_at: "2026-03-08T13:12:00Z"
+             })
+
+    assert completed.status == "succeeded"
+
+    assert {:ok, conflicted} =
+             ExecutionBridge.fail_action("browser", %{
+               ref: session_ref,
+               execution_id: execution_id,
+               action_id: "action-terminal-conflict-1",
+               error_code: "page_detached",
+               error_class: "external_dependency",
+               retryable: false,
+               safe_to_retry: false,
+               compensation_possible: false,
+               uncertain_side_effect: false,
+               details_artifact_id: "artifact-terminal-conflict-failure-1",
+               failed_at: "2026-03-08T13:12:05Z"
+             })
+
+    assert conflicted.status == "uncertain"
+    assert Runtime.projection(session_id).health == "degraded"
+
+    failed_event =
+      Runtime.events(session_id)
+      |> Enum.find(&(&1.type == "action.failed" and &1.payload.execution_id == execution_id))
+
+    assert failed_event.trace_id == "trace-terminal-conflict-1"
+    assert failed_event.payload.error_code == "duplicate_terminal_callback"
+    assert failed_event.payload.error_class == "duplicate_execution"
+    assert failed_event.payload.uncertain_side_effect
+
+    assert Enum.any?(Runtime.events(session_id), &(&1.type == "action.succeeded"))
+
+    artifact_event =
+      Runtime.events(session_id)
+      |> Enum.find(
+        &(&1.type == "artifact.registered" and
+            &1.payload.artifact_id == "artifact-terminal-conflict-failure-1")
+      )
+
+    assert artifact_event.trace_id == "trace-terminal-conflict-1"
+  end
+
   test "propagates failure taxonomy and marks uncertain actions as degraded", %{
     session_id: session_id
   } do

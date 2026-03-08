@@ -1,6 +1,6 @@
     # PHASE-08 — Effectful browser flows, uncertainty handling, resilience, and demo gates
 
-    **Status:** current
+    **Status:** completed
 
     ## Phase goal
 

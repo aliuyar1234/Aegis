@@ -63,4 +63,4 @@ Every fixture must declare:
 - `expected_artifacts`
 - `requires_operator_takeover_on_uncertainty`
 
-Phase 05 workers may execute only `read_only` fixtures. They must reject mutating steps such as `click`, `fill`, and `submit` even if those step kinds are allowed by the shared schema for later phases.
+Phase 08 workers may execute `read_only` fixtures plus approval-bound `browser.submit` mutation fixtures. High-risk destructive fixtures may remain policy-denied and return a structured rejected result without executing the write path.

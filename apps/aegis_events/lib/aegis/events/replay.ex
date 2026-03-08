@@ -142,7 +142,10 @@ defmodule Aegis.Events.Replay do
 
   defp do_apply(state, %{type: "session.quarantined", payload: payload}) do
     state
+    |> Map.put(:phase, "waiting")
     |> Map.put(:health, "quarantined")
+    |> Map.put(:wait_reason, "external_dependency")
+    |> Map.put(:fenced, true)
     |> Map.put(:latest_recovery_reason, payload.reason)
   end
 
@@ -299,7 +302,10 @@ defmodule Aegis.Events.Replay do
         |> Map.put(:uncertain_side_effect, Map.get(payload, :uncertain_side_effect, false))
       end)
     )
-    |> maybe_degrade_health(Map.get(payload, :uncertain_side_effect, false))
+    |> maybe_degrade_health(
+      Map.get(payload, :uncertain_side_effect, false) or browser_instability_failure?(payload),
+      payload
+    )
   end
 
   defp do_apply(state, %{type: "action.cancel_requested", payload: payload}) do
@@ -452,6 +458,20 @@ defmodule Aegis.Events.Replay do
     state
     |> Map.put(:artifact_ids, Enum.uniq(state.artifact_ids ++ [payload.artifact_id]))
     |> Map.put(:recent_artifacts, upsert(state.recent_artifacts, artifact, :artifact_id))
+    |> maybe_update_browser_handle_from_artifact(payload)
+  end
+
+  defp do_apply(state, %{type: "observation.browser_snapshot_added", payload: payload}) do
+    Map.put(
+      state,
+      :browser_handles,
+      update_browser_handle(state.browser_handles, payload.browser_handle_id, fn handle ->
+        handle
+        |> Map.put(:state_ref, payload.browser_snapshot_ref)
+        |> Map.put(:last_stable_artifact_id, payload.artifact_id)
+        |> Map.put(:last_observed_at, Map.get(handle, :last_observed_at))
+      end)
+    )
   end
 
   defp do_apply(state, %{type: "agent.spawned", payload: payload}) do
@@ -505,8 +525,67 @@ defmodule Aegis.Events.Replay do
   defp policy_status("deny", _current_status), do: "denied"
   defp policy_status(_decision, current_status), do: current_status
 
-  defp maybe_degrade_health(state, true), do: Map.put(state, :health, "degraded")
-  defp maybe_degrade_health(state, false), do: state
+  defp maybe_degrade_health(state, true, payload) do
+    recovery_reason =
+      cond do
+        browser_instability_failure?(payload) -> "browser_instability:" <> to_string(Map.get(payload, :error_class))
+        true -> Map.get(state, :latest_recovery_reason)
+      end
+
+    state
+    |> Map.put(:health, "degraded")
+    |> maybe_mark_browser_recovery(browser_instability_failure?(payload), recovery_reason)
+  end
+
+  defp maybe_degrade_health(state, false, _payload), do: state
+
+  defp maybe_mark_browser_recovery(state, true, recovery_reason) do
+    state
+    |> Map.put(:phase, "waiting")
+    |> Map.put(:wait_reason, "external_dependency")
+    |> Map.put(:latest_recovery_reason, recovery_reason)
+  end
+
+  defp maybe_mark_browser_recovery(state, false, _recovery_reason), do: state
+
+  defp maybe_update_browser_handle_from_artifact(state, payload) do
+    browser_handle_id = Map.get(payload, :browser_handle_id)
+
+    if is_binary(browser_handle_id) do
+      Map.put(
+        state,
+        :browser_handles,
+        update_browser_handle(state.browser_handles, browser_handle_id, fn handle ->
+          handle
+          |> Map.put(:browser_handle_id, browser_handle_id)
+          |> Map.put(:provider_kind, Map.get(payload, :provider_kind, Map.get(handle, :provider_kind, "playwright")))
+          |> Map.put(:page_ref, Map.get(payload, :page_ref, Map.get(handle, :page_ref)))
+          |> Map.put(:current_url, Map.get(payload, :current_url, Map.get(handle, :current_url)))
+          |> Map.put(:state_ref, Map.get(payload, :browser_snapshot_ref, Map.get(handle, :state_ref)))
+          |> Map.put(:last_stable_artifact_id, payload.artifact_id)
+          |> Map.put(:last_observed_at, Map.get(payload, :recorded_at))
+          |> Map.put(:restart_hint, Map.get(payload, :restart_hint, Map.get(handle, :restart_hint)))
+          |> Map.put(:provider_session_ref, Map.get(payload, :provider_session_ref, Map.get(handle, :provider_session_ref)))
+          |> Map.put(:read_only_baseline_complete, Map.get(payload, :read_only_baseline_complete, Map.get(handle, :read_only_baseline_complete, false)))
+        end)
+      )
+    else
+      state
+    end
+  end
+
+  defp update_browser_handle(handles, browser_handle_id, fun) do
+    current =
+      Enum.find(handles, &(Map.get(&1, :browser_handle_id) == browser_handle_id)) ||
+        %{browser_handle_id: browser_handle_id, recovery_attempts: 0}
+
+    upsert(handles, fun.(current), :browser_handle_id)
+  end
+
+  defp browser_instability_failure?(payload) do
+    Map.get(payload, :error_class) in ["browser_instability", "browser_disconnect", "page_crash", "dom_drift", "navigation_timeout"] or
+      Map.get(payload, :error_code) in ["page_crash", "browser_disconnect", "dom_drift", "navigation_timeout"]
+  end
 
   defp derive_worker_kind(tool_id) when is_binary(tool_id) do
     tool_id

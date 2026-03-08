@@ -54,6 +54,11 @@ defmodule Aegis.Projection.RunbookLinks do
     },
     %{
       surface: "session-detail",
+      events: ["session.quarantined"],
+      runbook: "docs/runbooks/event-corruption-quarantine.md"
+    },
+    %{
+      surface: "session-detail",
       events: ["artifact.registered"],
       runbook: "docs/runbooks/artifact-store-outage.md"
     },
@@ -89,14 +94,10 @@ defmodule Aegis.Projection.RunbookLinks do
 
   @spec for_timeline(String.t(), [map()], keyword()) :: [map()]
   def for_timeline(surface_id, timeline, opts \\ []) when is_binary(surface_id) do
-    event_types = MapSet.new(Enum.map(timeline, & &1.type))
-
     matched =
       @failure_runbooks
       |> Enum.filter(&(&1.surface == surface_id))
-      |> Enum.filter(fn rule ->
-        Enum.any?(rule.events, &MapSet.member?(event_types, &1))
-      end)
+      |> Enum.filter(&rule_matches?(&1, timeline, opts))
       |> Enum.map(& &1.runbook)
 
     extras =
@@ -121,5 +122,31 @@ defmodule Aegis.Projection.RunbookLinks do
         |> Path.basename(".md")
         |> String.replace("-", " ")
     }
+  end
+
+  defp rule_matches?(%{runbook: "docs/runbooks/browser-instability.md"}, timeline, _opts) do
+    Enum.any?(timeline, fn event ->
+      event.type == "observation.browser_snapshot_added" or
+        (event.type == "action.failed" and browser_instability_failure?(event))
+    end)
+  end
+
+  defp rule_matches?(%{runbook: "docs/runbooks/event-corruption-quarantine.md", surface: "session-detail"}, _timeline, opts) do
+    Keyword.get(opts, :integrity_failure) != nil
+  end
+
+  defp rule_matches?(%{runbook: "docs/runbooks/event-corruption-quarantine.md", surface: "replay"}, timeline, opts) do
+    Keyword.get(opts, :integrity_failure) != nil or
+      Enum.any?(timeline, &(&1.type == "checkpoint.restored"))
+  end
+
+  defp rule_matches?(rule, timeline, _opts) do
+    event_types = MapSet.new(Enum.map(timeline, & &1.type))
+    Enum.any?(rule.events, &MapSet.member?(event_types, &1))
+  end
+
+  defp browser_instability_failure?(event) do
+    Map.get(event.payload, :error_class) in ["browser_instability", "browser_disconnect", "page_crash", "dom_drift", "navigation_timeout"] or
+      Map.get(event.payload, :error_code) in ["page_crash", "browser_disconnect", "dom_drift", "navigation_timeout"]
   end
 end

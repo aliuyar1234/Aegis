@@ -1,12 +1,9 @@
 id: browser-write-002
 name: Effectful entitlement revoke
 mutation_class: browser_write_high
-requires_approval: true
-expected_artifacts:
-- screenshot
-- dom_snapshot
-- trace
-uncertainty_trigger: post_click_timeout
+requires_approval: false
+expected_artifacts: []
+uncertainty_trigger: null
 steps:
 - kind: open_context
 - kind: navigate
@@ -16,7 +13,7 @@ steps:
 - kind: verify
   expectation:
     contains: entitlement revoked
-tool_id: browser.navigate
-risk_class: medium
-requires_operator_takeover_on_uncertainty: true
-expected_policy_decision: require_approval
+tool_id: browser.delete
+risk_class: browser_write
+requires_operator_takeover_on_uncertainty: false
+expected_policy_decision: deny

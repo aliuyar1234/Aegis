@@ -5,6 +5,8 @@ objective: Show browser operations, approvals, failure, recovery, and operator i
 fixtures:
 - tests/browser_e2e/fixtures/effectful_billing_address_update.yaml
 - tests/browser_e2e/fixtures/effectful_entitlement_revoke.yaml
+- tests/browser_e2e/fixtures/uncertain_submit_recovery.yaml
+- docs/demo-scripts/public-mission-control.md
 tests:
 - TS-007
 - TS-009

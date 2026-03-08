@@ -1,5 +1,5 @@
 phase: PHASE-08
-status: current
+status: completed
 name: Effectful browser flows, uncertainty handling, resilience, and demo gates
 phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
 tasks:
@@ -7,7 +7,7 @@ tasks:
   phase: PHASE-08
   title: Implement duplicate completion suppression and action uncertainty classification
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P04-T04
   - P07-T02
@@ -28,7 +28,7 @@ tasks:
   title: Implement quarantine flows for event corruption, replay failure, and repeated
     hydrate crashes
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P02-T04
   - P03-T04
@@ -48,7 +48,7 @@ tasks:
   phase: PHASE-08
   title: Implement browser instability recovery playbook hooks and degraded-mode surfacing
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P05-T03
   - P06-T02
@@ -70,7 +70,7 @@ tasks:
   phase: PHASE-08
   title: Create and automate chaos and recovery scenarios for internal demo acceptance
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P08-T01
   - P08-T02
@@ -92,7 +92,7 @@ tasks:
   phase: PHASE-08
   title: Create public demo script and acceptance artifact set
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P08-T04
   adr_refs:
@@ -112,7 +112,7 @@ tasks:
   title: Implement effectful browser mutation flows with approval-bound writes, capability
     tokens, before/after artifacts, and uncertainty surfacing
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P05-T03
   - P07-T03

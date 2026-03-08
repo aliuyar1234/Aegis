@@ -45,6 +45,20 @@ defmodule Aegis.Runtime.CommandHandler do
 
   @wait_reasons [:action, :approval, :timer, :external_dependency, :operator, :lease_recovery]
   @terminal_action_statuses ["succeeded", "failed", "cancelled", "uncertain", "denied", "approval_expired"]
+  @browser_instability_error_classes MapSet.new([
+    "browser_instability",
+    "browser_disconnect",
+    "page_crash",
+    "dom_drift",
+    "navigation_timeout"
+  ])
+  @browser_snapshot_artifact_kinds MapSet.new([
+    "screenshot",
+    "dom_snapshot",
+    "trace",
+    "pre_write_screenshot",
+    "post_write_screenshot"
+  ])
 
   @spec bootstrap(SessionState.t(), map()) :: {:ok, SessionState.t(), [Event.t()]}
   def bootstrap(state, metadata \\ %{})
@@ -615,6 +629,12 @@ defmodule Aegis.Runtime.CommandHandler do
     action = fetch_action!(state, action_id)
 
     cond do
+      state.durable.health == :quarantined ->
+        {:error, {:session_quarantined, state.durable.session_id}}
+
+      state.durable.fenced ->
+        {:error, {:session_fenced, state.durable.session_id}}
+
       action.status in @terminal_action_statuses ->
         {:error, {:action_already_terminal, action_id, action.status}}
 
@@ -717,6 +737,8 @@ defmodule Aegis.Runtime.CommandHandler do
     action = fetch_action!(state, Map.fetch!(attrs, :action_id))
     uncertain_side_effect = Map.get(attrs, :uncertain_side_effect, false)
     next_status = if uncertain_side_effect, do: "uncertain", else: "failed"
+    browser_instability? = browser_instability_failure?(action, attrs)
+    recovery_reason = browser_recovery_reason(attrs)
 
     updated_action =
       action
@@ -724,30 +746,55 @@ defmodule Aegis.Runtime.CommandHandler do
       |> Map.put(:execution_id, Map.fetch!(attrs, :execution_id))
       |> Map.put(:uncertain_side_effect, uncertain_side_effect)
 
+    failure_payload = %{
+      action_id: updated_action.action_id,
+      execution_id: updated_action.execution_id,
+      error_class: Map.fetch!(attrs, :error_class),
+      error_code: Map.fetch!(attrs, :error_code),
+      retryable: Map.get(attrs, :retryable),
+      safe_to_retry: Map.get(attrs, :safe_to_retry),
+      compensation_possible: Map.get(attrs, :compensation_possible),
+      uncertain_side_effect: uncertain_side_effect,
+      details_artifact_id: Map.get(attrs, :details_artifact_id),
+      failed_at: Map.fetch!(attrs, :failed_at)
+    }
+
     durable_changes =
       %{
         action_ledger: replace_action(state.durable.action_ledger, updated_action)
       }
-      |> maybe_merge_health(uncertain_side_effect)
+      |> maybe_merge_health(uncertain_side_effect or browser_instability?)
+      |> maybe_merge_browser_recovery(browser_instability?, recovery_reason)
 
-    emit(
-      state,
-      "action.failed",
-      %{
-        action_id: updated_action.action_id,
-        execution_id: updated_action.execution_id,
-        error_class: Map.fetch!(attrs, :error_class),
-        error_code: Map.fetch!(attrs, :error_code),
-        retryable: Map.get(attrs, :retryable),
-        safe_to_retry: Map.get(attrs, :safe_to_retry),
-        compensation_possible: Map.get(attrs, :compensation_possible),
-        uncertain_side_effect: uncertain_side_effect,
-        details_artifact_id: Map.get(attrs, :details_artifact_id),
-        failed_at: Map.fetch!(attrs, :failed_at)
-      },
-      durable_changes,
-      event_meta(metadata, attrs)
-    )
+    if browser_instability? do
+      emit_many(
+        state,
+        [
+          {"action.failed", failure_payload},
+          {"health.degraded",
+           %{
+             health_scope: "session",
+             health_reason: recovery_reason
+           }},
+          {"session.waiting",
+           %{
+             reason: "external_dependency",
+             detail: recovery_reason,
+             blocking_action_id: updated_action.action_id
+           }}
+        ],
+        durable_changes,
+        event_meta(metadata, attrs)
+      )
+    else
+      emit(
+        state,
+        "action.failed",
+        failure_payload,
+        durable_changes,
+        event_meta(metadata, attrs)
+      )
+    end
   rescue
     error in ArgumentError -> {:error, error.message}
   end
@@ -1043,9 +1090,7 @@ defmodule Aegis.Runtime.CommandHandler do
       action_id: Map.get(attrs, :action_id)
     }
 
-    emit(
-      state,
-      "artifact.registered",
+    artifact_payload =
       %{
         artifact_id: artifact.artifact_id,
         artifact_kind: artifact.artifact_kind,
@@ -1057,11 +1102,32 @@ defmodule Aegis.Runtime.CommandHandler do
         storage_ref: artifact.storage_ref,
         recorded_at: artifact.recorded_at,
         action_id: artifact.action_id
-      },
+      }
+      |> maybe_put(attrs, :browser_handle_id)
+      |> maybe_put(attrs, :browser_snapshot_ref)
+      |> maybe_put(attrs, :page_ref)
+      |> maybe_put(attrs, :current_url)
+      |> maybe_put(attrs, :restart_hint)
+      |> maybe_put(attrs, :provider_kind)
+      |> maybe_put(attrs, :read_only_baseline_complete)
+
+    browser_handle = maybe_browser_handle(state, artifact, attrs)
+
+    durable_changes =
       %{
         artifact_ids: Enum.uniq(state.durable.artifact_ids ++ [artifact.artifact_id]),
         recent_artifacts: upsert(state.durable.recent_artifacts, artifact, :artifact_id)
-      },
+      }
+      |> maybe_merge_browser_handle(browser_handle, state.durable.browser_handles)
+
+    event_specs =
+      [{"artifact.registered", artifact_payload}] ++
+        maybe_browser_snapshot_event(artifact, attrs)
+
+    emit_many(
+      state,
+      event_specs,
+      durable_changes,
       event_meta(metadata, attrs)
     )
   rescue
@@ -1107,7 +1173,11 @@ defmodule Aegis.Runtime.CommandHandler do
         reason: Map.get(attrs, :reason, "quarantined")
       },
       %{
-        health: :quarantined
+        phase: :waiting,
+        wait_reason: :external_dependency,
+        health: :quarantined,
+        latest_recovery_reason: Map.get(attrs, :reason, "quarantined"),
+        fenced: true
       },
       metadata
     )
@@ -1161,6 +1231,90 @@ defmodule Aegis.Runtime.CommandHandler do
 
   defp maybe_merge_health(changes, true), do: Map.put(changes, :health, :degraded)
   defp maybe_merge_health(changes, false), do: changes
+
+  defp maybe_merge_browser_recovery(changes, true, recovery_reason) do
+    changes
+    |> Map.put(:phase, :waiting)
+    |> Map.put(:wait_reason, :external_dependency)
+    |> Map.put(:latest_recovery_reason, recovery_reason)
+  end
+
+  defp maybe_merge_browser_recovery(changes, false, _recovery_reason), do: changes
+
+  defp maybe_merge_browser_handle(changes, nil, _existing_handles), do: changes
+
+  defp maybe_merge_browser_handle(changes, browser_handle, existing_handles) do
+    Map.put(changes, :browser_handles, upsert(existing_handles, browser_handle, :browser_handle_id))
+  end
+
+  defp maybe_browser_snapshot_event(artifact, attrs) do
+    if Map.get(attrs, :browser_handle_id) &&
+         MapSet.member?(@browser_snapshot_artifact_kinds, artifact.artifact_kind) do
+      browser_snapshot_ref =
+        Map.get(
+          attrs,
+          :browser_snapshot_ref,
+          "#{Map.get(attrs, :browser_handle_id)}:#{artifact.artifact_id}"
+        )
+
+      [
+        {"observation.browser_snapshot_added",
+         %{
+           artifact_id: artifact.artifact_id,
+           artifact_kind: artifact.artifact_kind,
+           browser_handle_id: Map.fetch!(attrs, :browser_handle_id),
+           browser_snapshot_ref: browser_snapshot_ref
+         }}
+      ]
+    else
+      []
+    end
+  end
+
+  defp maybe_browser_handle(state, artifact, attrs) do
+    browser_handle_id = Map.get(attrs, :browser_handle_id)
+
+    if is_binary(browser_handle_id) do
+      existing =
+        Enum.find(state.durable.browser_handles, &(&1.browser_handle_id == browser_handle_id)) || %{}
+
+      %{
+        browser_handle_id: browser_handle_id,
+        provider_kind: Map.get(attrs, :provider_kind, Map.get(existing, :provider_kind, "playwright")),
+        provider_session_ref: Map.get(attrs, :provider_session_ref, Map.get(existing, :provider_session_ref)),
+        page_ref: Map.get(attrs, :page_ref, Map.get(existing, :page_ref)),
+        state_ref: Map.get(attrs, :browser_snapshot_ref, Map.get(existing, :state_ref)),
+        last_stable_artifact_id: artifact.artifact_id,
+        read_only_baseline_complete:
+          Map.get(attrs, :read_only_baseline_complete, Map.get(existing, :read_only_baseline_complete, false)),
+        current_url: Map.get(attrs, :current_url, Map.get(existing, :current_url)),
+        stable_page_marker: Map.get(attrs, :stable_page_marker, Map.get(existing, :stable_page_marker)),
+        last_observed_at: artifact.recorded_at,
+        recovery_attempts: Map.get(attrs, :recovery_attempts, Map.get(existing, :recovery_attempts, 0)),
+        restart_hint: Map.get(attrs, :restart_hint, Map.get(existing, :restart_hint))
+      }
+    end
+  end
+
+  defp browser_instability_failure?(action, attrs) do
+    String.starts_with?(to_string(action.tool_id), "browser.") and
+      (MapSet.member?(@browser_instability_error_classes, Map.get(attrs, :error_class)) or
+         Map.get(attrs, :error_code) in ["page_crash", "browser_disconnect", "dom_drift", "navigation_timeout"])
+  end
+
+  defp browser_recovery_reason(attrs) do
+    case Map.get(attrs, :error_class) do
+      nil -> "browser_instability"
+      error_class -> "browser_instability:" <> to_string(error_class)
+    end
+  end
+
+  defp maybe_put(map, attrs, key) do
+    case Map.get(attrs, key) do
+      nil -> map
+      value -> Map.put(map, key, value)
+    end
+  end
 
   defp event_meta(metadata, attrs) do
     metadata

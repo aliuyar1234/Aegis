@@ -30,6 +30,7 @@ defmodule Aegis.Events.Catalog do
     "approval.denied" => %{version: 1, determinism_class: "human"},
     "approval.expired" => %{version: 1, determinism_class: "deterministic"},
     "artifact.registered" => %{version: 1, determinism_class: "deterministic"},
+    "observation.browser_snapshot_added" => %{version: 1, determinism_class: "nondeterministic_external"},
     "operator.joined" => %{version: 1, determinism_class: "human"},
     "operator.note_added" => %{version: 1, determinism_class: "human"},
     "operator.paused" => %{version: 1, determinism_class: "human"},

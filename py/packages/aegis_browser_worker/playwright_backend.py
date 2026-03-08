@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Any
 from uuid import uuid4
 
-from .errors import PlaywrightUnavailableError, UnsupportedWorkflowError
+from .errors import PlaywrightUnavailableError
 
 try:  # pragma: no cover - exercised indirectly when dependency is installed.
     from playwright.async_api import Browser as PlaywrightBrowser
@@ -42,6 +42,15 @@ class PlaywrightPageAdapter:
             "text": (await locator.inner_text()).strip(),
             "html": await locator.inner_html(),
         }
+
+    async def click(self, selector: str) -> None:
+        await self.page.locator(selector).click()
+
+    async def fill(self, selector: str, value: str) -> None:
+        await self.page.locator(selector).fill(value)
+
+    async def submit(self, selector: str) -> None:
+        await self.page.locator(selector).click()
 
     async def screenshot(self) -> bytes:
         return await self.page.screenshot(full_page=True)
@@ -98,9 +107,6 @@ class PlaywrightBrowserBackend:
         return self._browser
 
     async def open_session(self, *, read_only: bool) -> PlaywrightSessionAdapter:
-        if not read_only:
-            raise UnsupportedWorkflowError("Phase 05 browser backend is read-only only.")
-
         browser = await self._ensure_browser()
         context = await browser.new_context()
         return PlaywrightSessionAdapter(

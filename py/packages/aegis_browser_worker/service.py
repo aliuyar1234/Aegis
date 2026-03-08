@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from datetime import UTC, datetime
 from typing import Any
 
@@ -35,20 +36,45 @@ class BrowserWorkerService:
             "advertised_capacity": self._context.advertised_capacity,
             "attributes": {
                 "contract_source_digest": SOURCE_DIGEST,
-                "browser_baseline": "read_only",
+                "browser_baseline": "effectful",
                 "provider_kind": "playwright",
                 **self._context.attributes,
             },
         }
 
     async def execute_fixture(self, fixture: dict[str, Any]) -> dict[str, Any]:
-        result = await self._runner.run_fixture(fixture, context=self._context)
+        fixture, context, dispatch = self._normalize_dispatch_input(fixture)
+        result = await self._runner.run_fixture(fixture, context=context, dispatch=dispatch)
+
+        artifact_events = []
+        for artifact in result.artifacts:
+            event_payload = BrowserArtifactStore.to_event_payload(artifact)
+            if result.handle.browser_handle_id:
+                event_payload.update(
+                    {
+                        "browser_handle_id": result.handle.browser_handle_id,
+                        "browser_snapshot_ref": f"{result.handle.browser_handle_id}:{artifact.artifact_id}",
+                        "page_ref": result.handle.page_ref,
+                        "current_url": result.handle.current_url,
+                        "restart_hint": result.handle.restart_hint,
+                        "provider_kind": result.handle.provider_kind,
+                        "read_only_baseline_complete": result.handle.read_only_baseline_complete,
+                    }
+                )
+            artifact_events.append(event_payload)
+
         return {
             "fixture_id": result.fixture_id,
             "contract_source_digest": SOURCE_DIGEST,
             "known_messages": len(MESSAGE_NAMES),
+            "status": result.status,
             "policy_decision": result.policy_decision,
             "final_url": result.final_url,
+            "uncertain_side_effect": result.uncertain_side_effect,
+            "uncertainty_trigger": result.uncertainty_trigger,
+            "requires_operator_takeover": result.requires_operator_takeover,
+            "trace_artifact_id": result.trace_artifact_id,
+            "submit_result": result.submit_result,
             "artifact_kinds": result.artifact_kinds,
             "artifacts": [
                 BrowserArtifactStore.to_metadata_payload(artifact)
@@ -66,10 +92,7 @@ class BrowserWorkerService:
                 }
                 for artifact in result.artifacts
             ],
-            "artifact_registration_events": [
-                BrowserArtifactStore.to_event_payload(artifact)
-                for artifact in result.artifacts
-            ],
+            "artifact_registration_events": artifact_events,
             "handle": {
                 "browser_handle_id": result.handle.browser_handle_id,
                 "provider_kind": result.handle.provider_kind,
@@ -104,3 +127,19 @@ class BrowserWorkerService:
                 for item in result.observations
             ],
         }
+
+    def _normalize_dispatch_input(
+        self,
+        dispatch_input: dict[str, Any],
+    ) -> tuple[dict[str, Any], WorkerExecutionContext, dict[str, Any]]:
+        if "fixture" not in dispatch_input:
+            return dispatch_input, self._context, {}
+
+        context_overrides = dispatch_input.get("context", {})
+        context = replace(self._context, **context_overrides)
+        dispatch = {
+            key: value
+            for key, value in dispatch_input.items()
+            if key not in {"fixture", "context"}
+        }
+        return dispatch_input["fixture"], context, dispatch

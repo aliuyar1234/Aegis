@@ -1,5 +1,5 @@
 phase: PHASE-09
-status: planned
+status: current
 name: Multitenancy, quotas, authz, audit, and trust boundaries
 phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
 tasks:

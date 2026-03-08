@@ -54,6 +54,48 @@
         "string",
         "null"
       ]
+    },
+    "browser_handle_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "browser_snapshot_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "current_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "restart_hint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provider_kind": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "read_only_baseline_complete": {
+      "type": [
+        "boolean",
+        "null"
+      ]
     }
   }
 }

@@ -1,5 +1,5 @@
-current_phase: PHASE-08
-current_phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+current_phase: PHASE-09
+current_phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
 completed_phases:
 - PHASE-00
 - PHASE-01
@@ -9,9 +9,10 @@ completed_phases:
 - PHASE-05
 - PHASE-06
 - PHASE-07
+- PHASE-08
 starting_sequence:
-- P08-T01
-- P08-T02
-notes: Phases 00 through 07 are implemented in this repository. Phase 08 is the
-  active bounded implementation pass and starts with effectful browser writes,
-  uncertainty handling, and demo-gate hardening.
+- P09-T01
+- P09-T04
+notes: Phases 00 through 08 are implemented in this repository. Phase 09 is the
+  active bounded implementation pass and starts with tenant and workspace scoping
+  plus RBAC/ABAC trust-boundary enforcement.

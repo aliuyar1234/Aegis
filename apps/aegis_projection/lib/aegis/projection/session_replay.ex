@@ -35,7 +35,12 @@ defmodule Aegis.Projection.SessionReplay do
          timeline: timeline_entries(replay.timeline, checkpoints, artifacts),
          checkpoints: Enum.map(checkpoints, &checkpoint_entry/1),
          artifacts: Map.values(artifacts) |> Enum.sort_by(&{-Map.get(&1, :registered_seq_no, -1), &1.artifact_id}),
-         runbooks: RunbookLinks.for_timeline("replay", replay.timeline)
+         runbooks:
+           RunbookLinks.for_timeline(
+             "replay",
+             replay.timeline,
+             integrity_failure: Map.get(replay, :integrity_failure)
+           )
        }}
     end
   end

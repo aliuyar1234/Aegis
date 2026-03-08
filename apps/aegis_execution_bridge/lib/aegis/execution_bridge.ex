@@ -397,12 +397,14 @@ defmodule Aegis.ExecutionBridge do
 
     with :ok <- ensure_expected_subject(kind, worker_kind),
          :ok <- ensure_session_started(session_ref),
-         execution when not is_nil(execution) <- Store.fetch_execution(execution_id),
-         false <- terminal_execution?(execution) do
-      do_ingest(kind, execution, worker_kind, payload, headers, session_ref)
+         execution when not is_nil(execution) <- Store.fetch_execution(execution_id) do
+      if terminal_execution?(execution) do
+        handle_terminal_callback(kind, execution, payload, headers, session_ref)
+      else
+        do_ingest(kind, execution, worker_kind, payload, headers, session_ref)
+      end
     else
       nil -> {:error, :unknown_execution}
-      true -> {:ok, :duplicate_terminal_callback}
       {:error, reason} -> {:error, reason}
     end
   end
@@ -709,6 +711,74 @@ defmodule Aegis.ExecutionBridge do
     end
   end
 
+  defp handle_terminal_callback(kind, execution, payload, headers, session_ref) do
+    cond do
+      not terminal_callback?(kind) ->
+        {:ok, :duplicate_terminal_callback}
+
+      execution.status in ["uncertain", "lost"] ->
+        {:ok, :duplicate_terminal_callback}
+
+      terminal_kind_for_status(execution.status) == kind ->
+        {:ok, :duplicate_terminal_callback}
+
+      true ->
+        classify_conflicting_terminal_callback(kind, execution, payload, headers, session_ref)
+    end
+  end
+
+  defp classify_conflicting_terminal_callback(kind, execution, payload, headers, session_ref) do
+    failed_at = duplicate_terminal_occurred_at(kind, payload)
+    artifact_id = duplicate_terminal_artifact_id(kind, payload)
+    artifact_kind = duplicate_terminal_artifact_kind(kind)
+
+    updated =
+      Store.mark_execution_failed(execution.execution_id, %{
+        error_code: "duplicate_terminal_callback",
+        error_class: "duplicate_execution",
+        retryable: false,
+        safe_to_retry: false,
+        compensation_possible: false,
+        uncertain_side_effect: true,
+        details_artifact_id: artifact_id,
+        failed_at: failed_at
+      })
+
+    with {:ok, _runtime_result} <-
+           dispatch_runtime_command(
+             session_ref,
+             {:record_action_failed,
+              %{
+                action_id: execution.action_id,
+                execution_id: execution.execution_id,
+                error_code: "duplicate_terminal_callback",
+                error_class: "duplicate_execution",
+                retryable: false,
+                safe_to_retry: false,
+                compensation_possible: false,
+                uncertain_side_effect: true,
+                details_artifact_id: artifact_id,
+                failed_at: failed_at
+              }},
+             actor_kind: "worker",
+             actor_id: updated.worker_id || "worker",
+             trace_id: updated.trace_id || Map.get(headers, "x-aegis-trace-id"),
+             idempotency_key: updated.idempotency_key,
+             correlation_id: updated.execution_id
+           ),
+         :ok <-
+           maybe_register_artifact(
+             session_ref,
+             execution.action_id,
+             artifact_id,
+             artifact_kind,
+             failed_at,
+             updated.trace_id
+           ) do
+      {:ok, updated}
+    end
+  end
+
   defp maybe_register_artifact(
          _session_ref,
          _action_id,
@@ -918,6 +988,37 @@ defmodule Aegis.ExecutionBridge do
   defp terminal_execution?(execution) do
     MapSet.member?(@terminal_statuses, execution.status)
   end
+
+  defp terminal_callback?(:completed), do: true
+  defp terminal_callback?(:failed), do: true
+  defp terminal_callback?(:cancelled), do: true
+  defp terminal_callback?(_kind), do: false
+
+  defp terminal_kind_for_status("succeeded"), do: :completed
+  defp terminal_kind_for_status("failed"), do: :failed
+  defp terminal_kind_for_status("cancelled"), do: :cancelled
+  defp terminal_kind_for_status(_status), do: :uncertain
+
+  defp duplicate_terminal_occurred_at(:completed, payload),
+    do: fetch_value(payload, :completed_at) || iso8601(now())
+
+  defp duplicate_terminal_occurred_at(:failed, payload),
+    do: fetch_value(payload, :failed_at) || iso8601(now())
+
+  defp duplicate_terminal_occurred_at(:cancelled, payload),
+    do: fetch_value(payload, :cancelled_at) || iso8601(now())
+
+  defp duplicate_terminal_artifact_id(:completed, payload),
+    do: fetch_value(payload, :raw_result_artifact_id)
+
+  defp duplicate_terminal_artifact_id(:failed, payload),
+    do: fetch_value(payload, :details_artifact_id)
+
+  defp duplicate_terminal_artifact_id(:cancelled, _payload), do: nil
+
+  defp duplicate_terminal_artifact_kind(:completed), do: "worker_result"
+  defp duplicate_terminal_artifact_kind(:failed), do: "worker_failure_details"
+  defp duplicate_terminal_artifact_kind(:cancelled), do: nil
 
   defp publish_worker_callback(kind, worker_kind, payload, headers) do
     payload = normalize_map(Map.new(payload))

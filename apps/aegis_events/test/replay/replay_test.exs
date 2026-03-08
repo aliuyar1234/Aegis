@@ -170,6 +170,37 @@ defmodule Aegis.Events.ReplayTest do
     assert [%{artifact_id: "artifact-browser-screenshot"}] = replay.replay_state.recent_artifacts
   end
 
+  test "quarantines corrupted replay state instead of replaying a broken hash chain" do
+    fixture = fixture()
+    session = fixture.session_state
+
+    {:ok, _} = Events.append(session, fixture.raw_events)
+
+    SQL.query!(
+      Repo,
+      """
+      UPDATE session_events
+      SET prev_event_hash = 'corrupted-prev-hash'
+      WHERE session_id = $1 AND seq_no = 2
+      """,
+      [session.session_id]
+    )
+
+    assert {:ok, replay} = Events.historical_replay(session.session_id)
+    assert replay.replay_state.health == "quarantined"
+    assert replay.replay_state.phase == "waiting"
+    assert replay.replay_state.wait_reason == "external_dependency"
+    assert replay.replay_state.fenced
+    assert replay.replay_state.latest_recovery_reason == "event_corruption:hash_chain_mismatch"
+    assert replay.integrity_failure.kind == "event_corruption"
+    assert replay.integrity_failure.code == "hash_chain_mismatch"
+
+    assert {:ok, hydrated} = Events.hydrate(session.session_id)
+    assert hydrated.replay_state.health == "quarantined"
+    assert hydrated.restored_event == nil
+    assert hydrated.integrity_failure.code == "hash_chain_mismatch"
+  end
+
   test "sql migration artifact defines the canonical phase 02 tables" do
     migration =
       Path.join(

@@ -19,7 +19,9 @@
       "enum": [
         "screenshot",
         "dom_snapshot",
-        "trace"
+        "trace",
+        "pre_write_screenshot",
+        "post_write_screenshot"
       ]
     },
     "browser_handle_id": {

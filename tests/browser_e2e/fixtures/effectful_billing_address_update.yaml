@@ -3,22 +3,24 @@ name: Effectful billing address update
 mutation_class: browser_write_medium
 requires_approval: true
 expected_artifacts:
-- screenshot
+- pre_write_screenshot
+- post_write_screenshot
 - dom_snapshot
 - trace
-uncertainty_trigger: submit_disconnect
+uncertainty_trigger: null
 steps:
 - kind: open_context
 - kind: navigate
   target_url: https://admin.example.local/billing
 - kind: fill
   selector: '#billing-address'
+  value: 101 Control Plane Way
 - kind: submit
   selector: button[type='submit']
 - kind: verify
   expectation:
     contains: updated billing address
-tool_id: browser.navigate
-risk_class: medium
+tool_id: browser.submit
+risk_class: browser_write
 requires_operator_takeover_on_uncertainty: true
 expected_policy_decision: require_approval

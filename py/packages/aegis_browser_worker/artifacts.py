@@ -14,6 +14,8 @@ class BrowserArtifactStore:
 
     _CONTENT_TYPES = {
         "screenshot": "image/png",
+        "pre_write_screenshot": "image/png",
+        "post_write_screenshot": "image/png",
         "dom_snapshot": "text/html",
         "trace": "application/zip",
     }
@@ -100,6 +102,8 @@ class BrowserArtifactStore:
     def _suffix_for(self, artifact_kind: str) -> str:
         return {
             "screenshot": "png",
+            "pre_write_screenshot": "png",
+            "post_write_screenshot": "png",
             "dom_snapshot": "html",
             "trace": "zip",
         }.get(artifact_kind, "bin")

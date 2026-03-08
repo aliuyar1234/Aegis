@@ -154,7 +154,7 @@ defmodule Aegis.Runtime.SessionKernel do
   defp restore_or_initialize_state(session_attrs) do
     session_id = Map.fetch!(session_attrs, :session_id)
 
-    case Aegis.Events.historical_replay(session_id) do
+    case Aegis.Events.hydrate(session_id) do
       {:ok, %{replay_state: replay_state}} ->
         {:ok, state_from_replay(session_attrs, replay_state), false}
 

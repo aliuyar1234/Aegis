@@ -117,14 +117,20 @@ defmodule Aegis.Events.Store do
         checkpoint = latest_checkpoint(session_id)
         timeline = events(session_id)
         tail = tail_after_checkpoint(timeline, checkpoint)
-        replay_state = Replay.replay(session_row, checkpoint, tail)
 
-        {:ok,
-         %{
-           timeline: timeline,
-           replay_state: replay_state,
-           latest_checkpoint: checkpoint
-         }}
+        with :ok <- validate_replay_inputs(session_row, checkpoint, timeline),
+             {:ok, replay_state} <- safe_replay(session_row, checkpoint, tail) do
+          {:ok,
+           %{
+             timeline: timeline,
+             replay_state: replay_state,
+             latest_checkpoint: checkpoint,
+             integrity_failure: nil
+           }}
+        else
+          {:error, reason} ->
+            {:ok, quarantine_replay_result(session_row, checkpoint, timeline, reason)}
+        end
     end
   end
 
@@ -146,14 +152,20 @@ defmodule Aegis.Events.Store do
           |> List.last()
 
         tail = tail_after_checkpoint(timeline, checkpoint)
-        replay_state = Replay.replay(session_row, checkpoint, tail)
 
-        {:ok,
-         %{
-           timeline: timeline,
-           replay_state: replay_state,
-           latest_checkpoint: checkpoint
-         }}
+        with :ok <- validate_replay_inputs(session_row, checkpoint, timeline, expected_last_seq_no: seq_no),
+             {:ok, replay_state} <- safe_replay(session_row, checkpoint, tail) do
+          {:ok,
+           %{
+             timeline: timeline,
+             replay_state: replay_state,
+             latest_checkpoint: checkpoint,
+             integrity_failure: nil
+           }}
+        else
+          {:error, reason} ->
+            {:ok, quarantine_replay_result(session_row, checkpoint, timeline, reason)}
+        end
     end
   end
 
@@ -164,19 +176,35 @@ defmodule Aegis.Events.Store do
 
       session_row ->
         checkpoint = latest_checkpoint(session_id)
-        tail = tail_after_checkpoint(events(session_id), checkpoint)
-        replay_state = Replay.replay(session_row, checkpoint, tail)
+        timeline = events(session_id)
+        tail = tail_after_checkpoint(timeline, checkpoint)
 
-        restored_event =
-          build_checkpoint_restored(session_row, checkpoint, replay_state.last_seq_no)
+        with :ok <- validate_replay_inputs(session_row, checkpoint, timeline),
+             {:ok, replay_state} <- safe_replay(session_row, checkpoint, tail) do
+          restored_event =
+            build_checkpoint_restored(session_row, checkpoint, replay_state.last_seq_no)
 
-        {:ok,
-         %{
-           checkpoint: checkpoint,
-           tail_events: tail,
-           replay_state: replay_state,
-           restored_event: restored_event
-         }}
+          {:ok,
+           %{
+             checkpoint: checkpoint,
+             tail_events: tail,
+             replay_state: replay_state,
+             restored_event: restored_event,
+             integrity_failure: nil
+           }}
+        else
+          {:error, reason} ->
+            replay = quarantine_replay_result(session_row, checkpoint, timeline, reason)
+
+            {:ok,
+             %{
+               checkpoint: checkpoint,
+               tail_events: tail,
+               replay_state: replay.replay_state,
+               restored_event: nil,
+               integrity_failure: replay.integrity_failure
+             }}
+        end
     end
   end
 
@@ -612,6 +640,212 @@ defmodule Aegis.Events.Store do
       nil -> :ok
       event -> {:error, {:unknown_event_type, event.type}}
     end
+  end
+
+  defp validate_replay_inputs(session_row, checkpoint, timeline, opts \\ []) do
+    expected_last_seq_no =
+      Keyword.get(
+        opts,
+        :expected_last_seq_no,
+        if(timeline == [], do: 0, else: session_row.last_seq_no)
+      )
+
+    with :ok <- ensure_events_known(timeline),
+         :ok <- validate_checkpoint_integrity(session_row, checkpoint),
+         :ok <- validate_replay_timeline(timeline, expected_last_seq_no) do
+      :ok
+    end
+  end
+
+  defp validate_checkpoint_integrity(_session_row, nil), do: :ok
+
+  defp validate_checkpoint_integrity(session_row, checkpoint) do
+    payload = checkpoint.payload
+
+    cond do
+      Map.get(payload, :session_id) not in [nil, session_row.session_id] ->
+        {:error,
+         {:checkpoint_corruption, :session_id_mismatch,
+          %{checkpoint_id: checkpoint.checkpoint_id, session_id: Map.get(payload, :session_id)}}}
+
+      Map.get(payload, :tenant_id) not in [nil, session_row.tenant_id] ->
+        {:error,
+         {:checkpoint_corruption, :tenant_id_mismatch,
+          %{checkpoint_id: checkpoint.checkpoint_id, tenant_id: Map.get(payload, :tenant_id)}}}
+
+      Map.get(payload, :workspace_id) not in [nil, session_row.workspace_id] ->
+        {:error,
+         {:checkpoint_corruption, :workspace_id_mismatch,
+          %{checkpoint_id: checkpoint.checkpoint_id, workspace_id: Map.get(payload, :workspace_id)}}}
+
+      Map.get(payload, :latest_checkpoint_id) not in [nil, checkpoint.checkpoint_id] ->
+        {:error,
+         {:checkpoint_corruption, :latest_checkpoint_id_mismatch,
+          %{
+            checkpoint_id: checkpoint.checkpoint_id,
+            latest_checkpoint_id: Map.get(payload, :latest_checkpoint_id)
+          }}}
+
+      Map.get(payload, :last_seq_no) != nil and Map.get(payload, :last_seq_no) != checkpoint.seq_no - 1 ->
+        {:error,
+         {:checkpoint_corruption, :last_seq_no_mismatch,
+          %{
+            checkpoint_id: checkpoint.checkpoint_id,
+            checkpoint_seq_no: checkpoint.seq_no,
+            payload_last_seq_no: Map.get(payload, :last_seq_no)
+          }}}
+
+      Map.get(payload, :phase) not in [nil, "provisioning", "hydrating", "active", "waiting", "cancelling", "terminal"] ->
+        {:error,
+         {:checkpoint_corruption, :invalid_phase,
+          %{checkpoint_id: checkpoint.checkpoint_id, phase: Map.get(payload, :phase)}}}
+
+      Map.get(payload, :control_mode) not in [nil, "autonomous", "supervised", "human_control", "paused"] ->
+        {:error,
+         {:checkpoint_corruption, :invalid_control_mode,
+          %{checkpoint_id: checkpoint.checkpoint_id, control_mode: Map.get(payload, :control_mode)}}}
+
+      Map.get(payload, :health) not in [nil, "healthy", "degraded", "quarantined"] ->
+        {:error,
+         {:checkpoint_corruption, :invalid_health,
+          %{checkpoint_id: checkpoint.checkpoint_id, health: Map.get(payload, :health)}}}
+
+      Map.get(payload, :wait_reason) not in [nil, "none", "action", "approval", "timer", "external_dependency", "operator", "lease_recovery"] ->
+        {:error,
+         {:checkpoint_corruption, :invalid_wait_reason,
+          %{checkpoint_id: checkpoint.checkpoint_id, wait_reason: Map.get(payload, :wait_reason)}}}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp validate_replay_timeline([], 0), do: :ok
+
+  defp validate_replay_timeline(timeline, expected_last_seq_no) do
+    seq_validation =
+      timeline
+      |> Enum.map(& &1.seq_no)
+      |> validate_replay_seq(expected_last_seq_no)
+
+    with :ok <- seq_validation do
+      timeline
+      |> Enum.reduce_while("genesis", fn event, expected_prev_hash ->
+        expected_hash =
+          hash_of(%{
+            session_id: event.session_id,
+            seq_no: event.seq_no,
+            type: event.type,
+            payload: event.payload,
+            prev_event_hash: event.prev_event_hash
+          })
+
+        cond do
+          event.prev_event_hash != expected_prev_hash ->
+            {:halt,
+             {:error,
+              {:event_corruption, :hash_chain_mismatch,
+               %{
+                 seq_no: event.seq_no,
+                 expected_prev_event_hash: expected_prev_hash,
+                 actual_prev_event_hash: event.prev_event_hash
+               }}}}
+
+          event.event_hash != expected_hash ->
+            {:halt,
+             {:error,
+              {:event_corruption, :event_hash_mismatch,
+               %{
+                 seq_no: event.seq_no,
+                 expected_event_hash: expected_hash,
+                 actual_event_hash: event.event_hash
+               }}}}
+
+          true ->
+            {:cont, event.event_hash}
+        end
+      end)
+      |> case do
+        {:error, reason} -> {:error, reason}
+        _hash -> :ok
+      end
+    end
+  end
+
+  defp validate_replay_seq([], expected_last_seq_no) when expected_last_seq_no in [nil, 0], do: :ok
+
+  defp validate_replay_seq(actual, expected_last_seq_no) do
+    expected = Enum.to_list(1..length(actual))
+
+    cond do
+      actual != expected ->
+        {:error, {:event_corruption, :seq_gap, %{expected: expected, actual: actual}}}
+
+      expected_last_seq_no != nil and List.last(actual) != expected_last_seq_no ->
+        {:error,
+         {:event_corruption, :session_row_seq_mismatch,
+          %{expected_last_seq_no: expected_last_seq_no, actual_last_seq_no: List.last(actual)}}}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp safe_replay(session_row, checkpoint, events) do
+    {:ok, Replay.replay(session_row, checkpoint, events)}
+  rescue
+    error ->
+      {:error, {:replay_failure, Exception.message(error)}}
+  end
+
+  defp quarantine_replay_result(session_row, checkpoint, timeline, reason) do
+    base_state =
+      try do
+        Replay.from_checkpoint(checkpoint, session_row)
+      rescue
+        _error -> Replay.initial_state(session_row)
+      end
+
+    replay_state =
+      base_state
+      |> Map.put(:phase, "waiting")
+      |> Map.put(:health, "quarantined")
+      |> Map.put(:wait_reason, "external_dependency")
+      |> Map.put(:fenced, true)
+      |> Map.put(:last_seq_no, infer_last_seq_no(timeline, session_row))
+      |> Map.put(:latest_checkpoint_id, if(checkpoint, do: checkpoint.checkpoint_id, else: session_row.current_checkpoint_id))
+      |> Map.put(:latest_recovery_reason, replay_failure_reason(reason))
+
+    %{
+      timeline: timeline,
+      replay_state: replay_state,
+      latest_checkpoint: checkpoint,
+      integrity_failure: integrity_failure(reason)
+    }
+  end
+
+  defp infer_last_seq_no([], session_row), do: session_row.last_seq_no
+  defp infer_last_seq_no(timeline, _session_row), do: List.last(timeline).seq_no
+
+  defp replay_failure_reason({:event_corruption, kind, _details}), do: "event_corruption:#{kind}"
+  defp replay_failure_reason({:checkpoint_corruption, kind, _details}), do: "checkpoint_corruption:#{kind}"
+  defp replay_failure_reason({:replay_failure, message}), do: "replay_failure:#{message}"
+  defp replay_failure_reason(other), do: "replay_failure:#{inspect(other)}"
+
+  defp integrity_failure({:event_corruption, kind, details}) do
+    %{kind: "event_corruption", code: to_string(kind), details: details}
+  end
+
+  defp integrity_failure({:checkpoint_corruption, kind, details}) do
+    %{kind: "checkpoint_corruption", code: to_string(kind), details: details}
+  end
+
+  defp integrity_failure({:replay_failure, message}) do
+    %{kind: "replay_failure", code: "replay_failure", details: %{message: message}}
+  end
+
+  defp integrity_failure(reason) do
+    %{kind: "replay_failure", code: "unexpected", details: %{reason: inspect(reason)}}
   end
 
   defp validate_seq(session_row, raw_events) do

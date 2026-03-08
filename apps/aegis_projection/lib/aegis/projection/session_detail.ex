@@ -25,6 +25,7 @@ defmodule Aegis.Projection.SessionDetail do
          summary_capsule: replay.replay_state.summary_capsule,
          child_agents: replay.replay_state.child_agents,
          browser_handles: replay.replay_state.browser_handles,
+         browser_recovery: browser_recovery_view(replay.replay_state.browser_handles, projection),
          deadlines: projection.deadlines,
          approvals: projection.pending_approvals,
          in_flight_actions: projection.in_flight_actions,
@@ -36,7 +37,8 @@ defmodule Aegis.Projection.SessionDetail do
            RunbookLinks.for_timeline(
              "session-detail",
              replay.timeline,
-             approval_wait: projection.wait_reason == "approval" or projection.pending_approvals != []
+             approval_wait: projection.wait_reason == "approval" or projection.pending_approvals != [],
+             integrity_failure: Map.get(replay, :integrity_failure)
            )
        }}
     end
@@ -103,6 +105,33 @@ defmodule Aegis.Projection.SessionDetail do
         projection.phase in ["active", "waiting"] and projection.control_mode != "human_control",
       return_control:
         projection.control_mode in ["human_control", "paused"] or projection.wait_reason == "operator"
+    }
+  end
+
+  defp browser_recovery_view([], _projection), do: nil
+
+  defp browser_recovery_view(browser_handles, projection) do
+    latest =
+      browser_handles
+      |> Enum.sort_by(fn handle ->
+        {Map.get(handle, :last_observed_at, ""), Map.get(handle, :browser_handle_id, "")}
+      end, :desc)
+      |> List.first()
+
+    %{
+      browser_handle_id: Map.get(latest, :browser_handle_id),
+      provider_kind: Map.get(latest, :provider_kind),
+      page_ref: Map.get(latest, :page_ref),
+      current_url: Map.get(latest, :current_url),
+      state_ref: Map.get(latest, :state_ref),
+      last_stable_artifact_id: Map.get(latest, :last_stable_artifact_id),
+      restart_hint: Map.get(latest, :restart_hint),
+      last_observed_at: Map.get(latest, :last_observed_at),
+      degraded_reason:
+        if(projection.health == "degraded" or projection.health == "quarantined",
+          do: projection.latest_recovery_reason,
+          else: nil
+        )
     }
   end
 end

@@ -61,6 +61,8 @@
         "type": "string",
         "enum": [
           "screenshot",
+          "pre_write_screenshot",
+          "post_write_screenshot",
           "dom_snapshot",
           "trace"
         ]

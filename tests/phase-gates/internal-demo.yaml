@@ -5,6 +5,7 @@ objective: Prove the runtime is real before public polish.
 fixtures:
 - tests/browser_e2e/fixtures/read_only_account_lookup.yaml
 - tests/browser_e2e/fixtures/uncertain_submit_recovery.yaml
+- docs/demo-scripts/internal-runtime-credibility.md
 tests:
 - TS-004
 - TS-006
