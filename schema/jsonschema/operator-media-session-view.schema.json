@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/operator-media-session-view.schema.json",
+  "title": "OperatorMediaSessionView",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tenant_id",
+    "workspace_id",
+    "session_id",
+    "media_mode",
+    "qos_level",
+    "capacity_pool",
+    "sidecars",
+    "recording_status",
+    "handoff_required",
+    "recommended_runbooks"
+  ],
+  "properties": {
+    "tenant_id": {
+      "type": "string"
+    },
+    "workspace_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "media_mode": {
+      "type": "string",
+      "enum": [
+        "voice_call",
+        "live_room",
+        "async_review"
+      ]
+    },
+    "qos_level": {
+      "type": "string",
+      "enum": [
+        "healthy",
+        "degraded",
+        "handoff_required",
+        "paused_for_backpressure"
+      ]
+    },
+    "capacity_pool": {
+      "type": "string",
+      "enum": [
+        "shared_media_pool",
+        "tenant_isolated_media_pool",
+        "dedicated_media_pool"
+      ]
+    },
+    "sidecars": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sidecar_id",
+          "kind",
+          "health",
+          "pool_class"
+        ],
+        "properties": {
+          "sidecar_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "media_gateway",
+              "recorder",
+              "protocol_bridge"
+            ]
+          },
+          "health": {
+            "type": "string",
+            "enum": [
+              "healthy",
+              "degraded",
+              "draining"
+            ]
+          },
+          "pool_class": {
+            "type": "string",
+            "enum": [
+              "shared_media_pool",
+              "tenant_isolated_media_pool",
+              "dedicated_media_pool"
+            ]
+          }
+        }
+      }
+    },
+    "recording_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "latest_artifact_id"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "disabled",
+            "buffered",
+            "active",
+            "paused"
+          ]
+        },
+        "latest_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "handoff_required": {
+      "type": "boolean"
+    },
+    "recommended_runbooks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

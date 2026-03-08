@@ -32,9 +32,9 @@ Aegis Runtime is a **BEAM-native durable runtime and control plane for long-live
 
 ## Current implementation state
 
-- `PHASE-00` through `PHASE-09` are complete in this repository.
-- A fresh Codex instance must start at `PHASE-10`.
-- `make next-tasks` must surface `P10-*` tasks first.
+- `PHASE-00` through `PHASE-13` are complete in this repository.
+- `PHASE-13` remains the terminal current phase marker because there is no `PHASE-14`.
+- `make next-tasks` should report that no unblocked tasks remain.
 
 ## What success looks like
 

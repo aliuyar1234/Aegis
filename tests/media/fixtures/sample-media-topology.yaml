@@ -1,0 +1,32 @@
+version: 1
+ingress_protocols:
+  - webrtc
+  - sip
+sidecar_chain:
+  - protocol_bridge
+  - media_gateway
+  - recorder
+artifact_policies:
+  recording_manifest:
+    retention_class: recording_hot
+    signed_upload_required: true
+  recording_segment:
+    retention_class: recording_hot
+    signed_upload_required: true
+  transcript:
+    retention_class: customer_artifact
+    signed_upload_required: true
+degradation_policies:
+  qos_levels:
+    - healthy
+    - degraded
+    - handoff_required
+    - paused_for_backpressure
+  admission_response: require_operator_handoff
+  recording_response: artifact_only_fallback
+handoff_rules:
+  trigger_conditions:
+    - packet loss exceeds interactive threshold
+    - recorder backlog exceeds bounded drain window
+  operator_surface: session-detail
+  runbook_ref: docs/runbooks/media-qos-degradation.md

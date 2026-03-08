@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/audit-export-policy.schema.json",
+  "title": "AuditExportPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "scope",
+    "authz",
+    "redaction",
+    "delivery",
+    "evidence_refs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_export",
+        "artifact_metadata_export",
+        "artifact_blob_export",
+        "policy_decision_export",
+        "operator_event_export"
+      ],
+      "properties": {
+        "event_export": {
+          "type": "string",
+          "enum": [
+            "timeline_with_hashes"
+          ]
+        },
+        "artifact_metadata_export": {
+          "const": true
+        },
+        "artifact_blob_export": {
+          "type": "string",
+          "enum": [
+            "signed_url_rehydration_only"
+          ]
+        },
+        "policy_decision_export": {
+          "const": true
+        },
+        "operator_event_export": {
+          "const": true
+        }
+      }
+    },
+    "authz": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "human_identity_provider",
+        "machine_identity",
+        "export_roles",
+        "workspace_scoping_required"
+      ],
+      "properties": {
+        "human_identity_provider": {
+          "type": "string",
+          "enum": [
+            "oidc_or_saml"
+          ]
+        },
+        "machine_identity": {
+          "type": "string",
+          "enum": [
+            "workload_identity_or_mtls"
+          ]
+        },
+        "export_roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "workspace_scoping_required": {
+          "const": true
+        }
+      }
+    },
+    "redaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "require_redaction_state",
+        "forbid_raw_secret_material",
+        "pii_export_requires_explicit_policy",
+        "mark_redacted_records_in_bundle"
+      ],
+      "properties": {
+        "require_redaction_state": {
+          "const": true
+        },
+        "forbid_raw_secret_material": {
+          "const": true
+        },
+        "pii_export_requires_explicit_policy": {
+          "const": true
+        },
+        "mark_redacted_records_in_bundle": {
+          "const": true
+        }
+      }
+    },
+    "delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "modes",
+        "destinations",
+        "artifact_delivery",
+        "failure_visibility"
+      ],
+      "properties": {
+        "modes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "on_demand_case_bundle",
+              "scheduled_evidence_export",
+              "incident_scoped_export"
+            ]
+          }
+        },
+        "destinations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "tenant_managed_bucket",
+              "siem_sink",
+              "warehouse_snapshot"
+            ]
+          }
+        },
+        "artifact_delivery": {
+          "type": "string",
+          "enum": [
+            "signed_url_rehydration"
+          ]
+        },
+        "failure_visibility": {
+          "type": "string",
+          "enum": [
+            "operator_visible_backlog"
+          ]
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

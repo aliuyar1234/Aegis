@@ -1,0 +1,93 @@
+version: 1
+contracts:
+  - sidecar_id: media.gateway.v1
+    kind: media_gateway
+    runtime_language: rust
+    ownership_boundary:
+      session_owner: elixir_control_plane
+      writes_canonical_state_directly: false
+      owns_session_lease: false
+      emits_runtime_events_directly: false
+      replay_source: transcripts_and_artifacts
+    command_boundary:
+      receives:
+        - action_dispatch
+        - action_cancel
+      emits:
+        - action_accepted
+        - action_progress
+        - action_completed
+        - action_failed
+      policy_enforced_by: aegis_policy
+    artifact_boundary:
+      artifact_kinds:
+        - transcript
+      signed_upload_required: true
+      retention_classes:
+        - media_transient
+        - customer_artifact
+    capacity_boundary:
+      pool_class: shared_media_pool
+      max_streams_per_sidecar: 32
+      degradation_signal: health.degraded
+  - sidecar_id: media.recorder.v1
+    kind: recorder
+    runtime_language: rust
+    ownership_boundary:
+      session_owner: elixir_control_plane
+      writes_canonical_state_directly: false
+      owns_session_lease: false
+      emits_runtime_events_directly: false
+      replay_source: recorded_artifacts
+    command_boundary:
+      receives:
+        - action_dispatch
+        - action_cancel
+      emits:
+        - action_accepted
+        - action_progress
+        - artifact_registered
+        - action_completed
+        - action_failed
+      policy_enforced_by: aegis_policy
+    artifact_boundary:
+      artifact_kinds:
+        - recording_segment
+        - recording_manifest
+      signed_upload_required: true
+      retention_classes:
+        - recording_hot
+        - customer_artifact
+    capacity_boundary:
+      pool_class: tenant_isolated_media_pool
+      max_streams_per_sidecar: 8
+      degradation_signal: recording_backpressure
+  - sidecar_id: media.protocol-bridge.v1
+    kind: protocol_bridge
+    runtime_language: rust
+    ownership_boundary:
+      session_owner: elixir_control_plane
+      writes_canonical_state_directly: false
+      owns_session_lease: false
+      emits_runtime_events_directly: false
+      replay_source: transcripts_and_artifacts
+    command_boundary:
+      receives:
+        - action_dispatch
+        - action_cancel
+      emits:
+        - action_accepted
+        - action_progress
+        - action_completed
+        - action_failed
+      policy_enforced_by: aegis_policy
+    artifact_boundary:
+      artifact_kinds:
+        - transcript
+      signed_upload_required: true
+      retention_classes:
+        - media_transient
+    capacity_boundary:
+      pool_class: dedicated_media_pool
+      max_streams_per_sidecar: 64
+      degradation_signal: operator_handoff_required

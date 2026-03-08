@@ -18,6 +18,8 @@ The machine-readable surface map lives in `meta/operator-surfaces.yaml`.
 - transport topology under `schema/transport-topology.yaml`
 - failure mapping under `meta/failure-runbooks.yaml`
 - current phase state under `meta/current-phase.yaml`
+- enterprise acceptance checklist under `meta/enterprise-acceptance-checklist.yaml`
+- dedicated tenant evidence under `meta/dedicated-tenant-evidence.yaml`
 
 ## Local stack
 

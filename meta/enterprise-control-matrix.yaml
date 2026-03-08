@@ -1,0 +1,109 @@
+id: enterprise-control-matrix
+version: 1
+controls:
+- id: identity-federation-and-scope
+  control_area: identity_and_auth
+  flavors:
+  - shared_cloud
+  - isolated_execution
+  - dedicated_deployment
+  requirement: Human auth uses OIDC/SAML with tenant/workspace scoped RBAC/ABAC
+    and audit-export roles.
+  evidence_refs:
+  - meta/rbac-roles.yaml
+  - meta/abac-attributes.yaml
+  - SECURITY.md
+  - docs/design-docs/audit-export-redaction.md
+  runbook_refs:
+  - docs/runbooks/audit-export-backlog.md
+- id: dedicated-isolation-boundary
+  control_area: dedicated_isolation
+  flavors:
+  - dedicated_deployment
+  requirement: Tier C uses dedicated control plane, dedicated worker pools, and
+    a dedicated object-store boundary.
+  evidence_refs:
+  - meta/dedicated-deployment-profile.yaml
+  - meta/deployment-flavors.yaml
+  - docs/design-docs/dedicated-deployment-isolation.md
+  runbook_refs:
+  - docs/runbooks/dedicated-key-isolation.md
+- id: key-isolation-and-secrets
+  control_area: key_isolation
+  flavors:
+  - dedicated_deployment
+  requirement: Dedicated KMS namespace and external secret manager custody keep tenant
+    keys and secret material separated.
+  evidence_refs:
+  - meta/dedicated-deployment-profile.yaml
+  - SECURITY.md
+  - docs/design-docs/dedicated-deployment-isolation.md
+  runbook_refs:
+  - docs/runbooks/dedicated-key-isolation.md
+- id: residency-and-artifact-control
+  control_area: residency
+  flavors:
+  - dedicated_deployment
+  requirement: Data residency hooks pin database, object storage, and key region;
+    artifact access uses short-lived enterprise signed URLs.
+  evidence_refs:
+  - meta/dedicated-deployment-profile.yaml
+  - meta/dedicated-tenant-evidence.yaml
+  - docs/design-docs/dedicated-deployment-isolation.md
+  runbook_refs:
+  - docs/runbooks/dedicated-key-isolation.md
+- id: audit-export-and-redaction
+  control_area: audit_export
+  flavors:
+  - isolated_execution
+  - dedicated_deployment
+  requirement: Audit exports include timeline hashes, approvals, policy decisions,
+    and artifact metadata while honoring redaction state.
+  evidence_refs:
+  - meta/audit-export-policy.yaml
+  - docs/design-docs/audit-export-redaction.md
+  - docs/design-docs/security-governance.md
+  runbook_refs:
+  - docs/runbooks/audit-export-backlog.md
+- id: retention-archive-and-slo
+  control_area: retention_redaction
+  flavors:
+  - shared_cloud
+  - isolated_execution
+  - dedicated_deployment
+  requirement: Retention classes, archive restoration, and redaction completion SLOs
+    are explicit and operator-visible.
+  evidence_refs:
+  - meta/retention-slo-policy.yaml
+  - docs/design-docs/retention-and-slo-policy.md
+  - RELIABILITY.md
+  runbook_refs:
+  - docs/runbooks/retention-backlog.md
+- id: change-control-and-enterprise-gate
+  control_area: release_change_control
+  flavors:
+  - dedicated_deployment
+  requirement: Enterprise acceptance checklist and readiness gate must pass before
+    dedicated deployment claims.
+  evidence_refs:
+  - meta/enterprise-acceptance-checklist.yaml
+  - tests/phase-gates/enterprise-readiness.yaml
+  - meta/dedicated-tenant-evidence.yaml
+  runbook_refs:
+  - docs/runbooks/dedicated-key-isolation.md
+- id: operator-recovery-and-evidence
+  control_area: operator_recovery
+  flavors:
+  - shared_cloud
+  - isolated_execution
+  - dedicated_deployment
+  requirement: Enterprise failures map to explicit runbooks and operator-visible
+    degraded paths.
+  evidence_refs:
+  - meta/failure-runbooks.yaml
+  - OPERATIONS.md
+  - docs/threat-models/enterprise-control-matrix.md
+  runbook_refs:
+  - docs/runbooks/audit-export-backlog.md
+  - docs/runbooks/dedicated-key-isolation.md
+  - docs/runbooks/retention-backlog.md

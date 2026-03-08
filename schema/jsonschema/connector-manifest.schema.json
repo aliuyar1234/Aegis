@@ -62,6 +62,9 @@
     "artifact_processor": {
       "$ref": "#/$defs/artifactProcessorInterface"
     },
+    "mcp_adapter": {
+      "$ref": "#/$defs/mcpAdapterInterface"
+    },
     "notes": {
       "type": "string"
     }
@@ -92,6 +95,20 @@
       "then": {
         "required": [
           "artifact_processor"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "mcp_adapter"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "mcp_adapter"
         ]
       }
     }
@@ -439,6 +456,119 @@
         "max_input_bytes": {
           "type": "integer",
           "minimum": 1
+        }
+      }
+    },
+    "mcpSessionBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requires_session_owner_dispatch",
+        "maps_to_action_requests_only",
+        "returns_worker_events_only"
+      ],
+      "properties": {
+        "requires_session_owner_dispatch": {
+          "const": true
+        },
+        "maps_to_action_requests_only": {
+          "const": true
+        },
+        "returns_worker_events_only": {
+          "const": true
+        }
+      }
+    },
+    "mcpProtocolBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mcp_is_internal_runtime_protocol",
+        "writes_canonical_state_directly",
+        "emits_runtime_events_directly",
+        "bypasses_policy",
+        "bypasses_outbox"
+      ],
+      "properties": {
+        "mcp_is_internal_runtime_protocol": {
+          "const": false
+        },
+        "writes_canonical_state_directly": {
+          "const": false
+        },
+        "emits_runtime_events_directly": {
+          "const": false
+        },
+        "bypasses_policy": {
+          "const": false
+        },
+        "bypasses_outbox": {
+          "const": false
+        }
+      }
+    },
+    "mcpToolTranslation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "published_tool_ids"
+      ],
+      "properties": {
+        "published_tool_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          }
+        },
+        "tool_name_prefix": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "allow_prompt_passthrough": {
+          "type": "boolean"
+        },
+        "allow_resource_passthrough": {
+          "type": "boolean"
+        }
+      }
+    },
+    "mcpAdapterInterface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "server_transport",
+        "server_ref",
+        "protocol_role",
+        "session_binding",
+        "tool_translation",
+        "protocol_boundary"
+      ],
+      "properties": {
+        "server_transport": {
+          "type": "string",
+          "enum": [
+            "stdio",
+            "sse",
+            "streamable_http"
+          ]
+        },
+        "server_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protocol_role": {
+          "const": "external_tool_adapter"
+        },
+        "session_binding": {
+          "$ref": "#/$defs/mcpSessionBinding"
+        },
+        "tool_translation": {
+          "$ref": "#/$defs/mcpToolTranslation"
+        },
+        "protocol_boundary": {
+          "$ref": "#/$defs/mcpProtocolBoundary"
         }
       }
     }

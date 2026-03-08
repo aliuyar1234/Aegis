@@ -1047,7 +1047,7 @@ tasks:
   phase: PHASE-10
   title: Define MCP adapter boundary without making MCP the internal runtime protocol
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P10-T01
   adr_refs:
@@ -1065,7 +1065,7 @@ tasks:
   phase: PHASE-10
   title: Create compatibility and versioning policy for third-party extensions
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P10-T01
   adr_refs:
@@ -1084,7 +1084,7 @@ tasks:
   phase: PHASE-10
   title: Create sample extension pack layout and review rubric
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P10-T03
   adr_refs:
@@ -1103,7 +1103,7 @@ tasks:
   phase: PHASE-11
   title: Define Rust sidecar contracts for media, protocol, and recording hot paths
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P04-T01
   adr_refs:
@@ -1122,7 +1122,7 @@ tasks:
   phase: PHASE-11
   title: Define session state extensions for streaming media and degraded-mode handoff
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P01-T02
   adr_refs:
@@ -1142,7 +1142,7 @@ tasks:
   phase: PHASE-11
   title: Define operator console deltas for future voice/media sessions
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P06-T04
   adr_refs:
@@ -1162,7 +1162,7 @@ tasks:
   title: Create voice/media phase-gate fixtures, media topology docs, and operator/runbook
     deltas for degraded QoS paths
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P11-T01
   - P11-T02
@@ -1184,7 +1184,7 @@ tasks:
   phase: PHASE-12
   title: Define what belongs in OSS core versus managed cloud services
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P10-T03
   adr_refs:
@@ -1203,7 +1203,7 @@ tasks:
   title: Define packaging and deployment flavors for shared, isolated-execution, and
     dedicated control plane modes
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P09-T03
   adr_refs:
@@ -1221,7 +1221,7 @@ tasks:
   phase: PHASE-12
   title: Document release, upgrade, and compatibility policy for the split
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P12-T01
   adr_refs:
@@ -1240,7 +1240,7 @@ tasks:
   title: Create OSS core manifest, managed-only surface catalog, and packaging matrix
     artifacts
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P12-T01
   - P12-T02
@@ -1262,7 +1262,7 @@ tasks:
   title: Create split-surface release manifests, upgrade policy artifacts, and OSS/managed
     phase gate
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P12-T03
   - P12-T04
@@ -1282,7 +1282,7 @@ tasks:
   title: Implement audit export and redaction workflows tied to event and artifact
     models
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P09-T04
   adr_refs:
@@ -1301,7 +1301,7 @@ tasks:
   phase: PHASE-13
   title: Define dedicated deployment and key-isolation path for Tier C tenants
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P12-T02
   adr_refs:
@@ -1319,7 +1319,7 @@ tasks:
   phase: PHASE-13
   title: Define retention classes, archival policy, and operational SLO surfaces
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P02-T01
   - P09-T02
@@ -1339,7 +1339,7 @@ tasks:
   phase: PHASE-13
   title: Create enterprise acceptance checklist and release gate
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P13-T01
   - P13-T02
@@ -1361,7 +1361,7 @@ tasks:
   title: Create enterprise control matrix, dedicated-tenant evidence bundle, and enterprise
     readiness gate assets
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P13-T01
   - P13-T02

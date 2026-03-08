@@ -4,28 +4,55 @@ name: OSS vs managed split gate
 objective: Validate OSS core and managed-only surfaces are explicitly separated.
 fixtures:
 - docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
-- REPO_MAP.md
+- docs/design-docs/oss-managed-split.md
+- docs/design-docs/deployment-flavors.md
+- docs/design-docs/oss-managed-release-policy.md
+- docs/references/packaging-matrix.md
+- docs/references/release-upgrade-matrix.md
+- meta/oss-core-manifest.yaml
+- meta/managed-surface-catalog.yaml
+- meta/deployment-flavors.yaml
+- meta/split-release-policy.yaml
+- meta/split-release-manifest.yaml
+- schema/jsonschema/oss-core-manifest.schema.json
+- schema/jsonschema/managed-surface-catalog.schema.json
+- schema/jsonschema/deployment-flavors.schema.json
+- schema/jsonschema/split-release-policy.schema.json
+- schema/jsonschema/split-release-manifest.schema.json
 tests:
-- TS-014
 - TS-016
 acceptance:
 - AC-049
 - AC-050
 - AC-051
 steps:
-- id: surface-manifest
+- id: surface-boundary
   description: verify OSS and managed surfaces are bounded
   expected:
-  - manifests separate OSS core from managed-only surfaces
+  - manifests separate OSS core from managed-only control-plane services, packages,
+    and operational features
   evidence:
-  - docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
-  - FULL_SCOPE.md
-- id: packaging
-  description: verify packaging matrix exists
+  - meta/oss-core-manifest.yaml
+  - meta/managed-surface-catalog.yaml
+  - docs/design-docs/oss-managed-split.md
+- id: deployment-flavors
+  description: verify packaging and deployment flavors are explicit
   expected:
-  - deployment flavors are explicit
+  - deployment flavors are explicit for OSS local, shared cloud, isolated execution,
+    and dedicated deployment
   evidence:
-  - ROADMAP.md
-  - docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  - meta/deployment-flavors.yaml
+  - docs/design-docs/deployment-flavors.md
+  - docs/references/packaging-matrix.md
+- id: release-policy
+  description: verify release, upgrade, and compatibility obligations are explicit
+  expected:
+  - contracts, migrations, and operator-facing documentation obligations are explicit
+  - release manifests cover every locked deployment flavor
+  evidence:
+  - meta/split-release-policy.yaml
+  - meta/split-release-manifest.yaml
+  - docs/design-docs/oss-managed-release-policy.md
+  - docs/references/release-upgrade-matrix.md
 proves:
 - split surface is implementation-grade rather than aspirational

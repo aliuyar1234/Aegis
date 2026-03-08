@@ -44,6 +44,17 @@ failures:
   - health.degraded
   runbook: docs/runbooks/degraded-system-mode.md
   operator_surface: session-fleet
+- id: media_qos_degradation
+  events:
+  - health.degraded
+  runbook: docs/runbooks/media-qos-degradation.md
+  operator_surface: session-detail
+- id: media_recording_pipeline
+  events:
+  - artifact.registered
+  - health.degraded
+  runbook: docs/runbooks/media-recording-pipeline.md
+  operator_surface: session-detail
 - id: artifact_store_outage
   events:
   - artifact.registered
@@ -63,3 +74,20 @@ failures:
   - operator.returned_control
   runbook: docs/runbooks/operator-intervention.md
   operator_surface: session-detail
+- id: audit_export_backlog
+  events:
+  - health.degraded
+  - artifact.registered
+  runbook: docs/runbooks/audit-export-backlog.md
+  operator_surface: audit-export
+- id: key_isolation_degraded
+  events:
+  - health.degraded
+  runbook: docs/runbooks/dedicated-key-isolation.md
+  operator_surface: audit-export
+- id: retention_backlog
+  events:
+  - health.degraded
+  - artifact.registered
+  runbook: docs/runbooks/retention-backlog.md
+  operator_surface: audit-export

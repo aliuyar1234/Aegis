@@ -1,0 +1,43 @@
+id: third-party-extension-compatibility
+version: 1
+aegis_runtime:
+  current_release: 0.10.0
+  supported_contract_versions:
+  - v1
+extension_api:
+  current_version: v1alpha1
+  supported_versions:
+  - v1alpha1
+tool_registry:
+  current_version: v1
+  supported_versions:
+  - v1
+supported_sdk_languages:
+- elixir
+- python
+- rust
+supported_tiers:
+- tier_a
+- tier_b
+- tier_c
+compatibility_rules:
+  require_bounded_runtime_range: true
+  require_bounded_extension_api_range: true
+  require_bounded_tool_registry_range: true
+  forbid_open_ended_ranges: true
+  require_lifecycle_hooks: true
+  require_capability_boundary: true
+  require_sample_pack: true
+  require_review_rubric: true
+  mcp_adapters_external_only: true
+deprecation_policy:
+  min_notice_days: 90
+  supported_parallel_extension_api_versions: 1
+  sample_fixture_refresh_required: true
+review_gates:
+- schema-valid
+- bounded-compatibility-range
+- lifecycle-declared
+- capability-boundary-bounded
+- pack-layout-present
+- docs-and-rubric-present

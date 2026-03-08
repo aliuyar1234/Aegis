@@ -1,0 +1,50 @@
+id: enterprise-acceptance-checklist
+version: 1
+checklist:
+- id: isolation-boundary
+  category: isolation
+  requirement: dedicated deployment profile declares dedicated control plane, dedicated
+    worker pools, and dedicated object-store boundary
+  evidence_refs:
+  - meta/dedicated-deployment-profile.yaml
+  - docs/design-docs/dedicated-deployment-isolation.md
+  runbook_refs:
+  - docs/runbooks/dedicated-key-isolation.md
+  gate_refs:
+  - tests/phase-gates/enterprise-readiness.yaml
+- id: audit-export-path
+  category: audit_redaction
+  requirement: audit export policy ties event and artifact evidence to redaction-aware
+    delivery and scoped identities
+  evidence_refs:
+  - meta/audit-export-policy.yaml
+  - docs/design-docs/audit-export-redaction.md
+  runbook_refs:
+  - docs/runbooks/audit-export-backlog.md
+  gate_refs:
+  - tests/phase-gates/enterprise-readiness.yaml
+- id: retention-slo-path
+  category: retention_slo
+  requirement: retention classes, archival policy, and enterprise SLOs are explicit
+    and link to degraded-mode response
+  evidence_refs:
+  - meta/retention-slo-policy.yaml
+  - docs/design-docs/retention-and-slo-policy.md
+  runbook_refs:
+  - docs/runbooks/retention-backlog.md
+  gate_refs:
+  - tests/phase-gates/enterprise-readiness.yaml
+- id: enterprise-gate-artifacts
+  category: docs_and_gate
+  requirement: enterprise control matrix, dedicated-tenant evidence bundle, and
+    gate assets reference concrete docs, controls, and runbooks
+  evidence_refs:
+  - meta/enterprise-control-matrix.yaml
+  - meta/dedicated-tenant-evidence.yaml
+  - tests/phase-gates/enterprise-readiness.yaml
+  runbook_refs:
+  - docs/runbooks/audit-export-backlog.md
+  - docs/runbooks/dedicated-key-isolation.md
+  - docs/runbooks/retention-backlog.md
+  gate_refs:
+  - tests/phase-gates/enterprise-readiness.yaml

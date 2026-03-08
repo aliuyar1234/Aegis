@@ -71,6 +71,26 @@ Operator controls must dispatch through the runtime and land as timeline events.
 - policy decision and dangerous-action surfaces
 - effectful mutation controls
 
+## Future Phase-11 media deltas
+
+Future voice/media sessions add bounded console deltas rather than a separate console:
+
+- QoS state and degradation reason on fleet/detail surfaces
+- media sidecar health and capacity-pool visibility
+- recording status and latest media artifact refs
+- explicit handoff-required state and media-specific runbook links
+
+The Phase 11 design SSOT is `docs/design-docs/media-operator-surfaces.md`.
+
+## Future Phase-13 enterprise deltas
+
+Future enterprise packaging adds bounded console deltas rather than a new control product:
+
+- audit export status and backlog visibility for bounded audit roles
+- dedicated deployment and key-isolation status markers
+- retention and archive backlog indicators
+- enterprise-specific runbook links for audit export, key isolation, and retention recovery
+
 ## Anti-patterns
 
 - UI-only state transitions

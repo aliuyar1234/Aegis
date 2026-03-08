@@ -1,5 +1,5 @@
 phase: PHASE-13
-status: deferred
+status: current
 name: Cloud and enterprise hardening
 phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
 tasks:
@@ -8,7 +8,7 @@ tasks:
   title: Implement audit export and redaction workflows tied to event and artifact
     models
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P09-T04
   adr_refs:
@@ -27,7 +27,7 @@ tasks:
   phase: PHASE-13
   title: Define dedicated deployment and key-isolation path for Tier C tenants
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P12-T02
   adr_refs:
@@ -45,7 +45,7 @@ tasks:
   phase: PHASE-13
   title: Define retention classes, archival policy, and operational SLO surfaces
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P02-T01
   - P09-T02
@@ -65,7 +65,7 @@ tasks:
   phase: PHASE-13
   title: Create enterprise acceptance checklist and release gate
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P13-T01
   - P13-T02
@@ -87,7 +87,7 @@ tasks:
   title: Create enterprise control matrix, dedicated-tenant evidence bundle, and enterprise
     readiness gate assets
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P13-T01
   - P13-T02

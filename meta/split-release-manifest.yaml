@@ -1,0 +1,70 @@
+id: oss-managed-release-manifest
+version: 1
+release_lines:
+- flavor: oss_local
+  package_artifacts:
+  - source_checkout
+  - compose_bundle
+  - optional_container_images
+  compatibility_inputs:
+  - meta/oss-core-manifest.yaml
+  - meta/deployment-flavors.yaml
+  - meta/split-release-policy.yaml
+  upgrade_strategy: self-managed migration with explicit release notes
+  migration_owner: runtime_operator
+  required_docs:
+  - docs/references/packaging-matrix.md
+  - docs/references/release-upgrade-matrix.md
+  - README.md
+  gate_refs:
+  - tests/phase-gates/oss-managed-split.yaml
+- flavor: shared_cloud
+  package_artifacts:
+  - managed_service_release
+  - tenant_bootstrap_bundle
+  compatibility_inputs:
+  - meta/managed-surface-catalog.yaml
+  - meta/deployment-flavors.yaml
+  - meta/split-release-policy.yaml
+  upgrade_strategy: provider-managed rollout with tenant notice
+  migration_owner: aegis_cloud
+  required_docs:
+  - docs/references/packaging-matrix.md
+  - docs/references/release-upgrade-matrix.md
+  - docs/product-specs/operator-console.md
+  gate_refs:
+  - tests/phase-gates/oss-managed-split.yaml
+- flavor: isolated_execution
+  package_artifacts:
+  - managed_service_release
+  - isolated_execution_pool_bundle
+  - tenant_routing_configuration
+  compatibility_inputs:
+  - meta/managed-surface-catalog.yaml
+  - meta/deployment-flavors.yaml
+  - meta/split-release-policy.yaml
+  upgrade_strategy: coordinated rollout with execution-pool preflight
+  migration_owner: aegis_cloud_with_tenant_coordination
+  required_docs:
+  - docs/references/packaging-matrix.md
+  - docs/references/release-upgrade-matrix.md
+  - docs/design-docs/deployment-flavors.md
+  gate_refs:
+  - tests/phase-gates/oss-managed-split.yaml
+- flavor: dedicated_deployment
+  package_artifacts:
+  - dedicated_control_plane_bundle
+  - dedicated_execution_bundle
+  - environment_specific_configuration_pack
+  compatibility_inputs:
+  - meta/managed-surface-catalog.yaml
+  - meta/deployment-flavors.yaml
+  - meta/split-release-policy.yaml
+  upgrade_strategy: dedicated change-window rollout with preflight evidence bundle
+  migration_owner: coordinated_dedicated_release
+  required_docs:
+  - docs/references/packaging-matrix.md
+  - docs/references/release-upgrade-matrix.md
+  - docs/design-docs/deployment-flavors.md
+  gate_refs:
+  - tests/phase-gates/oss-managed-split.yaml

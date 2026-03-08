@@ -1,0 +1,29 @@
+id: dedicated-tenant-evidence
+version: 1
+tenant_tier: tier_c
+deployment_profile_ref: meta/dedicated-deployment-profile.yaml
+key_isolation_evidence:
+  kms_namespace_per_tenant: true
+  dedicated_wrapping_key: true
+  rotation_change_window_required: true
+data_residency_hooks:
+  region_pin: tenant_bound_region
+  object_store_pin: true
+  export_destination_pin: true
+artifact_controls:
+  dedicated_object_store: true
+  signed_url_ttl_class: short_lived_enterprise
+  archive_restore_requires_operator_context: true
+operational_preflight:
+  required_checklists:
+  - meta/enterprise-acceptance-checklist.yaml
+  release_gate: enterprise_readiness
+  audit_export_smoke_test: true
+docs_refs:
+- docs/design-docs/dedicated-deployment-isolation.md
+- docs/design-docs/audit-export-redaction.md
+- docs/design-docs/retention-and-slo-policy.md
+runbook_refs:
+- docs/runbooks/audit-export-backlog.md
+- docs/runbooks/dedicated-key-isolation.md
+- docs/runbooks/retention-backlog.md

@@ -1,0 +1,35 @@
+id: enterprise-audit-export-policy
+version: 1
+scope:
+  event_export: timeline_with_hashes
+  artifact_metadata_export: true
+  artifact_blob_export: signed_url_rehydration_only
+  policy_decision_export: true
+  operator_event_export: true
+authz:
+  human_identity_provider: oidc_or_saml
+  machine_identity: workload_identity_or_mtls
+  export_roles:
+  - auditor
+  - platform_admin
+  workspace_scoping_required: true
+redaction:
+  require_redaction_state: true
+  forbid_raw_secret_material: true
+  pii_export_requires_explicit_policy: true
+  mark_redacted_records_in_bundle: true
+delivery:
+  modes:
+  - on_demand_case_bundle
+  - scheduled_evidence_export
+  - incident_scoped_export
+  destinations:
+  - tenant_managed_bucket
+  - siem_sink
+  - warehouse_snapshot
+  artifact_delivery: signed_url_rehydration
+  failure_visibility: operator_visible_backlog
+evidence_refs:
+- docs/design-docs/audit-export-redaction.md
+- docs/design-docs/security-governance.md
+- docs/runbooks/audit-export-backlog.md

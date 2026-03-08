@@ -1,0 +1,75 @@
+id: aegis-deployment-flavors
+version: 1
+flavors:
+- id: oss_local
+  control_plane_mode: self_managed
+  worker_pool_mode: shared
+  artifact_isolation: local_bucket
+  release_channel: source_and_container_tags
+  upgrade_owner: runtime_operator
+  support_boundary: community
+  tenant_tier: development
+  package_artifacts:
+  - source_checkout
+  - compose_bundle
+  - optional_container_images
+  includes_managed_surfaces: []
+  docs_refs:
+  - docs/references/packaging-matrix.md
+  - docs/references/release-upgrade-matrix.md
+- id: shared_cloud
+  control_plane_mode: managed_shared
+  worker_pool_mode: shared
+  artifact_isolation: shared_bucket_with_tenant_prefixes
+  release_channel: managed_rollout
+  upgrade_owner: aegis_cloud
+  support_boundary: managed_shared_service
+  tenant_tier: tier_a
+  package_artifacts:
+  - managed_service_release
+  - tenant_bootstrap_bundle
+  includes_managed_surfaces:
+  - shared-cloud-control-plane
+  - managed-operations
+  docs_refs:
+  - docs/references/packaging-matrix.md
+  - docs/references/release-upgrade-matrix.md
+- id: isolated_execution
+  control_plane_mode: managed_shared
+  worker_pool_mode: tenant_isolated
+  artifact_isolation: tenant_dedicated_keyspace
+  release_channel: coordinated_rollout
+  upgrade_owner: aegis_cloud_with_tenant_coordination
+  support_boundary: managed_isolated_execution
+  tenant_tier: tier_b
+  package_artifacts:
+  - managed_service_release
+  - isolated_execution_pool_bundle
+  - tenant_routing_configuration
+  includes_managed_surfaces:
+  - shared-cloud-control-plane
+  - isolated-execution-routing
+  - managed-operations
+  docs_refs:
+  - docs/references/packaging-matrix.md
+  - docs/references/release-upgrade-matrix.md
+- id: dedicated_deployment
+  control_plane_mode: dedicated
+  worker_pool_mode: dedicated
+  artifact_isolation: dedicated_object_store
+  release_channel: change_window_release
+  upgrade_owner: coordinated_dedicated_release
+  support_boundary: dedicated_control_plane
+  tenant_tier: tier_c
+  package_artifacts:
+  - dedicated_control_plane_bundle
+  - dedicated_execution_bundle
+  - environment_specific_configuration_pack
+  includes_managed_surfaces:
+  - isolated-execution-routing
+  - dedicated-deployment-management
+  - managed-operations
+  - enterprise-integrations
+  docs_refs:
+  - docs/references/packaging-matrix.md
+  - docs/references/release-upgrade-matrix.md

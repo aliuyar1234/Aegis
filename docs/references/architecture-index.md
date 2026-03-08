@@ -16,6 +16,19 @@ Use this file to find the right document quickly.
 - `../design-docs/security-governance.md`
 - `../design-docs/multitenancy.md`
 - `../design-docs/extensibility-surface.md`
+- `../design-docs/mcp-adapter-boundary.md`
+- `../design-docs/extension-compatibility-policy.md`
+- `../design-docs/extension-review-rubric.md`
+- `../design-docs/media-sidecar-contracts.md`
+- `../design-docs/media-session-extensions.md`
+- `../design-docs/media-operator-surfaces.md`
+- `../design-docs/media-topology.md`
+- `../design-docs/oss-managed-split.md`
+- `../design-docs/deployment-flavors.md`
+- `../design-docs/oss-managed-release-policy.md`
+- `../design-docs/audit-export-redaction.md`
+- `../design-docs/dedicated-deployment-isolation.md`
+- `../design-docs/retention-and-slo-policy.md`
 
 ## Product surfaces
 - `../product-specs/product-definition.md`
@@ -32,3 +45,7 @@ Use this file to find the right document quickly.
 - `../../OPERATIONS.md`
 - `../runbooks/`
 - `../threat-models/`
+
+## Packaging and release
+- `../references/packaging-matrix.md`
+- `../references/release-upgrade-matrix.md`

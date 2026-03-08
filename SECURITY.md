@@ -10,6 +10,10 @@ Aegis has to earn trust at runtime. Security, governance, and policy are part of
 - capability-token claims: `schema/jsonschema/capability-token-claims.schema.json`
 - approval requests: `schema/jsonschema/approval-request.schema.json`
 - operator session view: `schema/jsonschema/operator-session-view.schema.json`
+- enterprise audit export: `meta/audit-export-policy.yaml`
+- dedicated deployment profile: `meta/dedicated-deployment-profile.yaml`
+- enterprise control matrix: `meta/enterprise-control-matrix.yaml`
+- retention and SLO policy: `meta/retention-slo-policy.yaml`
 
 ## Security model summary
 
@@ -33,6 +37,12 @@ Use **RBAC + ABAC**:
 - workers receive narrow credentials or capability tokens, not broad tenant secrets
 - session timelines must not store raw secrets
 - artifacts containing sensitive payloads must support redaction and retention rules
+
+### Enterprise deployment hardening
+- Tier C dedicated deployment uses a dedicated control plane, dedicated worker pools, and dedicated object store
+- key isolation flows through a dedicated KMS namespace and per-tenant wrapping keys
+- database, object-store, and key region pins form the data residency hook set
+- audit export bundles remain tenant/workspace scoped and use signed-url rehydration for artifact evidence
 
 ## Dangerous action boundaries
 

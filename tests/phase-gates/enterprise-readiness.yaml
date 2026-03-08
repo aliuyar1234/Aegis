@@ -5,8 +5,29 @@ objective: Validate enterprise deployment and trust artifacts exist before enter
   claims.
 fixtures:
 - docs/exec-plans/active/PHASE-13-cloud-enterprise.md
-- docs/runbooks/worker-crash.md
+- docs/design-docs/audit-export-redaction.md
+- docs/design-docs/dedicated-deployment-isolation.md
+- docs/design-docs/retention-and-slo-policy.md
+- docs/threat-models/enterprise-control-matrix.md
+- docs/runbooks/audit-export-backlog.md
+- docs/runbooks/dedicated-key-isolation.md
+- docs/runbooks/retention-backlog.md
 - SECURITY.md
+- OPERATIONS.md
+- RELIABILITY.md
+- meta/audit-export-policy.yaml
+- meta/dedicated-deployment-profile.yaml
+- meta/retention-slo-policy.yaml
+- meta/enterprise-acceptance-checklist.yaml
+- meta/enterprise-control-matrix.yaml
+- meta/dedicated-tenant-evidence.yaml
+- schema/jsonschema/audit-export-policy.schema.json
+- schema/jsonschema/dedicated-deployment-profile.schema.json
+- schema/jsonschema/retention-slo-policy.schema.json
+- schema/jsonschema/enterprise-acceptance-checklist.schema.json
+- schema/jsonschema/enterprise-control-matrix.schema.json
+- schema/jsonschema/dedicated-tenant-evidence.schema.json
+- OPEN_DECISIONS.md
 tests:
 - TS-011
 - TS-017
@@ -17,26 +38,47 @@ acceptance:
 - AC-055
 - AC-056
 steps:
-- id: tenant-controls
-  description: verify dedicated tenant artifacts
+- id: dedicated-isolation
+  description: verify dedicated tenant isolation and key-residency artifacts
   expected:
-  - tier-c evidence and key-isolation path documented
+  - tier-c evidence, key-isolation path, and data residency hooks are documented
   evidence:
-  - docs/exec-plans/active/PHASE-13-cloud-enterprise.md
-  - SECURITY.md
+  - meta/dedicated-deployment-profile.yaml
+  - meta/dedicated-tenant-evidence.yaml
+  - docs/design-docs/dedicated-deployment-isolation.md
 - id: audit-redaction
-  description: verify audit/redaction docs and runbooks
+  description: verify audit export and redaction flows
   expected:
-  - audit export, retention, and redaction flows are implementation-grade
+  - audit export, redaction, and secrets handling are implementation-grade
   evidence:
-  - docs/runbooks/event-corruption-quarantine.md
-  - docs/runbooks/artifact-store-outage.md
+  - meta/audit-export-policy.yaml
+  - docs/design-docs/audit-export-redaction.md
+  - docs/runbooks/audit-export-backlog.md
+- id: retention-slos
+  description: verify retention classes, archive posture, and operational slos
+  expected:
+  - retention classes, archival policy, and degraded responses are explicit
+  evidence:
+  - meta/retention-slo-policy.yaml
+  - docs/design-docs/retention-and-slo-policy.md
+  - docs/runbooks/retention-backlog.md
 - id: control-matrix
-  description: verify enterprise control matrix and packaging docs
+  description: verify enterprise control matrix and evidence bundle
   expected:
   - enterprise gate references concrete control docs and outputs
+  - dedicated deployment evidence and acceptance checklist are explicit
   evidence:
+  - meta/enterprise-control-matrix.yaml
+  - meta/enterprise-acceptance-checklist.yaml
+  - docs/threat-models/enterprise-control-matrix.md
   - tests/phase-gates/enterprise-readiness.yaml
-  - ROADMAP.md
+- id: open-decisions
+  description: verify bounded unresolved items remain explicit
+  expected:
+  - open decisions are bounded and explicitly justified
+  - no hidden placeholder drift remains in the terminal phase
+  evidence:
+  - OPEN_DECISIONS.md
+  - meta/repo-checks.yaml
 proves:
 - enterprise claims are backed by concrete repository assets

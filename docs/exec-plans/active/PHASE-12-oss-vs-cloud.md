@@ -1,6 +1,6 @@
     # PHASE-12 — OSS core versus managed platform split
 
-    **Status:** deferred
+    **Status:** completed
 
     ## Phase goal
 
@@ -50,7 +50,7 @@
 
     ## Test plan
 
-    - `TS-016` — OSS/managed split validation (`python3 scripts/run_phase_gate.py tests/phase-gates/oss-managed-split.yaml`)
+    - `TS-016` — OSS/managed split validation (`pytest tests/packaging -q`)
 
     ## Acceptance criteria
 

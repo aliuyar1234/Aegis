@@ -1,5 +1,5 @@
 phase: PHASE-11
-status: deferred
+status: completed
 name: Voice and media expansion path
 phase_doc: docs/exec-plans/active/PHASE-11-voice-media-path.md
 tasks:
@@ -7,7 +7,7 @@ tasks:
   phase: PHASE-11
   title: Define Rust sidecar contracts for media, protocol, and recording hot paths
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P04-T01
   adr_refs:
@@ -26,7 +26,7 @@ tasks:
   phase: PHASE-11
   title: Define session state extensions for streaming media and degraded-mode handoff
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P01-T02
   adr_refs:
@@ -46,7 +46,7 @@ tasks:
   phase: PHASE-11
   title: Define operator console deltas for future voice/media sessions
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P06-T04
   adr_refs:
@@ -66,7 +66,7 @@ tasks:
   title: Create voice/media phase-gate fixtures, media topology docs, and operator/runbook
     deltas for degraded QoS paths
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P11-T01
   - P11-T02

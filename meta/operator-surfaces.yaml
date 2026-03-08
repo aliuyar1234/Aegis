@@ -25,3 +25,10 @@ surfaces:
   runbooks:
   - docs/runbooks/event-corruption-quarantine.md
   - docs/runbooks/duplicate-execution.md
+- id: audit-export
+  contracts:
+  - schema/jsonschema/artifact-metadata.schema.json
+  runbooks:
+  - docs/runbooks/audit-export-backlog.md
+  - docs/runbooks/dedicated-key-isolation.md
+  - docs/runbooks/retention-backlog.md

@@ -51,20 +51,20 @@ P09-T03,PHASE-09,Implement tiered worker-pool isolation and routing metadata,Tru
 P09-T04,PHASE-09,Integrate RBAC/ABAC checks into operator and API control surfaces,True,P07-T03;P07-T04,ADR-0011;ADR-0013,AC-040,TS-011,done
 P09-T05,PHASE-09,Update threat models and security docs based on implementation realities,False,P09-T04,ADR-0013;ADR-0015,AC-041,TS-001;TS-011,done
 P10-T01,PHASE-10,"Define extension contracts for new tools, connectors, and artifact processors",True,P07-T01,ADR-0008,AC-042,TS-014,done
-P10-T02,PHASE-10,Define MCP adapter boundary without making MCP the internal runtime protocol,True,P10-T01,ADR-0008,AC-044,TS-014,planned
-P10-T03,PHASE-10,Create compatibility and versioning policy for third-party extensions,True,P10-T01,ADR-0008;ADR-0015,AC-043,TS-014,planned
-P10-T04,PHASE-10,Create sample extension pack layout and review rubric,False,P10-T03,ADR-0015,AC-042;AC-043,TS-014,planned
-P11-T01,PHASE-11,"Define Rust sidecar contracts for media, protocol, and recording hot paths",True,P04-T01,ADR-0010,AC-045;AC-046,TS-015,planned
-P11-T02,PHASE-11,Define session state extensions for streaming media and degraded-mode handoff,True,P01-T02,ADR-0010;ADR-0012,AC-045;AC-048,TS-015,planned
-P11-T03,PHASE-11,Define operator console deltas for future voice/media sessions,False,P06-T04,ADR-0015,AC-047;AC-048,TS-015,planned
-P11-T04,PHASE-11,"Create voice/media phase-gate fixtures, media topology docs, and operator/runbook deltas for degraded QoS paths",False,P11-T01;P11-T02,ADR-0010;ADR-0015,AC-046;AC-047;AC-048,TS-015,planned
-P12-T01,PHASE-12,Define what belongs in OSS core versus managed cloud services,True,P10-T03,ADR-0015,AC-049,TS-016,planned
-P12-T02,PHASE-12,"Define packaging and deployment flavors for shared, isolated-execution, and dedicated control plane modes",True,P09-T03,ADR-0013,AC-050,TS-016,planned
-P12-T03,PHASE-12,"Document release, upgrade, and compatibility policy for the split",False,P12-T01,ADR-0015,AC-051,TS-016,planned
-P12-T04,PHASE-12,"Create OSS core manifest, managed-only surface catalog, and packaging matrix artifacts",True,P12-T01;P12-T02,ADR-0013;ADR-0015,AC-049;AC-050,TS-016,planned
-P12-T05,PHASE-12,"Create split-surface release manifests, upgrade policy artifacts, and OSS/managed phase gate",False,P12-T03;P12-T04,ADR-0015,AC-051,TS-016,planned
-P13-T01,PHASE-13,Implement audit export and redaction workflows tied to event and artifact models,True,P09-T04,ADR-0014;ADR-0015,AC-053,TS-017,planned
-P13-T02,PHASE-13,Define dedicated deployment and key-isolation path for Tier C tenants,True,P12-T02,ADR-0013,AC-052,TS-017,planned
-P13-T03,PHASE-13,"Define retention classes, archival policy, and operational SLO surfaces",True,P02-T01;P09-T02,ADR-0014;ADR-0015,AC-053,TS-017,planned
-P13-T04,PHASE-13,Create enterprise acceptance checklist and release gate,False,P13-T01;P13-T02;P13-T03,ADR-0015,AC-054;AC-055,TS-017,planned
-P13-T05,PHASE-13,"Create enterprise control matrix, dedicated-tenant evidence bundle, and enterprise readiness gate assets",True,P13-T01;P13-T02;P13-T03,ADR-0013;ADR-0015,AC-052;AC-053;AC-054,TS-017,planned
+P10-T02,PHASE-10,Define MCP adapter boundary without making MCP the internal runtime protocol,True,P10-T01,ADR-0008,AC-044,TS-014,done
+P10-T03,PHASE-10,Create compatibility and versioning policy for third-party extensions,True,P10-T01,ADR-0008;ADR-0015,AC-043,TS-014,done
+P10-T04,PHASE-10,Create sample extension pack layout and review rubric,False,P10-T03,ADR-0015,AC-042;AC-043,TS-014,done
+P11-T01,PHASE-11,"Define Rust sidecar contracts for media, protocol, and recording hot paths",True,P04-T01,ADR-0010,AC-045;AC-046,TS-015,done
+P11-T02,PHASE-11,Define session state extensions for streaming media and degraded-mode handoff,True,P01-T02,ADR-0010;ADR-0012,AC-045;AC-048,TS-015,done
+P11-T03,PHASE-11,Define operator console deltas for future voice/media sessions,False,P06-T04,ADR-0015,AC-047;AC-048,TS-015,done
+P11-T04,PHASE-11,"Create voice/media phase-gate fixtures, media topology docs, and operator/runbook deltas for degraded QoS paths",False,P11-T01;P11-T02,ADR-0010;ADR-0015,AC-046;AC-047;AC-048,TS-015,done
+P12-T01,PHASE-12,Define what belongs in OSS core versus managed cloud services,True,P10-T03,ADR-0015,AC-049,TS-016,done
+P12-T02,PHASE-12,"Define packaging and deployment flavors for shared, isolated-execution, and dedicated control plane modes",True,P09-T03,ADR-0013,AC-050,TS-016,done
+P12-T03,PHASE-12,"Document release, upgrade, and compatibility policy for the split",False,P12-T01,ADR-0015,AC-051,TS-016,done
+P12-T04,PHASE-12,"Create OSS core manifest, managed-only surface catalog, and packaging matrix artifacts",True,P12-T01;P12-T02,ADR-0013;ADR-0015,AC-049;AC-050,TS-016,done
+P12-T05,PHASE-12,"Create split-surface release manifests, upgrade policy artifacts, and OSS/managed phase gate",False,P12-T03;P12-T04,ADR-0015,AC-051,TS-016,done
+P13-T01,PHASE-13,Implement audit export and redaction workflows tied to event and artifact models,True,P09-T04,ADR-0014;ADR-0015,AC-053,TS-017,done
+P13-T02,PHASE-13,Define dedicated deployment and key-isolation path for Tier C tenants,True,P12-T02,ADR-0013,AC-052,TS-017,done
+P13-T03,PHASE-13,"Define retention classes, archival policy, and operational SLO surfaces",True,P02-T01;P09-T02,ADR-0014;ADR-0015,AC-053,TS-017,done
+P13-T04,PHASE-13,Create enterprise acceptance checklist and release gate,False,P13-T01;P13-T02;P13-T03,ADR-0015,AC-054;AC-055,TS-017,done
+P13-T05,PHASE-13,"Create enterprise control matrix, dedicated-tenant evidence bundle, and enterprise readiness gate assets",True,P13-T01;P13-T02;P13-T03,ADR-0013;ADR-0015,AC-052;AC-053;AC-054,TS-017,done

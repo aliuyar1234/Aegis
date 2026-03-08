@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/dedicated-deployment-profile.schema.json",
+  "title": "DedicatedDeploymentProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "tier",
+    "control_plane",
+    "execution_plane",
+    "key_isolation",
+    "data_residency",
+    "network_controls",
+    "artifact_controls",
+    "secrets_operations",
+    "docs_refs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "tier_c"
+      ]
+    },
+    "control_plane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deployment_model",
+        "database_boundary",
+        "node_boundary"
+      ],
+      "properties": {
+        "deployment_model": {
+          "type": "string",
+          "enum": [
+            "dedicated_per_tenant"
+          ]
+        },
+        "database_boundary": {
+          "type": "string",
+          "enum": [
+            "dedicated_database_cluster"
+          ]
+        },
+        "node_boundary": {
+          "type": "string",
+          "enum": [
+            "tenant_scoped_beam_cluster"
+          ]
+        }
+      }
+    },
+    "execution_plane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "worker_pool_mode",
+        "browser_pool_mode",
+        "sidecar_mode"
+      ],
+      "properties": {
+        "worker_pool_mode": {
+          "type": "string",
+          "enum": [
+            "dedicated_worker_pools"
+          ]
+        },
+        "browser_pool_mode": {
+          "type": "string",
+          "enum": [
+            "tenant_scoped_browser_pool"
+          ]
+        },
+        "sidecar_mode": {
+          "type": "string",
+          "enum": [
+            "tenant_scoped_sidecars"
+          ]
+        }
+      }
+    },
+    "key_isolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kms_mode",
+        "artifact_key_strategy",
+        "secret_manager",
+        "change_window_rotation"
+      ],
+      "properties": {
+        "kms_mode": {
+          "type": "string",
+          "enum": [
+            "dedicated_kms_namespace"
+          ]
+        },
+        "artifact_key_strategy": {
+          "type": "string",
+          "enum": [
+            "per_tenant_wrapping_key"
+          ]
+        },
+        "secret_manager": {
+          "type": "string",
+          "enum": [
+            "external_secret_manager"
+          ]
+        },
+        "change_window_rotation": {
+          "const": true
+        }
+      }
+    },
+    "data_residency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "residency_binding",
+        "db_region_pin",
+        "object_store_region_pin",
+        "key_region_pin",
+        "cross_region_failover"
+      ],
+      "properties": {
+        "residency_binding": {
+          "type": "string",
+          "enum": [
+            "tenant_region_pin"
+          ]
+        },
+        "db_region_pin": {
+          "const": true
+        },
+        "object_store_region_pin": {
+          "const": true
+        },
+        "key_region_pin": {
+          "const": true
+        },
+        "cross_region_failover": {
+          "type": "string",
+          "enum": [
+            "operator_approved_only"
+          ]
+        }
+      }
+    },
+    "network_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "private_connectivity_required",
+        "ingress_modes",
+        "egress_policy"
+      ],
+      "properties": {
+        "private_connectivity_required": {
+          "const": true
+        },
+        "ingress_modes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "private_link",
+              "site_to_site_vpn",
+              "allowlisted_public_ingress"
+            ]
+          }
+        },
+        "egress_policy": {
+          "type": "string",
+          "enum": [
+            "explicit_allowlist_only"
+          ]
+        }
+      }
+    },
+    "artifact_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dedicated_object_store",
+        "tenant_prefix_fallback_forbidden",
+        "signed_url_ttl_class"
+      ],
+      "properties": {
+        "dedicated_object_store": {
+          "const": true
+        },
+        "tenant_prefix_fallback_forbidden": {
+          "const": true
+        },
+        "signed_url_ttl_class": {
+          "type": "string",
+          "enum": [
+            "short_lived_enterprise"
+          ]
+        }
+      }
+    },
+    "secrets_operations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "break_glass_roles",
+        "audit_export_preflight_required",
+        "runbook_refs"
+      ],
+      "properties": {
+        "break_glass_roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "audit_export_preflight_required": {
+          "const": true
+        },
+        "runbook_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "docs_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

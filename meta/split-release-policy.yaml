@@ -1,0 +1,51 @@
+id: oss-managed-release-policy
+version: 1
+release_artifacts:
+  oss_core_manifest_ref: meta/oss-core-manifest.yaml
+  managed_surface_catalog_ref: meta/managed-surface-catalog.yaml
+  deployment_flavors_ref: meta/deployment-flavors.yaml
+  release_manifest_ref: meta/split-release-manifest.yaml
+contract_policy:
+  runtime_contracts:
+    breaking_change_requires_explicit_version_bump: true
+    oss_and_managed_follow_same_contract_line: true
+  tool_io_schemas:
+    schema_changes_require_fixture_refresh: true
+    managed_only_schema_fork_forbidden: true
+  extension_api:
+    compatibility_policy_ref: meta/extension-compatibility-policy.yaml
+    managed_addons_cannot_bypass_extension_policy: true
+migration_policy:
+  oss_core:
+    upgrade_strategy: self-managed migration with explicit release notes
+    migration_owner: runtime_operator
+    docs_required:
+    - docs/references/release-upgrade-matrix.md
+    - README.md
+  shared_cloud:
+    upgrade_strategy: provider-managed rollout with tenant notice
+    migration_owner: aegis_cloud
+    docs_required:
+    - docs/references/release-upgrade-matrix.md
+    - docs/product-specs/operator-console.md
+  isolated_execution:
+    upgrade_strategy: coordinated rollout with execution-pool preflight
+    migration_owner: aegis_cloud_with_tenant_coordination
+    docs_required:
+    - docs/references/release-upgrade-matrix.md
+    - docs/design-docs/deployment-flavors.md
+  dedicated_deployment:
+    upgrade_strategy: dedicated change-window rollout with preflight evidence bundle
+    migration_owner: coordinated_dedicated_release
+    docs_required:
+    - docs/references/release-upgrade-matrix.md
+    - docs/design-docs/deployment-flavors.md
+operator_documentation_obligations:
+  require_console_docs_for_surface_changes: true
+  require_runbook_updates_for_new_managed_failures: true
+  require_release_notes_per_flavor: true
+  require_gate_refresh_when_boundary_changes: true
+split_guardrails:
+  oss_manifest_excludes_managed_only_surfaces: true
+  managed_catalog_references_underlying_oss_capability: true
+  all_flavors_covered_by_packaging_and_release_matrices: true

@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/split-release-policy.schema.json",
+  "title": "SplitReleasePolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "release_artifacts",
+    "contract_policy",
+    "migration_policy",
+    "operator_documentation_obligations",
+    "split_guardrails"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "release_artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "oss_core_manifest_ref",
+        "managed_surface_catalog_ref",
+        "deployment_flavors_ref",
+        "release_manifest_ref"
+      ],
+      "properties": {
+        "oss_core_manifest_ref": {
+          "type": "string"
+        },
+        "managed_surface_catalog_ref": {
+          "type": "string"
+        },
+        "deployment_flavors_ref": {
+          "type": "string"
+        },
+        "release_manifest_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "contract_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_contracts",
+        "tool_io_schemas",
+        "extension_api"
+      ],
+      "properties": {
+        "runtime_contracts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "breaking_change_requires_explicit_version_bump",
+            "oss_and_managed_follow_same_contract_line"
+          ],
+          "properties": {
+            "breaking_change_requires_explicit_version_bump": {
+              "const": true
+            },
+            "oss_and_managed_follow_same_contract_line": {
+              "const": true
+            }
+          }
+        },
+        "tool_io_schemas": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema_changes_require_fixture_refresh",
+            "managed_only_schema_fork_forbidden"
+          ],
+          "properties": {
+            "schema_changes_require_fixture_refresh": {
+              "const": true
+            },
+            "managed_only_schema_fork_forbidden": {
+              "const": true
+            }
+          }
+        },
+        "extension_api": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "compatibility_policy_ref",
+            "managed_addons_cannot_bypass_extension_policy"
+          ],
+          "properties": {
+            "compatibility_policy_ref": {
+              "type": "string"
+            },
+            "managed_addons_cannot_bypass_extension_policy": {
+              "const": true
+            }
+          }
+        }
+      }
+    },
+    "migration_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "oss_core",
+        "shared_cloud",
+        "isolated_execution",
+        "dedicated_deployment"
+      ],
+      "properties": {
+        "oss_core": {
+          "$ref": "#/$defs/migrationPolicy"
+        },
+        "shared_cloud": {
+          "$ref": "#/$defs/migrationPolicy"
+        },
+        "isolated_execution": {
+          "$ref": "#/$defs/migrationPolicy"
+        },
+        "dedicated_deployment": {
+          "$ref": "#/$defs/migrationPolicy"
+        }
+      }
+    },
+    "operator_documentation_obligations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "require_console_docs_for_surface_changes",
+        "require_runbook_updates_for_new_managed_failures",
+        "require_release_notes_per_flavor",
+        "require_gate_refresh_when_boundary_changes"
+      ],
+      "properties": {
+        "require_console_docs_for_surface_changes": {
+          "const": true
+        },
+        "require_runbook_updates_for_new_managed_failures": {
+          "const": true
+        },
+        "require_release_notes_per_flavor": {
+          "const": true
+        },
+        "require_gate_refresh_when_boundary_changes": {
+          "const": true
+        }
+      }
+    },
+    "split_guardrails": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "oss_manifest_excludes_managed_only_surfaces",
+        "managed_catalog_references_underlying_oss_capability",
+        "all_flavors_covered_by_packaging_and_release_matrices"
+      ],
+      "properties": {
+        "oss_manifest_excludes_managed_only_surfaces": {
+          "const": true
+        },
+        "managed_catalog_references_underlying_oss_capability": {
+          "const": true
+        },
+        "all_flavors_covered_by_packaging_and_release_matrices": {
+          "const": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "migrationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "upgrade_strategy",
+        "migration_owner",
+        "docs_required"
+      ],
+      "properties": {
+        "upgrade_strategy": {
+          "type": "string"
+        },
+        "migration_owner": {
+          "type": "string"
+        },
+        "docs_required": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

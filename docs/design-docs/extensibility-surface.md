@@ -76,17 +76,48 @@ Artifact processors define:
 
 This keeps artifact post-processing explicit and auditable instead of letting arbitrary processors attach themselves to replay state.
 
+### MCP adapters
+
+MCP adapters are explicitly edge adapters.
+
+They define:
+
+- external MCP server transport and reference
+- session binding that proves Aegis still owns dispatch and worker-event flow
+- tool translation from external MCP tools into Aegis-facing tool ids
+- protocol-boundary flags that stay fixed to `false` for runtime-protocol takeover, direct event emission, direct canonical writes, policy bypass, and outbox bypass
+
+Their dedicated boundary doc is `docs/design-docs/mcp-adapter-boundary.md`.
+
 ## Sample fixtures
 
 - `tests/extensibility/fixtures/sample-connector.yaml`
 - `tests/extensibility/fixtures/sample-artifact-processor.yaml`
+- `tests/extensibility/fixtures/sample-mcp-adapter.yaml`
+- `tests/extensibility/fixtures/sample-extension-pack/pack.yaml`
 
 These are contract fixtures for TS-014 and are intentionally small.
 
-## Deferred to later Phase 10 tasks
+## Compatibility policy
 
-- machine-checkable compatibility policy semantics beyond declared version ranges
-- sample extension pack layout and review rubric
-- detailed MCP adapter contract shape
+Third-party extensions are governed by the machine-readable policy in `meta/extension-compatibility-policy.yaml`.
 
-The MCP adapter remains an external adapter boundary and is handled in `P10-T02`.
+The policy requires:
+
+- bounded compatibility ranges
+- explicit lifecycle and capability boundaries
+- review-rubric coverage
+- sample extension-pack evidence
+- MCP remaining an external adapter boundary
+
+The prose companion is `docs/design-docs/extension-compatibility-policy.md`.
+
+## Sample extension pack and review
+
+The sample pack fixture under `tests/extensibility/fixtures/sample-extension-pack/` demonstrates the minimum reviewable package layout for a third-party extension bundle.
+
+The review rubric is `docs/design-docs/extension-review-rubric.md`.
+
+## Remaining later Phase 10 work
+
+Only packaging polish beyond the sample pack is left for later phases.

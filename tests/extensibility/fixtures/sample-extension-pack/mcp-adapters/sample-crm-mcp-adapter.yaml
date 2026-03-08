@@ -1,0 +1,81 @@
+id: sample-crm-mcp-adapter
+display_name: Sample CRM MCP Adapter
+version: 0.1.0
+kind: mcp_adapter
+sdk:
+  language: python
+  package: aegis_ext.sample_crm_mcp
+  entry_module: crm_mcp_adapter
+runtime_contract_version: v1
+extension_api_version: v1alpha1
+lifecycle:
+  install:
+    handler: crm_mcp_adapter.install
+    timeout_class: medium
+    idempotent: true
+  start:
+    handler: crm_mcp_adapter.start
+    timeout_class: short
+    idempotent: true
+  health_check:
+    handler: crm_mcp_adapter.health_check
+    timeout_class: short
+    idempotent: true
+  run:
+    handler: crm_mcp_adapter.run
+    timeout_class: medium
+    idempotent: false
+  shutdown:
+    handler: crm_mcp_adapter.shutdown
+    timeout_class: short
+    idempotent: true
+capability_boundary:
+  required_scopes:
+  - mcp.invoke
+  allowed_tools: []
+  dangerous_action_classes: []
+  secrets:
+  - CRM_MCP_API_TOKEN
+  network:
+    mode: egress_allowlist
+    allowlist:
+    - crm-mcp.example.com
+  artifact_access:
+    inputs: []
+    outputs:
+    - mcp_transcript
+compatibility:
+  aegis_runtime:
+    min: 0.10.0
+    max: 0.10.x
+  extension_api:
+    min: v1alpha1
+    max: v1alpha1
+  tool_registry:
+    min: v1
+    max: v1
+  supported_tiers:
+  - tier_a
+  - tier_b
+mcp_adapter:
+  server_transport: streamable_http
+  server_ref: https://crm-mcp.example.com
+  protocol_role: external_tool_adapter
+  session_binding:
+    requires_session_owner_dispatch: true
+    maps_to_action_requests_only: true
+    returns_worker_events_only: true
+  tool_translation:
+    published_tool_ids:
+    - crm.lookup_account
+    - crm.list_open_cases
+    tool_name_prefix: crm
+    allow_prompt_passthrough: false
+    allow_resource_passthrough: false
+  protocol_boundary:
+    mcp_is_internal_runtime_protocol: false
+    writes_canonical_state_directly: false
+    emits_runtime_events_directly: false
+    bypasses_policy: false
+    bypasses_outbox: false
+notes: Sample MCP adapter manifest for the sample extension pack.

@@ -1,0 +1,21 @@
+id: sample-support-extension-pack
+display_name: Sample Support Extension Pack
+version: 0.1.0
+extension_api_version: v1alpha1
+compatibility_policy_ref: ../../../../meta/extension-compatibility-policy.yaml
+review_rubric_ref: ../../../../docs/design-docs/extension-review-rubric.md
+readme_ref: README.md
+layout:
+  connectors_dir: connectors
+  artifact_processors_dir: artifact-processors
+  mcp_adapters_dir: mcp-adapters
+members:
+- id: sample-billing-connector
+  kind: tool_connector
+  manifest_ref: connectors/sample-billing-connector.yaml
+- id: sample-redaction-processor
+  kind: artifact_processor
+  manifest_ref: artifact-processors/sample-redaction-processor.yaml
+- id: sample-crm-mcp-adapter
+  kind: mcp_adapter
+  manifest_ref: mcp-adapters/sample-crm-mcp-adapter.yaml

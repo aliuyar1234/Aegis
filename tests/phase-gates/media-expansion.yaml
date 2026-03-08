@@ -6,7 +6,19 @@ objective: Validate future media contracts, topology, and runbook surfaces exist
 fixtures:
 - docs/design-docs/media-topology.md
 - docs/design-docs/future-voice-media.md
-- docs/runbooks/degraded-system-mode.md
+- docs/design-docs/media-sidecar-contracts.md
+- docs/design-docs/media-session-extensions.md
+- docs/design-docs/media-operator-surfaces.md
+- schema/jsonschema/media-sidecar-catalog.schema.json
+- schema/jsonschema/media-session-extension.schema.json
+- schema/jsonschema/operator-media-session-view.schema.json
+- schema/jsonschema/media-topology-policy.schema.json
+- tests/media/fixtures/sample-media-sidecars.yaml
+- tests/media/fixtures/sample-media-session-extension.yaml
+- tests/media/fixtures/sample-operator-media-session-view.yaml
+- tests/media/fixtures/sample-media-topology.yaml
+- docs/runbooks/media-qos-degradation.md
+- docs/runbooks/media-recording-pipeline.md
 tests:
 - TS-015
 acceptance:
@@ -22,12 +34,28 @@ steps:
   evidence:
   - docs/design-docs/media-topology.md
   - docs/design-docs/future-voice-media.md
+  - docs/design-docs/media-sidecar-contracts.md
+  - schema/jsonschema/media-sidecar-catalog.schema.json
+  - tests/media/fixtures/sample-media-sidecars.yaml
+- id: session-extension
+  description: verify session-state extensions and replay boundary
+  expected:
+  - media state stays session-scoped and replay avoids raw packet truth
+  evidence:
+  - docs/design-docs/media-session-extensions.md
+  - schema/jsonschema/media-session-extension.schema.json
+  - tests/media/fixtures/sample-media-session-extension.yaml
 - id: degraded-qos
   description: verify degraded-mode policy and operator handoff
   expected:
   - QoS degradation and handoff are explicit
   evidence:
-  - docs/runbooks/degraded-system-mode.md
+  - docs/design-docs/media-operator-surfaces.md
+  - schema/jsonschema/operator-media-session-view.schema.json
+  - tests/media/fixtures/sample-operator-media-session-view.yaml
+  - docs/runbooks/media-qos-degradation.md
+  - docs/runbooks/media-recording-pipeline.md
+  - tests/media/fixtures/sample-media-topology.yaml
   - docs/exec-plans/active/PHASE-11-voice-media-path.md
 proves:
 - voice/media path is implementation-grade rather than aspirational

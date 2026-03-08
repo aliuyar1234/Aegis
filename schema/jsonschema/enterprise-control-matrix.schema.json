@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/enterprise-control-matrix.schema.json",
+  "title": "EnterpriseControlMatrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "controls"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "control_area",
+          "flavors",
+          "requirement",
+          "evidence_refs",
+          "runbook_refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "control_area": {
+            "type": "string",
+            "enum": [
+              "identity_and_auth",
+              "dedicated_isolation",
+              "key_isolation",
+              "residency",
+              "audit_export",
+              "retention_redaction",
+              "release_change_control",
+              "operator_recovery"
+            ]
+          },
+          "flavors": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "oss_local",
+                "shared_cloud",
+                "isolated_execution",
+                "dedicated_deployment"
+              ]
+            }
+          },
+          "requirement": {
+            "type": "string"
+          },
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "runbook_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+id: aegis-oss-core
+version: 1
+runtime_release: 0.12.x
+support_boundary: community_supported_self_managed
+oss_core:
+  control_plane_apps:
+  - aegis_gateway
+  - aegis_runtime
+  - aegis_leases
+  - aegis_events
+  - aegis_policy
+  - aegis_execution_bridge
+  - aegis_artifacts
+  - aegis_projection
+  - aegis_obs
+  execution_plane_packages:
+  - py/packages/aegis_browser_worker
+  - py/packages/aegis_contracts_py
+  - rs/crates/aegis_contracts_rs
+  contracts:
+  - schema/proto
+  - schema/jsonschema
+  - schema/event-catalog
+  - schema/transport-topology.yaml
+  operator_surfaces:
+  - local operator console baseline
+  - session fleet view
+  - session detail view
+  - replay timeline
+  - operator intervention events
+  self_hosted_backplane:
+  - postgresql
+  - nats_jetstream
+  - s3_compatible_object_store
+  - otel_collector_optional
+  distribution_artifacts:
+  - repository source checkout
+  - local compose/dev bootstrap
+  - schema and fixture validation harness
+  - browser wedge reference implementation
+bounded_exclusions:
+  managed_control_plane_services:
+  - hosted tenant provisioning service
+  - hosted auth and OIDC control service
+  - shared-cloud fleet operations service
+  - managed audit export connectors
+  operational_features:
+  - hosted observability backend
+  - managed secret custody
+  - coordinated upgrade operations
+  - dedicated deployment change-window automation
+  deployment_flavors_not_included:
+  - shared_cloud
+  - isolated_execution
+  - dedicated_deployment

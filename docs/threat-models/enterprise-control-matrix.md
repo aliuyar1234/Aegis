@@ -1,24 +1,40 @@
 # Enterprise control matrix
 
-This document supports PHASE-13.
+This document defines the PHASE-13 enterprise control surface.
 
-Phase 09 provides the implementation-grade trust boundary that PHASE-13 later hardens into enterprise packaging and deployment controls.
+## Goal
 
-## Current control map
+Make enterprise claims traceable to concrete controls, machine-readable artifacts, and operator runbooks.
 
-| Control area | Current implementation path | Evidence sources |
+## Canonical matrix
+
+The machine-readable control catalog lives in `meta/enterprise-control-matrix.yaml`.
+
+The dedicated-deployment evidence bundle lives in `meta/dedicated-tenant-evidence.yaml`.
+
+## Control map
+
+| Control area | Enterprise requirement | Evidence sources |
 |---|---|---|
-| Identity and scoped authz | OIDC-ready actor context feeds RBAC/ABAC checks on operator and API surfaces. | `meta/rbac-roles.yaml`, `meta/abac-attributes.yaml`, `apps/aegis_policy/lib/aegis/policy/authorizer.ex` |
-| Tenant and workspace scoping | Canonical tables, checkpoints, outbox rows, dispatch metadata, and operator payloads carry tenant/workspace scope. | `docs/design-docs/storage-model.md`, `apps/aegis_events/lib/aegis/events/store.ex`, `apps/aegis_gateway/lib/aegis/gateway/operator_console.ex` |
-| Quota and admission control | Live sessions, concurrent browser contexts, and concurrent effectful actions are admitted before runtime start or dispatch. | `docs/design-docs/multitenancy.md`, `apps/aegis_runtime/lib/aegis/runtime/admission_control.ex`, `apps/aegis_execution_bridge/lib/aegis/execution_bridge/admission_control.ex` |
-| Tiered isolation routing | Isolation tiers drive routed dispatch subjects, worker-pool affinity, and replay-visible routing metadata. | `docs/design-docs/transport-topology.md`, `apps/aegis_policy/lib/aegis/policy/evaluator.ex`, `apps/aegis_execution_bridge/lib/aegis/execution_bridge/transport_topology.ex` |
-| Dangerous-action governance | Tool descriptors classify dangerous actions; policy, approvals, and capability tokens constrain writes. | `schema/tool-registry.yaml`, `meta/dangerous-action-classes.yaml`, `schema/jsonschema/capability-token-claims.schema.json` |
-| Audit, evidence, and replay | Runtime events and artifacts preserve approvals, policy decisions, routing metadata, and operator interventions for replay. | `docs/design-docs/security-governance.md`, `schema/jsonschema/artifact-metadata.schema.json`, `apps/aegis_projection/lib/aegis/projection/session_replay.ex` |
-| Redaction and retention | Artifact metadata and replay surfaces preserve redaction state and retention class without rewriting history. | `docs/design-docs/storage-model.md`, `schema/jsonschema/artifact-metadata.schema.json`, `docs/threat-models/runtime-threat-model.md` |
-| Runbooks and operator recovery | Failure classes map to explicit runbooks and operator surfaces for escalation and recovery. | `meta/failure-runbooks.yaml`, `docs/runbooks/`, `docs/product-specs/operator-console.md` |
+| Identity and scoped authz | Enterprise auth uses OIDC/SAML with tenant/workspace scoped RBAC/ABAC and bounded audit-export roles. | `meta/rbac-roles.yaml`, `meta/abac-attributes.yaml`, `SECURITY.md`, `docs/design-docs/audit-export-redaction.md` |
+| Dedicated isolation boundary | Tier C dedicated deployment uses dedicated control plane, worker pools, and dedicated object store. | `meta/dedicated-deployment-profile.yaml`, `meta/deployment-flavors.yaml`, `docs/design-docs/dedicated-deployment-isolation.md` |
+| Key isolation and secrets | Dedicated KMS namespace and external secret manager custody keep tenant keys separated. | `meta/dedicated-deployment-profile.yaml`, `SECURITY.md`, `docs/runbooks/dedicated-key-isolation.md` |
+| Residency and artifact controls | Dedicated deployment pins database, object-store, and key region while keeping short-lived signed URL access. | `meta/dedicated-tenant-evidence.yaml`, `meta/dedicated-deployment-profile.yaml`, `docs/design-docs/dedicated-deployment-isolation.md` |
+| Audit, evidence, and replay | Audit export packages timeline hashes, approvals, policy decisions, and artifact metadata without bypassing redaction state. | `meta/audit-export-policy.yaml`, `docs/design-docs/audit-export-redaction.md`, `docs/design-docs/security-governance.md` |
+| Redaction and retention | Retention classes, archive restore, and redaction completion are explicit bounded policies. | `meta/retention-slo-policy.yaml`, `docs/design-docs/retention-and-slo-policy.md`, `RELIABILITY.md` |
+| Change control and release gate | Enterprise acceptance checklist and readiness gate must pass before dedicated deployment claims. | `meta/enterprise-acceptance-checklist.yaml`, `tests/phase-gates/enterprise-readiness.yaml`, `meta/dedicated-tenant-evidence.yaml` |
+| Runbooks and operator recovery | Enterprise failures map to explicit runbooks and operator-visible degraded paths. | `meta/failure-runbooks.yaml`, `docs/runbooks/audit-export-backlog.md`, `docs/runbooks/dedicated-key-isolation.md`, `docs/runbooks/retention-backlog.md` |
 
-## Enterprise follow-on
+## Phase-09 continuity
 
-- identity federation still needs full enterprise deployment integration in PHASE-13
-- Tier C dedicated deployment, key isolation, and packaging remain later-phase hardening
-- audit export pipelines and retention automation remain bounded by the future enterprise pass
+Enterprise hardening builds on the Phase 09 security foundation rather than replacing it.
+That continuity includes:
+
+- quota and admission control remain part of the enterprise trust story
+- tiered isolation routing remains visible in dispatch metadata and operator evidence
+- audit, evidence, and replay remain the forensic backbone for enterprise recovery
+
+## Enterprise follow-through
+
+Phase 13 does not claim every certification.
+It does make dedicated deployment, key isolation, audit export, retention, and operator recovery implementation-grade instead of aspirational.

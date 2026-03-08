@@ -31,6 +31,8 @@ Aegis matters only if it behaves correctly under failure.
 | Browser instability | page crash / disconnect / drift | browser action lane | reattach, restabilize, re-navigate, or hand to operator |
 | Approval timeout | timer fire | approval wait | auto-deny/escalate per policy |
 | Event corruption | hash mismatch / seq gap / replay failure | session | quarantine immediately |
+| Audit export backlog | export preparation or delivery lag | audit export lane | expose backlog, preserve evidence, and recover through runbook |
+| Retention backlog | archive / redaction lag | archive lane | freeze destructive cleanup and restore policy order |
 
 ## Guarantees
 

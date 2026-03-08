@@ -62,6 +62,77 @@ EXTENSION_MANIFEST_SCHEMA = ROOT / "schema/jsonschema/connector-manifest.schema.
 EXTENSION_MANIFEST_FIXTURES = [
     ROOT / "tests/extensibility/fixtures/sample-connector.yaml",
     ROOT / "tests/extensibility/fixtures/sample-artifact-processor.yaml",
+    ROOT / "tests/extensibility/fixtures/sample-mcp-adapter.yaml",
+]
+EXTENSION_COMPATIBILITY_POLICY_SCHEMA = ROOT / "schema/jsonschema/extension-compatibility-policy.schema.json"
+EXTENSION_COMPATIBILITY_POLICY = ROOT / "meta/extension-compatibility-policy.yaml"
+EXTENSION_PACK_MANIFEST_SCHEMA = ROOT / "schema/jsonschema/extension-pack-manifest.schema.json"
+EXTENSION_PACK_MANIFEST = ROOT / "tests/extensibility/fixtures/sample-extension-pack/pack.yaml"
+MEDIA_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/media-sidecar-catalog.schema.json",
+        ROOT / "tests/media/fixtures/sample-media-sidecars.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/media-session-extension.schema.json",
+        ROOT / "tests/media/fixtures/sample-media-session-extension.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/operator-media-session-view.schema.json",
+        ROOT / "tests/media/fixtures/sample-operator-media-session-view.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/media-topology-policy.schema.json",
+        ROOT / "tests/media/fixtures/sample-media-topology.yaml",
+    ),
+]
+OSS_MANAGED_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/oss-core-manifest.schema.json",
+        ROOT / "meta/oss-core-manifest.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/managed-surface-catalog.schema.json",
+        ROOT / "meta/managed-surface-catalog.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/deployment-flavors.schema.json",
+        ROOT / "meta/deployment-flavors.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/split-release-policy.schema.json",
+        ROOT / "meta/split-release-policy.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/split-release-manifest.schema.json",
+        ROOT / "meta/split-release-manifest.yaml",
+    ),
+]
+ENTERPRISE_FIXTURE_SCHEMA_PAIRS = [
+    (
+        ROOT / "schema/jsonschema/audit-export-policy.schema.json",
+        ROOT / "meta/audit-export-policy.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/dedicated-deployment-profile.schema.json",
+        ROOT / "meta/dedicated-deployment-profile.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/retention-slo-policy.schema.json",
+        ROOT / "meta/retention-slo-policy.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/enterprise-acceptance-checklist.schema.json",
+        ROOT / "meta/enterprise-acceptance-checklist.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/enterprise-control-matrix.schema.json",
+        ROOT / "meta/enterprise-control-matrix.yaml",
+    ),
+    (
+        ROOT / "schema/jsonschema/dedicated-tenant-evidence.schema.json",
+        ROOT / "meta/dedicated-tenant-evidence.yaml",
+    ),
 ]
 PYTHON_VENDOR_ROOT = ROOT / "py" / "vendor"
 PYTHON_BINDINGS_ROOT = ROOT / "py" / "packages" / "aegis_contracts_py" / "generated" / "proto"
@@ -420,6 +491,98 @@ def validate_extension_manifests() -> None:
             fail(f"Invalid extension manifest fixture {fixture.relative_to(ROOT)}: {exc}")
 
 
+def validate_extension_compatibility_policy() -> None:
+    schema = load_json(EXTENSION_COMPATIBILITY_POLICY_SCHEMA)
+    payload = yaml.safe_load(EXTENSION_COMPATIBILITY_POLICY.read_text(encoding="utf-8"))
+    try:
+        validate(instance=payload, schema=schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(
+            "Invalid extension compatibility policy fixture "
+            f"{EXTENSION_COMPATIBILITY_POLICY.relative_to(ROOT)}: {exc}"
+        )
+
+
+def validate_extension_pack() -> None:
+    pack_schema = load_json(EXTENSION_PACK_MANIFEST_SCHEMA)
+    extension_schema = load_json(EXTENSION_MANIFEST_SCHEMA)
+    pack = yaml.safe_load(EXTENSION_PACK_MANIFEST.read_text(encoding="utf-8"))
+    pack_root = EXTENSION_PACK_MANIFEST.parent
+
+    try:
+        validate(instance=pack, schema=pack_schema)
+    except Exception as exc:  # pragma: no cover - exits immediately
+        fail(f"Invalid extension pack manifest {EXTENSION_PACK_MANIFEST.relative_to(ROOT)}: {exc}")
+
+    for ref_key in ("compatibility_policy_ref", "review_rubric_ref", "readme_ref"):
+        resolved = (pack_root / pack[ref_key]).resolve()
+        if not resolved.exists():
+            fail(
+                "Extension pack manifest references missing file "
+                f"{Path(resolved).relative_to(ROOT)}"
+            )
+
+    for directory_key in ("connectors_dir", "artifact_processors_dir", "mcp_adapters_dir"):
+        resolved = (pack_root / pack["layout"][directory_key]).resolve()
+        if not resolved.is_dir():
+            fail(
+                "Extension pack layout references missing directory "
+                f"{Path(resolved).relative_to(ROOT)}"
+            )
+
+    for member in pack["members"]:
+        manifest_path = (pack_root / member["manifest_ref"]).resolve()
+        if not manifest_path.exists():
+            fail(
+                "Extension pack member references missing manifest "
+                f"{Path(manifest_path).relative_to(ROOT)}"
+            )
+        payload = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=extension_schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(f"Invalid extension pack member {Path(manifest_path).relative_to(ROOT)}: {exc}")
+
+
+def validate_media_fixtures() -> None:
+    for schema_path, fixture_path in MEDIA_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid media fixture "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+
+def validate_oss_managed_artifacts() -> None:
+    for schema_path, fixture_path in OSS_MANAGED_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid OSS/managed split artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+
+def validate_enterprise_artifacts() -> None:
+    for schema_path, fixture_path in ENTERPRISE_FIXTURE_SCHEMA_PAIRS:
+        schema = load_json(schema_path)
+        payload = yaml.safe_load(fixture_path.read_text(encoding="utf-8"))
+        try:
+            validate(instance=payload, schema=schema)
+        except Exception as exc:  # pragma: no cover - exits immediately
+            fail(
+                "Invalid enterprise artifact "
+                f"{fixture_path.relative_to(ROOT)} for schema {schema_path.relative_to(ROOT)}: {exc}"
+            )
+
+
 schema_dirs = [
     ROOT / "schema/jsonschema",
     ROOT / "schema/event-payloads",
@@ -550,6 +713,11 @@ validate_generated_python_bindings(proto_defs, digest)
 validate_generated_rust_bindings(proto_defs, digest)
 validate_tool_registry()
 validate_extension_manifests()
+validate_extension_compatibility_policy()
+validate_extension_pack()
+validate_media_fixtures()
+validate_oss_managed_artifacts()
+validate_enterprise_artifacts()
 
 if subject_map["dispatch"]["message"] != "ActionDispatch":
     fail("Transport subject mapping for dispatch drifted from ActionDispatch")

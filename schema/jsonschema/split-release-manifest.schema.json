@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/split-release-manifest.schema.json",
+  "title": "SplitReleaseManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "release_lines"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "release_lines": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "flavor",
+          "package_artifacts",
+          "compatibility_inputs",
+          "upgrade_strategy",
+          "migration_owner",
+          "required_docs",
+          "gate_refs"
+        ],
+        "properties": {
+          "flavor": {
+            "type": "string",
+            "enum": [
+              "oss_local",
+              "shared_cloud",
+              "isolated_execution",
+              "dedicated_deployment"
+            ]
+          },
+          "package_artifacts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "compatibility_inputs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "upgrade_strategy": {
+            "type": "string"
+          },
+          "migration_owner": {
+            "type": "string"
+          },
+          "required_docs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "gate_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

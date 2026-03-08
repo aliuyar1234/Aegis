@@ -1,6 +1,6 @@
     # PHASE-13 — Cloud and enterprise hardening
 
-    **Status:** deferred
+    **Status:** current
 
     ## Phase goal
 
@@ -51,7 +51,7 @@
 
     ## Test plan
 
-    - `TS-017` — Enterprise readiness validation (`python3 scripts/run_phase_gate.py tests/phase-gates/enterprise-readiness.yaml`)
+    - `TS-017` — Enterprise readiness validation (`pytest tests/enterprise -q`)
 
     ## Acceptance criteria
 

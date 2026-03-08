@@ -1,0 +1,74 @@
+id: sample-billing-connector
+display_name: Sample Billing Connector
+version: 0.1.0
+kind: tool_connector
+sdk:
+  language: python
+  package: aegis_ext.sample_billing
+  entry_module: billing_connector
+runtime_contract_version: v1
+extension_api_version: v1alpha1
+lifecycle:
+  install:
+    handler: billing_connector.install
+    timeout_class: medium
+    idempotent: true
+  start:
+    handler: billing_connector.start
+    timeout_class: short
+    idempotent: true
+  health_check:
+    handler: billing_connector.health_check
+    timeout_class: short
+    idempotent: true
+  run:
+    handler: billing_connector.run
+    timeout_class: medium
+    idempotent: false
+  shutdown:
+    handler: billing_connector.shutdown
+    timeout_class: short
+    idempotent: true
+capability_boundary:
+  required_scopes:
+  - billing.read
+  - artifact.capture
+  allowed_tools:
+  - browser.open
+  - browser.navigate
+  dangerous_action_classes: []
+  secrets:
+  - BILLING_API_TOKEN
+  network:
+    mode: egress_allowlist
+    allowlist:
+    - api.billing.example.com
+  artifact_access:
+    inputs: []
+    outputs:
+    - screenshot
+    - dom_snapshot
+compatibility:
+  aegis_runtime:
+    min: 0.10.0
+    max: 0.10.x
+  extension_api:
+    min: v1alpha1
+    max: v1alpha1
+  tool_registry:
+    min: v1
+    max: v1
+  supported_tiers:
+  - tier_a
+  - tier_b
+tool_connector:
+  tools:
+  - tool_id: billing.lookup
+    input_schema_ref: schema/jsonschema/action-request.schema.json
+    output_schema_ref: schema/jsonschema/artifact-metadata.schema.json
+    executor_kind: python
+    mutating: false
+    artifact_expectations:
+    - screenshot
+    - dom_snapshot
+notes: Read-only example connector manifest for the sample extension pack.

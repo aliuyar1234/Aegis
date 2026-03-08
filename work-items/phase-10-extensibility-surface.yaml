@@ -1,5 +1,5 @@
 phase: PHASE-10
-status: current
+status: completed
 name: Extensibility surface, connector SDK, and compatibility policy
 phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
 tasks:
@@ -25,7 +25,7 @@ tasks:
   phase: PHASE-10
   title: Define MCP adapter boundary without making MCP the internal runtime protocol
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P10-T01
   adr_refs:
@@ -43,7 +43,7 @@ tasks:
   phase: PHASE-10
   title: Create compatibility and versioning policy for third-party extensions
   critical_path: true
-  status: planned
+  status: done
   deps:
   - P10-T01
   adr_refs:
@@ -62,7 +62,7 @@ tasks:
   phase: PHASE-10
   title: Create sample extension pack layout and review rubric
   critical_path: false
-  status: planned
+  status: done
   deps:
   - P10-T03
   adr_refs:

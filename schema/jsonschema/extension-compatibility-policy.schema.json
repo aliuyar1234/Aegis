@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/extension-compatibility-policy.schema.json",
+  "title": "ExtensionCompatibilityPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "aegis_runtime",
+    "extension_api",
+    "tool_registry",
+    "supported_sdk_languages",
+    "supported_tiers",
+    "compatibility_rules",
+    "deprecation_policy",
+    "review_gates"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "aegis_runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_release",
+        "supported_contract_versions"
+      ],
+      "properties": {
+        "current_release": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$"
+        },
+        "supported_contract_versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^v[0-9]+([A-Za-z0-9._-]+)?$"
+          }
+        }
+      }
+    },
+    "extension_api": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_version",
+        "supported_versions"
+      ],
+      "properties": {
+        "current_version": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$"
+        },
+        "supported_versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$"
+          }
+        }
+      }
+    },
+    "tool_registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_version",
+        "supported_versions"
+      ],
+      "properties": {
+        "current_version": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$"
+        },
+        "supported_versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$"
+          }
+        }
+      }
+    },
+    "supported_sdk_languages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "elixir",
+          "python",
+          "rust"
+        ]
+      }
+    },
+    "supported_tiers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "tier_a",
+          "tier_b",
+          "tier_c"
+        ]
+      }
+    },
+    "compatibility_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "require_bounded_runtime_range",
+        "require_bounded_extension_api_range",
+        "require_bounded_tool_registry_range",
+        "forbid_open_ended_ranges",
+        "require_lifecycle_hooks",
+        "require_capability_boundary",
+        "require_sample_pack",
+        "require_review_rubric",
+        "mcp_adapters_external_only"
+      ],
+      "properties": {
+        "require_bounded_runtime_range": {
+          "const": true
+        },
+        "require_bounded_extension_api_range": {
+          "const": true
+        },
+        "require_bounded_tool_registry_range": {
+          "const": true
+        },
+        "forbid_open_ended_ranges": {
+          "const": true
+        },
+        "require_lifecycle_hooks": {
+          "const": true
+        },
+        "require_capability_boundary": {
+          "const": true
+        },
+        "require_sample_pack": {
+          "const": true
+        },
+        "require_review_rubric": {
+          "const": true
+        },
+        "mcp_adapters_external_only": {
+          "const": true
+        }
+      }
+    },
+    "deprecation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "min_notice_days",
+        "supported_parallel_extension_api_versions",
+        "sample_fixture_refresh_required"
+      ],
+      "properties": {
+        "min_notice_days": {
+          "type": "integer",
+          "minimum": 30
+        },
+        "supported_parallel_extension_api_versions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sample_fixture_refresh_required": {
+          "const": true
+        }
+      }
+    },
+    "review_gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "schema-valid",
+          "bounded-compatibility-range",
+          "lifecycle-declared",
+          "capability-boundary-bounded",
+          "pack-layout-present",
+          "docs-and-rubric-present"
+        ]
+      }
+    }
+  }
+}

@@ -115,34 +115,92 @@ test_suites:
   title: Extensibility and connector compatibility tests
   command: pytest tests/extensibility -q
   paths:
+  - meta/extension-compatibility-policy.yaml
   - tests/extensibility
   - tests/extensibility/fixtures/sample-connector.yaml
   - tests/extensibility/fixtures/sample-artifact-processor.yaml
+  - tests/extensibility/fixtures/sample-mcp-adapter.yaml
+  - tests/extensibility/fixtures/sample-extension-pack
   - schema/jsonschema/connector-manifest.schema.json
+  - schema/jsonschema/extension-compatibility-policy.schema.json
+  - schema/jsonschema/extension-pack-manifest.schema.json
   - docs/design-docs/extensibility-surface.md
-  proves: Validates extension schemas, lifecycle and capability boundaries, and
-    sample connector fixtures.
+  - docs/design-docs/mcp-adapter-boundary.md
+  - docs/design-docs/extension-compatibility-policy.md
+  - docs/design-docs/extension-review-rubric.md
+  proves: Validates extension schemas, compatibility policy, MCP adapter constraints,
+    sample extension-pack layout, and review-rubric-backed fixtures.
 - id: TS-015
   title: Voice/media boundary tests
-  command: python3 scripts/run_phase_gate.py tests/phase-gates/media-expansion.yaml
+  command: pytest tests/media -q
   paths:
+  - tests/media
   - tests/phase-gates/media-expansion.yaml
+  - tests/media/fixtures
   - docs/design-docs/media-topology.md
   - docs/design-docs/future-voice-media.md
-  proves: Validates that the voice/media path has explicit contracts, topology, sidecar
-    boundaries, and a machine-checkable phase gate.
+  - docs/design-docs/media-sidecar-contracts.md
+  - docs/design-docs/media-session-extensions.md
+  - docs/design-docs/media-operator-surfaces.md
+  - docs/runbooks/media-qos-degradation.md
+  - docs/runbooks/media-recording-pipeline.md
+  - schema/jsonschema/media-sidecar-catalog.schema.json
+  - schema/jsonschema/media-session-extension.schema.json
+  - schema/jsonschema/operator-media-session-view.schema.json
+  - schema/jsonschema/media-topology-policy.schema.json
+  proves: Validates explicit media contracts, topology, sidecar boundaries, QoS
+    degradation, operator handoff rules, and a machine-checkable phase gate.
 - id: TS-016
   title: OSS/managed split validation
-  command: python3 scripts/run_phase_gate.py tests/phase-gates/oss-managed-split.yaml
+  command: pytest tests/packaging -q
   paths:
+  - tests/packaging
   - tests/phase-gates/oss-managed-split.yaml
-  proves: Validates packaging matrix, OSS/managed split artifacts, and release surfaces.
+  - meta/oss-core-manifest.yaml
+  - meta/managed-surface-catalog.yaml
+  - meta/deployment-flavors.yaml
+  - meta/split-release-policy.yaml
+  - meta/split-release-manifest.yaml
+  - schema/jsonschema/oss-core-manifest.schema.json
+  - schema/jsonschema/managed-surface-catalog.schema.json
+  - schema/jsonschema/deployment-flavors.schema.json
+  - schema/jsonschema/split-release-policy.schema.json
+  - schema/jsonschema/split-release-manifest.schema.json
+  - docs/design-docs/oss-managed-split.md
+  - docs/design-docs/deployment-flavors.md
+  - docs/design-docs/oss-managed-release-policy.md
+  - docs/references/packaging-matrix.md
+  - docs/references/release-upgrade-matrix.md
+  proves: Validates packaging matrix, OSS/managed split artifacts, release manifests,
+    and upgrade-policy surfaces.
 - id: TS-017
   title: Enterprise readiness validation
-  command: python3 scripts/run_phase_gate.py tests/phase-gates/enterprise-readiness.yaml
+  command: pytest tests/enterprise -q
   paths:
+  - tests/enterprise
   - tests/phase-gates/enterprise-readiness.yaml
-  proves: Validates enterprise-specific docs, controls, runbooks, and packaging artifacts.
+  - meta/audit-export-policy.yaml
+  - meta/dedicated-deployment-profile.yaml
+  - meta/retention-slo-policy.yaml
+  - meta/enterprise-acceptance-checklist.yaml
+  - meta/enterprise-control-matrix.yaml
+  - meta/dedicated-tenant-evidence.yaml
+  - schema/jsonschema/audit-export-policy.schema.json
+  - schema/jsonschema/dedicated-deployment-profile.schema.json
+  - schema/jsonschema/retention-slo-policy.schema.json
+  - schema/jsonschema/enterprise-acceptance-checklist.schema.json
+  - schema/jsonschema/enterprise-control-matrix.schema.json
+  - schema/jsonschema/dedicated-tenant-evidence.schema.json
+  - docs/design-docs/audit-export-redaction.md
+  - docs/design-docs/dedicated-deployment-isolation.md
+  - docs/design-docs/retention-and-slo-policy.md
+  - docs/threat-models/enterprise-control-matrix.md
+  - docs/runbooks/audit-export-backlog.md
+  - docs/runbooks/dedicated-key-isolation.md
+  - docs/runbooks/retention-backlog.md
+  - OPEN_DECISIONS.md
+  proves: Validates enterprise-specific docs, control manifests, dedicated-deployment
+    evidence, runbooks, and terminal-phase gate assets.
 - id: TS-018
   title: Transport topology contract tests
   command: pytest tests/transport -q

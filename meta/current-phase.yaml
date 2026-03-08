@@ -1,5 +1,5 @@
-current_phase: PHASE-10
-current_phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+current_phase: PHASE-13
+current_phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
 completed_phases:
 - PHASE-00
 - PHASE-01
@@ -11,9 +11,10 @@ completed_phases:
 - PHASE-07
 - PHASE-08
 - PHASE-09
-starting_sequence:
-- P10-T02
-- P10-T03
-notes: Phases 00 through 09 are implemented in this repository. Phase 10 is the
-  active bounded implementation pass and now continues with the MCP adapter
-  boundary and compatibility policy after the extension contract surface landed.
+- PHASE-10
+- PHASE-11
+- PHASE-12
+starting_sequence: []
+notes: Phases 00 through 13 are implemented in this repository. PHASE-13 remains
+  the terminal current phase marker because there is no successor phase, and no
+  planned tasks remain unblocked.

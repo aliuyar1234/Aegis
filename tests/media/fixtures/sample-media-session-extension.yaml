@@ -1,0 +1,28 @@
+version: 1
+media_mode: voice_call
+qos_state:
+  level: handoff_required
+  reason: packet loss exceeded interactive threshold
+  operator_visibility: explicit
+capacity_isolation:
+  pool_class: tenant_isolated_media_pool
+  reservation_required: true
+  max_concurrent_sessions: 6
+active_sidecars:
+  - media.gateway.v1
+  - media.recorder.v1
+recording:
+  mode: active
+  consent_state: granted
+  artifact_kind: recording_manifest
+handoff:
+  operator_handoff_required: true
+  target_surface: session-detail
+  reason: qos degraded for more than 30 seconds
+replay_boundary:
+  packet_replay_supported: false
+  reconstruct_from:
+    - event_timeline
+    - transcript
+    - recording_manifest
+    - artifact_refs

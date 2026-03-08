@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/retention-slo-policy.schema.json",
+  "title": "RetentionSloPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "retention_classes",
+    "archive_policy",
+    "slos"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "retention_classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "applies_to",
+          "retention_window",
+          "archive_window",
+          "redaction_behavior",
+          "export_expectation",
+          "storage_class"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "applies_to": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "retention_window": {
+            "type": "string"
+          },
+          "archive_window": {
+            "type": "string"
+          },
+          "redaction_behavior": {
+            "type": "string"
+          },
+          "export_expectation": {
+            "type": "string"
+          },
+          "storage_class": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "archive_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timeline_history_never_rewritten",
+        "restore_requires_metadata_integrity",
+        "archive_index_ref"
+      ],
+      "properties": {
+        "timeline_history_never_rewritten": {
+          "const": true
+        },
+        "restore_requires_metadata_integrity": {
+          "const": true
+        },
+        "archive_index_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "slos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "surface",
+          "target",
+          "measurement_window",
+          "degrade_response"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "surface": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "measurement_window": {
+            "type": "string"
+          },
+          "degrade_response": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

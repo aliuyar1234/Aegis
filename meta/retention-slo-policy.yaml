@@ -1,0 +1,75 @@
+id: retention-slo-policy
+version: 1
+retention_classes:
+- id: hot_operational_events
+  applies_to:
+  - session_events
+  - session_checkpoints
+  retention_window: 30d_hot
+  archive_window: 365d_archive
+  redaction_behavior: redact_sensitive_fields_preserve_envelope
+  export_expectation: included_in_audit_bundle
+  storage_class: postgres_plus_archive_snapshot
+- id: long_lived_audit_events
+  applies_to:
+  - approvals
+  - operator_interventions
+  - policy_decisions
+  retention_window: 365d_hot
+  archive_window: 2555d_archive
+  redaction_behavior: preserve_identity_and_decision_fields
+  export_expectation: always_included_in_audit_bundle
+  storage_class: postgres_plus_worm_archive
+- id: short_lived_debug_artifacts
+  applies_to:
+  - browser_traces
+  - transient_dom_snapshots
+  retention_window: 7d_hot
+  archive_window: 30d_archive
+  redaction_behavior: delete_or_redact_after_case_window
+  export_expectation: on_demand_only
+  storage_class: object_store_standard_then_expire
+- id: customer_artifacts
+  applies_to:
+  - screenshots
+  - recordings
+  - customer_documents
+  retention_window: 30d_hot
+  archive_window: 1095d_archive
+  redaction_behavior: preserve_pointer_with_redaction_state
+  export_expectation: customer_case_bundle
+  storage_class: object_store_standard_then_archive
+- id: redacted_payload_stubs
+  applies_to:
+  - redacted_events
+  - redacted_artifact_metadata
+  retention_window: 2555d_hot
+  archive_window: never_delete_without_legal_hold_review
+  redaction_behavior: preserve_stub_only
+  export_expectation: included_as_redacted_stub
+  storage_class: metadata_store
+archive_policy:
+  timeline_history_never_rewritten: true
+  restore_requires_metadata_integrity: true
+  archive_index_ref: docs/design-docs/retention-and-slo-policy.md
+slos:
+- id: hot_replay_load
+  surface: session_replay_hot_history
+  target: p95_under_2s_for_hot_history
+  measurement_window: 30d
+  degrade_response: operator_visible_degraded_mode
+- id: audit_export_bundle_preparation
+  surface: audit_export_on_demand_bundle
+  target: p95_under_15m
+  measurement_window: 30d
+  degrade_response: backlog_runbook_and_enterprise_alert
+- id: redaction_completion
+  surface: redaction_request_processing
+  target: p95_under_30m
+  measurement_window: 30d
+  degrade_response: retention_backlog_runbook
+- id: archive_restore
+  surface: archived_artifact_restore
+  target: p95_under_4h
+  measurement_window: 90d
+  degrade_response: operator_escalation_and_manual_restore

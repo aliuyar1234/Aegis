@@ -180,7 +180,7 @@ phases:
   - PHASE-10
   - PHASE-13
 - id: PHASE-10
-  status: current
+  status: completed
   name: Extensibility surface, connector SDK, and compatibility policy
   doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
   task_file: work-items/phase-10-extensibility-surface.yaml
@@ -196,7 +196,7 @@ phases:
   - PHASE-11
   - PHASE-12
 - id: PHASE-11
-  status: deferred
+  status: completed
   name: Voice and media expansion path
   doc: docs/exec-plans/active/PHASE-11-voice-media-path.md
   task_file: work-items/phase-11-voice-media-path.yaml
@@ -212,7 +212,7 @@ phases:
   unlocks:
   - PHASE-13
 - id: PHASE-12
-  status: deferred
+  status: completed
   name: OSS core versus managed platform split
   doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
   task_file: work-items/phase-12-oss-vs-cloud.yaml
@@ -227,7 +227,7 @@ phases:
   unlocks:
   - PHASE-13
 - id: PHASE-13
-  status: deferred
+  status: current
   name: Cloud and enterprise hardening
   doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
   task_file: work-items/phase-13-cloud-enterprise.yaml

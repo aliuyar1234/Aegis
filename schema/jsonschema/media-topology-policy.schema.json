@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/media-topology-policy.schema.json",
+  "title": "MediaTopologyPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "ingress_protocols",
+    "sidecar_chain",
+    "artifact_policies",
+    "degradation_policies",
+    "handoff_rules"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "ingress_protocols": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "webrtc",
+          "sip",
+          "rtmp"
+        ]
+      }
+    },
+    "sidecar_chain": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string",
+        "enum": [
+          "protocol_bridge",
+          "media_gateway",
+          "recorder"
+        ]
+      }
+    },
+    "artifact_policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recording_manifest",
+        "recording_segment",
+        "transcript"
+      ],
+      "properties": {
+        "recording_manifest": {
+          "$ref": "#/$defs/artifactPolicy"
+        },
+        "recording_segment": {
+          "$ref": "#/$defs/artifactPolicy"
+        },
+        "transcript": {
+          "$ref": "#/$defs/artifactPolicy"
+        }
+      }
+    },
+    "degradation_policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "qos_levels",
+        "admission_response",
+        "recording_response"
+      ],
+      "properties": {
+        "qos_levels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "healthy",
+              "degraded",
+              "handoff_required",
+              "paused_for_backpressure"
+            ]
+          }
+        },
+        "admission_response": {
+          "type": "string",
+          "enum": [
+            "shed_new_sessions",
+            "reduce_concurrency",
+            "require_operator_handoff"
+          ]
+        },
+        "recording_response": {
+          "type": "string",
+          "enum": [
+            "lower_bitrate",
+            "pause_recording",
+            "artifact_only_fallback"
+          ]
+        }
+      }
+    },
+    "handoff_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trigger_conditions",
+        "operator_surface",
+        "runbook_ref"
+      ],
+      "properties": {
+        "trigger_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "operator_surface": {
+          "type": "string",
+          "enum": [
+            "session-detail",
+            "session-fleet"
+          ]
+        },
+        "runbook_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "$defs": {
+    "artifactPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "retention_class",
+        "signed_upload_required"
+      ],
+      "properties": {
+        "retention_class": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signed_upload_required": {
+          "const": true
+        }
+      }
+    }
+  }
+}

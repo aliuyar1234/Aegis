@@ -1,0 +1,44 @@
+id: dedicated-deployment-profile
+version: 1
+tier: tier_c
+control_plane:
+  deployment_model: dedicated_per_tenant
+  database_boundary: dedicated_database_cluster
+  node_boundary: tenant_scoped_beam_cluster
+execution_plane:
+  worker_pool_mode: dedicated_worker_pools
+  browser_pool_mode: tenant_scoped_browser_pool
+  sidecar_mode: tenant_scoped_sidecars
+key_isolation:
+  kms_mode: dedicated_kms_namespace
+  artifact_key_strategy: per_tenant_wrapping_key
+  secret_manager: external_secret_manager
+  change_window_rotation: true
+data_residency:
+  residency_binding: tenant_region_pin
+  db_region_pin: true
+  object_store_region_pin: true
+  key_region_pin: true
+  cross_region_failover: operator_approved_only
+network_controls:
+  private_connectivity_required: true
+  ingress_modes:
+  - private_link
+  - site_to_site_vpn
+  - allowlisted_public_ingress
+  egress_policy: explicit_allowlist_only
+artifact_controls:
+  dedicated_object_store: true
+  tenant_prefix_fallback_forbidden: true
+  signed_url_ttl_class: short_lived_enterprise
+secrets_operations:
+  break_glass_roles:
+  - platform_admin
+  - security_admin
+  audit_export_preflight_required: true
+  runbook_refs:
+  - docs/runbooks/dedicated-key-isolation.md
+  - docs/runbooks/audit-export-backlog.md
+docs_refs:
+- docs/design-docs/dedicated-deployment-isolation.md
+- docs/references/release-upgrade-matrix.md

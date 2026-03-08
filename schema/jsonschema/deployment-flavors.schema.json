@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/deployment-flavors.schema.json",
+  "title": "DeploymentFlavors",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "flavors"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "flavors": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "control_plane_mode",
+          "worker_pool_mode",
+          "artifact_isolation",
+          "release_channel",
+          "upgrade_owner",
+          "support_boundary",
+          "tenant_tier",
+          "package_artifacts",
+          "includes_managed_surfaces",
+          "docs_refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "oss_local",
+              "shared_cloud",
+              "isolated_execution",
+              "dedicated_deployment"
+            ]
+          },
+          "control_plane_mode": {
+            "type": "string",
+            "enum": [
+              "self_managed",
+              "managed_shared",
+              "dedicated"
+            ]
+          },
+          "worker_pool_mode": {
+            "type": "string",
+            "enum": [
+              "shared",
+              "tenant_isolated",
+              "dedicated"
+            ]
+          },
+          "artifact_isolation": {
+            "type": "string",
+            "enum": [
+              "local_bucket",
+              "shared_bucket_with_tenant_prefixes",
+              "tenant_dedicated_keyspace",
+              "dedicated_object_store"
+            ]
+          },
+          "release_channel": {
+            "type": "string",
+            "enum": [
+              "source_and_container_tags",
+              "managed_rollout",
+              "coordinated_rollout",
+              "change_window_release"
+            ]
+          },
+          "upgrade_owner": {
+            "type": "string"
+          },
+          "support_boundary": {
+            "type": "string",
+            "enum": [
+              "community",
+              "managed_shared_service",
+              "managed_isolated_execution",
+              "dedicated_control_plane"
+            ]
+          },
+          "tenant_tier": {
+            "type": "string",
+            "enum": [
+              "development",
+              "tier_a",
+              "tier_b",
+              "tier_c"
+            ]
+          },
+          "package_artifacts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "includes_managed_surfaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "docs_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

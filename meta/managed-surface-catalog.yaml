@@ -1,0 +1,82 @@
+id: aegis-managed-surfaces
+version: 1
+managed_surfaces:
+- id: shared-cloud-control-plane
+  category: control_plane_service
+  included_flavors:
+  - shared_cloud
+  - isolated_execution
+  capabilities:
+  - hosted tenant provisioning
+  - hosted auth integration and tenant bootstrap
+  - managed quota tuning and admission defaults
+  depends_on_oss_core:
+  - aegis_gateway
+  - aegis_runtime
+  - aegis_policy
+  evidence_refs:
+  - docs/design-docs/oss-managed-split.md
+  - docs/design-docs/deployment-flavors.md
+- id: isolated-execution-routing
+  category: execution_isolation
+  included_flavors:
+  - isolated_execution
+  - dedicated_deployment
+  capabilities:
+  - tenant-isolated worker routing
+  - isolated execution pool operations
+  - tenant-dedicated artifact keyspace management
+  depends_on_oss_core:
+  - aegis_execution_bridge
+  - aegis_artifacts
+  - aegis_projection
+  evidence_refs:
+  - docs/design-docs/deployment-flavors.md
+  - docs/references/packaging-matrix.md
+- id: managed-operations
+  category: operational_feature
+  included_flavors:
+  - shared_cloud
+  - isolated_execution
+  - dedicated_deployment
+  capabilities:
+  - fleet observability and incident response
+  - hosted backup and restore coordination
+  - coordinated upgrade rollout orchestration
+  depends_on_oss_core:
+  - aegis_obs
+  - aegis_events
+  - aegis_projection
+  evidence_refs:
+  - docs/design-docs/oss-managed-release-policy.md
+  - docs/references/release-upgrade-matrix.md
+- id: dedicated-deployment-management
+  category: deployment_service
+  included_flavors:
+  - dedicated_deployment
+  capabilities:
+  - dedicated control-plane environment management
+  - private networking and change-window coordination
+  - environment-specific secret custody hooks
+  depends_on_oss_core:
+  - aegis_gateway
+  - aegis_runtime
+  - aegis_artifacts
+  evidence_refs:
+  - docs/design-docs/deployment-flavors.md
+  - docs/references/release-upgrade-matrix.md
+- id: enterprise-integrations
+  category: commercial_surface
+  included_flavors:
+  - dedicated_deployment
+  capabilities:
+  - managed audit export packaging
+  - enterprise SSO packaging
+  - data residency and compliance add-ons
+  depends_on_oss_core:
+  - aegis_policy
+  - aegis_events
+  - aegis_artifacts
+  evidence_refs:
+  - docs/design-docs/oss-managed-release-policy.md
+  - docs/design-docs/oss-managed-split.md

@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/extension-pack-manifest.schema.json",
+  "title": "ExtensionPackManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "display_name",
+    "version",
+    "extension_api_version",
+    "compatibility_policy_ref",
+    "review_rubric_ref",
+    "readme_ref",
+    "layout",
+    "members"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$"
+    },
+    "extension_api_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$"
+    },
+    "compatibility_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_rubric_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "readme_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "connectors_dir",
+        "artifact_processors_dir",
+        "mcp_adapters_dir"
+      ],
+      "properties": {
+        "connectors_dir": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifact_processors_dir": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mcp_adapters_dir": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "members": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "manifest_ref"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "tool_connector",
+              "artifact_processor",
+              "mcp_adapter"
+            ]
+          },
+          "manifest_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

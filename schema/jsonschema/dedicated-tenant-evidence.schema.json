@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/dedicated-tenant-evidence.schema.json",
+  "title": "DedicatedTenantEvidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "tenant_tier",
+    "deployment_profile_ref",
+    "key_isolation_evidence",
+    "data_residency_hooks",
+    "artifact_controls",
+    "operational_preflight",
+    "docs_refs",
+    "runbook_refs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "tenant_tier": {
+      "type": "string",
+      "enum": [
+        "tier_c"
+      ]
+    },
+    "deployment_profile_ref": {
+      "type": "string"
+    },
+    "key_isolation_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kms_namespace_per_tenant",
+        "dedicated_wrapping_key",
+        "rotation_change_window_required"
+      ],
+      "properties": {
+        "kms_namespace_per_tenant": {
+          "const": true
+        },
+        "dedicated_wrapping_key": {
+          "const": true
+        },
+        "rotation_change_window_required": {
+          "const": true
+        }
+      }
+    },
+    "data_residency_hooks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "region_pin",
+        "object_store_pin",
+        "export_destination_pin"
+      ],
+      "properties": {
+        "region_pin": {
+          "type": "string",
+          "enum": [
+            "tenant_bound_region"
+          ]
+        },
+        "object_store_pin": {
+          "const": true
+        },
+        "export_destination_pin": {
+          "const": true
+        }
+      }
+    },
+    "artifact_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dedicated_object_store",
+        "signed_url_ttl_class",
+        "archive_restore_requires_operator_context"
+      ],
+      "properties": {
+        "dedicated_object_store": {
+          "const": true
+        },
+        "signed_url_ttl_class": {
+          "type": "string",
+          "enum": [
+            "short_lived_enterprise"
+          ]
+        },
+        "archive_restore_requires_operator_context": {
+          "const": true
+        }
+      }
+    },
+    "operational_preflight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_checklists",
+        "release_gate",
+        "audit_export_smoke_test"
+      ],
+      "properties": {
+        "required_checklists": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "release_gate": {
+          "type": "string",
+          "enum": [
+            "enterprise_readiness"
+          ]
+        },
+        "audit_export_smoke_test": {
+          "const": true
+        }
+      }
+    },
+    "docs_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "runbook_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+tenant_id: tenant-acme
+workspace_id: ws-support
+session_id: session-media-001
+media_mode: voice_call
+qos_level: handoff_required
+capacity_pool: tenant_isolated_media_pool
+sidecars:
+  - sidecar_id: media.gateway.v1
+    kind: media_gateway
+    health: degraded
+    pool_class: tenant_isolated_media_pool
+  - sidecar_id: media.recorder.v1
+    kind: recorder
+    health: healthy
+    pool_class: tenant_isolated_media_pool
+recording_status:
+  mode: active
+  latest_artifact_id: artifact-recording-manifest-001
+handoff_required: true
+recommended_runbooks:
+  - docs/runbooks/media-qos-degradation.md
+  - docs/runbooks/media-recording-pipeline.md
