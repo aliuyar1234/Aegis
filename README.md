@@ -1,11 +1,20 @@
 # Aegis Runtime
 
+[![Runtime Suites](https://github.com/aliuyar1234/Aegis/actions/workflows/runtime-suites.yml/badge.svg)](https://github.com/aliuyar1234/Aegis/actions/workflows/runtime-suites.yml)
+[![Contracts](https://github.com/aliuyar1234/Aegis/actions/workflows/contracts-validate.yml/badge.svg)](https://github.com/aliuyar1234/Aegis/actions/workflows/contracts-validate.yml)
+[![Docs](https://github.com/aliuyar1234/Aegis/actions/workflows/docs-validate.yml/badge.svg)](https://github.com/aliuyar1234/Aegis/actions/workflows/docs-validate.yml)
+[![Phase Gates](https://github.com/aliuyar1234/Aegis/actions/workflows/phase-gates.yml/badge.svg)](https://github.com/aliuyar1234/Aegis/actions/workflows/phase-gates.yml)
+
 **Aegis Runtime** is a BEAM-native control plane for long-lived AI sessions.
 It is built for teams that need more than prompt orchestration: durable ownership, replayable timelines, policy enforcement, human approvals, operator intervention, browser-backed execution, and credible recovery after failure.
 
 Instead of treating an AI system like a sequence of stateless requests, Aegis treats each session as a supervised, recoverable runtime object with durable history.
 
-## Architecture
+> Durable AI sessions, not best-effort agent loops.
+
+Built around Elixir, PostgreSQL, NATS JetStream, Python workers, and Rust sidecars.
+
+## System Architecture
 
 ```mermaid
 flowchart LR
@@ -69,6 +78,36 @@ flowchart LR
     RS --> AS
 ```
 
+## Session Lifecycle
+
+```mermaid
+flowchart LR
+    classDef entry fill:#eff6ff,stroke:#2563eb,stroke-width:1.4px,color:#0f172a;
+    classDef control fill:#fff7ed,stroke:#c2410c,stroke-width:1.4px,color:#431407;
+    classDef durable fill:#ecfeff,stroke:#0f766e,stroke-width:1.4px,color:#042f2e;
+    classDef worker fill:#fdf2f8,stroke:#be185d,stroke-width:1.4px,color:#500724;
+    classDef output fill:#f7fee7,stroke:#4d7c0f,stroke-width:1.4px,color:#1a2e05;
+
+    IN["User, API, or Operator action"]:::entry
+    OWN["Authoritative session owner"]:::control
+    POL["Policy and approval evaluation"]:::control
+    EVT["Append event + checkpoint intent + outbox"]:::durable
+    DSP["Dispatch through transport"]:::control
+    WRK["Python worker or Rust sidecar executes"]:::worker
+    ART["Artifacts, progress, completion, uncertainty"]:::output
+    RPL["Replay, projections, operator timeline"]:::durable
+
+    IN --> OWN
+    OWN --> POL
+    POL --> EVT
+    EVT --> DSP
+    DSP --> WRK
+    WRK --> ART
+    ART --> OWN
+    EVT --> RPL
+    ART --> RPL
+```
+
 ## Why Aegis Exists
 
 Most agent stacks still break at the runtime boundary.
@@ -105,6 +144,13 @@ The result is a system designed for recovery, auditability, and operational conf
 - **Policy and approvals are runtime primitives** rather than optional product-layer add-ons.
 - **Operator intervention is built into the model** through views, notes, takeover, pause, return-to-automation, and replay.
 - **Cross-language boundaries are explicit** so Elixir, Python, and Rust each do the work they are best at without collapsing the architecture.
+
+## Design Principles
+
+- **Control plane first** so orchestration, durability, and policy remain stable even when execution workers fail.
+- **Failure is part of the model** through leases, fencing, checkpoints, replay, uncertainty classification, and operator takeover.
+- **Operational visibility is mandatory** through timelines, artifacts, projections, runbooks, and health surfaces.
+- **Heterogeneous execution is intentional** because browser work, provider integrations, and media paths do not belong in one runtime.
 
 ## Technology Split
 
