@@ -1,4 +1,4 @@
-# OPEN_DECISIONS.md
+# Open Decisions
 
 Architectural decisions are intentionally locked. This file only records **non-fatal tunables** that may change later without reopening the core thesis.
 
@@ -18,4 +18,4 @@ Architectural decisions are intentionally locked. This file only records **non-f
 **Why open:** This does not affect runtime semantics.  
 **Locked principle:** Trace context must flow end to end and operators must have timeline-centric visibility regardless of backend choice.
 
-No open decision in this file is allowed to violate `MUST_NOT_VIOLATE.md`.
+No open decision in this file is allowed to violate `../overview/must-not-violate.md`.

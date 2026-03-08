@@ -3,8 +3,8 @@
 Use this file to find the right document quickly.
 
 ## Core definition
-- `../../PRODUCT.md`
-- `../../ARCHITECTURE.md`
+- `../overview/product.md`
+- `../overview/architecture.md`
 
 ## Deep design
 - `../design-docs/runtime-model.md`
@@ -40,9 +40,9 @@ Use this file to find the right document quickly.
 - `../../work-items/task-index.yaml`
 
 ## Operational trust
-- `../../RELIABILITY.md`
-- `../../SECURITY.md`
-- `../../OPERATIONS.md`
+- `../operations/reliability.md`
+- `../operations/security.md`
+- `../operations/operations.md`
 - `../runbooks/`
 - `../threat-models/`
 

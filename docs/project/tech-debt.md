@@ -1,4 +1,4 @@
-# TECH_DEBT.md
+# Tech Debt
 
 Use this file to track deliberate compromises. Do not use it to hide architectural violations.
 

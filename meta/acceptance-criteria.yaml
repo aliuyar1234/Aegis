@@ -348,7 +348,7 @@ acceptance_criteria:
   - TS-013
 - id: AC-056
   phase: PHASE-13
-  statement: OPEN_DECISIONS.md contains only bounded, explicitly justified unresolved
+  statement: docs/project/open-decisions.md contains only bounded, explicitly justified unresolved
     items and no hidden placeholder drift.
   tests:
   - TS-001

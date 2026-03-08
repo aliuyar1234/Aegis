@@ -1,4 +1,4 @@
-# PRODUCT.md
+# Product Definition
 
 ## Locked project definition
 

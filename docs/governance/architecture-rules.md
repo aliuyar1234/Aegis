@@ -1,4 +1,4 @@
-# ARCHITECTURE_RULES.md
+# Architecture Rules
 
 This file converts the thesis into reviewable implementation rules.
 
@@ -22,7 +22,7 @@ Any change to these areas requires doc updates:
 - session lifecycle → `docs/design-docs/runtime-model.md`
 - event envelope or event types → `schema/event-catalog/events.yaml` and `docs/design-docs/event-replay-model.md`
 - transport/contracts → `schema/proto/`, `schema/jsonschema/`, `docs/design-docs/contracts-versioning.md`
-- policy boundaries → `docs/design-docs/security-governance.md`, `SECURITY.md`, related runbooks
+- policy boundaries → `docs/design-docs/security-governance.md`, `docs/operations/security.md`, related runbooks
 - wedge scope → `docs/product-specs/browser-ops-wedge.md`
 - phase sequencing → `docs/exec-plans/active/`, `work-items/`, `meta/phase-gates.yaml`
 

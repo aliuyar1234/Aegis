@@ -1,4 +1,4 @@
-# CHANGE_POLICY.md
+# Change Policy
 
 Use this file when deciding whether a code or contract change also requires docs, metadata, or generated artifact updates.
 
@@ -27,7 +27,7 @@ Update:
 
 ## If you change policy or security behavior
 Update:
-- `SECURITY.md`
+- `../operations/security.md`
 - `docs/design-docs/security-governance.md`
 - `meta/rbac-roles.yaml`
 - `meta/abac-attributes.yaml`

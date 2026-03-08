@@ -12,9 +12,9 @@ fixtures:
 - docs/runbooks/audit-export-backlog.md
 - docs/runbooks/dedicated-key-isolation.md
 - docs/runbooks/retention-backlog.md
-- SECURITY.md
-- OPERATIONS.md
-- RELIABILITY.md
+- docs/operations/security.md
+- docs/operations/operations.md
+- docs/operations/reliability.md
 - meta/audit-export-policy.yaml
 - meta/dedicated-deployment-profile.yaml
 - meta/retention-slo-policy.yaml
@@ -27,7 +27,7 @@ fixtures:
 - schema/jsonschema/enterprise-acceptance-checklist.schema.json
 - schema/jsonschema/enterprise-control-matrix.schema.json
 - schema/jsonschema/dedicated-tenant-evidence.schema.json
-- OPEN_DECISIONS.md
+- docs/project/open-decisions.md
 tests:
 - TS-011
 - TS-017
@@ -78,7 +78,7 @@ steps:
   - open decisions are bounded and explicitly justified
   - no hidden placeholder drift remains in the terminal phase
   evidence:
-  - OPEN_DECISIONS.md
+  - docs/project/open-decisions.md
   - meta/repo-checks.yaml
 proves:
 - enterprise claims are backed by concrete repository assets

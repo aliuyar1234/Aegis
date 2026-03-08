@@ -1,4 +1,4 @@
-# ACCEPTANCE_CRITERIA.md
+# Acceptance Criteria
 
 The canonical machine-readable source is `meta/acceptance-criteria.yaml`.
 This file explains how to use those criteria.

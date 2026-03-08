@@ -1,4 +1,4 @@
-# ROADMAP.md
+# Roadmap
 
 ## Planning horizon
 
@@ -83,4 +83,4 @@ This roadmap assumes a strong team, no pressure to optimize for the easiest MVP,
 
 ## What roadmap does not mean
 
-This roadmap is **not** license to parallelize everything. The implementation order remains governed by `IMPLEMENTATION_ORDER.md` and the phase docs.
+This roadmap is **not** license to parallelize everything. The implementation order remains governed by `../overview/implementation-order.md` and the phase docs.

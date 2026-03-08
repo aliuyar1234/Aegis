@@ -1,4 +1,4 @@
-# TRACEABILITY_MATRIX.md
+# Traceability Matrix
 
 Traceability is a first-class asset in this repository.
 

@@ -1,4 +1,4 @@
-# RELIABILITY.md
+# Reliability
 
 Aegis matters only if it behaves correctly under failure.
 

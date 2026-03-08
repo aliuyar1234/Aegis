@@ -33,7 +33,7 @@ rules:
 doc_change_triggers:
   runtime_model:
   - docs/design-docs/runtime-model.md
-  - ACCEPTANCE_CRITERIA.md
+  - docs/overview/acceptance-criteria.md
   event_model:
   - schema/event-catalog/events.yaml
   - docs/design-docs/event-replay-model.md
@@ -42,6 +42,6 @@ doc_change_triggers:
   - schema/jsonschema/
   - docs/design-docs/contracts-versioning.md
   policy:
-  - SECURITY.md
+  - docs/operations/security.md
   - docs/design-docs/security-governance.md
   - docs/runbooks/

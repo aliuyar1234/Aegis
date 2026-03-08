@@ -9,4 +9,4 @@ Planned node pools:
 - python workers
 - rust sidecars
 
-The production topology is described in `ARCHITECTURE.md`.
+The production topology is described in `docs/overview/architecture.md`.

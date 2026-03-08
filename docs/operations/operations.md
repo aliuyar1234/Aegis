@@ -1,4 +1,4 @@
-# OPERATIONS.md
+# Operations
 
 Aegis is operated through timelines, projections, traces, and runbooks.
 

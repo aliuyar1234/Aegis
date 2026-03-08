@@ -1,4 +1,4 @@
-# QUALITY_SCORE.md
+# Quality Score
 
 Aegis uses an explicit quality rubric so implementation work does not drift into “it compiles, ship it.”
 

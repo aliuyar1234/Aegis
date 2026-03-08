@@ -1,4 +1,4 @@
-# MUST_NOT_VIOLATE.md
+# Must Not Violate
 
 These constraints are hard stops. Do not violate them even under schedule pressure.
 
@@ -101,4 +101,3 @@ Why it matters: The first wedge deals with messy admin surfaces where unintended
 Execution-plane components may not write to sessions, events, checkpoints, leases, approvals, or outbox tables.
 
 Why it matters: Allowing worker-side authority breaks the ownership model and replay guarantees.
-

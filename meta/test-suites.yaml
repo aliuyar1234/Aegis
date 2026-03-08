@@ -198,7 +198,7 @@ test_suites:
   - docs/runbooks/audit-export-backlog.md
   - docs/runbooks/dedicated-key-isolation.md
   - docs/runbooks/retention-backlog.md
-  - OPEN_DECISIONS.md
+  - docs/project/open-decisions.md
   proves: Validates enterprise-specific docs, control manifests, dedicated-deployment
     evidence, runbooks, and terminal-phase gate assets.
 - id: TS-018

@@ -5,7 +5,7 @@ Execute the next bounded implementation slice for PHASE-03 without reopening arc
 
 ## Read first
 - `docs/design-docs/runtime-model.md`
-- `RELIABILITY.md`
+- `docs/operations/reliability.md`
 - `docs/runbooks/node-loss.md`
 - `docs/runbooks/lease-ambiguity.md`
 

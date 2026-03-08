@@ -1,4 +1,4 @@
-# SECURITY.md
+# Security
 
 Aegis has to earn trust at runtime. Security, governance, and policy are part of the product.
 

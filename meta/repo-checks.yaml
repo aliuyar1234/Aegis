@@ -1,15 +1,16 @@
 required_paths:
 - AGENTS.md
 - README.md
-- REPO_MAP.md
-- PRODUCT.md
-- ARCHITECTURE.md
-- IMPLEMENTATION_ORDER.md
-- ACCEPTANCE_CRITERIA.md
-- TEST_STRATEGY.md
-- TRACEABILITY_MATRIX.md
-- MUST_NOT_VIOLATE.md
-- CAN_CHANGE_LATER.md
+- docs/README.md
+- docs/overview/repo-map.md
+- docs/overview/product.md
+- docs/overview/architecture.md
+- docs/overview/implementation-order.md
+- docs/overview/acceptance-criteria.md
+- docs/overview/test-strategy.md
+- docs/overview/traceability-matrix.md
+- docs/overview/must-not-violate.md
+- docs/overview/can-change-later.md
 - meta/current-phase.yaml
 - meta/invariants.yaml
 - meta/phase-gates.yaml
@@ -31,9 +32,9 @@ required_paths:
 - docs/design-docs/projection-model.md
 - tests/phase-gates/internal-demo.yaml
 - tests/phase-gates/public-demo.yaml
-- PATCHLOG_V2.md
-- PATCHLOG_V3.md
-- AUDIT_REMEDIATION_MATRIX.md
+- docs/project/patchlog-v2.md
+- docs/project/patchlog-v3.md
+- docs/project/audit-remediation-matrix.md
 - schema/jsonschema/transport-topology.schema.json
 - schema/jsonschema/phase-gate.schema.json
 - schema/proto/README.md
@@ -49,7 +50,7 @@ forbidden_phrases:
 - refer to the conversation
 - TBD
 allow_forbidden_in:
-- OPEN_DECISIONS.md
+- docs/project/open-decisions.md
 - meta/repo-checks.yaml
 max_agents_lines: 120
 forbidden_paths:

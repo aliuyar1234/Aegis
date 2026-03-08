@@ -1,4 +1,4 @@
-# REVIEW_RUBRIC.md
+# Review Rubric
 
 Use this rubric in code review, design review, and phase completion review.
 
@@ -35,5 +35,5 @@ Use this rubric in code review, design review, and phase completion review.
 ## Review outcome language
 
 - **Accept** — aligned and sufficiently verified
-- **Accept with follow-up** — safe, but requires tracked cleanup in `TECH_DEBT.md`
+- **Accept with follow-up** — safe, but requires tracked cleanup in `../project/tech-debt.md`
 - **Needs redesign** — violates thesis, drift rules, or safety model

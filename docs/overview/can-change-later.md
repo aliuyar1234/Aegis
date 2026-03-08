@@ -1,4 +1,4 @@
-# CAN_CHANGE_LATER.md
+# Can Change Later
 
 These choices are important, but they are **not** core-thesis breakers. Keep them flexible unless or until a phase explicitly locks them down.
 
@@ -35,4 +35,4 @@ This file does **not** allow changing:
 - browser-first wedge
 - first-class operators and approvals
 
-See `MUST_NOT_VIOLATE.md`.
+See `must-not-violate.md`.

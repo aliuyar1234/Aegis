@@ -1,4 +1,4 @@
-# FULL_SCOPE.md
+# Full Scope
 
 Aegis is intentionally broader than an MVP. This document defines the **full platform shape** so early implementation choices do not dead-end the architecture.
 

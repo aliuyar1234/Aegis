@@ -32,7 +32,7 @@ def test_enterprise_docs_artifacts_and_runbooks_exist():
         "meta/enterprise-control-matrix.yaml",
         "meta/dedicated-tenant-evidence.yaml",
         "tests/phase-gates/enterprise-readiness.yaml",
-        "OPEN_DECISIONS.md",
+        "docs/project/open-decisions.md",
     ]
 
     for path in required_paths:
@@ -77,7 +77,7 @@ def test_phase13_suite_registry_matches_enterprise_pytest_contract():
     assert "meta/enterprise-acceptance-checklist.yaml" in suite["paths"]
     assert "meta/enterprise-control-matrix.yaml" in suite["paths"]
     assert "meta/dedicated-tenant-evidence.yaml" in suite["paths"]
-    assert "OPEN_DECISIONS.md" in suite["paths"]
+    assert "docs/project/open-decisions.md" in suite["paths"]
 
 
 def test_enterprise_phase_gate_references_concrete_controls_and_open_decisions():
@@ -94,7 +94,7 @@ def test_enterprise_phase_gate_references_concrete_controls_and_open_decisions()
     assert "meta/dedicated-tenant-evidence.yaml" in fixtures
     assert "meta/enterprise-acceptance-checklist.yaml" in fixtures
     assert "schema/jsonschema/dedicated-tenant-evidence.schema.json" in fixtures
-    assert "OPEN_DECISIONS.md" in fixtures
+    assert "docs/project/open-decisions.md" in fixtures
     assert {"dedicated-isolation", "audit-redaction", "retention-slos", "control-matrix", "open-decisions"} <= step_ids
 
 
@@ -103,8 +103,8 @@ def test_enterprise_docs_make_isolation_audit_retention_and_gate_explicit():
     dedicated_doc = (ROOT / "docs/design-docs/dedicated-deployment-isolation.md").read_text(encoding="utf-8").lower()
     retention_doc = (ROOT / "docs/design-docs/retention-and-slo-policy.md").read_text(encoding="utf-8").lower()
     threat_doc = (ROOT / "docs/threat-models/enterprise-control-matrix.md").read_text(encoding="utf-8").lower()
-    security_doc = (ROOT / "SECURITY.md").read_text(encoding="utf-8").lower()
-    operations_doc = (ROOT / "OPERATIONS.md").read_text(encoding="utf-8").lower()
+    security_doc = (ROOT / "docs/operations/security.md").read_text(encoding="utf-8").lower()
+    operations_doc = (ROOT / "docs/operations/operations.md").read_text(encoding="utf-8").lower()
 
     assert "signed urls only" in audit_doc
     assert "redacted stubs" in audit_doc
@@ -144,7 +144,7 @@ def test_enterprise_artifacts_cover_dedicated_deployment_evidence_and_slo_surfac
 def test_enterprise_runbooks_failure_catalog_and_open_decisions_are_wired():
     failure_catalog = load_yaml("meta/failure-runbooks.yaml")["failures"]
     failure_ids = {item["id"]: item for item in failure_catalog}
-    open_decisions = (ROOT / "OPEN_DECISIONS.md").read_text(encoding="utf-8").lower()
+    open_decisions = (ROOT / "docs/project/open-decisions.md").read_text(encoding="utf-8").lower()
 
     assert failure_ids["audit_export_backlog"]["runbook"] == "docs/runbooks/audit-export-backlog.md"
     assert failure_ids["key_isolation_degraded"]["runbook"] == "docs/runbooks/dedicated-key-isolation.md"

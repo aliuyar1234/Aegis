@@ -59,7 +59,7 @@
 - `AC-053` — Enterprise auth, secrets, audit export, retention, and redaction paths are defined as implementation-ready requirements.
 - `AC-054` — The enterprise readiness phase gate is machine-checkable and references concrete controls, docs, and runbooks.
 - `AC-055` — Late-phase docs, tasks, generated artifacts, and validation rules remain synchronized under the anti-drift policy.
-- `AC-056` — OPEN_DECISIONS.md contains only bounded, explicitly justified unresolved items and no hidden placeholder drift.
+- `AC-056` — `docs/project/open-decisions.md` contains only bounded, explicitly justified unresolved items and no hidden placeholder drift.
 
     ## Exit criteria
 

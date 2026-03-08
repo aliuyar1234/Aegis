@@ -1,4 +1,4 @@
-# ARCHITECTURE.md
+# Architecture Overview
 
 ## Top-level architecture
 

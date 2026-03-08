@@ -5,14 +5,14 @@ This repository is the **single source of truth** for implementing **Aegis Runti
 ## Read order
 
 1. `README.md`
-2. `PRODUCT.md`
-3. `ARCHITECTURE.md`
+2. `docs/overview/product.md`
+3. `docs/overview/architecture.md`
 4. `meta/current-phase.yaml`
-5. `IMPLEMENTATION_ORDER.md`
+5. `docs/overview/implementation-order.md`
 6. the current phase doc listed in `meta/current-phase.yaml`
 7. `work-items/task-index.yaml`
-8. `TEST_STRATEGY.md`
-9. `MUST_NOT_VIOLATE.md`
+8. `docs/overview/test-strategy.md`
+9. `docs/overview/must-not-violate.md`
 
 ## What Aegis is
 
@@ -34,7 +34,7 @@ Aegis Runtime is a **BEAM-native durable control plane for long-lived AI session
 - Operators and approvals are first-class runtime participants.
 - Browser-backed service operations is the first wedge.
 
-See `MUST_NOT_VIOLATE.md` and `meta/invariants.yaml`.
+See `docs/overview/must-not-violate.md` and `meta/invariants.yaml`.
 
 ## How to work
 
@@ -47,13 +47,13 @@ See `MUST_NOT_VIOLATE.md` and `meta/invariants.yaml`.
 
 ## Where truth lives
 
-- Project definition: `PRODUCT.md`
-- Architecture: `ARCHITECTURE.md` and `docs/design-docs/`
+- Project definition: `docs/overview/product.md`
+- Architecture: `docs/overview/architecture.md` and `docs/design-docs/`
 - Phase plans: `docs/exec-plans/active/`
 - Tasks: `work-items/`
 - Contracts and schemas: `schema/`
-- Tests and gates: `tests/` and `TEST_STRATEGY.md`
-- Invariants and traceability: `meta/` and `TRACEABILITY_MATRIX.md`
+- Tests and gates: `tests/` and `docs/overview/test-strategy.md`
+- Invariants and traceability: `meta/` and `docs/overview/traceability-matrix.md`
 - Runbooks: `docs/runbooks/`
 - Irreversible decisions: `docs/adr/`
 

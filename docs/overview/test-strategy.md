@@ -1,4 +1,4 @@
-# TEST_STRATEGY.md
+# Test Strategy
 
 The canonical machine-readable test registry is `meta/test-suites.yaml`.
 The registry-driven runner is `scripts/run_test_suites.py`.

@@ -1,4 +1,4 @@
-# PATCHLOG_V3.md
+# Patchlog V3
 
 This file summarizes the v3 hardening pass after the v2 audit.
 

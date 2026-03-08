@@ -5,7 +5,7 @@ Execute the next bounded implementation slice for PHASE-08 without reopening arc
 
 ## Read first
 - `docs/design-docs/browser-wedge.md`
-- `RELIABILITY.md`
+- `docs/operations/reliability.md`
 - `tests/browser_e2e/fixtures/effectful_billing_address_update.yaml`
 - `tests/phase-gates/internal-demo.yaml`
 

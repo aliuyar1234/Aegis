@@ -5,7 +5,7 @@ Execute the next bounded implementation slice for PHASE-07 without reopening arc
 
 ## Read first
 - `docs/design-docs/policy-decision-model.md`
-- `SECURITY.md`
+- `docs/operations/security.md`
 - `schema/jsonschema/capability-token-claims.schema.json`
 - `meta/dangerous-action-classes.yaml`
 

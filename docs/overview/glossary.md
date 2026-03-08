@@ -1,4 +1,4 @@
-# GLOSSARY.md
+# Glossary
 
 | Term | Meaning |
 |---|---|

@@ -8,4 +8,4 @@ Phase 08 expectations:
 - effectful write fixtures capture before/after screenshots, DOM evidence, and trace output
 - uncertainty fixtures surface an operator-takeover requirement instead of hiding write ambiguity
 
-Every test suite in this directory should map back to `TEST_STRATEGY.md` and the relevant acceptance criteria.
+Every test suite in this directory should map back to `docs/overview/test-strategy.md` and the relevant acceptance criteria.

@@ -5,8 +5,8 @@ Execute the next bounded implementation slice for PHASE-01 without reopening arc
 
 ## Read first
 - `AGENTS.md`
-- `PRODUCT.md`
-- `ARCHITECTURE.md`
+- `docs/overview/product.md`
+- `docs/overview/architecture.md`
 - `docs/design-docs/runtime-model.md`
 - `meta/current-phase.yaml`
 

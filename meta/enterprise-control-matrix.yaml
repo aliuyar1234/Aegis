@@ -12,7 +12,7 @@ controls:
   evidence_refs:
   - meta/rbac-roles.yaml
   - meta/abac-attributes.yaml
-  - SECURITY.md
+  - docs/operations/security.md
   - docs/design-docs/audit-export-redaction.md
   runbook_refs:
   - docs/runbooks/audit-export-backlog.md
@@ -36,7 +36,7 @@ controls:
     keys and secret material separated.
   evidence_refs:
   - meta/dedicated-deployment-profile.yaml
-  - SECURITY.md
+  - docs/operations/security.md
   - docs/design-docs/dedicated-deployment-isolation.md
   runbook_refs:
   - docs/runbooks/dedicated-key-isolation.md
@@ -76,7 +76,7 @@ controls:
   evidence_refs:
   - meta/retention-slo-policy.yaml
   - docs/design-docs/retention-and-slo-policy.md
-  - RELIABILITY.md
+  - docs/operations/reliability.md
   runbook_refs:
   - docs/runbooks/retention-backlog.md
 - id: change-control-and-enterprise-gate
@@ -101,7 +101,7 @@ controls:
     degraded paths.
   evidence_refs:
   - meta/failure-runbooks.yaml
-  - OPERATIONS.md
+  - docs/operations/operations.md
   - docs/threat-models/enterprise-control-matrix.md
   runbook_refs:
   - docs/runbooks/audit-export-backlog.md
