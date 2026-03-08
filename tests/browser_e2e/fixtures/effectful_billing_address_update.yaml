@@ -1,0 +1,24 @@
+id: browser-write-001
+name: Effectful billing address update
+mutation_class: browser_write_medium
+requires_approval: true
+expected_artifacts:
+- screenshot
+- dom_snapshot
+- trace
+uncertainty_trigger: submit_disconnect
+steps:
+- kind: open_context
+- kind: navigate
+  target_url: https://admin.example.local/billing
+- kind: fill
+  selector: '#billing-address'
+- kind: submit
+  selector: button[type='submit']
+- kind: verify
+  expectation:
+    contains: updated billing address
+tool_id: browser.navigate
+risk_class: medium
+requires_operator_takeover_on_uncertainty: true
+expected_policy_decision: require_approval

@@ -1,0 +1,85 @@
+generated_files:
+- path: docs/generated/tasks.csv
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: docs/generated/traceability-matrix.csv
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - meta/invariants.yaml
+  - meta/adr-index.yaml
+  - meta/acceptance-criteria.yaml
+  - meta/test-suites.yaml
+  - work-items/task-index.yaml
+  - meta/failure-runbooks.yaml
+- path: work-items/phase-00-repo-harness.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-01-session-kernel.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-02-events-checkpoints-replay.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-03-leases-recovery.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-04-worker-contracts-transport.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-05-browser-worker-wedge.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-06-operator-console.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-07-policy-approvals.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-08-resilience-chaos.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-09-multitenancy-quotas.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-10-extensibility-surface.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-11-voice-media-path.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-12-oss-vs-cloud.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml
+- path: work-items/phase-13-cloud-enterprise.yaml
+  generator: python3 scripts/generate_docs.py
+  sources:
+  - work-items/task-index.yaml
+  - meta/phase-gates.yaml

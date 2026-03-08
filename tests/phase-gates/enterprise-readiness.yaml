@@ -1,0 +1,42 @@
+id: enterprise-readiness
+phase: PHASE-13
+name: Enterprise readiness gate
+objective: Validate enterprise deployment and trust artifacts exist before enterprise
+  claims.
+fixtures:
+- docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+- docs/runbooks/worker-crash.md
+- SECURITY.md
+tests:
+- TS-011
+- TS-017
+acceptance:
+- AC-052
+- AC-053
+- AC-054
+- AC-055
+- AC-056
+steps:
+- id: tenant-controls
+  description: verify dedicated tenant artifacts
+  expected:
+  - tier-c evidence and key-isolation path documented
+  evidence:
+  - docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  - SECURITY.md
+- id: audit-redaction
+  description: verify audit/redaction docs and runbooks
+  expected:
+  - audit export, retention, and redaction flows are implementation-grade
+  evidence:
+  - docs/runbooks/event-corruption-quarantine.md
+  - docs/runbooks/artifact-store-outage.md
+- id: control-matrix
+  description: verify enterprise control matrix and packaging docs
+  expected:
+  - enterprise gate references concrete control docs and outputs
+  evidence:
+  - tests/phase-gates/enterprise-readiness.yaml
+  - ROADMAP.md
+proves:
+- enterprise claims are backed by concrete repository assets

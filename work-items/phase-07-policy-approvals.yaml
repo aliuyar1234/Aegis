@@ -1,0 +1,106 @@
+phase: PHASE-07
+status: planned
+name: Policy, approvals, capability tokens, and dangerous-action defaults
+phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+tasks:
+- id: P07-T01
+  phase: PHASE-07
+  title: Implement tool descriptor registry and JSON Schema validation path
+  critical_path: true
+  status: planned
+  deps:
+  - P04-T01
+  adr_refs:
+  - ADR-0008
+  - ADR-0011
+  acceptance_refs:
+  - AC-028
+  test_refs:
+  - TS-009
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P07-T02
+  phase: PHASE-07
+  title: Implement policy evaluator and default risk classes including dangerous browser
+    writes
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T01
+  adr_refs:
+  - ADR-0011
+  - ADR-0009
+  acceptance_refs:
+  - AC-029
+  - AC-032
+  test_refs:
+  - TS-009
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P07-T03
+  phase: PHASE-07
+  title: Implement approval requests, approval hashing, expiration, and operator decision
+    flow
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T02
+  - P06-T02
+  adr_refs:
+  - ADR-0011
+  acceptance_refs:
+  - AC-030
+  test_refs:
+  - TS-009
+  - TS-008
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P07-T04
+  phase: PHASE-07
+  title: Implement scoped capability tokens for effectful tool execution
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T02
+  adr_refs:
+  - ADR-0011
+  acceptance_refs:
+  - AC-031
+  test_refs:
+  - TS-009
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P07-T05
+  phase: PHASE-07
+  title: Document dangerous-action boundaries and approval defaults for browser mutations
+  critical_path: false
+  status: planned
+  deps:
+  - P07-T03
+  adr_refs:
+  - ADR-0009
+  - ADR-0011
+  acceptance_refs:
+  - AC-032
+  test_refs:
+  - TS-009
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

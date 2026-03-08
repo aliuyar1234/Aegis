@@ -1,0 +1,70 @@
+task_id,phase,title,critical_path,deps,adr_refs,acceptance_refs,test_refs,status
+P00-T01,PHASE-00,Create the repository SSOT and agent map,True,,ADR-0015,AC-001;AC-002;AC-003;AC-004,TS-001;TS-002;TS-013,done
+P00-T02,PHASE-00,"Create machine-readable invariants, phase gates, acceptance, and traceability data",True,P00-T01,ADR-0015,AC-001;AC-003;AC-004,TS-001;TS-002;TS-013,done
+P00-T03,PHASE-00,"Create local dev stack for Postgres, NATS, MinIO, and Jaeger scaffolding",True,P00-T01,ADR-0003;ADR-0007;ADR-0014,AC-001;AC-003;AC-004,TS-001;TS-002;TS-013,done
+P00-T04,PHASE-00,"Create validators and CI workflows for repo, contracts, and traceability",True,P00-T02;P00-T03,ADR-0015,AC-001;AC-003;AC-004,TS-001;TS-002;TS-013,done
+P00-T05,PHASE-00,Create prompt pack and starting sequence for bounded Codex execution,False,P00-T01;P00-T02,ADR-0015,AC-001;AC-003;AC-004,TS-001;TS-002;TS-013,done
+P01-T01,PHASE-01,Create Elixir umbrella app boundaries and ownership docs as code-adjacent scaffolding,True,P00-T04,ADR-0001,AC-005;AC-006,TS-003,done
+P01-T02,PHASE-01,"Implement SessionKernel state model, lifecycle transitions, and durable/ephemeral separation",True,P01-T01,ADR-0001;ADR-0005,AC-005;AC-006,TS-003,done
+P01-T03,PHASE-01,Implement canonical per-session supervisor tree and child process responsibilities,True,P01-T02,ADR-0001,AC-005;AC-006,TS-003,done
+P01-T04,PHASE-01,Implement command handlers that emit in-memory events and projection updates,True,P01-T02,ADR-0001;ADR-0004,AC-005;AC-006,TS-003,done
+P01-T05,PHASE-01,Add module-level docs and golden examples for session process ownership,False,P01-T03,ADR-0015,AC-007,TS-003,done
+P02-T01,PHASE-02,"Implement Postgres schemas and migrations for sessions, events, checkpoints, and outbox",True,P01-T02,ADR-0003;ADR-0004;ADR-0005,AC-008;AC-009,TS-004,done
+P02-T02,PHASE-02,Implement atomic append + seq_no + hash chain + outbox write,True,P02-T01,ADR-0004;ADR-0006,AC-008;AC-009,TS-004,done
+P02-T03,PHASE-02,Implement structured checkpoint serialization and restoration,True,P02-T01,ADR-0005,AC-008;AC-009,TS-004,done
+P02-T04,PHASE-02,Implement replay engine for recovery and historical replay without external re-execution,True,P02-T02;P02-T03,ADR-0012,AC-008;AC-009,TS-004,done
+P02-T05,PHASE-02,Create replay determinism fixtures and golden timeline examples,False,P02-T04,ADR-0012;ADR-0015,AC-011,TS-004,done
+P03-T01,PHASE-03,Implement lease persistence and renewal model in Postgres,True,P02-T01,ADR-0002;ADR-0003,AC-012;AC-013,TS-005;TS-010,done
+P03-T02,PHASE-03,Integrate lease epochs into SessionKernel command acceptance and event emission,True,P03-T01,ADR-0002,AC-012;AC-013,TS-005;TS-010,done
+P03-T03,PHASE-03,Implement adoption path after lease expiry or node loss,True,P03-T01;P02-T04,ADR-0002;ADR-0005,AC-012;AC-013,TS-005;TS-010,done
+P03-T04,PHASE-03,Implement self-fencing behavior and degraded mode on lease ambiguity,True,P03-T02,ADR-0002,AC-012;AC-013,TS-005;TS-010,done
+P03-T05,PHASE-03,Write runbook-backed recovery scenarios for node loss and lease ambiguity,False,P03-T03;P03-T04,ADR-0015,AC-014,TS-005;TS-010,done
+P04-T01,PHASE-04,Finalize Protobuf envelopes and generate contract packages for Elixir/Python/Rust consumption,True,P00-T02,ADR-0008,AC-015;AC-016,TS-002;TS-006,done
+P04-T02,PHASE-04,"Implement Execution Bridge with JetStream subjects, request/accept flow, and async result callbacks",True,P04-T01;P02-T02,ADR-0007;ADR-0008,AC-015;AC-016,TS-002;TS-006,done
+P04-T03,PHASE-04,"Implement worker registration, heartbeat, timeout, and cancellation semantics",True,P04-T02,ADR-0007,AC-015;AC-016,TS-002;TS-006,done
+P04-T04,PHASE-04,"Implement error taxonomy, idempotency metadata propagation, and trace context handling",True,P04-T02,ADR-0008;ADR-0011,AC-015;AC-016,TS-002;TS-006,done
+P04-T05,PHASE-04,Enforce worker read/write boundaries and add guardrails against canonical DB access,False,P04-T03,ADR-0003;ADR-0007,AC-019,TS-002;TS-006,done
+P05-T01,PHASE-05,Implement Python browser worker package skeleton with Playwright lifecycle for read-only flows,True,P04-T03,ADR-0009;ADR-0011,AC-020,TS-007,done
+P05-T02,PHASE-05,"Implement signed artifact upload, immutable artifact metadata registration, and content hashing",True,P05-T01,ADR-0014,AC-021,TS-007,done
+P05-T03,PHASE-05,Implement resumable browser handle model and restart-safe metadata,True,P05-T01;P02-T03,ADR-0009;ADR-0012,AC-022,TS-007;TS-010,done
+P05-T04,PHASE-05,Implement example read-only browser workflows for account lookup and billing inspection,False,P05-T03,ADR-0009,AC-020;AC-023,TS-007,done
+P05-T05,PHASE-05,"Document browser baseline boundaries, mutation taxonomy, and fixture contracts",False,P05-T03,ADR-0009;ADR-0012,AC-023,TS-007,done
+P06-T01,PHASE-06,"Implement live session list, filters, and system health overview",True,P02-T04,ADR-0015,AC-024,TS-008,planned
+P06-T02,PHASE-06,"Implement session detail view with owner, state, in-flight actions, approvals, and checkpoints",True,P06-T01,ADR-0015,AC-024;AC-025,TS-008,planned
+P06-T03,PHASE-06,Implement artifact viewer and timeline scrubber for historical replay,True,P06-T02;P05-T02,ADR-0012;ADR-0015,AC-025,TS-008;TS-012,planned
+P06-T04,PHASE-06,"Implement operator join, note, pause, abort, takeover, and return-control flows",True,P06-T02;P05-T03,ADR-0011;ADR-0015,AC-026;AC-027,TS-008,planned
+P06-T05,PHASE-06,Write operator-console product spec deltas as implementation converges,False,P06-T04,ADR-0015,AC-027,TS-001;TS-008,planned
+P07-T01,PHASE-07,Implement tool descriptor registry and JSON Schema validation path,True,P04-T01,ADR-0008;ADR-0011,AC-028,TS-009,planned
+P07-T02,PHASE-07,Implement policy evaluator and default risk classes including dangerous browser writes,True,P07-T01,ADR-0011;ADR-0009,AC-029;AC-032,TS-009;TS-011,planned
+P07-T03,PHASE-07,"Implement approval requests, approval hashing, expiration, and operator decision flow",True,P07-T02;P06-T02,ADR-0011,AC-030,TS-009;TS-008,planned
+P07-T04,PHASE-07,Implement scoped capability tokens for effectful tool execution,True,P07-T02,ADR-0011,AC-031,TS-009;TS-011,planned
+P07-T05,PHASE-07,Document dangerous-action boundaries and approval defaults for browser mutations,False,P07-T03,ADR-0009;ADR-0011,AC-032,TS-009;TS-011,planned
+P08-T01,PHASE-08,Implement duplicate completion suppression and action uncertainty classification,True,P04-T04;P07-T02,ADR-0011;ADR-0012,AC-034,TS-010,planned
+P08-T02,PHASE-08,"Implement quarantine flows for event corruption, replay failure, and repeated hydrate crashes",True,P02-T04;P03-T04,ADR-0012;ADR-0015,AC-035,TS-010,planned
+P08-T03,PHASE-08,Implement browser instability recovery playbook hooks and degraded-mode surfacing,True,P05-T03;P06-T02,ADR-0009;ADR-0015,AC-034;AC-035,TS-007;TS-010,planned
+P08-T04,PHASE-08,Create and automate chaos and recovery scenarios for internal demo acceptance,True,P08-T01;P08-T02;P08-T03;P08-T06,ADR-0015,AC-036,TS-010;TS-012,planned
+P08-T05,PHASE-08,Create public demo script and acceptance artifact set,False,P08-T04,ADR-0009;ADR-0015,AC-037,TS-012,planned
+P08-T06,PHASE-08,"Implement effectful browser mutation flows with approval-bound writes, capability tokens, before/after artifacts, and uncertainty surfacing",True,P05-T03;P07-T03;P07-T04,ADR-0009;ADR-0011;ADR-0012,AC-033;AC-034,TS-007;TS-009;TS-010,planned
+P09-T01,PHASE-09,"Enforce tenant/workspace scoping across tables, contracts, and events",True,P02-T01;P04-T01,ADR-0013,AC-038,TS-011,planned
+P09-T02,PHASE-09,"Implement quotas and admission control for sessions, browser contexts, and effectful actions",True,P09-T01,ADR-0013,AC-039,TS-011,planned
+P09-T03,PHASE-09,Implement tiered worker-pool isolation and routing metadata,True,P09-T01,ADR-0013,AC-038,TS-011,planned
+P09-T04,PHASE-09,Integrate RBAC/ABAC checks into operator and API control surfaces,True,P07-T03;P07-T04,ADR-0011;ADR-0013,AC-040,TS-011,planned
+P09-T05,PHASE-09,Update threat models and security docs based on implementation realities,False,P09-T04,ADR-0013;ADR-0015,AC-041,TS-001;TS-011,planned
+P10-T01,PHASE-10,"Define extension contracts for new tools, connectors, and artifact processors",True,P07-T01,ADR-0008,AC-042,TS-014,planned
+P10-T02,PHASE-10,Define MCP adapter boundary without making MCP the internal runtime protocol,True,P10-T01,ADR-0008,AC-044,TS-014,planned
+P10-T03,PHASE-10,Create compatibility and versioning policy for third-party extensions,True,P10-T01,ADR-0008;ADR-0015,AC-043,TS-014,planned
+P10-T04,PHASE-10,Create sample extension pack layout and review rubric,False,P10-T03,ADR-0015,AC-042;AC-043,TS-014,planned
+P11-T01,PHASE-11,"Define Rust sidecar contracts for media, protocol, and recording hot paths",True,P04-T01,ADR-0010,AC-045;AC-046,TS-015,planned
+P11-T02,PHASE-11,Define session state extensions for streaming media and degraded-mode handoff,True,P01-T02,ADR-0010;ADR-0012,AC-045;AC-048,TS-015,planned
+P11-T03,PHASE-11,Define operator console deltas for future voice/media sessions,False,P06-T04,ADR-0015,AC-047;AC-048,TS-015,planned
+P11-T04,PHASE-11,"Create voice/media phase-gate fixtures, media topology docs, and operator/runbook deltas for degraded QoS paths",False,P11-T01;P11-T02,ADR-0010;ADR-0015,AC-046;AC-047;AC-048,TS-015,planned
+P12-T01,PHASE-12,Define what belongs in OSS core versus managed cloud services,True,P10-T03,ADR-0015,AC-049,TS-016,planned
+P12-T02,PHASE-12,"Define packaging and deployment flavors for shared, isolated-execution, and dedicated control plane modes",True,P09-T03,ADR-0013,AC-050,TS-016,planned
+P12-T03,PHASE-12,"Document release, upgrade, and compatibility policy for the split",False,P12-T01,ADR-0015,AC-051,TS-016,planned
+P12-T04,PHASE-12,"Create OSS core manifest, managed-only surface catalog, and packaging matrix artifacts",True,P12-T01;P12-T02,ADR-0013;ADR-0015,AC-049;AC-050,TS-016,planned
+P12-T05,PHASE-12,"Create split-surface release manifests, upgrade policy artifacts, and OSS/managed phase gate",False,P12-T03;P12-T04,ADR-0015,AC-051,TS-016,planned
+P13-T01,PHASE-13,Implement audit export and redaction workflows tied to event and artifact models,True,P09-T04,ADR-0014;ADR-0015,AC-053,TS-017,planned
+P13-T02,PHASE-13,Define dedicated deployment and key-isolation path for Tier C tenants,True,P12-T02,ADR-0013,AC-052,TS-017,planned
+P13-T03,PHASE-13,"Define retention classes, archival policy, and operational SLO surfaces",True,P02-T01;P09-T02,ADR-0014;ADR-0015,AC-053,TS-017,planned
+P13-T04,PHASE-13,Create enterprise acceptance checklist and release gate,False,P13-T01;P13-T02;P13-T03,ADR-0015,AC-054;AC-055,TS-017,planned
+P13-T05,PHASE-13,"Create enterprise control matrix, dedicated-tenant evidence bundle, and enterprise readiness gate assets",True,P13-T01;P13-T02;P13-T03,ADR-0013;ADR-0015,AC-052;AC-053;AC-054,TS-017,planned

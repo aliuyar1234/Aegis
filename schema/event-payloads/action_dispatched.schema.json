@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/action_dispatched.schema.json",
+  "title": "action.dispatched",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "execution_id",
+    "worker_kind",
+    "worker_subject",
+    "accept_deadline",
+    "contract_version"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "execution_id": {
+      "type": "string"
+    },
+    "worker_kind": {
+      "type": "string"
+    },
+    "worker_subject": {
+      "type": "string"
+    },
+    "accept_deadline": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "contract_version": {
+      "type": "string"
+    },
+    "capability_token_required": {
+      "type": "boolean"
+    },
+    "trace_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "idempotency_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

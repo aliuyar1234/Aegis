@@ -1,0 +1,21 @@
+invariant_id,invariant_title,adr_id,phase_ids,task_ids,test_ids,acceptance_ids,runbooks
+INV-001,Session is the primary runtime abstraction,ADR-0001,PHASE-01,P01-T01;P01-T02;P01-T03;P01-T04,TS-003;TS-012,AC-005;AC-036,
+INV-002,Exactly one authoritative live owner exists per session,ADR-0002,PHASE-03,P03-T01;P03-T02;P03-T03;P03-T04,TS-005;TS-010,AC-012;AC-013,docs/runbooks/node-loss.md;docs/runbooks/lease-ambiguity.md
+INV-003,Session timelines are append-only and event-sourced,ADR-0004,PHASE-01;PHASE-02,P01-T04;P02-T01;P02-T02,TS-004,AC-008;AC-009;AC-010,
+INV-004,Side effects launch only from committed intent via an outbox,ADR-0006,PHASE-02,P02-T02,TS-006;TS-010,AC-008;AC-016,docs/runbooks/transport-lag.md
+INV-005,Per-session total order is mandatory,ADR-0004,PHASE-01;PHASE-02,P01-T04;P02-T01;P02-T02,TS-004,AC-008,
+INV-006,"Heavy model, browser, and media work must stay off BEAM schedulers",ADR-0010,PHASE-11,P11-T01;P11-T02;P11-T04,TS-006;TS-007;TS-015,AC-016;AC-020;AC-045,
+INV-007,Workers never own authoritative state,ADR-0007,PHASE-00;PHASE-04,P00-T03;P04-T02;P04-T03;P04-T05,TS-006;TS-011,AC-016;AC-019,
+INV-008,Humans and approvals are first-class runtime participants,ADR-0011,PHASE-04;PHASE-05;PHASE-06;PHASE-07;PHASE-08;PHASE-09,P04-T04;P05-T01;P06-T04;P07-T01;P07-T02;P07-T03;P07-T04;P07-T05;P08-T01;P08-T06;P09-T04,TS-008;TS-009,AC-024;AC-026;AC-030,docs/runbooks/operator-intervention.md;docs/runbooks/approval-timeout.md
+INV-009,Every effectful action crosses an explicit policy boundary,ADR-0011,PHASE-04;PHASE-05;PHASE-06;PHASE-07;PHASE-08;PHASE-09,P04-T04;P05-T01;P06-T04;P07-T01;P07-T02;P07-T03;P07-T04;P07-T05;P08-T01;P08-T06;P09-T04,TS-009;TS-011,AC-029;AC-031;AC-032,
+INV-010,Every external side effect has an idempotency strategy,ADR-0011,PHASE-04;PHASE-05;PHASE-06;PHASE-07;PHASE-08;PHASE-09,P04-T04;P05-T01;P06-T04;P07-T01;P07-T02;P07-T03;P07-T04;P07-T05;P08-T01;P08-T06;P09-T04,TS-009;TS-010,AC-031;AC-034,docs/runbooks/duplicate-execution.md
+INV-011,Checkpoints are mandatory,ADR-0005,PHASE-01;PHASE-02;PHASE-03,P01-T02;P02-T01;P02-T03;P03-T03,TS-004;TS-005,AC-009;AC-013,
+INV-012,Replay must not require re-executing the world,ADR-0012,PHASE-02;PHASE-05;PHASE-06;PHASE-08;PHASE-11,P02-T04;P02-T05;P05-T03;P05-T05;P06-T03;P08-T01;P08-T02;P08-T06;P11-T02,TS-004;TS-012,AC-010;AC-025;AC-036;AC-037,
+INV-013,Owners self-fence on lease ambiguity,ADR-0002,PHASE-03,P03-T01;P03-T02;P03-T03;P03-T04,TS-005;TS-010,AC-012;AC-014,docs/runbooks/lease-ambiguity.md;docs/runbooks/degraded-system-mode.md
+INV-014,Artifact blobs do not transit the control plane,ADR-0014,PHASE-00;PHASE-05;PHASE-13,P00-T03;P05-T02;P13-T01;P13-T03,TS-007;TS-011,AC-021;AC-041,docs/runbooks/artifact-store-outage.md
+INV-015,Cross-language contracts are explicit and versioned,ADR-0008,PHASE-04;PHASE-07;PHASE-10,P04-T01;P04-T02;P04-T04;P07-T01;P10-T01;P10-T02;P10-T03,TS-002;TS-006,AC-015;AC-017,
+INV-016,Tenant and workspace scoping are universal,ADR-0013,PHASE-09;PHASE-12;PHASE-13,P09-T01;P09-T02;P09-T03;P09-T04;P09-T05;P12-T02;P12-T04;P13-T02;P13-T05,TS-011,AC-038;AC-040,
+INV-017,The runtime must be inspectable by design,ADR-0015,PHASE-00;PHASE-01;PHASE-02;PHASE-03;PHASE-06;PHASE-08;PHASE-09;PHASE-10;PHASE-11;PHASE-12;PHASE-13,P00-T01;P00-T02;P00-T04;P00-T05;P01-T05;P02-T05;P03-T05;P06-T01;P06-T02;P06-T03;P06-T04;P06-T05;P08-T02;P08-T03;P08-T04;P08-T05;P09-T05;P10-T03;P10-T04;P11-T03;P11-T04;P12-T01;P12-T03;P12-T04;P12-T05;P13-T01;P13-T03;P13-T04;P13-T05,TS-008;TS-012,AC-024;AC-025;AC-035;AC-036;AC-037,docs/runbooks/event-corruption-quarantine.md;docs/runbooks/operator-intervention.md
+INV-018,Sidecars over NIFs for hot paths,ADR-0010,PHASE-11,P11-T01;P11-T02;P11-T04,TS-015,AC-045,
+INV-019,Browser writes are dangerous by default,ADR-0009,PHASE-05;PHASE-07;PHASE-08,P05-T01;P05-T03;P05-T04;P05-T05;P07-T02;P07-T05;P08-T03;P08-T05;P08-T06,TS-007;TS-009,AC-032;AC-033,docs/runbooks/browser-instability.md;docs/runbooks/approval-timeout.md
+INV-020,Direct worker writes to canonical tables are forbidden,ADR-0003,PHASE-00;PHASE-02;PHASE-03;PHASE-04,P00-T03;P02-T01;P03-T01;P04-T05,TS-006;TS-011,AC-019;AC-040,

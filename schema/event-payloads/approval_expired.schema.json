@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/approval_expired.schema.json",
+  "title": "approval.expired",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "approval_id",
+    "action_id",
+    "action_hash",
+    "expired_at",
+    "lease_epoch"
+  ],
+  "properties": {
+    "approval_id": {
+      "type": "string"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "action_hash": {
+      "type": "string"
+    },
+    "expired_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lease_epoch": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

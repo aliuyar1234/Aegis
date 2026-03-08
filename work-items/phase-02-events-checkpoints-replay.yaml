@@ -1,0 +1,102 @@
+phase: PHASE-02
+status: completed
+name: Event log, checkpoints, and replay
+phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+tasks:
+- id: P02-T01
+  phase: PHASE-02
+  title: Implement Postgres schemas and migrations for sessions, events, checkpoints,
+    and outbox
+  critical_path: true
+  status: done
+  deps:
+  - P01-T02
+  adr_refs:
+  - ADR-0003
+  - ADR-0004
+  - ADR-0005
+  acceptance_refs:
+  - AC-008
+  - AC-009
+  test_refs: &id001
+  - TS-004
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P02-T02
+  phase: PHASE-02
+  title: Implement atomic append + seq_no + hash chain + outbox write
+  critical_path: true
+  status: done
+  deps:
+  - P02-T01
+  adr_refs:
+  - ADR-0004
+  - ADR-0006
+  acceptance_refs:
+  - AC-008
+  - AC-009
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P02-T03
+  phase: PHASE-02
+  title: Implement structured checkpoint serialization and restoration
+  critical_path: true
+  status: done
+  deps:
+  - P02-T01
+  adr_refs:
+  - ADR-0005
+  acceptance_refs:
+  - AC-008
+  - AC-009
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P02-T04
+  phase: PHASE-02
+  title: Implement replay engine for recovery and historical replay without external
+    re-execution
+  critical_path: true
+  status: done
+  deps:
+  - P02-T02
+  - P02-T03
+  adr_refs:
+  - ADR-0012
+  acceptance_refs:
+  - AC-008
+  - AC-009
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P02-T05
+  phase: PHASE-02
+  title: Create replay determinism fixtures and golden timeline examples
+  critical_path: false
+  status: done
+  deps:
+  - P02-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-011
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

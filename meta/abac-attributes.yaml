@@ -1,0 +1,37 @@
+attributes:
+- id: tenant_id
+  applies_to:
+  - session
+  - artifact
+  - approval
+  - operator_request
+- id: workspace_id
+  applies_to:
+  - session
+  - artifact
+  - approval
+  - operator_request
+- id: risk_class
+  applies_to:
+  - action
+  - approval
+- id: data_sensitivity
+  applies_to:
+  - artifact
+  - raw_output
+  - operator_note
+- id: control_mode
+  applies_to:
+  - session
+- id: isolation_tier
+  applies_to:
+  - tenant
+  - worker_pool
+- id: environment
+  applies_to:
+  - operator_request
+  - worker_dispatch
+- id: dangerous_action_class
+  applies_to:
+  - action
+  - policy_evaluation

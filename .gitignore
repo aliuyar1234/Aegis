@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+*.beam
+deps/
+_build/
+erl_crash.dump
+.DS_Store
+.env

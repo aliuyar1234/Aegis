@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aegis-workers"
+version = "0.1.0"
+description = "Python execution-plane workspace for Aegis Runtime"
+requires-python = ">=3.11"
+dependencies = ["protobuf>=6.33.5,<7"]
+
+[tool.setuptools.packages.find]
+where = ["packages"]

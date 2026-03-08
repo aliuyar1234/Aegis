@@ -1,0 +1,253 @@
+invariants:
+- id: INV-001
+  title: Session is the primary runtime abstraction
+  statement: Every long-lived unit of AI work is modeled as a session; requests, chats,
+    jobs, and workflows are subordinate views.
+  why: The whole system is designed around durable, stateful, operator-visible sessions.
+    Losing this abstraction makes Elixir incidental and destroys replay, recovery,
+    and ownership semantics.
+  adr: ADR-0001
+  acceptance:
+  - AC-005
+  - AC-036
+  tests:
+  - TS-003
+  - TS-012
+- id: INV-002
+  title: Exactly one authoritative live owner exists per session
+  statement: A session may have many observers and many execution workers, but only
+    one BEAM owner may advance authoritative session state at a time.
+  why: This prevents split-brain, duplicate side effects, and impossible-to-debug
+    races.
+  adr: ADR-0002
+  acceptance:
+  - AC-012
+  - AC-013
+  tests:
+  - TS-005
+  - TS-010
+- id: INV-003
+  title: Session timelines are append-only and event-sourced
+  statement: Session history is never mutated in place. Events are appended with per-session
+    sequence numbers and hash chaining.
+  why: Append-only timelines are the foundation for recovery, audit, replay, and operator
+    trust.
+  adr: ADR-0004
+  acceptance:
+  - AC-008
+  - AC-009
+  - AC-010
+  tests:
+  - TS-004
+- id: INV-004
+  title: Side effects launch only from committed intent via an outbox
+  statement: No external tool, worker, browser, or side-effecting action may start
+    until intent has been durably committed and published through the outbox path.
+  why: This avoids ghost actions, lost dispatches, and dual-write inconsistency.
+  adr: ADR-0006
+  acceptance:
+  - AC-008
+  - AC-016
+  tests:
+  - TS-006
+  - TS-010
+- id: INV-005
+  title: Per-session total order is mandatory
+  statement: Within a session, events must be totally ordered by authoritative sequence
+    number; global total order is explicitly not required.
+  why: Per-session total order is sufficient for correctness and far cheaper than
+    global serialization.
+  adr: ADR-0004
+  acceptance:
+  - AC-008
+  tests:
+  - TS-004
+- id: INV-006
+  title: Heavy model, browser, and media work must stay off BEAM schedulers
+  statement: Elixir coordinates and supervises; Python and Rust execute heavy or low-level
+    work.
+  why: The control plane must remain responsive and recoverable under load.
+  adr: ADR-0010
+  acceptance:
+  - AC-016
+  - AC-020
+  - AC-045
+  tests:
+  - TS-006
+  - TS-007
+  - TS-015
+- id: INV-007
+  title: Workers never own authoritative state
+  statement: Python and Rust workers may hold transient execution context but may
+    not mutate canonical runtime tables or become the source of truth.
+  why: Recovery must come from the control plane, not from hidden worker state.
+  adr: ADR-0007
+  acceptance:
+  - AC-016
+  - AC-019
+  tests:
+  - TS-006
+  - TS-011
+- id: INV-008
+  title: Humans and approvals are first-class runtime participants
+  statement: Operator intervention, approvals, takeover, notes, and return-to-automation
+    must be represented as timeline events and runtime state transitions.
+  why: Aegis is not credible if human control exists outside the runtime.
+  adr: ADR-0011
+  acceptance:
+  - AC-024
+  - AC-026
+  - AC-030
+  tests:
+  - TS-008
+  - TS-009
+- id: INV-009
+  title: Every effectful action crosses an explicit policy boundary
+  statement: Tool execution must be classified and gated as allow, allow-with-constraints,
+    require-approval, or deny before dispatch.
+  why: Policy is part of correctness and trust, not middleware.
+  adr: ADR-0011
+  acceptance:
+  - AC-029
+  - AC-031
+  - AC-032
+  tests:
+  - TS-009
+  - TS-011
+- id: INV-010
+  title: Every external side effect has an idempotency strategy
+  statement: Each tool/action descriptor must declare idempotency class and compensation
+    strategy or be marked uncertain on retry.
+  why: Exactly-once is not generally available; uncertainty must be explicit.
+  adr: ADR-0011
+  acceptance:
+  - AC-031
+  - AC-034
+  tests:
+  - TS-009
+  - TS-010
+- id: INV-011
+  title: Checkpoints are mandatory
+  statement: Sessions must use structured checkpoints plus tail replay; genesis replay
+    only is not acceptable.
+  why: Long sessions must hydrate quickly and safely after crashes or transfers.
+  adr: ADR-0005
+  acceptance:
+  - AC-009
+  - AC-013
+  tests:
+  - TS-004
+  - TS-005
+- id: INV-012
+  title: Replay must not require re-executing the world
+  statement: Historical replay uses recorded events and artifacts; nondeterministic
+    outputs are consumed from the timeline, not regenerated.
+  why: Operators need a reliable forensic record, not a best-effort reenactment.
+  adr: ADR-0012
+  acceptance:
+  - AC-010
+  - AC-025
+  - AC-036
+  - AC-037
+  tests:
+  - TS-004
+  - TS-012
+- id: INV-013
+  title: Owners self-fence on lease ambiguity
+  statement: If a node cannot prove its lease, it must stop dispatching side effects
+    and enter a fenced/degraded mode.
+  why: Correctness beats availability when ownership is ambiguous.
+  adr: ADR-0002
+  acceptance:
+  - AC-012
+  - AC-014
+  tests:
+  - TS-005
+  - TS-010
+- id: INV-014
+  title: Artifact blobs do not transit the control plane
+  statement: Large screenshots, traces, and recordings move via signed object storage
+    paths and are referenced by metadata in the control plane.
+  why: The control plane must carry intent and metadata, not hot binary payloads.
+  adr: ADR-0014
+  acceptance:
+  - AC-021
+  - AC-041
+  tests:
+  - TS-007
+  - TS-011
+- id: INV-015
+  title: Cross-language contracts are explicit and versioned
+  statement: Runtime messages use Protobuf and tool I/O uses JSON Schema; version
+    negotiation is required.
+  why: Without hard contracts, multi-language orchestration becomes distributed spaghetti.
+  adr: ADR-0008
+  acceptance:
+  - AC-015
+  - AC-017
+  tests:
+  - TS-002
+  - TS-006
+- id: INV-016
+  title: Tenant and workspace scoping are universal
+  statement: Every durable object, event, artifact, and action includes tenant and
+    workspace identity, and enforcement is not optional.
+  why: Enterprise trust and future deployment tiers depend on isolation being built
+    in from day one.
+  adr: ADR-0013
+  acceptance:
+  - AC-038
+  - AC-040
+  tests:
+  - TS-011
+- id: INV-017
+  title: The runtime must be inspectable by design
+  statement: Timelines, owner identity, in-flight actions, approvals, checkpoints,
+    and recovery history must be visible at the session and operator level.
+  why: Complex AI systems are unusable without strong operator visibility.
+  adr: ADR-0015
+  acceptance:
+  - AC-024
+  - AC-025
+  - AC-035
+  - AC-036
+  - AC-037
+  tests:
+  - TS-008
+  - TS-012
+- id: INV-018
+  title: Sidecars over NIFs for hot paths
+  statement: Media, protocol, recording, and performance-critical work that risks
+    scheduler health must run in sidecars rather than nontrivial NIFs.
+  why: Isolation and crash containment matter more than embedding everything into
+    Elixir.
+  adr: ADR-0010
+  acceptance:
+  - AC-045
+  tests:
+  - TS-015
+- id: INV-019
+  title: Browser writes are dangerous by default
+  statement: Browser mutations start from a higher-risk classification than browser
+    reads and usually require approval or tighter policy.
+  why: The first wedge deals with messy admin surfaces where unintended writes are
+    costly.
+  adr: ADR-0009
+  acceptance:
+  - AC-032
+  - AC-033
+  tests:
+  - TS-007
+  - TS-009
+- id: INV-020
+  title: Direct worker writes to canonical tables are forbidden
+  statement: Execution-plane components may not write to sessions, events, checkpoints,
+    leases, approvals, or outbox tables.
+  why: Allowing worker-side authority breaks the ownership model and replay guarantees.
+  adr: ADR-0003
+  acceptance:
+  - AC-019
+  - AC-040
+  tests:
+  - TS-006
+  - TS-011

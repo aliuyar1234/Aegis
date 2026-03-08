@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/checkpoint_restored.schema.json",
+  "title": "checkpoint.restored",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "checkpoint_id",
+    "restored_seq_no"
+  ],
+  "properties": {
+    "checkpoint_id": {
+      "type": "string"
+    },
+    "restored_seq_no": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

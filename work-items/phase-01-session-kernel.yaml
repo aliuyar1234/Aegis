@@ -1,0 +1,99 @@
+phase: PHASE-01
+status: completed
+name: Session kernel and state model
+phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+tasks:
+- id: P01-T01
+  phase: PHASE-01
+  title: Create Elixir umbrella app boundaries and ownership docs as code-adjacent
+    scaffolding
+  critical_path: true
+  status: done
+  deps:
+  - P00-T04
+  adr_refs:
+  - ADR-0001
+  acceptance_refs:
+  - AC-005
+  - AC-006
+  test_refs: &id001
+  - TS-003
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P01-T02
+  phase: PHASE-01
+  title: Implement SessionKernel state model, lifecycle transitions, and durable/ephemeral
+    separation
+  critical_path: true
+  status: done
+  deps:
+  - P01-T01
+  adr_refs:
+  - ADR-0001
+  - ADR-0005
+  acceptance_refs:
+  - AC-005
+  - AC-006
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P01-T03
+  phase: PHASE-01
+  title: Implement canonical per-session supervisor tree and child process responsibilities
+  critical_path: true
+  status: done
+  deps:
+  - P01-T02
+  adr_refs:
+  - ADR-0001
+  acceptance_refs:
+  - AC-005
+  - AC-006
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P01-T04
+  phase: PHASE-01
+  title: Implement command handlers that emit in-memory events and projection updates
+  critical_path: true
+  status: done
+  deps:
+  - P01-T02
+  adr_refs:
+  - ADR-0001
+  - ADR-0004
+  acceptance_refs:
+  - AC-005
+  - AC-006
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P01-T05
+  phase: PHASE-01
+  title: Add module-level docs and golden examples for session process ownership
+  critical_path: false
+  status: done
+  deps:
+  - P01-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-007
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

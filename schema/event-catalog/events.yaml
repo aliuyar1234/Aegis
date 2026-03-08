@@ -1,0 +1,414 @@
+events:
+- type: session.created
+  category: session
+  determinism: deterministic
+  description: Session created and persisted.
+  required_payload:
+  - session_kind
+  - requested_by
+  version: 1
+  schema_ref: schema/event-payloads/session_created.schema.json
+- type: session.hydrated
+  category: session
+  determinism: deterministic
+  description: Session hydrated into a live owner process.
+  required_payload:
+  - owner_node
+  - lease_epoch
+  - restored_from_checkpoint_id
+  version: 1
+  schema_ref: schema/event-payloads/session_hydrated.schema.json
+- type: session.owned
+  category: session
+  determinism: deterministic
+  description: A node acquired ownership of the session.
+  required_payload:
+  - owner_node
+  - lease_epoch
+  - adoption_reason
+  version: 1
+  schema_ref: schema/event-payloads/session_owned.schema.json
+- type: session.mode_changed
+  category: session
+  determinism: deterministic
+  description: Control mode changed.
+  required_payload:
+  - control_mode
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/session_mode_changed.schema.json
+- type: session.waiting
+  category: session
+  determinism: deterministic
+  description: Session entered waiting with explicit reason.
+  required_payload:
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/session_waiting.schema.json
+- type: session.resumed
+  category: session
+  determinism: deterministic
+  description: Session resumed active execution after waiting.
+  required_payload:
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/session_resumed.schema.json
+- type: session.cancelling
+  category: session
+  determinism: deterministic
+  description: Session entered cancelling before reaching a terminal state.
+  required_payload:
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/session_cancelling.schema.json
+- type: session.completed
+  category: session
+  determinism: deterministic
+  description: Session reached terminal completed state.
+  required_payload:
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/session_completed.schema.json
+- type: session.failed
+  category: session
+  determinism: deterministic
+  description: Session reached terminal failed state.
+  required_payload:
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/session_failed.schema.json
+- type: session.quarantined
+  category: session
+  determinism: deterministic
+  description: Session entered quarantined state.
+  required_payload:
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/session_quarantined.schema.json
+- type: agent.spawned
+  category: agent
+  determinism: deterministic
+  description: Child agent was created.
+  required_payload:
+  - requested_by
+  version: 1
+  schema_ref: schema/event-payloads/agent_spawned.schema.json
+- type: agent.intent_emitted
+  category: agent
+  determinism: deterministic
+  description: Child agent emitted an intent back into the session.
+  required_payload:
+  - action_id
+  - tool_id
+  version: 1
+  schema_ref: schema/event-payloads/agent_intent_emitted.schema.json
+- type: observation.received
+  category: observation
+  determinism: deterministic
+  description: Observation accepted by the SessionKernel.
+  required_payload:
+  - requested_by
+  version: 1
+  schema_ref: schema/event-payloads/observation_received.schema.json
+- type: observation.browser_snapshot_added
+  category: observation
+  determinism: nondeterministic_external
+  description: Browser snapshot artifact was attached.
+  required_payload:
+  - artifact_id
+  - artifact_kind
+  - browser_handle_id
+  - browser_snapshot_ref
+  version: 1
+  schema_ref: schema/event-payloads/observation_browser_snapshot_added.schema.json
+- type: action.requested
+  category: action
+  determinism: deterministic
+  description: Action intent was recorded before policy and dispatch.
+  required_payload:
+  - action_id
+  - tool_id
+  - tool_schema_version
+  - worker_kind
+  - risk_class
+  - idempotency_class
+  - timeout_class
+  - mutating
+  - input
+  version: 1
+  schema_ref: schema/event-payloads/action_requested.schema.json
+- type: policy.evaluated
+  category: policy
+  determinism: deterministic
+  description: Policy produced an allow/constraint/approval/deny decision.
+  required_payload:
+  - action_id
+  - action_hash
+  - risk_class
+  - decision
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/policy_evaluated.schema.json
+- type: approval.requested
+  category: approval
+  determinism: deterministic
+  description: Approval request created for an exact action hash.
+  required_payload:
+  - approval_id
+  - action_id
+  - action_hash
+  - expires_at
+  - risk_class
+  - lease_epoch
+  version: 1
+  schema_ref: schema/event-payloads/approval_requested.schema.json
+- type: approval.granted
+  category: approval
+  determinism: human
+  description: A human approved an exact action hash.
+  required_payload:
+  - approval_id
+  - action_id
+  - action_hash
+  - decided_by
+  - lease_epoch
+  version: 1
+  schema_ref: schema/event-payloads/approval_granted.schema.json
+- type: approval.denied
+  category: approval
+  determinism: human
+  description: A human denied an exact action hash.
+  required_payload:
+  - approval_id
+  - action_id
+  - action_hash
+  - decided_by
+  - lease_epoch
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/approval_denied.schema.json
+- type: approval.expired
+  category: approval
+  determinism: deterministic
+  description: Approval wait expired before decision.
+  required_payload:
+  - approval_id
+  - action_id
+  - action_hash
+  - expired_at
+  - lease_epoch
+  version: 1
+  schema_ref: schema/event-payloads/approval_expired.schema.json
+- type: action.dispatched
+  category: action
+  determinism: deterministic
+  description: Execution Bridge published an accepted action to a worker subject.
+  required_payload:
+  - action_id
+  - execution_id
+  - worker_kind
+  - worker_subject
+  - accept_deadline
+  - contract_version
+  version: 1
+  schema_ref: schema/event-payloads/action_dispatched.schema.json
+- type: action.progressed
+  category: action
+  determinism: nondeterministic_external
+  description: Worker emitted progress for an in-flight action.
+  required_payload:
+  - action_id
+  - execution_id
+  - progress_kind
+  - progress_seq
+  - observed_at
+  version: 1
+  schema_ref: schema/event-payloads/action_progressed.schema.json
+- type: action.heartbeat_missed
+  category: action
+  determinism: deterministic
+  description: Worker heartbeat deadline elapsed for an in-flight action.
+  required_payload:
+  - action_id
+  - execution_id
+  version: 1
+  schema_ref: schema/event-payloads/action_heartbeat_missed.schema.json
+- type: action.succeeded
+  category: action
+  determinism: nondeterministic_external
+  description: Worker reported successful action completion.
+  required_payload:
+  - action_id
+  - execution_id
+  - completed_at
+  - normalized_result
+  - raw_result_artifact_id
+  version: 1
+  schema_ref: schema/event-payloads/action_succeeded.schema.json
+- type: action.failed
+  category: action
+  determinism: nondeterministic_external
+  description: Worker reported action failure.
+  required_payload:
+  - action_id
+  - execution_id
+  - error_class
+  - error_code
+  - failed_at
+  version: 1
+  schema_ref: schema/event-payloads/action_failed.schema.json
+- type: action.cancel_requested
+  category: action
+  determinism: deterministic
+  description: Control plane requested cancellation of an action.
+  required_payload:
+  - action_id
+  - execution_id
+  - reason
+  - cancel_requested_at
+  version: 1
+  schema_ref: schema/event-payloads/action_cancel_requested.schema.json
+- type: action.cancelled
+  category: action
+  determinism: nondeterministic_external
+  description: Worker acknowledged cancellation or action was forcefully marked cancelled.
+  required_payload:
+  - action_id
+  - execution_id
+  - worker_id
+  - cancelled_at
+  version: 1
+  schema_ref: schema/event-payloads/action_cancelled.schema.json
+- type: action.retry_scheduled
+  category: action
+  determinism: deterministic
+  description: Control plane scheduled an action retry.
+  required_payload:
+  - action_id
+  - retry_at
+  - retry_reason
+  version: 1
+  schema_ref: schema/event-payloads/action_retry_scheduled.schema.json
+- type: timer.scheduled
+  category: timer
+  determinism: deterministic
+  description: A durable or short timer was registered.
+  required_payload:
+  - timer_id
+  - fires_at
+  version: 1
+  schema_ref: schema/event-payloads/timer_scheduled.schema.json
+- type: timer.fired
+  category: timer
+  determinism: deterministic
+  description: A timer fired and was accepted by the session owner.
+  required_payload:
+  - timer_id
+  version: 1
+  schema_ref: schema/event-payloads/timer_fired.schema.json
+- type: checkpoint.created
+  category: checkpoint
+  determinism: deterministic
+  description: A structured session checkpoint was created.
+  required_payload:
+  - checkpoint_id
+  - seq_no
+  version: 1
+  schema_ref: schema/event-payloads/checkpoint_created.schema.json
+- type: checkpoint.restored
+  category: checkpoint
+  determinism: deterministic
+  description: A session was restored from a checkpoint.
+  required_payload:
+  - checkpoint_id
+  - restored_seq_no
+  version: 1
+  schema_ref: schema/event-payloads/checkpoint_restored.schema.json
+- type: artifact.registered
+  category: artifact
+  determinism: deterministic
+  description: A session artifact was registered in metadata store.
+  required_payload:
+  - artifact_id
+  - artifact_kind
+  - sha256
+  - content_type
+  - size_bytes
+  - retention_class
+  - redaction_state
+  version: 1
+  schema_ref: schema/event-payloads/artifact_registered.schema.json
+- type: operator.joined
+  category: operator
+  determinism: human
+  description: An operator joined a live session.
+  required_payload:
+  - operator_id
+  version: 1
+  schema_ref: schema/event-payloads/operator_joined.schema.json
+- type: operator.note_added
+  category: operator
+  determinism: human
+  description: Operator added a note or annotation.
+  required_payload:
+  - operator_id
+  - note_ref
+  version: 1
+  schema_ref: schema/event-payloads/operator_note_added.schema.json
+- type: operator.took_control
+  category: operator
+  determinism: human
+  description: Operator took active control, pausing autonomous dispatch.
+  required_payload:
+  - operator_id
+  - control_mode
+  version: 1
+  schema_ref: schema/event-payloads/operator_took_control.schema.json
+- type: operator.returned_control
+  category: operator
+  determinism: human
+  description: Operator returned control to runtime automation.
+  required_payload:
+  - operator_id
+  - return_context
+  version: 1
+  schema_ref: schema/event-payloads/operator_returned_control.schema.json
+- type: system.worker_lost
+  category: system
+  determinism: deterministic
+  description: Runtime detected worker loss or orphaned execution.
+  required_payload:
+  - execution_id
+  - worker_id
+  - action_id
+  - reason
+  version: 1
+  schema_ref: schema/event-payloads/system_worker_lost.schema.json
+- type: system.lease_lost
+  category: system
+  determinism: deterministic
+  description: Current owner lost or could not renew its lease.
+  required_payload:
+  - owner_node
+  - lease_epoch
+  version: 1
+  schema_ref: schema/event-payloads/system_lease_lost.schema.json
+- type: system.node_recovered
+  category: system
+  determinism: deterministic
+  description: A new node successfully adopted and resumed the session.
+  required_payload:
+  - owner_node
+  - lease_epoch
+  - recovery_reason
+  version: 1
+  schema_ref: schema/event-payloads/system_node_recovered.schema.json
+- type: health.degraded
+  category: health
+  determinism: deterministic
+  description: Session or system health dropped to degraded or fenced mode.
+  required_payload:
+  - health_scope
+  - health_reason
+  version: 1
+  schema_ref: schema/event-payloads/health_degraded.schema.json

@@ -1,0 +1,11 @@
+[package]
+name = "aegis_contracts_rs"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+prost = "0.13"
+prost-types = "0.13"

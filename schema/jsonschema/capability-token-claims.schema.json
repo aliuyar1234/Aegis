@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/capabilitytokenclaims.schema.json",
+  "title": "CapabilityTokenClaims",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tenant_id",
+    "workspace_id",
+    "session_id",
+    "action_id",
+    "tool_id",
+    "approved_argument_digest",
+    "dangerous_action_class",
+    "expires_at",
+    "lease_epoch",
+    "side_effect_class",
+    "scopes",
+    "issued_to_worker_kind"
+  ],
+  "properties": {
+    "tenant_id": {
+      "type": "string"
+    },
+    "workspace_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "tool_id": {
+      "type": "string"
+    },
+    "approved_argument_digest": {
+      "type": "string"
+    },
+    "dangerous_action_class": {
+      "type": "string"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lease_epoch": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "side_effect_class": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "issued_to_worker_kind": {
+      "type": "string"
+    }
+  }
+}

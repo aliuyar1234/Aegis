@@ -1,0 +1,21 @@
+id: browser-read-001
+name: Read-only account lookup
+mutation_class: read_only
+requires_approval: false
+expected_artifacts:
+- screenshot
+- dom_snapshot
+uncertainty_trigger: null
+steps:
+- kind: open_context
+- kind: navigate
+  target_url: https://admin.example.local/accounts
+- kind: read
+  selector: '[data-test=''account-search'']'
+- kind: verify
+  expectation:
+    contains: account summary
+tool_id: browser.navigate
+risk_class: low
+requires_operator_takeover_on_uncertainty: false
+expected_policy_decision: allow

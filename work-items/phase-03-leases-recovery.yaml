@@ -1,0 +1,100 @@
+phase: PHASE-03
+status: completed
+name: Lease ownership, fencing, and recovery semantics
+phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+tasks:
+- id: P03-T01
+  phase: PHASE-03
+  title: Implement lease persistence and renewal model in Postgres
+  critical_path: true
+  status: done
+  deps:
+  - P02-T01
+  adr_refs:
+  - ADR-0002
+  - ADR-0003
+  acceptance_refs:
+  - AC-012
+  - AC-013
+  test_refs: &id001
+  - TS-005
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P03-T02
+  phase: PHASE-03
+  title: Integrate lease epochs into SessionKernel command acceptance and event emission
+  critical_path: true
+  status: done
+  deps:
+  - P03-T01
+  adr_refs:
+  - ADR-0002
+  acceptance_refs:
+  - AC-012
+  - AC-013
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P03-T03
+  phase: PHASE-03
+  title: Implement adoption path after lease expiry or node loss
+  critical_path: true
+  status: done
+  deps:
+  - P03-T01
+  - P02-T04
+  adr_refs:
+  - ADR-0002
+  - ADR-0005
+  acceptance_refs:
+  - AC-012
+  - AC-013
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P03-T04
+  phase: PHASE-03
+  title: Implement self-fencing behavior and degraded mode on lease ambiguity
+  critical_path: true
+  status: done
+  deps:
+  - P03-T02
+  adr_refs:
+  - ADR-0002
+  acceptance_refs:
+  - AC-012
+  - AC-013
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P03-T05
+  phase: PHASE-03
+  title: Write runbook-backed recovery scenarios for node loss and lease ambiguity
+  critical_path: false
+  status: done
+  deps:
+  - P03-T03
+  - P03-T04
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-014
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

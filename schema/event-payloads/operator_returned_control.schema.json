@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/operator_returned_control.schema.json",
+  "title": "operator.returned_control",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id",
+    "return_context"
+  ],
+  "properties": {
+    "operator_id": {
+      "type": "string"
+    },
+    "return_context": {
+      "type": "string"
+    }
+  }
+}

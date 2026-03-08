@@ -1,0 +1,63 @@
+failures:
+- id: worker_crash
+  events:
+  - system.worker_lost
+  - action.heartbeat_missed
+  runbook: docs/runbooks/worker-crash.md
+  operator_surface: session-detail
+- id: node_loss
+  events:
+  - system.lease_lost
+  - system.node_recovered
+  runbook: docs/runbooks/node-loss.md
+  operator_surface: session-detail
+- id: lease_ambiguity
+  events:
+  - system.lease_lost
+  - health.degraded
+  runbook: docs/runbooks/lease-ambiguity.md
+  operator_surface: session-detail
+- id: duplicate_execution
+  events:
+  - action.succeeded
+  - action.failed
+  runbook: docs/runbooks/duplicate-execution.md
+  operator_surface: replay
+- id: approval_timeout
+  events:
+  - approval.expired
+  runbook: docs/runbooks/approval-timeout.md
+  operator_surface: approvals-queue
+- id: event_corruption
+  events:
+  - checkpoint.restored
+  runbook: docs/runbooks/event-corruption-quarantine.md
+  operator_surface: replay
+- id: browser_instability
+  events:
+  - observation.browser_snapshot_added
+  - action.failed
+  runbook: docs/runbooks/browser-instability.md
+  operator_surface: session-detail
+- id: degraded_mode
+  events:
+  - health.degraded
+  runbook: docs/runbooks/degraded-system-mode.md
+  operator_surface: session-fleet
+- id: artifact_store_outage
+  events:
+  - artifact.registered
+  runbook: docs/runbooks/artifact-store-outage.md
+  operator_surface: session-detail
+- id: transport_lag
+  events:
+  - action.heartbeat_missed
+  runbook: docs/runbooks/transport-lag.md
+  operator_surface: session-fleet
+- id: operator_intervention
+  events:
+  - operator.joined
+  - operator.took_control
+  - operator.returned_control
+  runbook: docs/runbooks/operator-intervention.md
+  operator_surface: session-detail

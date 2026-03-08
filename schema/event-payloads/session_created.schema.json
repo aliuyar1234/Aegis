@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/session_created.schema.json",
+  "title": "session.created",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "session_kind",
+    "requested_by"
+  ],
+  "properties": {
+    "session_kind": {
+      "type": "string"
+    },
+    "requested_by": {
+      "type": "string"
+    }
+  }
+}

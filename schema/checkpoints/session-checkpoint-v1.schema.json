@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/session-checkpoint-v1.schema.json",
+  "title": "SessionCheckpointV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "tenant_id",
+    "workspace_id",
+    "session_id",
+    "phase",
+    "control_mode",
+    "health",
+    "wait_reason",
+    "lease_epoch",
+    "last_seq_no",
+    "action_ledger",
+    "pending_approvals",
+    "deadlines",
+    "child_agents",
+    "browser_handles",
+    "summary_capsule",
+    "artifact_ids",
+    "fenced"
+  ],
+  "$defs": {
+    "deadline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "due_at"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "due_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "actionLedgerEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_id",
+        "tool_id",
+        "status",
+        "risk_class",
+        "uncertain_side_effect"
+      ],
+      "properties": {
+        "action_id": {
+          "type": "string"
+        },
+        "tool_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "risk_class": {
+          "type": "string"
+        },
+        "execution_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "uncertain_side_effect": {
+          "type": "boolean"
+        },
+        "accept_deadline": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "soft_deadline": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "hard_deadline": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "pendingApproval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "action_id",
+        "action_hash",
+        "status",
+        "risk_class",
+        "expires_at"
+      ],
+      "properties": {
+        "approval_id": {
+          "type": "string"
+        },
+        "action_id": {
+          "type": "string"
+        },
+        "action_hash": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "risk_class": {
+          "type": "string"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "decided_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "childAgent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agent_id",
+        "role",
+        "goal",
+        "tool_allowlist"
+      ],
+      "properties": {
+        "agent_id": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "goal": {
+          "type": "string"
+        },
+        "tool_allowlist": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "budget": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "state_summary": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    },
+    "browserHandle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "browser_handle_id",
+        "provider_kind",
+        "provider_session_ref",
+        "page_ref",
+        "last_stable_artifact_id",
+        "read_only_baseline_complete"
+      ],
+      "properties": {
+        "browser_handle_id": {
+          "type": "string"
+        },
+        "provider_kind": {
+          "type": "string"
+        },
+        "provider_session_ref": {
+          "type": "string"
+        },
+        "page_ref": {
+          "type": "string"
+        },
+        "state_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "last_stable_artifact_id": {
+          "type": "string"
+        },
+        "read_only_baseline_complete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "summaryCapsule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "planner_summary",
+        "salient_facts",
+        "operator_notes"
+      ],
+      "properties": {
+        "planner_summary": {
+          "type": "string"
+        },
+        "salient_facts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "operator_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "tenant_id": {
+      "type": "string"
+    },
+    "workspace_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string"
+    },
+    "control_mode": {
+      "type": "string"
+    },
+    "health": {
+      "type": "string"
+    },
+    "wait_reason": {
+      "type": "string"
+    },
+    "lease_epoch": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_seq_no": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "latest_checkpoint_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "action_ledger": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/actionLedgerEntry"
+      }
+    },
+    "pending_approvals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pendingApproval"
+      }
+    },
+    "deadlines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/deadline"
+      }
+    },
+    "child_agents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/childAgent"
+      }
+    },
+    "browser_handles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/browserHandle"
+      }
+    },
+    "summary_capsule": {
+      "$ref": "#/$defs/summaryCapsule"
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "latest_recovery_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fenced": {
+      "type": "boolean"
+    }
+  }
+}

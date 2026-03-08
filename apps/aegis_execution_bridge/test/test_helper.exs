@@ -1,0 +1,6 @@
+Logger.configure(level: :warning)
+ExUnit.start()
+Aegis.Events.DatabaseSetup.ensure_database!()
+Application.ensure_all_started(:aegis_execution_bridge)
+Aegis.Events.DatabaseSetup.ensure_schema!()
+Ecto.Adapters.SQL.Sandbox.mode(Aegis.Repo, :manual)

@@ -1,0 +1,7 @@
+version: v2
+clean: false
+plugins:
+  - remote: buf.build/protocolbuffers/python:v33.5
+    out: py/packages/aegis_contracts_py/generated/proto
+  - remote: buf.build/community/neoeinstein-prost:v0.4.0
+    out: rs/crates/aegis_contracts_rs/src/generated/proto

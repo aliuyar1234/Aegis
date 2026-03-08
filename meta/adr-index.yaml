@@ -1,0 +1,61 @@
+adrs:
+- id: ADR-0001
+  file: docs/adr/0001-session-primary-abstraction.md
+  title: Session is the primary runtime abstraction
+  status: accepted
+- id: ADR-0002
+  file: docs/adr/0002-single-authoritative-owner.md
+  title: Exactly one authoritative live owner per session
+  status: accepted
+- id: ADR-0003
+  file: docs/adr/0003-postgres-source-of-truth.md
+  title: PostgreSQL is the canonical source of truth
+  status: accepted
+- id: ADR-0004
+  file: docs/adr/0004-session-event-sourcing-depth.md
+  title: Sessions are deeply event-sourced; the whole platform is not
+  status: accepted
+- id: ADR-0005
+  file: docs/adr/0005-checkpoint-strategy.md
+  title: Structured checkpoints plus tail replay
+  status: accepted
+- id: ADR-0006
+  file: docs/adr/0006-outbox-before-side-effects.md
+  title: Commit intent and outbox before side effects
+  status: accepted
+- id: ADR-0007
+  file: docs/adr/0007-nats-jetstream-transport.md
+  title: NATS JetStream is the cross-language dispatch fabric
+  status: accepted
+- id: ADR-0008
+  file: docs/adr/0008-protobuf-jsonschema-contracts.md
+  title: Protobuf for runtime contracts, JSON Schema for tool I/O
+  status: accepted
+- id: ADR-0009
+  file: docs/adr/0009-browser-ops-first-wedge.md
+  title: Browser-backed service operations is the first wedge
+  status: accepted
+- id: ADR-0010
+  file: docs/adr/0010-sidecars-over-nifs.md
+  title: Sidecars over NIFs for hot paths and low-level execution
+  status: accepted
+- id: ADR-0011
+  file: docs/adr/0011-policy-approval-boundary.md
+  title: Policy and approval boundaries sit before effectful dispatch
+  status: accepted
+- id: ADR-0012
+  file: docs/adr/0012-replay-semantics.md
+  title: Historical replay consumes recorded nondeterministic outputs
+  status: accepted
+- id: ADR-0013
+  file: docs/adr/0013-multitenancy-isolation-tiers.md
+  title: Three multitenancy isolation tiers from day one
+  status: accepted
+- id: ADR-0014
+  file: docs/adr/0014-artifact-storage-strategy.md
+  title: Artifacts are immutable blobs in S3-compatible storage
+  status: accepted
+- id: ADR-0015
+  file: docs/adr/0015-testing-and-anti-drift.md
+  title: Testing, documentation, and anti-drift rules are first-class assets
+  status: accepted

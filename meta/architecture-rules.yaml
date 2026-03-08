@@ -1,0 +1,47 @@
+rules:
+- id: RULE-001
+  statement: One owner, one session.
+  linked_invariants:
+  - INV-001
+  - INV-002
+- id: RULE-002
+  statement: No worker writes to canonical tables.
+  linked_invariants:
+  - INV-007
+  - INV-020
+- id: RULE-003
+  statement: No side effects before commit/outbox.
+  linked_invariants:
+  - INV-004
+- id: RULE-004
+  statement: No large blobs in canonical event payloads.
+  linked_invariants:
+  - INV-014
+- id: RULE-005
+  statement: No dangerous browser writes without policy evaluation.
+  linked_invariants:
+  - INV-009
+  - INV-019
+- id: RULE-006
+  statement: No replay that silently re-executes external systems.
+  linked_invariants:
+  - INV-012
+- id: RULE-007
+  statement: No hot-path NIFs for media/protocol/recording.
+  linked_invariants:
+  - INV-018
+doc_change_triggers:
+  runtime_model:
+  - docs/design-docs/runtime-model.md
+  - ACCEPTANCE_CRITERIA.md
+  event_model:
+  - schema/event-catalog/events.yaml
+  - docs/design-docs/event-replay-model.md
+  transport_contracts:
+  - schema/proto/
+  - schema/jsonschema/
+  - docs/design-docs/contracts-versioning.md
+  policy:
+  - SECURITY.md
+  - docs/design-docs/security-governance.md
+  - docs/runbooks/

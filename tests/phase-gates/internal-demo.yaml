@@ -1,0 +1,68 @@
+id: internal-demo
+phase: PHASE-08
+name: Internal runtime credibility demo
+objective: Prove the runtime is real before public polish.
+fixtures:
+- tests/browser_e2e/fixtures/read_only_account_lookup.yaml
+- tests/browser_e2e/fixtures/uncertain_submit_recovery.yaml
+tests:
+- TS-004
+- TS-006
+- TS-007
+- TS-010
+acceptance:
+- AC-008
+- AC-009
+- AC-016
+- AC-020
+- AC-021
+- AC-022
+- AC-034
+- AC-036
+steps:
+- id: create-session
+  description: create session
+  expected:
+  - session.created recorded
+  - owner assigned
+  evidence:
+  - session.created
+  - session.owned
+- id: checkpoint
+  description: append checkpoint
+  expected:
+  - checkpoint exists before external work
+  evidence:
+  - checkpoint.created
+- id: dispatch-browser
+  description: dispatch browser baseline work
+  expected:
+  - dispatch accepted and artifacts registered
+  evidence:
+  - action.dispatched
+  - artifact.registered
+- id: crash
+  description: simulate worker or SessionKernel crash
+  expected:
+  - loss becomes visible, not hidden
+  evidence:
+  - system.worker_lost
+  - health.degraded
+- id: recover
+  description: hydrate from checkpoint plus tail replay
+  expected:
+  - session resumes or quarantines safely
+  evidence:
+  - checkpoint.restored
+  - session.hydrated
+- id: replay
+  description: replay timeline and artifacts
+  expected:
+  - historical replay uses recorded artifacts
+  evidence:
+  - observation.browser_snapshot_added
+  - artifact.registered
+proves:
+- session identity survives failure
+- replay works from recorded artifacts
+- duplicate side effects are not hidden

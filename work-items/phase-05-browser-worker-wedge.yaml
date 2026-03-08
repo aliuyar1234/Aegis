@@ -1,0 +1,104 @@
+phase: PHASE-05
+status: completed
+name: 'Browser worker wedge baseline: read-only flows, artifacts, and resumable handles'
+phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+tasks:
+- id: P05-T01
+  phase: PHASE-05
+  title: Implement Python browser worker package skeleton with Playwright lifecycle
+    for read-only flows
+  critical_path: true
+  status: done
+  deps:
+  - P04-T03
+  adr_refs:
+  - ADR-0009
+  - ADR-0011
+  acceptance_refs:
+  - AC-020
+  test_refs:
+  - TS-007
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P05-T02
+  phase: PHASE-05
+  title: Implement signed artifact upload, immutable artifact metadata registration,
+    and content hashing
+  critical_path: true
+  status: done
+  deps:
+  - P05-T01
+  adr_refs:
+  - ADR-0014
+  acceptance_refs:
+  - AC-021
+  test_refs:
+  - TS-007
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P05-T03
+  phase: PHASE-05
+  title: Implement resumable browser handle model and restart-safe metadata
+  critical_path: true
+  status: done
+  deps:
+  - P05-T01
+  - P02-T03
+  adr_refs:
+  - ADR-0009
+  - ADR-0012
+  acceptance_refs:
+  - AC-022
+  test_refs:
+  - TS-007
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P05-T04
+  phase: PHASE-05
+  title: Implement example read-only browser workflows for account lookup and billing
+    inspection
+  critical_path: false
+  status: done
+  deps:
+  - P05-T03
+  adr_refs:
+  - ADR-0009
+  acceptance_refs:
+  - AC-020
+  - AC-023
+  test_refs:
+  - TS-007
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P05-T05
+  phase: PHASE-05
+  title: Document browser baseline boundaries, mutation taxonomy, and fixture contracts
+  critical_path: false
+  status: done
+  deps:
+  - P05-T03
+  adr_refs:
+  - ADR-0009
+  - ADR-0012
+  acceptance_refs:
+  - AC-023
+  test_refs:
+  - TS-007
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

@@ -1,0 +1,1382 @@
+tasks:
+- id: P00-T01
+  phase: PHASE-00
+  title: Create the repository SSOT and agent map
+  critical_path: true
+  status: done
+  deps: []
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-001
+  - AC-002
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P00-T02
+  phase: PHASE-00
+  title: Create machine-readable invariants, phase gates, acceptance, and traceability
+    data
+  critical_path: true
+  status: done
+  deps:
+  - P00-T01
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-001
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P00-T03
+  phase: PHASE-00
+  title: Create local dev stack for Postgres, NATS, MinIO, and Jaeger scaffolding
+  critical_path: true
+  status: done
+  deps:
+  - P00-T01
+  adr_refs:
+  - ADR-0003
+  - ADR-0007
+  - ADR-0014
+  acceptance_refs:
+  - AC-001
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P00-T04
+  phase: PHASE-00
+  title: Create validators and CI workflows for repo, contracts, and traceability
+  critical_path: true
+  status: done
+  deps:
+  - P00-T02
+  - P00-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-001
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: L
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P00-T05
+  phase: PHASE-00
+  title: Create prompt pack and starting sequence for bounded Codex execution
+  critical_path: false
+  status: done
+  deps:
+  - P00-T01
+  - P00-T02
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-001
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P01-T01
+  phase: PHASE-01
+  title: Create Elixir umbrella app boundaries and ownership docs as code-adjacent
+    scaffolding
+  critical_path: true
+  status: done
+  deps:
+  - P00-T04
+  adr_refs:
+  - ADR-0001
+  acceptance_refs:
+  - AC-005
+  - AC-006
+  test_refs: &id001
+  - TS-003
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P01-T02
+  phase: PHASE-01
+  title: Implement SessionKernel state model, lifecycle transitions, and durable/ephemeral
+    separation
+  critical_path: true
+  status: done
+  deps:
+  - P01-T01
+  adr_refs:
+  - ADR-0001
+  - ADR-0005
+  acceptance_refs:
+  - AC-005
+  - AC-006
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P01-T03
+  phase: PHASE-01
+  title: Implement canonical per-session supervisor tree and child process responsibilities
+  critical_path: true
+  status: done
+  deps:
+  - P01-T02
+  adr_refs:
+  - ADR-0001
+  acceptance_refs:
+  - AC-005
+  - AC-006
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P01-T04
+  phase: PHASE-01
+  title: Implement command handlers that emit in-memory events and projection updates
+  critical_path: true
+  status: done
+  deps:
+  - P01-T02
+  adr_refs:
+  - ADR-0001
+  - ADR-0004
+  acceptance_refs:
+  - AC-005
+  - AC-006
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P01-T05
+  phase: PHASE-01
+  title: Add module-level docs and golden examples for session process ownership
+  critical_path: false
+  status: done
+  deps:
+  - P01-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-007
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P02-T01
+  phase: PHASE-02
+  title: Implement Postgres schemas and migrations for sessions, events, checkpoints,
+    and outbox
+  critical_path: true
+  status: done
+  deps:
+  - P01-T02
+  adr_refs:
+  - ADR-0003
+  - ADR-0004
+  - ADR-0005
+  acceptance_refs:
+  - AC-008
+  - AC-009
+  test_refs: &id002
+  - TS-004
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P02-T02
+  phase: PHASE-02
+  title: Implement atomic append + seq_no + hash chain + outbox write
+  critical_path: true
+  status: done
+  deps:
+  - P02-T01
+  adr_refs:
+  - ADR-0004
+  - ADR-0006
+  acceptance_refs:
+  - AC-008
+  - AC-009
+  test_refs: *id002
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P02-T03
+  phase: PHASE-02
+  title: Implement structured checkpoint serialization and restoration
+  critical_path: true
+  status: done
+  deps:
+  - P02-T01
+  adr_refs:
+  - ADR-0005
+  acceptance_refs:
+  - AC-008
+  - AC-009
+  test_refs: *id002
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P02-T04
+  phase: PHASE-02
+  title: Implement replay engine for recovery and historical replay without external
+    re-execution
+  critical_path: true
+  status: done
+  deps:
+  - P02-T02
+  - P02-T03
+  adr_refs:
+  - ADR-0012
+  acceptance_refs:
+  - AC-008
+  - AC-009
+  test_refs: *id002
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P02-T05
+  phase: PHASE-02
+  title: Create replay determinism fixtures and golden timeline examples
+  critical_path: false
+  status: done
+  deps:
+  - P02-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-011
+  test_refs: *id002
+  phase_doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P03-T01
+  phase: PHASE-03
+  title: Implement lease persistence and renewal model in Postgres
+  critical_path: true
+  status: done
+  deps:
+  - P02-T01
+  adr_refs:
+  - ADR-0002
+  - ADR-0003
+  acceptance_refs:
+  - AC-012
+  - AC-013
+  test_refs: &id003
+  - TS-005
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P03-T02
+  phase: PHASE-03
+  title: Integrate lease epochs into SessionKernel command acceptance and event emission
+  critical_path: true
+  status: done
+  deps:
+  - P03-T01
+  adr_refs:
+  - ADR-0002
+  acceptance_refs:
+  - AC-012
+  - AC-013
+  test_refs: *id003
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P03-T03
+  phase: PHASE-03
+  title: Implement adoption path after lease expiry or node loss
+  critical_path: true
+  status: done
+  deps:
+  - P03-T01
+  - P02-T04
+  adr_refs:
+  - ADR-0002
+  - ADR-0005
+  acceptance_refs:
+  - AC-012
+  - AC-013
+  test_refs: *id003
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P03-T04
+  phase: PHASE-03
+  title: Implement self-fencing behavior and degraded mode on lease ambiguity
+  critical_path: true
+  status: done
+  deps:
+  - P03-T02
+  adr_refs:
+  - ADR-0002
+  acceptance_refs:
+  - AC-012
+  - AC-013
+  test_refs: *id003
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P03-T05
+  phase: PHASE-03
+  title: Write runbook-backed recovery scenarios for node loss and lease ambiguity
+  critical_path: false
+  status: done
+  deps:
+  - P03-T03
+  - P03-T04
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-014
+  test_refs: *id003
+  phase_doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P04-T01
+  phase: PHASE-04
+  title: Finalize Protobuf envelopes and generate contract packages for Elixir/Python/Rust
+    consumption
+  critical_path: true
+  status: done
+  deps:
+  - P00-T02
+  adr_refs:
+  - ADR-0008
+  acceptance_refs:
+  - AC-015
+  - AC-016
+  test_refs: &id004
+  - TS-002
+  - TS-006
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P04-T02
+  phase: PHASE-04
+  title: Implement Execution Bridge with JetStream subjects, request/accept flow,
+    and async result callbacks
+  critical_path: true
+  status: done
+  deps:
+  - P04-T01
+  - P02-T02
+  adr_refs:
+  - ADR-0007
+  - ADR-0008
+  acceptance_refs:
+  - AC-015
+  - AC-016
+  test_refs: *id004
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P04-T03
+  phase: PHASE-04
+  title: Implement worker registration, heartbeat, timeout, and cancellation semantics
+  critical_path: true
+  status: done
+  deps:
+  - P04-T02
+  adr_refs:
+  - ADR-0007
+  acceptance_refs:
+  - AC-015
+  - AC-016
+  test_refs: *id004
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P04-T04
+  phase: PHASE-04
+  title: Implement error taxonomy, idempotency metadata propagation, and trace context
+    handling
+  critical_path: true
+  status: done
+  deps:
+  - P04-T02
+  adr_refs:
+  - ADR-0008
+  - ADR-0011
+  acceptance_refs:
+  - AC-015
+  - AC-016
+  test_refs: *id004
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P04-T05
+  phase: PHASE-04
+  title: Enforce worker read/write boundaries and add guardrails against canonical
+    DB access
+  critical_path: false
+  status: done
+  deps:
+  - P04-T03
+  adr_refs:
+  - ADR-0003
+  - ADR-0007
+  acceptance_refs:
+  - AC-019
+  test_refs: *id004
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P05-T01
+  phase: PHASE-05
+  title: Implement Python browser worker package skeleton with Playwright lifecycle
+    for read-only flows
+  critical_path: true
+  status: done
+  deps:
+  - P04-T03
+  adr_refs:
+  - ADR-0009
+  - ADR-0011
+  acceptance_refs:
+  - AC-020
+  test_refs:
+  - TS-007
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P05-T02
+  phase: PHASE-05
+  title: Implement signed artifact upload, immutable artifact metadata registration,
+    and content hashing
+  critical_path: true
+  status: done
+  deps:
+  - P05-T01
+  adr_refs:
+  - ADR-0014
+  acceptance_refs:
+  - AC-021
+  test_refs:
+  - TS-007
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P05-T03
+  phase: PHASE-05
+  title: Implement resumable browser handle model and restart-safe metadata
+  critical_path: true
+  status: done
+  deps:
+  - P05-T01
+  - P02-T03
+  adr_refs:
+  - ADR-0009
+  - ADR-0012
+  acceptance_refs:
+  - AC-022
+  test_refs:
+  - TS-007
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P05-T04
+  phase: PHASE-05
+  title: Implement example read-only browser workflows for account lookup and billing
+    inspection
+  critical_path: false
+  status: done
+  deps:
+  - P05-T03
+  adr_refs:
+  - ADR-0009
+  acceptance_refs:
+  - AC-020
+  - AC-023
+  test_refs:
+  - TS-007
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P05-T05
+  phase: PHASE-05
+  title: Document browser baseline boundaries, mutation taxonomy, and fixture contracts
+  critical_path: false
+  status: done
+  deps:
+  - P05-T03
+  adr_refs:
+  - ADR-0009
+  - ADR-0012
+  acceptance_refs:
+  - AC-023
+  test_refs:
+  - TS-007
+  phase_doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P06-T01
+  phase: PHASE-06
+  title: Implement live session list, filters, and system health overview
+  critical_path: true
+  status: planned
+  deps:
+  - P02-T04
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-024
+  test_refs:
+  - TS-008
+  phase_doc: docs/exec-plans/active/PHASE-06-operator-console.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P06-T02
+  phase: PHASE-06
+  title: Implement session detail view with owner, state, in-flight actions, approvals,
+    and checkpoints
+  critical_path: true
+  status: planned
+  deps:
+  - P06-T01
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-024
+  - AC-025
+  test_refs:
+  - TS-008
+  phase_doc: docs/exec-plans/active/PHASE-06-operator-console.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P06-T03
+  phase: PHASE-06
+  title: Implement artifact viewer and timeline scrubber for historical replay
+  critical_path: true
+  status: planned
+  deps:
+  - P06-T02
+  - P05-T02
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-025
+  test_refs:
+  - TS-008
+  - TS-012
+  phase_doc: docs/exec-plans/active/PHASE-06-operator-console.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P06-T04
+  phase: PHASE-06
+  title: Implement operator join, note, pause, abort, takeover, and return-control
+    flows
+  critical_path: true
+  status: planned
+  deps:
+  - P06-T02
+  - P05-T03
+  adr_refs:
+  - ADR-0011
+  - ADR-0015
+  acceptance_refs:
+  - AC-026
+  - AC-027
+  test_refs:
+  - TS-008
+  phase_doc: docs/exec-plans/active/PHASE-06-operator-console.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P06-T05
+  phase: PHASE-06
+  title: Write operator-console product spec deltas as implementation converges
+  critical_path: false
+  status: planned
+  deps:
+  - P06-T04
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-027
+  test_refs:
+  - TS-001
+  - TS-008
+  phase_doc: docs/exec-plans/active/PHASE-06-operator-console.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P07-T01
+  phase: PHASE-07
+  title: Implement tool descriptor registry and JSON Schema validation path
+  critical_path: true
+  status: planned
+  deps:
+  - P04-T01
+  adr_refs:
+  - ADR-0008
+  - ADR-0011
+  acceptance_refs:
+  - AC-028
+  test_refs:
+  - TS-009
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P07-T02
+  phase: PHASE-07
+  title: Implement policy evaluator and default risk classes including dangerous browser
+    writes
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T01
+  adr_refs:
+  - ADR-0011
+  - ADR-0009
+  acceptance_refs:
+  - AC-029
+  - AC-032
+  test_refs:
+  - TS-009
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P07-T03
+  phase: PHASE-07
+  title: Implement approval requests, approval hashing, expiration, and operator decision
+    flow
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T02
+  - P06-T02
+  adr_refs:
+  - ADR-0011
+  acceptance_refs:
+  - AC-030
+  test_refs:
+  - TS-009
+  - TS-008
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P07-T04
+  phase: PHASE-07
+  title: Implement scoped capability tokens for effectful tool execution
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T02
+  adr_refs:
+  - ADR-0011
+  acceptance_refs:
+  - AC-031
+  test_refs:
+  - TS-009
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P07-T05
+  phase: PHASE-07
+  title: Document dangerous-action boundaries and approval defaults for browser mutations
+  critical_path: false
+  status: planned
+  deps:
+  - P07-T03
+  adr_refs:
+  - ADR-0009
+  - ADR-0011
+  acceptance_refs:
+  - AC-032
+  test_refs:
+  - TS-009
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P08-T01
+  phase: PHASE-08
+  title: Implement duplicate completion suppression and action uncertainty classification
+  critical_path: true
+  status: planned
+  deps:
+  - P04-T04
+  - P07-T02
+  adr_refs:
+  - ADR-0011
+  - ADR-0012
+  acceptance_refs:
+  - AC-034
+  test_refs:
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P08-T02
+  phase: PHASE-08
+  title: Implement quarantine flows for event corruption, replay failure, and repeated
+    hydrate crashes
+  critical_path: true
+  status: planned
+  deps:
+  - P02-T04
+  - P03-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-035
+  test_refs:
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P08-T03
+  phase: PHASE-08
+  title: Implement browser instability recovery playbook hooks and degraded-mode surfacing
+  critical_path: true
+  status: planned
+  deps:
+  - P05-T03
+  - P06-T02
+  adr_refs:
+  - ADR-0009
+  - ADR-0015
+  acceptance_refs:
+  - AC-034
+  - AC-035
+  test_refs:
+  - TS-007
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P08-T04
+  phase: PHASE-08
+  title: Create and automate chaos and recovery scenarios for internal demo acceptance
+  critical_path: true
+  status: planned
+  deps:
+  - P08-T01
+  - P08-T02
+  - P08-T03
+  - P08-T06
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-036
+  test_refs:
+  - TS-010
+  - TS-012
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P08-T05
+  phase: PHASE-08
+  title: Create public demo script and acceptance artifact set
+  critical_path: false
+  status: planned
+  deps:
+  - P08-T04
+  adr_refs:
+  - ADR-0009
+  - ADR-0015
+  acceptance_refs:
+  - AC-037
+  test_refs:
+  - TS-012
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P08-T06
+  phase: PHASE-08
+  title: Implement effectful browser mutation flows with approval-bound writes, capability
+    tokens, before/after artifacts, and uncertainty surfacing
+  critical_path: true
+  status: planned
+  deps:
+  - P05-T03
+  - P07-T03
+  - P07-T04
+  adr_refs:
+  - ADR-0009
+  - ADR-0011
+  - ADR-0012
+  acceptance_refs:
+  - AC-033
+  - AC-034
+  test_refs:
+  - TS-007
+  - TS-009
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P09-T01
+  phase: PHASE-09
+  title: Enforce tenant/workspace scoping across tables, contracts, and events
+  critical_path: true
+  status: planned
+  deps:
+  - P02-T01
+  - P04-T01
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-038
+  test_refs:
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P09-T02
+  phase: PHASE-09
+  title: Implement quotas and admission control for sessions, browser contexts, and
+    effectful actions
+  critical_path: true
+  status: planned
+  deps:
+  - P09-T01
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-039
+  test_refs:
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P09-T03
+  phase: PHASE-09
+  title: Implement tiered worker-pool isolation and routing metadata
+  critical_path: true
+  status: planned
+  deps:
+  - P09-T01
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-038
+  test_refs:
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P09-T04
+  phase: PHASE-09
+  title: Integrate RBAC/ABAC checks into operator and API control surfaces
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T03
+  - P07-T04
+  adr_refs:
+  - ADR-0011
+  - ADR-0013
+  acceptance_refs:
+  - AC-040
+  test_refs:
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P09-T05
+  phase: PHASE-09
+  title: Update threat models and security docs based on implementation realities
+  critical_path: false
+  status: planned
+  deps:
+  - P09-T04
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-041
+  test_refs:
+  - TS-001
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P10-T01
+  phase: PHASE-10
+  title: Define extension contracts for new tools, connectors, and artifact processors
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T01
+  adr_refs:
+  - ADR-0008
+  acceptance_refs:
+  - AC-042
+  test_refs:
+  - TS-014
+  phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P10-T02
+  phase: PHASE-10
+  title: Define MCP adapter boundary without making MCP the internal runtime protocol
+  critical_path: true
+  status: planned
+  deps:
+  - P10-T01
+  adr_refs:
+  - ADR-0008
+  acceptance_refs:
+  - AC-044
+  test_refs:
+  - TS-014
+  phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P10-T03
+  phase: PHASE-10
+  title: Create compatibility and versioning policy for third-party extensions
+  critical_path: true
+  status: planned
+  deps:
+  - P10-T01
+  adr_refs:
+  - ADR-0008
+  - ADR-0015
+  acceptance_refs:
+  - AC-043
+  test_refs:
+  - TS-014
+  phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P10-T04
+  phase: PHASE-10
+  title: Create sample extension pack layout and review rubric
+  critical_path: false
+  status: planned
+  deps:
+  - P10-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-042
+  - AC-043
+  test_refs:
+  - TS-014
+  phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P11-T01
+  phase: PHASE-11
+  title: Define Rust sidecar contracts for media, protocol, and recording hot paths
+  critical_path: true
+  status: planned
+  deps:
+  - P04-T01
+  adr_refs:
+  - ADR-0010
+  acceptance_refs:
+  - AC-045
+  - AC-046
+  test_refs:
+  - TS-015
+  phase_doc: docs/exec-plans/active/PHASE-11-voice-media-path.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P11-T02
+  phase: PHASE-11
+  title: Define session state extensions for streaming media and degraded-mode handoff
+  critical_path: true
+  status: planned
+  deps:
+  - P01-T02
+  adr_refs:
+  - ADR-0010
+  - ADR-0012
+  acceptance_refs:
+  - AC-045
+  - AC-048
+  test_refs:
+  - TS-015
+  phase_doc: docs/exec-plans/active/PHASE-11-voice-media-path.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P11-T03
+  phase: PHASE-11
+  title: Define operator console deltas for future voice/media sessions
+  critical_path: false
+  status: planned
+  deps:
+  - P06-T04
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-047
+  - AC-048
+  test_refs:
+  - TS-015
+  phase_doc: docs/exec-plans/active/PHASE-11-voice-media-path.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: true
+- id: P11-T04
+  phase: PHASE-11
+  title: Create voice/media phase-gate fixtures, media topology docs, and operator/runbook
+    deltas for degraded QoS paths
+  critical_path: false
+  status: planned
+  deps:
+  - P11-T01
+  - P11-T02
+  adr_refs:
+  - ADR-0010
+  - ADR-0015
+  acceptance_refs:
+  - AC-046
+  - AC-047
+  - AC-048
+  test_refs:
+  - TS-015
+  phase_doc: docs/exec-plans/active/PHASE-11-voice-media-path.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: true
+- id: P12-T01
+  phase: PHASE-12
+  title: Define what belongs in OSS core versus managed cloud services
+  critical_path: true
+  status: planned
+  deps:
+  - P10-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-049
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P12-T02
+  phase: PHASE-12
+  title: Define packaging and deployment flavors for shared, isolated-execution, and
+    dedicated control plane modes
+  critical_path: true
+  status: planned
+  deps:
+  - P09-T03
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-050
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P12-T03
+  phase: PHASE-12
+  title: Document release, upgrade, and compatibility policy for the split
+  critical_path: false
+  status: planned
+  deps:
+  - P12-T01
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-051
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: true
+- id: P12-T04
+  phase: PHASE-12
+  title: Create OSS core manifest, managed-only surface catalog, and packaging matrix
+    artifacts
+  critical_path: true
+  status: planned
+  deps:
+  - P12-T01
+  - P12-T02
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-049
+  - AC-050
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P12-T05
+  phase: PHASE-12
+  title: Create split-surface release manifests, upgrade policy artifacts, and OSS/managed
+    phase gate
+  critical_path: false
+  status: planned
+  deps:
+  - P12-T03
+  - P12-T04
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-051
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: true
+- id: P13-T01
+  phase: PHASE-13
+  title: Implement audit export and redaction workflows tied to event and artifact
+    models
+  critical_path: true
+  status: planned
+  deps:
+  - P09-T04
+  adr_refs:
+  - ADR-0014
+  - ADR-0015
+  acceptance_refs:
+  - AC-053
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P13-T02
+  phase: PHASE-13
+  title: Define dedicated deployment and key-isolation path for Tier C tenants
+  critical_path: true
+  status: planned
+  deps:
+  - P12-T02
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-052
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P13-T03
+  phase: PHASE-13
+  title: Define retention classes, archival policy, and operational SLO surfaces
+  critical_path: true
+  status: planned
+  deps:
+  - P02-T01
+  - P09-T02
+  adr_refs:
+  - ADR-0014
+  - ADR-0015
+  acceptance_refs:
+  - AC-053
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P13-T04
+  phase: PHASE-13
+  title: Create enterprise acceptance checklist and release gate
+  critical_path: false
+  status: planned
+  deps:
+  - P13-T01
+  - P13-T02
+  - P13-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-054
+  - AC-055
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: true
+- id: P13-T05
+  phase: PHASE-13
+  title: Create enterprise control matrix, dedicated-tenant evidence bundle, and enterprise
+    readiness gate assets
+  critical_path: true
+  status: planned
+  deps:
+  - P13-T01
+  - P13-T02
+  - P13-T03
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-052
+  - AC-053
+  - AC-054
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true

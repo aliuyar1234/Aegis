@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/action_succeeded.schema.json",
+  "title": "action.succeeded",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "execution_id",
+    "completed_at",
+    "normalized_result",
+    "raw_result_artifact_id"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "execution_id": {
+      "type": "string"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "normalized_result": {
+      "type": "object"
+    },
+    "raw_result_artifact_id": {
+      "type": "string"
+    }
+  }
+}

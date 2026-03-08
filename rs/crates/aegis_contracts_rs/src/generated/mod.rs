@@ -1,0 +1,217 @@
+// Generated from schema/proto and schema/transport-topology.yaml.
+
+pub const SOURCE_DIGEST: &str = "7a38e5fb771b24cbad289cf96bffb9e1e1f790a9c9a7aef958187d0c5d3c7d25";
+pub const SOURCE_FILES: &[&str] = &["buf.yaml", "buf.gen.yaml", "schema/transport-topology.yaml", "schema/proto/aegis/common/v1/common.proto", "schema/proto/aegis/runtime/v1/browser.proto", "schema/proto/aegis/runtime/v1/envelope.proto", "schema/proto/aegis/runtime/v1/operator.proto", "schema/proto/aegis/runtime/v1/session.proto", "schema/proto/aegis/runtime/v1/worker.proto"];
+pub const MESSAGE_NAMES: &[&str] = &["ActionAccepted", "ActionCancel", "ActionCancelled", "ActionCompleted", "ActionDispatch", "ActionFailed", "ActionHeartbeat", "ActionProgress", "ActionView", "ApprovalDecisionCommand", "ApprovalView", "ArtifactView", "BrowserActionMetadata", "BrowserArtifactRef", "BrowserHandle", "DeadlineView", "EventEnvelope", "ObservationCommand", "OperatorSessionView", "RequestActionCommand", "SessionProjection", "SessionRef", "StartSessionCommand", "WorkerHeartbeat", "WorkerRegistration"];
+pub const ENUM_NAMES: &[&str] = &["ActionStatus", "ActorKind", "ControlMode", "DeterminismClass", "IsolationTier", "SessionHealth", "SessionPhase", "WaitReason"];
+pub const TRANSPORT_TOPOLOGY_JSON: &str = r#"{
+  "consumers": [
+    {
+      "ack_policy": "explicit",
+      "ack_wait": "30s",
+      "filter_subject": "aegis.v1.command.dispatch.browser",
+      "max_deliver": 3,
+      "name": "browser-workers",
+      "stream": "ACTIONS"
+    },
+    {
+      "ack_policy": "explicit",
+      "ack_wait": "30s",
+      "filter_subject": "aegis.v1.command.dispatch.planner",
+      "max_deliver": 3,
+      "name": "planner-workers",
+      "stream": "ACTIONS"
+    },
+    {
+      "ack_policy": "explicit",
+      "ack_wait": "30s",
+      "filter_subject": "aegis.v1.command.dispatch.tool",
+      "max_deliver": 3,
+      "name": "tool-workers",
+      "stream": "ACTIONS"
+    },
+    {
+      "ack_policy": "explicit",
+      "ack_wait": "10s",
+      "filter_subject": "aegis.v1.event.>",
+      "max_deliver": 10,
+      "name": "runtime-worker-events",
+      "stream": "WORKER_EVENTS"
+    },
+    {
+      "ack_policy": "explicit",
+      "ack_wait": "10s",
+      "filter_subject": "aegis.v1.registry.>",
+      "max_deliver": 10,
+      "name": "runtime-worker-registry",
+      "stream": "WORKER_REGISTRY"
+    },
+    {
+      "ack_policy": "explicit",
+      "ack_wait": "30s",
+      "filter_subject": "aegis.v1.command.cancel.browser",
+      "max_deliver": 3,
+      "name": "browser-cancel",
+      "stream": "ACTIONS"
+    },
+    {
+      "ack_policy": "explicit",
+      "ack_wait": "30s",
+      "filter_subject": "aegis.v1.command.cancel.planner",
+      "max_deliver": 3,
+      "name": "planner-cancel",
+      "stream": "ACTIONS"
+    },
+    {
+      "ack_policy": "explicit",
+      "ack_wait": "30s",
+      "filter_subject": "aegis.v1.command.cancel.tool",
+      "max_deliver": 3,
+      "name": "tool-cancel",
+      "stream": "ACTIONS"
+    }
+  ],
+  "headers": [
+    "x-aegis-trace-id",
+    "x-aegis-tenant-id",
+    "x-aegis-workspace-id",
+    "x-aegis-session-id",
+    "x-aegis-lease-epoch",
+    "x-aegis-contract-version",
+    "x-aegis-isolation-tier"
+  ],
+  "message_size": {
+    "max_bytes": 262144,
+    "oversize_policy": "move_payload_to_artifact_store_and_send_ref"
+  },
+  "policies": {
+    "completion": {
+      "dedupe_key": "execution_id + terminal status",
+      "delivery": "at-least-once"
+    },
+    "dispatch": {
+      "ack_behavior": "workers ack dispatch only after ActionAccepted is durable on worker side",
+      "redelivery": "control plane deduplicates by execution_id and action_id"
+    },
+    "heartbeat_expectation": {
+      "default_interval": "5s",
+      "missed_heartbeats_before_loss": 3
+    },
+    "progress": {
+      "dedupe_key": "execution_id + progress_kind + observed_at",
+      "delivery": "at-least-once"
+    },
+    "tenant_isolation": {
+      "tier_a": "shared streams with tenant/workspace headers",
+      "tier_b": "dedicated worker pools and stream prefixes per tenant",
+      "tier_c": "dedicated deployment or account namespace"
+    },
+    "timeout_classes": {
+      "long": "accept<=30s, soft<=15m, hard<=60m",
+      "medium": "accept<=30s, soft<=5m, hard<=15m",
+      "short": "accept<=10s, soft<=30s, hard<=60s"
+    }
+  },
+  "streams": [
+    {
+      "max_age": "72h",
+      "name": "ACTIONS",
+      "replicas": 1,
+      "retention": "workqueue",
+      "storage": "file",
+      "subjects": [
+        "aegis.v1.command.dispatch.*",
+        "aegis.v1.command.cancel.*"
+      ]
+    },
+    {
+      "max_age": "72h",
+      "name": "WORKER_EVENTS",
+      "replicas": 1,
+      "retention": "limits",
+      "storage": "file",
+      "subjects": [
+        "aegis.v1.event.accepted.*",
+        "aegis.v1.event.progress.*",
+        "aegis.v1.event.completed.*",
+        "aegis.v1.event.failed.*",
+        "aegis.v1.event.cancelled.*",
+        "aegis.v1.event.heartbeat.*"
+      ]
+    },
+    {
+      "max_age": "24h",
+      "name": "WORKER_REGISTRY",
+      "replicas": 1,
+      "retention": "limits",
+      "storage": "file",
+      "subjects": [
+        "aegis.v1.registry.register.*",
+        "aegis.v1.registry.heartbeat.*"
+      ]
+    }
+  ],
+  "subjects": [
+    {
+      "direction": "worker->control",
+      "message": "WorkerRegistration",
+      "name": "worker_register",
+      "subject": "aegis.v1.registry.register.{worker_kind}"
+    },
+    {
+      "direction": "worker->control",
+      "message": "WorkerHeartbeat",
+      "name": "worker_heartbeat",
+      "subject": "aegis.v1.registry.heartbeat.{worker_kind}"
+    },
+    {
+      "direction": "control->worker",
+      "message": "ActionDispatch",
+      "name": "dispatch",
+      "subject": "aegis.v1.command.dispatch.{worker_kind}"
+    },
+    {
+      "direction": "control->worker",
+      "message": "ActionCancel",
+      "name": "cancel",
+      "subject": "aegis.v1.command.cancel.{worker_kind}"
+    },
+    {
+      "direction": "worker->control",
+      "message": "ActionAccepted",
+      "name": "accepted",
+      "subject": "aegis.v1.event.accepted.{worker_kind}"
+    },
+    {
+      "direction": "worker->control",
+      "message": "ActionProgress",
+      "name": "progress",
+      "subject": "aegis.v1.event.progress.{worker_kind}"
+    },
+    {
+      "direction": "worker->control",
+      "message": "ActionCompleted",
+      "name": "completed",
+      "subject": "aegis.v1.event.completed.{worker_kind}"
+    },
+    {
+      "direction": "worker->control",
+      "message": "ActionFailed",
+      "name": "failed",
+      "subject": "aegis.v1.event.failed.{worker_kind}"
+    },
+    {
+      "direction": "worker->control",
+      "message": "ActionCancelled",
+      "name": "cancelled",
+      "subject": "aegis.v1.event.cancelled.{worker_kind}"
+    },
+    {
+      "direction": "worker->control",
+      "message": "ActionHeartbeat",
+      "name": "heartbeat",
+      "subject": "aegis.v1.event.heartbeat.{worker_kind}"
+    }
+  ],
+  "version": 1
+}"#;

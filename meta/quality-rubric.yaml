@@ -1,0 +1,25 @@
+passing_threshold_phase: 85
+passing_threshold_public_demo: 92
+categories:
+- name: architecture_alignment
+  weight: 20
+- name: correctness_and_recovery
+  weight: 20
+- name: contracts_and_schema_discipline
+  weight: 10
+- name: test_coverage_of_important_things
+  weight: 15
+- name: observability_and_operator_legibility
+  weight: 10
+- name: security_and_governance
+  weight: 10
+- name: documentation_and_traceability
+  weight: 10
+- name: cleanup_and_slop_resistance
+  weight: 5
+hard_fails:
+- worker direct write into canonical runtime tables
+- side effects before commit/outbox
+- no single-owner enforcement
+- dangerous actions without policy/approval coverage
+- replay that re-executes external systems by default

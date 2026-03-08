@@ -1,0 +1,31 @@
+id: oss-managed-split
+phase: PHASE-12
+name: OSS vs managed split gate
+objective: Validate OSS core and managed-only surfaces are explicitly separated.
+fixtures:
+- docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+- REPO_MAP.md
+tests:
+- TS-014
+- TS-016
+acceptance:
+- AC-049
+- AC-050
+- AC-051
+steps:
+- id: surface-manifest
+  description: verify OSS and managed surfaces are bounded
+  expected:
+  - manifests separate OSS core from managed-only surfaces
+  evidence:
+  - docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  - FULL_SCOPE.md
+- id: packaging
+  description: verify packaging matrix exists
+  expected:
+  - deployment flavors are explicit
+  evidence:
+  - ROADMAP.md
+  - docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+proves:
+- split surface is implementation-grade rather than aspirational

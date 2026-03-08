@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/system_node_recovered.schema.json",
+  "title": "system.node_recovered",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "owner_node",
+    "lease_epoch",
+    "recovery_reason"
+  ],
+  "properties": {
+    "owner_node": {
+      "type": "string"
+    },
+    "lease_epoch": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "recovery_reason": {
+      "type": "string"
+    }
+  }
+}

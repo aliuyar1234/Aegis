@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/agent_spawned.schema.json",
+  "title": "agent.spawned",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requested_by"
+  ],
+  "properties": {
+    "requested_by": {
+      "type": "string"
+    },
+    "agent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "role": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "goal": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tool_allowlist": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "budget": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "state_summary": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

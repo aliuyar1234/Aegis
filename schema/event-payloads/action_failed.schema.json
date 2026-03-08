@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/action_failed.schema.json",
+  "title": "action.failed",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "execution_id",
+    "error_class",
+    "error_code",
+    "failed_at"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "execution_id": {
+      "type": "string"
+    },
+    "error_class": {
+      "type": "string"
+    },
+    "error_code": {
+      "type": "string"
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "safe_to_retry": {
+      "type": "boolean"
+    },
+    "compensation_possible": {
+      "type": "boolean"
+    },
+    "uncertain_side_effect": {
+      "type": "boolean"
+    },
+    "details_artifact_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "failed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

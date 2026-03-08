@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/approval_denied.schema.json",
+  "title": "approval.denied",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "approval_id",
+    "action_id",
+    "action_hash",
+    "decided_by",
+    "lease_epoch",
+    "reason"
+  ],
+  "properties": {
+    "approval_id": {
+      "type": "string"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "action_hash": {
+      "type": "string"
+    },
+    "decided_by": {
+      "type": "string"
+    },
+    "lease_epoch": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}

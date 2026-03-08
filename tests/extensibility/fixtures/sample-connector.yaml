@@ -1,0 +1,9 @@
+id: sample-billing-connector
+version: 0.1.0
+kind: tool_connector
+input_schema_ref: schema/jsonschema/action-request.schema.json
+output_schema_ref: schema/jsonschema/artifact-metadata.schema.json
+runtime_contract_version: v1
+compatibility:
+  - PHASE-10
+  - tier_a

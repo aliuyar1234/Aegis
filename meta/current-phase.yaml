@@ -1,0 +1,14 @@
+current_phase: PHASE-06
+current_phase_doc: docs/exec-plans/active/PHASE-06-operator-console.md
+completed_phases:
+- PHASE-00
+- PHASE-01
+- PHASE-02
+- PHASE-03
+- PHASE-04
+- PHASE-05
+starting_sequence:
+- P06-T01
+- P06-T02
+notes: Phases 00 through 05 are implemented in this repository. Phase 06 is the
+  active bounded implementation pass and starts with the operator console baseline.

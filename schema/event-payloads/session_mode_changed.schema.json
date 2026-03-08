@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/session_mode_changed.schema.json",
+  "title": "session.mode_changed",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "control_mode",
+    "reason"
+  ],
+  "properties": {
+    "control_mode": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}

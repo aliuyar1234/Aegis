@@ -1,0 +1,104 @@
+phase: PHASE-04
+status: completed
+name: Worker contracts, transport topology, and execution bridge
+phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+tasks:
+- id: P04-T01
+  phase: PHASE-04
+  title: Finalize Protobuf envelopes and generate contract packages for Elixir/Python/Rust
+    consumption
+  critical_path: true
+  status: done
+  deps:
+  - P00-T02
+  adr_refs:
+  - ADR-0008
+  acceptance_refs:
+  - AC-015
+  - AC-016
+  test_refs: &id001
+  - TS-002
+  - TS-006
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P04-T02
+  phase: PHASE-04
+  title: Implement Execution Bridge with JetStream subjects, request/accept flow,
+    and async result callbacks
+  critical_path: true
+  status: done
+  deps:
+  - P04-T01
+  - P02-T02
+  adr_refs:
+  - ADR-0007
+  - ADR-0008
+  acceptance_refs:
+  - AC-015
+  - AC-016
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P04-T03
+  phase: PHASE-04
+  title: Implement worker registration, heartbeat, timeout, and cancellation semantics
+  critical_path: true
+  status: done
+  deps:
+  - P04-T02
+  adr_refs:
+  - ADR-0007
+  acceptance_refs:
+  - AC-015
+  - AC-016
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P04-T04
+  phase: PHASE-04
+  title: Implement error taxonomy, idempotency metadata propagation, and trace context
+    handling
+  critical_path: true
+  status: done
+  deps:
+  - P04-T02
+  adr_refs:
+  - ADR-0008
+  - ADR-0011
+  acceptance_refs:
+  - AC-015
+  - AC-016
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P04-T05
+  phase: PHASE-04
+  title: Enforce worker read/write boundaries and add guardrails against canonical
+    DB access
+  critical_path: false
+  status: done
+  deps:
+  - P04-T03
+  adr_refs:
+  - ADR-0003
+  - ADR-0007
+  acceptance_refs:
+  - AC-019
+  test_refs: *id001
+  phase_doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

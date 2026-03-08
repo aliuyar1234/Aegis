@@ -1,0 +1,79 @@
+phase: PHASE-10
+status: planned
+name: Extensibility surface, connector SDK, and compatibility policy
+phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+tasks:
+- id: P10-T01
+  phase: PHASE-10
+  title: Define extension contracts for new tools, connectors, and artifact processors
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T01
+  adr_refs:
+  - ADR-0008
+  acceptance_refs:
+  - AC-042
+  test_refs:
+  - TS-014
+  phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P10-T02
+  phase: PHASE-10
+  title: Define MCP adapter boundary without making MCP the internal runtime protocol
+  critical_path: true
+  status: planned
+  deps:
+  - P10-T01
+  adr_refs:
+  - ADR-0008
+  acceptance_refs:
+  - AC-044
+  test_refs:
+  - TS-014
+  phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P10-T03
+  phase: PHASE-10
+  title: Create compatibility and versioning policy for third-party extensions
+  critical_path: true
+  status: planned
+  deps:
+  - P10-T01
+  adr_refs:
+  - ADR-0008
+  - ADR-0015
+  acceptance_refs:
+  - AC-043
+  test_refs:
+  - TS-014
+  phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P10-T04
+  phase: PHASE-10
+  title: Create sample extension pack layout and review rubric
+  critical_path: false
+  status: planned
+  deps:
+  - P10-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-042
+  - AC-043
+  test_refs:
+  - TS-014
+  phase_doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

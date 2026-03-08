@@ -1,0 +1,354 @@
+acceptance_criteria:
+- id: AC-001
+  phase: PHASE-00
+  statement: Repository validation succeeds for required paths, internal markdown
+    links, forbidden-phrase checks, and current-phase coherence.
+  tests:
+  - TS-001
+- id: AC-002
+  phase: PHASE-00
+  statement: AGENTS.md stays concise, references current-phase state, and points only
+    to repository sources of truth.
+  tests:
+  - TS-001
+- id: AC-003
+  phase: PHASE-00
+  statement: Local bootstrap initializes Postgres, JetStream streams/consumers, MinIO
+    bucket(s), and OTEL-to-Jaeger wiring without undocumented manual steps.
+  tests:
+  - TS-001
+- id: AC-004
+  phase: PHASE-00
+  statement: Generated task and traceability artifacts are reproducible and freshness-checked
+    in CI and local validation.
+  tests:
+  - TS-001
+  - TS-013
+- id: AC-005
+  phase: PHASE-01
+  statement: SessionKernel implements provisioning, hydrating, active, waiting, cancelling,
+    and terminal transitions with explicit wait reasons.
+  tests:
+  - TS-003
+- id: AC-006
+  phase: PHASE-01
+  statement: The per-session supervisor tree and process ownership boundaries match
+    the locked runtime model.
+  tests:
+  - TS-003
+- id: AC-007
+  phase: PHASE-01
+  statement: Durable and ephemeral session state are separated, and the stable session
+    projection fields are defined before downstream UI work begins.
+  tests:
+  - TS-003
+- id: AC-008
+  phase: PHASE-02
+  statement: Event append, seq_no assignment, hash chaining, and outbox write happen
+    in one atomic transaction.
+  tests:
+  - TS-004
+  - TS-006
+- id: AC-009
+  phase: PHASE-02
+  statement: Checkpoint payloads conform to the checkpoint schema and hydrate state
+    from latest checkpoint plus tail events.
+  tests:
+  - TS-004
+- id: AC-010
+  phase: PHASE-02
+  statement: Historical replay rebuilds from recorded events and artifacts without
+    re-executing models, browsers, or external APIs.
+  tests:
+  - TS-004
+  - TS-012
+- id: AC-011
+  phase: PHASE-02
+  statement: Every registered event type maps to a typed payload schema and explicit
+    version in the event catalog.
+  tests:
+  - TS-002
+  - TS-004
+- id: AC-012
+  phase: PHASE-03
+  statement: Exactly one authoritative live owner can advance a session at a time,
+    enforced by lease epoch checks.
+  tests:
+  - TS-005
+  - TS-010
+- id: AC-013
+  phase: PHASE-03
+  statement: Node loss or lease expiry triggers adoption without silent duplicate
+    authoritative owners or silent side effects.
+  tests:
+  - TS-005
+  - TS-010
+- id: AC-014
+  phase: PHASE-03
+  statement: Owners self-fence on lease ambiguity and surface degraded/fenced state
+    to operators and runbooks.
+  tests:
+  - TS-005
+  - TS-010
+- id: AC-015
+  phase: PHASE-04
+  statement: JetStream topology, routing keys, streams, consumers, headers, and ack/redelivery
+    semantics are explicit in docs and machine-readable topology files.
+  tests:
+  - TS-002
+  - TS-006
+  - TS-018
+- id: AC-016
+  phase: PHASE-04
+  statement: Execution Bridge supports dispatch, accept, heartbeat, progress, completion,
+    failure, timeout, and cancellation using the locked transport contracts.
+  tests:
+  - TS-006
+  - TS-018
+- id: AC-017
+  phase: PHASE-04
+  statement: Contract codegen for Protobuf bindings is configured and reproducible
+    for Elixir, Python, and Rust.
+  tests:
+  - TS-002
+- id: AC-018
+  phase: PHASE-04
+  statement: Trace context propagates across API, SessionKernel, outbox, JetStream,
+    workers, and artifact registration.
+  tests:
+  - TS-006
+- id: AC-019
+  phase: PHASE-04
+  statement: Execution-plane components are prevented by architecture and validation
+    rules from writing canonical control-plane tables.
+  tests:
+  - TS-006
+  - TS-011
+- id: AC-020
+  phase: PHASE-05
+  statement: Browser baseline supports read-only navigation, extraction, verification,
+    artifact capture, and resumable handle metadata without effectful writes.
+  tests:
+  - TS-007
+- id: AC-021
+  phase: PHASE-05
+  statement: Artifact uploads bypass the control-plane bus and register immutable
+    artifact metadata with content hash, tenancy, retention, and redaction fields.
+  tests:
+  - TS-007
+- id: AC-022
+  phase: PHASE-05
+  statement: Resumable browser handles, stable-page markers, and recovery metadata
+    are persisted strongly enough for later recovery phases.
+  tests:
+  - TS-007
+  - TS-010
+- id: AC-023
+  phase: PHASE-05
+  statement: Browser workflow fixtures, mutation classifications, and uncertainty
+    fixtures exist and validate against schemas.
+  tests:
+  - TS-007
+- id: AC-024
+  phase: PHASE-06
+  statement: Operator session view contracts include owner node, lease epoch, wait
+    reason, deadlines, approvals, in-flight actions, artifacts, and recovery markers.
+  tests:
+  - TS-008
+- id: AC-025
+  phase: PHASE-06
+  statement: Timeline and replay UX consume stable projection data and recorded artifacts
+    rather than hidden UI-only state.
+  tests:
+  - TS-008
+  - TS-012
+- id: AC-026
+  phase: PHASE-06
+  statement: Operator join, note, pause, abort, and takeover actions are represented
+    as runtime events with no shadow control path.
+  tests:
+  - TS-008
+- id: AC-027
+  phase: PHASE-06
+  statement: Operator-facing runbooks and console surfaces are linked for recovery,
+    uncertainty, and approval waits.
+  tests:
+  - TS-008
+- id: AC-028
+  phase: PHASE-07
+  statement: Tool descriptors are explicit, versioned, validated against JSON Schema,
+    and mapped to executor kind, risk class, idempotency, timeout, and scopes.
+  tests:
+  - TS-009
+- id: AC-029
+  phase: PHASE-07
+  statement: Policy decisions are explicit allow / allow_with_constraints / require_approval
+    / deny outcomes and are recorded before effectful dispatch.
+  tests:
+  - TS-009
+- id: AC-030
+  phase: PHASE-07
+  statement: Approval requests bind to exact action hash, lease epoch, expiry, actor
+    identity, and risk evidence.
+  tests:
+  - TS-009
+- id: AC-031
+  phase: PHASE-07
+  statement: Capability tokens for effectful actions bind tenant, workspace, session,
+    action, tool, approved argument digest, expiry, and side-effect class.
+  tests:
+  - TS-009
+  - TS-011
+- id: AC-032
+  phase: PHASE-07
+  statement: Dangerous browser mutations default to approval or explicit allow-with-constraints
+    and are listed in machine-readable dangerous-action catalogs.
+  tests:
+  - TS-009
+  - TS-011
+- id: AC-033
+  phase: PHASE-08
+  statement: Effectful browser mutation flows run only after policy, approval, and
+    capability-token checks and capture before/after artifacts.
+  tests:
+  - TS-007
+  - TS-009
+- id: AC-034
+  phase: PHASE-08
+  statement: Duplicate terminal completions are deduplicated, and uncertain side effects
+    are surfaced for human review instead of silent retry.
+  tests:
+  - TS-010
+- id: AC-035
+  phase: PHASE-08
+  statement: Worker crash, browser instability, transport lag, datastore degradation,
+    and event corruption paths are modeled, tested, and reflected in runbooks.
+  tests:
+  - TS-010
+- id: AC-036
+  phase: PHASE-08
+  statement: The internal demo phase gate is machine-checkable and passes against
+    the committed gate spec and fixtures.
+  tests:
+  - TS-012
+- id: AC-037
+  phase: PHASE-08
+  statement: The public demo phase gate is machine-checkable and passes against the
+    committed gate spec and fixtures.
+  tests:
+  - TS-012
+- id: AC-038
+  phase: PHASE-09
+  statement: Tenancy tiers A/B/C are represented in storage, worker routing, artifact
+    keyspaces, and operator surfaces.
+  tests:
+  - TS-011
+- id: AC-039
+  phase: PHASE-09
+  statement: Admission control and quotas are enforced for live sessions, concurrent
+    browser contexts, and concurrent effectful actions.
+  tests:
+  - TS-011
+- id: AC-040
+  phase: PHASE-09
+  statement: OIDC-ready auth plus RBAC/ABAC catalogs govern operator and API control
+    surfaces with tenant/workspace scoping.
+  tests:
+  - TS-011
+- id: AC-041
+  phase: PHASE-09
+  statement: Audit, redaction, and dangerous-action evidence paths are defined and
+    traceable to runtime events and artifacts.
+  tests:
+  - TS-011
+- id: AC-042
+  phase: PHASE-10
+  statement: Connector and extension contracts define lifecycle hooks, version ranges,
+    capability boundaries, and artifact processor interfaces.
+  tests:
+  - TS-014
+- id: AC-043
+  phase: PHASE-10
+  statement: Third-party extension compatibility rules are machine-checkable and supported
+    by sample connector fixtures.
+  tests:
+  - TS-014
+- id: AC-044
+  phase: PHASE-10
+  statement: MCP is treated as an external adapter boundary, not the internal runtime
+    protocol.
+  tests:
+  - TS-014
+- id: AC-045
+  phase: PHASE-11
+  statement: Voice/media contracts preserve session ownership, replay, and policy
+    boundaries while moving hot paths into Rust sidecars.
+  tests:
+  - TS-015
+- id: AC-046
+  phase: PHASE-11
+  statement: Media transport, recording, artifact, and degraded-mode policies are
+    specified with their own topology and runbooks.
+  tests:
+  - TS-015
+- id: AC-047
+  phase: PHASE-11
+  statement: A machine-checkable voice/media phase gate exists and references concrete
+    fixtures and contracts.
+  tests:
+  - TS-015
+- id: AC-048
+  phase: PHASE-11
+  statement: Voice/media capacity isolation, QoS degradation, and operator handoff
+    rules are explicit.
+  tests:
+  - TS-015
+- id: AC-049
+  phase: PHASE-12
+  statement: The OSS core surface is explicitly bounded from managed-only control-plane
+    services, packages, and operational features.
+  tests:
+  - TS-016
+- id: AC-050
+  phase: PHASE-12
+  statement: Packaging, release, and upgrade matrices exist for OSS, shared cloud,
+    isolated execution, and dedicated deployment flavors.
+  tests:
+  - TS-016
+- id: AC-051
+  phase: PHASE-12
+  statement: Split-surface compatibility policy covers contracts, migrations, and
+    operator-facing documentation obligations.
+  tests:
+  - TS-016
+- id: AC-052
+  phase: PHASE-13
+  statement: Enterprise tiers specify dedicated deployment, key isolation, artifact
+    controls, and data residency hooks.
+  tests:
+  - TS-017
+- id: AC-053
+  phase: PHASE-13
+  statement: Enterprise auth, secrets, audit export, retention, and redaction paths
+    are defined as implementation-ready requirements.
+  tests:
+  - TS-017
+- id: AC-054
+  phase: PHASE-13
+  statement: The enterprise readiness phase gate is machine-checkable and references
+    concrete controls, docs, and runbooks.
+  tests:
+  - TS-017
+- id: AC-055
+  phase: PHASE-13
+  statement: Late-phase docs, tasks, generated artifacts, and validation rules remain
+    synchronized under the anti-drift policy.
+  tests:
+  - TS-001
+  - TS-013
+- id: AC-056
+  phase: PHASE-13
+  statement: OPEN_DECISIONS.md contains only bounded, explicitly justified unresolved
+    items and no hidden placeholder drift.
+  tests:
+  - TS-001

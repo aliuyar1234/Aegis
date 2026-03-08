@@ -1,0 +1,108 @@
+phase: PHASE-13
+status: deferred
+name: Cloud and enterprise hardening
+phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+tasks:
+- id: P13-T01
+  phase: PHASE-13
+  title: Implement audit export and redaction workflows tied to event and artifact
+    models
+  critical_path: true
+  status: planned
+  deps:
+  - P09-T04
+  adr_refs:
+  - ADR-0014
+  - ADR-0015
+  acceptance_refs:
+  - AC-053
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P13-T02
+  phase: PHASE-13
+  title: Define dedicated deployment and key-isolation path for Tier C tenants
+  critical_path: true
+  status: planned
+  deps:
+  - P12-T02
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-052
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P13-T03
+  phase: PHASE-13
+  title: Define retention classes, archival policy, and operational SLO surfaces
+  critical_path: true
+  status: planned
+  deps:
+  - P02-T01
+  - P09-T02
+  adr_refs:
+  - ADR-0014
+  - ADR-0015
+  acceptance_refs:
+  - AC-053
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P13-T04
+  phase: PHASE-13
+  title: Create enterprise acceptance checklist and release gate
+  critical_path: false
+  status: planned
+  deps:
+  - P13-T01
+  - P13-T02
+  - P13-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-054
+  - AC-055
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: true
+- id: P13-T05
+  phase: PHASE-13
+  title: Create enterprise control matrix, dedicated-tenant evidence bundle, and enterprise
+    readiness gate assets
+  critical_path: true
+  status: planned
+  deps:
+  - P13-T01
+  - P13-T02
+  - P13-T03
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-052
+  - AC-053
+  - AC-054
+  test_refs:
+  - TS-017
+  phase_doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true

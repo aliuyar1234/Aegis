@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/action_requested.schema.json",
+  "title": "action.requested",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "tool_id",
+    "tool_schema_version",
+    "worker_kind",
+    "risk_class",
+    "idempotency_class",
+    "timeout_class",
+    "mutating",
+    "input"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "tool_id": {
+      "type": "string"
+    },
+    "tool_schema_version": {
+      "type": "string"
+    },
+    "worker_kind": {
+      "type": "string"
+    },
+    "risk_class": {
+      "type": "string"
+    },
+    "dangerous_action_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "idempotency_class": {
+      "type": "string"
+    },
+    "timeout_class": {
+      "type": "string"
+    },
+    "mutating": {
+      "type": "boolean"
+    },
+    "input": {
+      "type": "object"
+    },
+    "accept_deadline": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "soft_deadline": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "hard_deadline": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "trace_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "idempotency_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "capability_token_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "approved_argument_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

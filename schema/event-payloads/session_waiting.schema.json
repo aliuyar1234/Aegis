@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/session_waiting.schema.json",
+  "title": "session.waiting",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "reason"
+  ],
+  "properties": {
+    "reason": {
+      "type": "string"
+    },
+    "detail": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "blocking_action_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "blocking_approval_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/action_heartbeat_missed.schema.json",
+  "title": "action.heartbeat_missed",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "execution_id"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "execution_id": {
+      "type": "string"
+    }
+  }
+}

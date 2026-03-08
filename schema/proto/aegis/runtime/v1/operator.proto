@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package aegis.runtime.v1;
+
+import "aegis/runtime/v1/session.proto";
+
+message OperatorSessionView {
+  SessionProjection session = 1;
+  repeated ApprovalView approvals = 2;
+  repeated ActionView actions = 3;
+  repeated ArtifactView artifacts = 4;
+}

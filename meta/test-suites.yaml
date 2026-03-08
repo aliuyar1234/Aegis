@@ -1,0 +1,140 @@
+test_suites:
+- id: TS-001
+  title: Repo structure, link integrity, phase state, and anti-drift validation
+  command: python3 scripts/validate_repo.py
+  paths:
+  - AGENTS.md
+  - meta/current-phase.yaml
+  - docs/generated/tasks.csv
+  proves: Validates required files, internal markdown links, current-phase coherence,
+    forbidden phrases, generated-file freshness, and anti-drift structure.
+- id: TS-002
+  title: Contract, schema, event payload, and transport validation
+  command: python3 scripts/validate_schemas.py
+  paths:
+  - schema/proto
+  - schema/jsonschema
+  - schema/event-catalog
+  - schema/transport-topology.yaml
+  proves: Validates Protobuf packaging, JSON Schemas, event payload coverage, checkpoint
+    schema, and transport topology.
+- id: TS-003
+  title: Session state model tests
+  command: python3 scripts/run_elixir_suite.py TS-003
+  paths:
+  - test/session_state
+  proves: Exercises lifecycle transitions, supervisor ownership boundaries, and projection
+    fields.
+- id: TS-004
+  title: Replay and checkpoint determinism tests
+  command: python3 scripts/run_elixir_suite.py TS-004
+  paths:
+  - test/replay
+  proves: Exercises append, checkpoint serialization, hydrate-from-tail, and historical
+    replay without re-execution.
+- id: TS-005
+  title: Lease, fencing, and adoption tests
+  command: python3 scripts/run_elixir_suite.py TS-005
+  paths:
+  - apps/aegis_runtime/test/leases
+  - test/leases
+  proves: Exercises lease epoch enforcement, stale owner rejection, and self-fencing
+    behavior.
+- id: TS-006
+  title: Execution bridge and transport contract tests
+  command: python3 scripts/run_elixir_suite.py TS-006
+  paths:
+  - apps/aegis_execution_bridge/test/execution_bridge
+  proves: Exercises dispatch, ack/nak/redelivery, timeout, heartbeat, cancellation,
+    and trace propagation.
+- id: TS-007
+  title: Browser wedge baseline and fixture tests
+  command: pytest tests/browser_e2e -q
+  paths:
+  - tests/browser_e2e
+  proves: Validates browser fixtures, artifact metadata, resumable handles, and read-only
+    workflow assumptions.
+- id: TS-008
+  title: Operator console and projection tests
+  command: mix test test/operator_console
+  paths:
+  - test/operator_console
+  proves: Validates operator session view, replay timeline surfaces, and intervention
+    events.
+- id: TS-009
+  title: Policy, approval, and capability-token tests
+  command: pytest tests/policy -q
+  paths:
+  - tests/policy
+  proves: Validates tool descriptors, dangerous-action defaults, approval binding,
+    and capability-token claims.
+- id: TS-010
+  title: Recovery, uncertainty, and chaos tests
+  command: pytest tests/recovery tests/chaos -q
+  paths:
+  - tests/recovery
+  - tests/chaos
+  proves: Validates duplicate suppression, uncertainty classification, recovery playbooks,
+    and chaos fixtures.
+- id: TS-011
+  title: Security, multitenancy, and trust-boundary tests
+  command: pytest tests/security -q
+  paths:
+  - tests/security
+  proves: Validates RBAC/ABAC catalogs, tenancy scoping, quotas, and canonical-table
+    write prohibitions.
+- id: TS-012
+  title: Phase-gate scenario validation
+  command: python3 scripts/run_phase_gate.py tests/phase-gates/internal-demo.yaml
+    tests/phase-gates/public-demo.yaml
+  paths:
+  - tests/phase-gates/internal-demo.yaml
+  - tests/phase-gates/public-demo.yaml
+  proves: Validates machine-checkable phase-gate scenarios and their referenced fixtures,
+    tests, and acceptance IDs.
+- id: TS-013
+  title: Generated artifact freshness tests
+  command: python3 scripts/generate_docs.py --check
+  paths:
+  - docs/generated
+  - meta/generated-files.yaml
+  proves: Ensures generated docs are reproducible from repo SSOT and not stale.
+- id: TS-014
+  title: Extensibility and connector compatibility tests
+  command: pytest tests/extensibility -q
+  paths:
+  - tests/extensibility
+  - tests/extensibility/fixtures/sample-connector.yaml
+  - schema/jsonschema/connector-manifest.schema.json
+  proves: Validates extension schemas, compatibility policy, and sample connector
+    fixtures.
+- id: TS-015
+  title: Voice/media boundary tests
+  command: python3 scripts/run_phase_gate.py tests/phase-gates/media-expansion.yaml
+  paths:
+  - tests/phase-gates/media-expansion.yaml
+  - docs/design-docs/media-topology.md
+  - docs/design-docs/future-voice-media.md
+  proves: Validates that the voice/media path has explicit contracts, topology, sidecar
+    boundaries, and a machine-checkable phase gate.
+- id: TS-016
+  title: OSS/managed split validation
+  command: python3 scripts/run_phase_gate.py tests/phase-gates/oss-managed-split.yaml
+  paths:
+  - tests/phase-gates/oss-managed-split.yaml
+  proves: Validates packaging matrix, OSS/managed split artifacts, and release surfaces.
+- id: TS-017
+  title: Enterprise readiness validation
+  command: python3 scripts/run_phase_gate.py tests/phase-gates/enterprise-readiness.yaml
+  paths:
+  - tests/phase-gates/enterprise-readiness.yaml
+  proves: Validates enterprise-specific docs, controls, runbooks, and packaging artifacts.
+- id: TS-018
+  title: Transport topology contract tests
+  command: pytest tests/transport -q
+  paths:
+  - tests/transport
+  - schema/transport-topology.yaml
+  - schema/proto
+  proves: Validates that transport subjects map to real proto messages and cancel
+    consumers cover dispatch worker kinds.

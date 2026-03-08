@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/operator_note_added.schema.json",
+  "title": "operator.note_added",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id",
+    "note_ref"
+  ],
+  "properties": {
+    "operator_id": {
+      "type": "string"
+    },
+    "note_ref": {
+      "type": "string"
+    }
+  }
+}

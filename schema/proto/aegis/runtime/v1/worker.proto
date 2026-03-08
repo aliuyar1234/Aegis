@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package aegis.runtime.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "aegis/runtime/v1/session.proto";
+import "aegis/common/v1/common.proto";
+
+message WorkerRegistration {
+  string worker_id = 1;
+  string worker_kind = 2;
+  string worker_version = 3;
+  repeated string supported_contract_versions = 4;
+  uint32 advertised_capacity = 5;
+  map<string, string> attributes = 6;
+}
+
+message ActionDispatch {
+  SessionRef ref = 1;
+  string contract_version = 2;
+  string execution_id = 3;
+  string action_id = 4;
+  string tool_id = 5;
+  string tool_schema_version = 6;
+  string capability_token = 7;
+  string trace_id = 8;
+  string idempotency_key = 9;
+  aegis.common.v1.IsolationTier isolation_tier = 10;
+  google.protobuf.Struct input = 11;
+  google.protobuf.Timestamp accept_deadline = 12;
+  google.protobuf.Timestamp soft_deadline = 13;
+  google.protobuf.Timestamp hard_deadline = 14;
+}
+
+message ActionAccepted {
+  SessionRef ref = 1;
+  string execution_id = 2;
+  string worker_id = 3;
+  google.protobuf.Timestamp accepted_at = 4;
+}
+
+message ActionProgress {
+  SessionRef ref = 1;
+  string execution_id = 2;
+  string action_id = 3;
+  string progress_kind = 4;
+  google.protobuf.Struct progress = 5;
+  uint32 progress_seq = 6;
+  google.protobuf.Timestamp observed_at = 7;
+}
+
+
+message ActionHeartbeat {
+  SessionRef ref = 1;
+  string execution_id = 2;
+  string action_id = 3;
+  string worker_id = 4;
+  google.protobuf.Timestamp observed_at = 5;
+  uint32 heartbeat_seq = 6;
+}
+
+message ActionCompleted {
+  SessionRef ref = 1;
+  string execution_id = 2;
+  string action_id = 3;
+  google.protobuf.Struct normalized_result = 4;
+  string raw_result_artifact_id = 5;
+  google.protobuf.Timestamp completed_at = 6;
+}
+
+message ActionFailed {
+  SessionRef ref = 1;
+  string execution_id = 2;
+  string action_id = 3;
+  string error_code = 4;
+  string error_class = 5;
+  bool retryable = 6;
+  bool safe_to_retry = 7;
+  bool compensation_possible = 8;
+  bool uncertain_side_effect = 9;
+  string details_artifact_id = 10;
+  google.protobuf.Timestamp failed_at = 11;
+}
+
+message ActionCancelled {
+  SessionRef ref = 1;
+  string execution_id = 2;
+  string action_id = 3;
+  string worker_id = 4;
+  string reason = 5;
+  google.protobuf.Timestamp cancelled_at = 6;
+}
+
+message ActionCancel {
+  SessionRef ref = 1;
+  string execution_id = 2;
+  string action_id = 3;
+  string reason = 4;
+  google.protobuf.Timestamp cancel_requested_at = 5;
+}
+
+message WorkerHeartbeat {
+  string worker_id = 1;
+  google.protobuf.Timestamp observed_at = 2;
+  uint32 available_capacity = 3;
+  map<string, string> attributes = 4;
+}

@@ -1,0 +1,21 @@
+id: browser-read-002
+name: Read-only billing inspection
+mutation_class: read_only
+requires_approval: false
+expected_artifacts:
+- screenshot
+- dom_snapshot
+uncertainty_trigger: null
+steps:
+- kind: open_context
+- kind: navigate
+  target_url: https://admin.example.local/billing
+- kind: read
+  selector: '[data-test=''billing-panel'']'
+- kind: verify
+  expectation:
+    contains: current billing profile
+tool_id: browser.navigate
+risk_class: low
+requires_operator_takeover_on_uncertainty: false
+expected_policy_decision: allow

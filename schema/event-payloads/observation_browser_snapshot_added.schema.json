@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/observation_browser_snapshot_added.schema.json",
+  "title": "observation.browser_snapshot_added",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_id",
+    "artifact_kind",
+    "browser_handle_id",
+    "browser_snapshot_ref"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "artifact_kind": {
+      "type": "string",
+      "enum": [
+        "screenshot",
+        "dom_snapshot",
+        "trace"
+      ]
+    },
+    "browser_handle_id": {
+      "type": "string"
+    },
+    "browser_snapshot_ref": {
+      "type": "string"
+    }
+  }
+}

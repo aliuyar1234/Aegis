@@ -1,0 +1,74 @@
+id: public-demo
+phase: PHASE-08
+name: Public mission-control demo
+objective: Show browser operations, approvals, failure, recovery, and operator intervention.
+fixtures:
+- tests/browser_e2e/fixtures/effectful_billing_address_update.yaml
+- tests/browser_e2e/fixtures/effectful_entitlement_revoke.yaml
+tests:
+- TS-007
+- TS-009
+- TS-010
+- TS-012
+acceptance:
+- AC-024
+- AC-025
+- AC-030
+- AC-031
+- AC-033
+- AC-035
+- AC-037
+steps:
+- id: start
+  description: start live browser service operation
+  expected:
+  - session visible in operator console
+  evidence:
+  - OperatorSessionView
+  - session-detail surface
+- id: approval
+  description: surface exact approval request with action hash
+  expected:
+  - approval binds to exact action hash and expiry
+  evidence:
+  - approval.requested
+  - schema/jsonschema/approval-request.schema.json
+- id: approve-write
+  description: approve dangerous write
+  expected:
+  - capability token scoped to approved action
+  evidence:
+  - approval.granted
+  - schema/jsonschema/capability-token-claims.schema.json
+- id: fail
+  description: simulate worker or node failure
+  expected:
+  - failure visible and no silent duplicate write
+  evidence:
+  - system.worker_lost
+  - system.lease_lost
+- id: recover
+  description: recover or escalate with explicit uncertainty
+  expected:
+  - uncertainty is surfaced if write certainty is unclear
+  evidence:
+  - action.failed
+  - latest_recovery_reason
+- id: intervene
+  description: operator inspects and intervenes if needed
+  expected:
+  - operator actions stay on same timeline
+  evidence:
+  - operator.took_control
+  - operator.returned_control
+- id: historical-replay
+  description: historical replay shows the exact story
+  expected:
+  - timeline shows approvals, failure, recovery, and artifacts
+  evidence:
+  - replay surface
+  - artifact.registered
+proves:
+- mission-control operator experience
+- approval binding and capability-token path
+- recovery without silent duplicate write

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/health_degraded.schema.json",
+  "title": "health.degraded",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "health_scope",
+    "health_reason"
+  ],
+  "properties": {
+    "health_scope": {
+      "type": "string"
+    },
+    "health_reason": {
+      "type": "string"
+    }
+  }
+}

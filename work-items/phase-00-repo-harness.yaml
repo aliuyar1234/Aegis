@@ -1,0 +1,120 @@
+phase: PHASE-00
+status: completed
+name: Foundations, repository harness, local development, and anti-drift tooling
+phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+tasks:
+- id: P00-T01
+  phase: PHASE-00
+  title: Create the repository SSOT and agent map
+  critical_path: true
+  status: done
+  deps: []
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-001
+  - AC-002
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P00-T02
+  phase: PHASE-00
+  title: Create machine-readable invariants, phase gates, acceptance, and traceability
+    data
+  critical_path: true
+  status: done
+  deps:
+  - P00-T01
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-001
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P00-T03
+  phase: PHASE-00
+  title: Create local dev stack for Postgres, NATS, MinIO, and Jaeger scaffolding
+  critical_path: true
+  status: done
+  deps:
+  - P00-T01
+  adr_refs:
+  - ADR-0003
+  - ADR-0007
+  - ADR-0014
+  acceptance_refs:
+  - AC-001
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: M
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P00-T04
+  phase: PHASE-00
+  title: Create validators and CI workflows for repo, contracts, and traceability
+  critical_path: true
+  status: done
+  deps:
+  - P00-T02
+  - P00-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-001
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: L
+  must_happen_before_code: true
+  can_happen_later: false
+  defer: false
+- id: P00-T05
+  phase: PHASE-00
+  title: Create prompt pack and starting sequence for bounded Codex execution
+  critical_path: false
+  status: done
+  deps:
+  - P00-T01
+  - P00-T02
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-001
+  - AC-003
+  - AC-004
+  test_refs:
+  - TS-001
+  - TS-002
+  - TS-013
+  phase_doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

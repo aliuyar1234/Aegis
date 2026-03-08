@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/artifact_registered.schema.json",
+  "title": "artifact.registered",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_id",
+    "artifact_kind",
+    "sha256",
+    "content_type",
+    "size_bytes",
+    "retention_class",
+    "redaction_state"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "artifact_kind": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string"
+    },
+    "content_type": {
+      "type": "string"
+    },
+    "size_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "retention_class": {
+      "type": "string"
+    },
+    "redaction_state": {
+      "type": "string"
+    },
+    "storage_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "recorded_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "action_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

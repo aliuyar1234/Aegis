@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/action_cancelled.schema.json",
+  "title": "action.cancelled",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "execution_id",
+    "worker_id",
+    "cancelled_at"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "execution_id": {
+      "type": "string"
+    },
+    "worker_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cancelled_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

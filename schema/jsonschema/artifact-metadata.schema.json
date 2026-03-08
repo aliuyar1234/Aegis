@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/artifactmetadata.schema.json",
+  "title": "ArtifactMetadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_id",
+    "tenant_id",
+    "workspace_id",
+    "session_id",
+    "artifact_kind",
+    "sha256",
+    "content_type",
+    "size_bytes",
+    "retention_class",
+    "redaction_state"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "tenant_id": {
+      "type": "string"
+    },
+    "workspace_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "action_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifact_kind": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string"
+    },
+    "content_type": {
+      "type": "string"
+    },
+    "size_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "retention_class": {
+      "type": "string"
+    },
+    "redaction_state": {
+      "type": "string"
+    },
+    "object_key": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

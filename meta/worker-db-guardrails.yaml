@@ -1,0 +1,14 @@
+worker_db_guardrails:
+  allowed_tables:
+  - action_executions
+  - worker_registrations
+  forbidden_tables:
+  - approvals
+  - outbox
+  - session_checkpoints
+  - session_events
+  - session_leases
+  - sessions
+  rationale:
+    allowed: Transport metadata may be written only to bridge-owned tables.
+    forbidden: Canonical control-plane truth stays off-limits to workers and execution adapters.

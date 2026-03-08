@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/session_hydrated.schema.json",
+  "title": "session.hydrated",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "owner_node",
+    "lease_epoch",
+    "restored_from_checkpoint_id"
+  ],
+  "properties": {
+    "owner_node": {
+      "type": "string"
+    },
+    "lease_epoch": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "restored_from_checkpoint_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

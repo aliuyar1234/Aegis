@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/session_owned.schema.json",
+  "title": "session.owned",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "owner_node",
+    "lease_epoch",
+    "adoption_reason"
+  ],
+  "properties": {
+    "owner_node": {
+      "type": "string"
+    },
+    "lease_epoch": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "adoption_reason": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/operator_joined.schema.json",
+  "title": "operator.joined",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id"
+  ],
+  "properties": {
+    "operator_id": {
+      "type": "string"
+    }
+  }
+}

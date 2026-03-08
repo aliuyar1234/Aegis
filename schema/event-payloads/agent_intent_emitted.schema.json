@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/agent_intent_emitted.schema.json",
+  "title": "agent.intent_emitted",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "tool_id"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "tool_id": {
+      "type": "string"
+    }
+  }
+}

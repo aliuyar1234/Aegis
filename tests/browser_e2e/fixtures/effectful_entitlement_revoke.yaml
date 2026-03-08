@@ -1,0 +1,22 @@
+id: browser-write-002
+name: Effectful entitlement revoke
+mutation_class: browser_write_high
+requires_approval: true
+expected_artifacts:
+- screenshot
+- dom_snapshot
+- trace
+uncertainty_trigger: post_click_timeout
+steps:
+- kind: open_context
+- kind: navigate
+  target_url: https://admin.example.local/entitlements
+- kind: click
+  selector: '[data-test=''revoke-entitlement'']'
+- kind: verify
+  expectation:
+    contains: entitlement revoked
+tool_id: browser.navigate
+risk_class: medium
+requires_operator_takeover_on_uncertainty: true
+expected_policy_decision: require_approval

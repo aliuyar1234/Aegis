@@ -1,0 +1,22 @@
+surfaces:
+- id: session-fleet
+  contracts:
+  - schema/jsonschema/operator-session-view.schema.json
+  runbooks:
+  - docs/runbooks/degraded-system-mode.md
+- id: session-detail
+  contracts:
+  - schema/jsonschema/operator-session-view.schema.json
+  runbooks:
+  - docs/runbooks/worker-crash.md
+  - docs/runbooks/node-loss.md
+- id: approvals-queue
+  contracts:
+  - schema/jsonschema/approval-request.schema.json
+  runbooks:
+  - docs/runbooks/approval-timeout.md
+- id: replay
+  contracts:
+  - schema/jsonschema/operator-session-view.schema.json
+  runbooks:
+  - docs/runbooks/event-corruption-quarantine.md

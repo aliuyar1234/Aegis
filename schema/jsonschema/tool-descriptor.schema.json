@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/tool-descriptor.schema.json",
+  "title": "ToolDescriptor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tool_id",
+    "version",
+    "executor_kind",
+    "risk_class",
+    "idempotency_class",
+    "timeout_class",
+    "input_schema_ref",
+    "output_schema_ref"
+  ],
+  "properties": {
+    "tool_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9._-]+$"
+    },
+    "version": {
+      "type": "string"
+    },
+    "executor_kind": {
+      "type": "string",
+      "enum": [
+        "python",
+        "rust",
+        "external_webhook",
+        "mcp"
+      ]
+    },
+    "risk_class": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "browser_read",
+        "browser_write",
+        "write",
+        "destructive",
+        "financial",
+        "external_message"
+      ]
+    },
+    "dangerous_action_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "idempotency_class": {
+      "type": "string",
+      "enum": [
+        "idempotent",
+        "non_idempotent",
+        "best_effort_idempotent",
+        "unknown"
+      ]
+    },
+    "timeout_class": {
+      "type": "string",
+      "enum": [
+        "short",
+        "medium",
+        "long"
+      ]
+    },
+    "input_schema_ref": {
+      "type": "string"
+    },
+    "output_schema_ref": {
+      "type": "string"
+    },
+    "default_retry_policy": {
+      "type": "string",
+      "enum": [
+        "none",
+        "fast_transient",
+        "bounded_exponential",
+        "manual_only"
+      ]
+    },
+    "required_scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifact_expectations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "compensation_hook": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "allow_in_tiers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "tier_a",
+          "tier_b",
+          "tier_c"
+        ]
+      }
+    }
+  }
+}

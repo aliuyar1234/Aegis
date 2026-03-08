@@ -1,0 +1,33 @@
+id: media-expansion
+phase: PHASE-11
+name: Voice/media expansion gate
+objective: Validate future media contracts, topology, and runbook surfaces exist before
+  media implementation begins.
+fixtures:
+- docs/design-docs/media-topology.md
+- docs/design-docs/future-voice-media.md
+- docs/runbooks/degraded-system-mode.md
+tests:
+- TS-015
+acceptance:
+- AC-045
+- AC-046
+- AC-047
+- AC-048
+steps:
+- id: media-boundaries
+  description: verify media contracts and sidecar boundaries
+  expected:
+  - hot paths stay in Rust sidecars
+  evidence:
+  - docs/design-docs/media-topology.md
+  - docs/design-docs/future-voice-media.md
+- id: degraded-qos
+  description: verify degraded-mode policy and operator handoff
+  expected:
+  - QoS degradation and handoff are explicit
+  evidence:
+  - docs/runbooks/degraded-system-mode.md
+  - docs/exec-plans/active/PHASE-11-voice-media-path.md
+proves:
+- voice/media path is implementation-grade rather than aspirational

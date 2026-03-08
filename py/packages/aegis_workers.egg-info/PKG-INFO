@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: aegis-workers
+Version: 0.1.0
+Summary: Python execution-plane workspace for Aegis Runtime
+Requires-Python: >=3.11
+Requires-Dist: protobuf<7,>=6.33.5

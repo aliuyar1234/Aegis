@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package aegis.runtime.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "aegis/common/v1/common.proto";
+
+message EventEnvelope {
+  string event_id = 1;
+  string tenant_id = 2;
+  string workspace_id = 3;
+  string session_id = 4;
+  uint64 seq_no = 5;
+  string type = 6;
+  uint32 event_version = 7;
+  google.protobuf.Timestamp occurred_at = 8;
+  google.protobuf.Timestamp recorded_at = 9;
+  aegis.common.v1.ActorKind actor_kind = 10;
+  string actor_id = 11;
+  string command_id = 12;
+  string correlation_id = 13;
+  string causation_id = 14;
+  string trace_id = 15;
+  string span_id = 16;
+  uint64 lease_epoch = 17;
+  string idempotency_key = 18;
+  aegis.common.v1.DeterminismClass determinism_class = 19;
+  string prev_event_hash = 20;
+  string event_hash = 21;
+  google.protobuf.Struct payload = 22;
+}

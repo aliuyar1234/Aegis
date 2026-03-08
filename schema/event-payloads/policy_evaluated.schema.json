@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/policy_evaluated.schema.json",
+  "title": "policy.evaluated",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "action_hash",
+    "risk_class",
+    "decision",
+    "reason"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "action_hash": {
+      "type": "string"
+    },
+    "risk_class": {
+      "type": "string"
+    },
+    "dangerous_action_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "allow_with_constraints",
+        "require_approval",
+        "deny"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}

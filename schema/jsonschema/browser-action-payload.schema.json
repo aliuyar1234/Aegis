@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/browser-action-payload.schema.json",
+  "title": "BrowserActionPayload",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_kind",
+    "mutating"
+  ],
+  "properties": {
+    "action_kind": {
+      "type": "string",
+      "enum": [
+        "open_context",
+        "navigate",
+        "read",
+        "fill",
+        "click",
+        "submit",
+        "verify",
+        "close_context"
+      ]
+    },
+    "mutating": {
+      "type": "boolean"
+    },
+    "mutation_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "target_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "selector": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "value": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "expectation": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "capture_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "screenshot",
+          "dom_snapshot",
+          "trace"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/action-request.schema.json",
+  "title": "ActionRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tenant_id",
+    "workspace_id",
+    "session_id",
+    "action_id",
+    "tool_id",
+    "risk_class",
+    "idempotency_class",
+    "input"
+  ],
+  "properties": {
+    "tenant_id": {
+      "type": "string"
+    },
+    "workspace_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "tool_id": {
+      "type": "string"
+    },
+    "risk_class": {
+      "type": "string"
+    },
+    "dangerous_action_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "idempotency_class": {
+      "type": "string"
+    },
+    "approval_required": {
+      "type": "boolean"
+    },
+    "input": {
+      "type": "object"
+    },
+    "soft_deadline": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "hard_deadline": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "trace_id": {
+      "type": "string"
+    },
+    "capability_token_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "approved_argument_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

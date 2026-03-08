@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/observation_received.schema.json",
+  "title": "observation.received",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requested_by"
+  ],
+  "properties": {
+    "requested_by": {
+      "type": "string"
+    }
+  }
+}

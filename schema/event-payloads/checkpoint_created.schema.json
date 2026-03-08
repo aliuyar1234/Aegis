@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/checkpoint_created.schema.json",
+  "title": "checkpoint.created",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "checkpoint_id",
+    "seq_no"
+  ],
+  "properties": {
+    "checkpoint_id": {
+      "type": "string"
+    },
+    "seq_no": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

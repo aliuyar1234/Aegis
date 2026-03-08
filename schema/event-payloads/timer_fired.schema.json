@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/timer_fired.schema.json",
+  "title": "timer.fired",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "timer_id"
+  ],
+  "properties": {
+    "timer_id": {
+      "type": "string"
+    }
+  }
+}

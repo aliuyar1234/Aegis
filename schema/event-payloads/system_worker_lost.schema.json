@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/system_worker_lost.schema.json",
+  "title": "system.worker_lost",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "execution_id",
+    "worker_id",
+    "action_id",
+    "reason"
+  ],
+  "properties": {
+    "execution_id": {
+      "type": "string"
+    },
+    "worker_id": {
+      "type": "string"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "last_heartbeat_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/operatorsessionview.schema.json",
+  "title": "OperatorSessionView",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tenant_id",
+    "workspace_id",
+    "session_id",
+    "phase",
+    "control_mode",
+    "health",
+    "owner_node",
+    "lease_epoch",
+    "wait_reason",
+    "last_seq_no"
+  ],
+  "properties": {
+    "tenant_id": {
+      "type": "string"
+    },
+    "workspace_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string"
+    },
+    "control_mode": {
+      "type": "string"
+    },
+    "health": {
+      "type": "string"
+    },
+    "owner_node": {
+      "type": "string"
+    },
+    "lease_epoch": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "wait_reason": {
+      "type": "string"
+    },
+    "last_seq_no": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "latest_checkpoint_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deadlines": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "pending_approvals": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "in_flight_actions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "recent_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "fenced": {
+      "type": "boolean"
+    },
+    "latest_recovery_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

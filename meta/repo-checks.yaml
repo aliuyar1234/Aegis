@@ -1,0 +1,53 @@
+required_paths:
+- AGENTS.md
+- README.md
+- REPO_MAP.md
+- PRODUCT.md
+- ARCHITECTURE.md
+- IMPLEMENTATION_ORDER.md
+- ACCEPTANCE_CRITERIA.md
+- TEST_STRATEGY.md
+- TRACEABILITY_MATRIX.md
+- MUST_NOT_VIOLATE.md
+- CAN_CHANGE_LATER.md
+- meta/current-phase.yaml
+- meta/invariants.yaml
+- meta/phase-gates.yaml
+- meta/acceptance-criteria.yaml
+- meta/test-suites.yaml
+- meta/generated-files.yaml
+- work-items/task-index.yaml
+- schema/transport-topology.yaml
+- schema/checkpoints/session-checkpoint-v1.schema.json
+- schema/jsonschema/capability-token-claims.schema.json
+- schema/jsonschema/artifact-metadata.schema.json
+- schema/jsonschema/approval-request.schema.json
+- schema/jsonschema/operator-session-view.schema.json
+- docs/design-docs/runtime-model.md
+- docs/design-docs/transport-topology.md
+- docs/design-docs/browser-wedge.md
+- docs/design-docs/policy-decision-model.md
+- docs/design-docs/projection-model.md
+- tests/phase-gates/internal-demo.yaml
+- tests/phase-gates/public-demo.yaml
+- PATCHLOG_V2.md
+- PATCHLOG_V3.md
+- AUDIT_REMEDIATION_MATRIX.md
+- schema/jsonschema/transport-topology.schema.json
+- schema/jsonschema/phase-gate.schema.json
+- schema/proto/README.md
+- tests/browser_e2e/test_browser_fixture_semantics.py
+- tests/transport/test_transport_topology.py
+- pytest.ini
+forbidden_phrases:
+- see prior message
+- as discussed above
+- use the chat history
+- refer to the conversation
+- TBD
+allow_forbidden_in:
+- OPEN_DECISIONS.md
+- meta/repo-checks.yaml
+max_agents_lines: 120
+forbidden_paths:
+- .pytest_cache

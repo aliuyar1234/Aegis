@@ -1,0 +1,246 @@
+phases:
+- id: PHASE-00
+  status: completed
+  name: Foundations, repository harness, local development, and anti-drift tooling
+  doc: docs/exec-plans/active/PHASE-00-repo-harness.md
+  task_file: work-items/phase-00-repo-harness.yaml
+  prereqs: []
+  acceptance:
+  - AC-001
+  - AC-002
+  - AC-003
+  - AC-004
+  tests:
+  - TS-001
+  - TS-002
+  - TS-013
+  unlocks:
+  - PHASE-01
+- id: PHASE-01
+  status: completed
+  name: Session kernel and state model
+  doc: docs/exec-plans/active/PHASE-01-session-kernel.md
+  task_file: work-items/phase-01-session-kernel.yaml
+  prereqs:
+  - PHASE-00
+  acceptance:
+  - AC-005
+  - AC-006
+  - AC-007
+  tests:
+  - TS-003
+  unlocks:
+  - PHASE-02
+- id: PHASE-02
+  status: completed
+  name: Event log, checkpoints, and replay
+  doc: docs/exec-plans/active/PHASE-02-events-checkpoints-replay.md
+  task_file: work-items/phase-02-events-checkpoints-replay.yaml
+  prereqs:
+  - PHASE-01
+  acceptance:
+  - AC-008
+  - AC-009
+  - AC-010
+  - AC-011
+  tests:
+  - TS-004
+  unlocks:
+  - PHASE-03
+  - PHASE-04
+- id: PHASE-03
+  status: completed
+  name: Lease ownership, fencing, and recovery semantics
+  doc: docs/exec-plans/active/PHASE-03-leases-recovery.md
+  task_file: work-items/phase-03-leases-recovery.yaml
+  prereqs:
+  - PHASE-02
+  acceptance:
+  - AC-012
+  - AC-013
+  - AC-014
+  tests:
+  - TS-005
+  - TS-010
+  unlocks:
+  - PHASE-04
+- id: PHASE-04
+  status: completed
+  name: Worker contracts, transport topology, and execution bridge
+  doc: docs/exec-plans/active/PHASE-04-worker-contracts-transport.md
+  task_file: work-items/phase-04-worker-contracts-transport.yaml
+  prereqs:
+  - PHASE-02
+  - PHASE-03
+  acceptance:
+  - AC-015
+  - AC-016
+  - AC-017
+  - AC-018
+  - AC-019
+  tests:
+  - TS-002
+  - TS-006
+  unlocks:
+  - PHASE-05
+  - PHASE-06
+  - PHASE-07
+- id: PHASE-05
+  status: completed
+  name: 'Browser worker wedge baseline: read-only flows, artifacts, and resumable
+    handles'
+  doc: docs/exec-plans/active/PHASE-05-browser-worker-wedge.md
+  task_file: work-items/phase-05-browser-worker-wedge.yaml
+  prereqs:
+  - PHASE-04
+  acceptance:
+  - AC-020
+  - AC-021
+  - AC-022
+  - AC-023
+  tests:
+  - TS-007
+  unlocks:
+  - PHASE-06
+- id: PHASE-06
+  status: current
+  name: Operator console and session inspection baseline
+  doc: docs/exec-plans/active/PHASE-06-operator-console.md
+  task_file: work-items/phase-06-operator-console.yaml
+  prereqs:
+  - PHASE-04
+  - PHASE-05
+  acceptance:
+  - AC-024
+  - AC-025
+  - AC-026
+  - AC-027
+  tests:
+  - TS-008
+  unlocks:
+  - PHASE-07
+- id: PHASE-07
+  status: planned
+  name: Policy, approvals, capability tokens, and dangerous-action defaults
+  doc: docs/exec-plans/active/PHASE-07-policy-approvals.md
+  task_file: work-items/phase-07-policy-approvals.yaml
+  prereqs:
+  - PHASE-04
+  - PHASE-06
+  acceptance:
+  - AC-028
+  - AC-029
+  - AC-030
+  - AC-031
+  - AC-032
+  tests:
+  - TS-009
+  - TS-011
+  unlocks:
+  - PHASE-08
+  - PHASE-09
+  - PHASE-10
+- id: PHASE-08
+  status: planned
+  name: Effectful browser flows, uncertainty handling, resilience, and demo gates
+  doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  task_file: work-items/phase-08-resilience-chaos.yaml
+  prereqs:
+  - PHASE-05
+  - PHASE-06
+  - PHASE-07
+  acceptance:
+  - AC-033
+  - AC-034
+  - AC-035
+  - AC-036
+  - AC-037
+  tests:
+  - TS-007
+  - TS-010
+  - TS-012
+  unlocks:
+  - PHASE-09
+- id: PHASE-09
+  status: planned
+  name: Multitenancy, quotas, authz, audit, and trust boundaries
+  doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  task_file: work-items/phase-09-multitenancy-quotas.yaml
+  prereqs:
+  - PHASE-07
+  - PHASE-08
+  acceptance:
+  - AC-038
+  - AC-039
+  - AC-040
+  - AC-041
+  tests:
+  - TS-011
+  unlocks:
+  - PHASE-10
+  - PHASE-13
+- id: PHASE-10
+  status: planned
+  name: Extensibility surface, connector SDK, and compatibility policy
+  doc: docs/exec-plans/active/PHASE-10-extensibility-surface.md
+  task_file: work-items/phase-10-extensibility-surface.yaml
+  prereqs:
+  - PHASE-09
+  acceptance:
+  - AC-042
+  - AC-043
+  - AC-044
+  tests:
+  - TS-014
+  unlocks:
+  - PHASE-11
+  - PHASE-12
+- id: PHASE-11
+  status: deferred
+  name: Voice and media expansion path
+  doc: docs/exec-plans/active/PHASE-11-voice-media-path.md
+  task_file: work-items/phase-11-voice-media-path.yaml
+  prereqs:
+  - PHASE-10
+  acceptance:
+  - AC-045
+  - AC-046
+  - AC-047
+  - AC-048
+  tests:
+  - TS-015
+  unlocks:
+  - PHASE-13
+- id: PHASE-12
+  status: deferred
+  name: OSS core versus managed platform split
+  doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  task_file: work-items/phase-12-oss-vs-cloud.yaml
+  prereqs:
+  - PHASE-10
+  acceptance:
+  - AC-049
+  - AC-050
+  - AC-051
+  tests:
+  - TS-016
+  unlocks:
+  - PHASE-13
+- id: PHASE-13
+  status: deferred
+  name: Cloud and enterprise hardening
+  doc: docs/exec-plans/active/PHASE-13-cloud-enterprise.md
+  task_file: work-items/phase-13-cloud-enterprise.yaml
+  prereqs:
+  - PHASE-09
+  - PHASE-11
+  - PHASE-12
+  acceptance:
+  - AC-052
+  - AC-053
+  - AC-054
+  - AC-055
+  - AC-056
+  tests:
+  - TS-017
+  unlocks: []

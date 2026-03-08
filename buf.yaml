@@ -1,0 +1,10 @@
+version: v2
+modules:
+  - path: schema/proto
+    name: buf.build/aegis/runtime
+lint:
+  use:
+    - STANDARD
+breaking:
+  use:
+    - FILE

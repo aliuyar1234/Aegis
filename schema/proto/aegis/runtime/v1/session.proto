@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+package aegis.runtime.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "aegis/common/v1/common.proto";
+
+message SessionRef {
+  string tenant_id = 1;
+  string workspace_id = 2;
+  string session_id = 3;
+  uint64 lease_epoch = 4;
+}
+
+message StartSessionCommand {
+  SessionRef ref = 1;
+  string session_kind = 2;
+  string requested_by = 3;
+  google.protobuf.Struct initial_input = 4;
+}
+
+message ObservationCommand {
+  SessionRef ref = 1;
+  string observation_kind = 2;
+  google.protobuf.Struct observation = 3;
+}
+
+message RequestActionCommand {
+  SessionRef ref = 1;
+  string action_id = 2;
+  string tool_id = 3;
+  string tool_schema_version = 4;
+  string risk_class = 5;
+  string idempotency_class = 6;
+  google.protobuf.Struct input = 7;
+  google.protobuf.Timestamp soft_deadline = 8;
+  google.protobuf.Timestamp hard_deadline = 9;
+}
+
+message ApprovalDecisionCommand {
+  SessionRef ref = 1;
+  string approval_id = 2;
+  string action_hash = 3;
+  bool approved = 4;
+  string decided_by = 5;
+  string reason = 6;
+}
+
+message DeadlineView {
+  string kind = 1;
+  google.protobuf.Timestamp due_at = 2;
+}
+
+message ActionView {
+  string action_id = 1;
+  string tool_id = 2;
+  aegis.common.v1.ActionStatus status = 3;
+  string risk_class = 4;
+  string execution_id = 5;
+  google.protobuf.Timestamp accept_deadline = 6;
+  google.protobuf.Timestamp soft_deadline = 7;
+  google.protobuf.Timestamp hard_deadline = 8;
+  bool uncertain_side_effect = 9;
+}
+
+message ApprovalView {
+  string approval_id = 1;
+  string action_id = 2;
+  string action_hash = 3;
+  string status = 4;
+  string risk_class = 5;
+  google.protobuf.Timestamp expires_at = 6;
+  string decided_by = 7;
+}
+
+message ArtifactView {
+  string artifact_id = 1;
+  string artifact_kind = 2;
+  string sha256 = 3;
+  string retention_class = 4;
+  string redaction_state = 5;
+}
+
+message SessionProjection {
+  SessionRef ref = 1;
+  aegis.common.v1.SessionPhase phase = 2;
+  aegis.common.v1.ControlMode control_mode = 3;
+  aegis.common.v1.SessionHealth health = 4;
+  uint64 last_seq_no = 5;
+  string latest_checkpoint_id = 6;
+  repeated string pending_approval_ids = 7;
+  repeated string in_flight_action_ids = 8;
+  repeated string artifact_ids = 9;
+  google.protobuf.Struct summary = 10;
+  string owner_node = 11;
+  aegis.common.v1.WaitReason wait_reason = 12;
+  repeated DeadlineView deadlines = 13;
+  repeated ActionView in_flight_actions = 14;
+  repeated ApprovalView pending_approvals = 15;
+  repeated ArtifactView recent_artifacts = 16;
+  google.protobuf.Timestamp updated_at = 17;
+  bool fenced = 18;
+  string latest_recovery_reason = 19;
+}

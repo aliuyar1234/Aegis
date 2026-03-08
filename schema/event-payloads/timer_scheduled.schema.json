@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/timer_scheduled.schema.json",
+  "title": "timer.scheduled",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "timer_id",
+    "fires_at"
+  ],
+  "properties": {
+    "timer_id": {
+      "type": "string"
+    },
+    "fires_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

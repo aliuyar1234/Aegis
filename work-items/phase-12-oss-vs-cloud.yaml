@@ -1,0 +1,102 @@
+phase: PHASE-12
+status: deferred
+name: OSS core versus managed platform split
+phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+tasks:
+- id: P12-T01
+  phase: PHASE-12
+  title: Define what belongs in OSS core versus managed cloud services
+  critical_path: true
+  status: planned
+  deps:
+  - P10-T03
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-049
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P12-T02
+  phase: PHASE-12
+  title: Define packaging and deployment flavors for shared, isolated-execution, and
+    dedicated control plane modes
+  critical_path: true
+  status: planned
+  deps:
+  - P09-T03
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-050
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P12-T03
+  phase: PHASE-12
+  title: Document release, upgrade, and compatibility policy for the split
+  critical_path: false
+  status: planned
+  deps:
+  - P12-T01
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-051
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: true
+- id: P12-T04
+  phase: PHASE-12
+  title: Create OSS core manifest, managed-only surface catalog, and packaging matrix
+    artifacts
+  critical_path: true
+  status: planned
+  deps:
+  - P12-T01
+  - P12-T02
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-049
+  - AC-050
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: true
+- id: P12-T05
+  phase: PHASE-12
+  title: Create split-surface release manifests, upgrade policy artifacts, and OSS/managed
+    phase gate
+  critical_path: false
+  status: planned
+  deps:
+  - P12-T03
+  - P12-T04
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-051
+  test_refs:
+  - TS-016
+  phase_doc: docs/exec-plans/active/PHASE-12-oss-vs-cloud.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: true

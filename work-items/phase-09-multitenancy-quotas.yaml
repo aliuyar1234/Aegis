@@ -1,0 +1,101 @@
+phase: PHASE-09
+status: planned
+name: Multitenancy, quotas, authz, audit, and trust boundaries
+phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+tasks:
+- id: P09-T01
+  phase: PHASE-09
+  title: Enforce tenant/workspace scoping across tables, contracts, and events
+  critical_path: true
+  status: planned
+  deps:
+  - P02-T01
+  - P04-T01
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-038
+  test_refs:
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P09-T02
+  phase: PHASE-09
+  title: Implement quotas and admission control for sessions, browser contexts, and
+    effectful actions
+  critical_path: true
+  status: planned
+  deps:
+  - P09-T01
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-039
+  test_refs:
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P09-T03
+  phase: PHASE-09
+  title: Implement tiered worker-pool isolation and routing metadata
+  critical_path: true
+  status: planned
+  deps:
+  - P09-T01
+  adr_refs:
+  - ADR-0013
+  acceptance_refs:
+  - AC-038
+  test_refs:
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P09-T04
+  phase: PHASE-09
+  title: Integrate RBAC/ABAC checks into operator and API control surfaces
+  critical_path: true
+  status: planned
+  deps:
+  - P07-T03
+  - P07-T04
+  adr_refs:
+  - ADR-0011
+  - ADR-0013
+  acceptance_refs:
+  - AC-040
+  test_refs:
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P09-T05
+  phase: PHASE-09
+  title: Update threat models and security docs based on implementation realities
+  critical_path: false
+  status: planned
+  deps:
+  - P09-T04
+  adr_refs:
+  - ADR-0013
+  - ADR-0015
+  acceptance_refs:
+  - AC-041
+  test_refs:
+  - TS-001
+  - TS-011
+  phase_doc: docs/exec-plans/active/PHASE-09-multitenancy-quotas.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false

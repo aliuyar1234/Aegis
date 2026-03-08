@@ -1,0 +1,135 @@
+phase: PHASE-08
+status: planned
+name: Effectful browser flows, uncertainty handling, resilience, and demo gates
+phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+tasks:
+- id: P08-T01
+  phase: PHASE-08
+  title: Implement duplicate completion suppression and action uncertainty classification
+  critical_path: true
+  status: planned
+  deps:
+  - P04-T04
+  - P07-T02
+  adr_refs:
+  - ADR-0011
+  - ADR-0012
+  acceptance_refs:
+  - AC-034
+  test_refs:
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P08-T02
+  phase: PHASE-08
+  title: Implement quarantine flows for event corruption, replay failure, and repeated
+    hydrate crashes
+  critical_path: true
+  status: planned
+  deps:
+  - P02-T04
+  - P03-T04
+  adr_refs:
+  - ADR-0012
+  - ADR-0015
+  acceptance_refs:
+  - AC-035
+  test_refs:
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P08-T03
+  phase: PHASE-08
+  title: Implement browser instability recovery playbook hooks and degraded-mode surfacing
+  critical_path: true
+  status: planned
+  deps:
+  - P05-T03
+  - P06-T02
+  adr_refs:
+  - ADR-0009
+  - ADR-0015
+  acceptance_refs:
+  - AC-034
+  - AC-035
+  test_refs:
+  - TS-007
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P08-T04
+  phase: PHASE-08
+  title: Create and automate chaos and recovery scenarios for internal demo acceptance
+  critical_path: true
+  status: planned
+  deps:
+  - P08-T01
+  - P08-T02
+  - P08-T03
+  - P08-T06
+  adr_refs:
+  - ADR-0015
+  acceptance_refs:
+  - AC-036
+  test_refs:
+  - TS-010
+  - TS-012
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false
+- id: P08-T05
+  phase: PHASE-08
+  title: Create public demo script and acceptance artifact set
+  critical_path: false
+  status: planned
+  deps:
+  - P08-T04
+  adr_refs:
+  - ADR-0009
+  - ADR-0015
+  acceptance_refs:
+  - AC-037
+  test_refs:
+  - TS-012
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: M
+  must_happen_before_code: false
+  can_happen_later: true
+  defer: false
+- id: P08-T06
+  phase: PHASE-08
+  title: Implement effectful browser mutation flows with approval-bound writes, capability
+    tokens, before/after artifacts, and uncertainty surfacing
+  critical_path: true
+  status: planned
+  deps:
+  - P05-T03
+  - P07-T03
+  - P07-T04
+  adr_refs:
+  - ADR-0009
+  - ADR-0011
+  - ADR-0012
+  acceptance_refs:
+  - AC-033
+  - AC-034
+  test_refs:
+  - TS-007
+  - TS-009
+  - TS-010
+  phase_doc: docs/exec-plans/active/PHASE-08-resilience-chaos.md
+  size: L
+  must_happen_before_code: false
+  can_happen_later: false
+  defer: false

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/action_cancel_requested.schema.json",
+  "title": "action.cancel_requested",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "execution_id",
+    "reason",
+    "cancel_requested_at"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "execution_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "cancel_requested_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

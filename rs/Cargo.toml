@@ -1,0 +1,8 @@
+[workspace]
+members = [
+  "crates/aegis_contracts_rs",
+  "crates/aegis_recorder",
+  "crates/aegis_media_gateway",
+  "crates/aegis_protocol_adapters"
+]
+resolver = "2"

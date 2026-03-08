@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.runtime/schema/event-payloads/operator_took_control.schema.json",
+  "title": "operator.took_control",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id",
+    "control_mode"
+  ],
+  "properties": {
+    "operator_id": {
+      "type": "string"
+    },
+    "control_mode": {
+      "type": "string"
+    }
+  }
+}

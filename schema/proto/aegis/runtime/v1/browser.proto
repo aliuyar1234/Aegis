@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package aegis.runtime.v1;
+
+import "google/protobuf/struct.proto";
+
+message BrowserHandle {
+  string browser_handle_id = 1;
+  string provider_kind = 2;
+  string provider_session_ref = 3;
+  string page_ref = 4;
+  string state_ref = 5;
+  string last_stable_artifact_id = 6;
+  bool read_only_baseline_complete = 7;
+}
+
+message BrowserArtifactRef {
+  string artifact_id = 1;
+  string artifact_kind = 2;
+  string sha256 = 3;
+}
+
+message BrowserActionMetadata {
+  string browser_handle_id = 1;
+  string action_kind = 2;
+  bool mutating = 3;
+  string mutation_class = 4;
+  string target_url = 5;
+  string selector_hint = 6;
+  google.protobuf.Struct extra = 7;
+}
